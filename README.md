@@ -1,3 +1,3 @@
-### LightWeb Framework
+### Simplicity Universal Web UI Framework
 © ThinkX,Inc
 
