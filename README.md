@@ -1,3 +1,5 @@
-### Simplicity Universal Web UI Framework
+### Simplicity 
+Conversation-based Universal Web UI Framework
+
 © ThinkX,Inc
 
