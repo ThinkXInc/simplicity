@@ -10,37 +10,9 @@
  * @author kaz@thinkxinc.com (Kazuki Otsuka)
  */
 
-
-/**
- * Dropdown Button State Enum.
- */
-const DropdownButtonState = Object.freeze({
-    onclose: 1,
-    onopen: 2,
-    onselected: 3,  // not in use
-});
-
-
-/**
- * Dropdown Menu type Enum.
- */
-const DropdownMenuType = Object.freeze({
-    list: 1,
-    widelist: 2,
-    calendar: 3,
-});
-
-
-/**
- * Dropdown Menu Display Position type Enum.
- */
-const DropdownMenuDisplayPositionType = Object.freeze({
-    bottom: 1,
-    bottomover: 2,
-    upper: 3,
-    upperover: 4,
-});
-
+const DropdownButtonState = Object.freeze({ onclose: 1, onopen: 2, onselected: 3 });
+const DropdownMenuType = Object.freeze({ list: 1, widelist: 2, calendar: 3 });
+const DropdownMenuDisplayPositionType = Object.freeze({ bottom: 1, bottomover: 2, upper: 3, upperover: 4 });
 
 /**
  * Dropdown list Data Model.
@@ -64,6 +36,13 @@ class ListMenu {
  * @classdesc `<div class=dropdownButton id={id}></ul>` is necessary in HTML.
  * usage:
  * `<code>`
+ * 
+ *      <div class="dropdownButtonClickable cf">
+            <h6 class=description>$description</h6>
+            <span class=title>$title</span>
+            <img class=downarrow src=/img/icons/arrow-down.png srcset="/img/icons/arrow-down@2x.png 2x"/>
+            <div class="footer cf"></div>
+        </div>
  *  var dropdownButton = new DropdownButton(
  *      'countrySelectButton', 'Your Country', 'Please select your country.',
  *      'country',
@@ -86,9 +65,7 @@ class ListMenu {
  * @param {[ListMenu]} listMenuItems - list of ListMenu with title, value.
  */
 class DropdownButton {
-    __outer_template_sample__ = `
-        <div id=dropdown1 class=dropdownButton></div>
-    `
+
     __inner_template__ = `
         <div class="dropdownButtonClickable cf">
             <h6 class=description>$description</h6>
@@ -105,7 +82,6 @@ class DropdownButton {
         <li class=listitem data-value=$value data-title="$title">$title</li>
     `
 
-    __id__ = null;
     __description__ = null;
     __field_name__ = null;
     __items__ = null;
@@ -116,9 +92,10 @@ class DropdownButton {
     _selectedValue = null;
     _title = null;
 
-    constructor(id, title, description, fieldName, type, position, listMenuItems) {
+    constructor(parent_id, id, title, description, fieldName, type, position, listMenuItems, htmlTag='div') {
+        super(parent_id, id, '', htmlTag);
+   
         // set configuration variables
-        this.__id__ = id;
         this.__description__ = description;
         this.__field_name__ = fieldName;
         this.__type__ = type;
@@ -126,19 +103,6 @@ class DropdownButton {
         this.__menu_position__ = position;
 
         this._title = title;
-
-        // set html elements
-        document.getElementById(id).innerHTML = this.__inner_template__
-            .replace('$title', title).replace('$description', description);
-        if (type == DropdownMenuType.list || type == DropdownMenuType.widelist) {
-            document.getElementById(id).innerHTML += this.__list_menu_template__;
-        }
-        this._setElements();
-
-        // set list menu items
-        if (type == DropdownMenuType.list || type == DropdownMenuType.widelist) {
-            this._setListMenuItems(listMenuItems);
-        }
 
         // set event handlers
         this._setEventHandlers();
@@ -164,13 +128,13 @@ class DropdownButton {
                 this.$toggleItem.style.display = 'block';
                 console.log(this.__menu_position__);
                 if (this.__menu_position__ == DropdownMenuDisplayPositionType.bottom) {
-                    this.$toggleItem.style.top = `${this.$dropdownButton.offsetTop + this.$dropdownButton.offsetHeight}px`;
+                    this.$toggleItem.style.top = `${this.$view.offsetTop + this.$view.offsetHeight}px`;
                 } else if (this.__menu_position__ == DropdownMenuDisplayPositionType.bottomover) {
-                    this.$toggleItem.style.top = `${this.$dropdownButton.offsetTop}px`;
+                    this.$toggleItem.style.top = `${this.$view.offsetTop}px`;
                 } else if (this.__menu_position__ == DropdownMenuDisplayPositionType.upper) {
-                    this.$toggleItem.style.top = `${this.$dropdownButton.offsetTop - this.$listMenu.offsetHeight}px`;
+                    this.$toggleItem.style.top = `${this.$view.offsetTop - this.$listMenu.offsetHeight}px`;
                 } else if (this.__menu_position__ == DropdownMenuDisplayPositionType.upperover) {
-                    this.$toggleItem.style.top = `${this.$dropdownButton.offsetTop - this.$listMenu.offsetHeight - this.$dropdownButton.offsetHeight}px`;
+                    this.$toggleItem.style.top = `${this.$view.offsetTop - this.$listMenu.offsetHeight - this.$view.offsetHeight}px`;
                 } else {
                     console.error(`${this.__menu_position__} is unknown position.`);
                 }
@@ -201,7 +165,7 @@ class DropdownButton {
         }
         const event = new CustomEvent(
             'selected', {detail: {value: selectedValue, id: this.__id__}});
-        this.$dropdownButton.dispatchEvent(event);
+        this.$view.dispatchEvent(event);
     }
 
     /**
@@ -214,24 +178,52 @@ class DropdownButton {
     /**
      * DOM nodes as variables.
      */
-    _setElements() {
-        this.$dropdownButton = document.getElementById(this.__id__);
-        if (this.$dropdownButton == null) {
-            console.warn(
-                `<div id=${this.__id__} class=dropdownButton></div> is necessary in HTML.`);
+    _setElements(title, htmlTag) {
+        super._setElements(title, htmlTag);
+
+        $this.view.classList.add('dropdownButton');
+
+        // set html elements
+        let $dropdownButtonClickable = document.createElement('div');
+        $dropdownButtonClickable.className = "dropdownButtonClickable cf";
+        let $description = document.createElement('h6');
+        $description.className = "description";
+        $description.textContent = this.__description__;
+        let $title = document.createElement('$title');
+        $title.className = "title";
+        $title.textContent = this._title;
+        let $downArrowImg = document.createElement('img');
+        $downArrowImg.className = "downarrow";
+        $downArrowImg.src = "/img/icons/arrow-down.png";
+        $downArrowImg.srcset = "/img/icons/arrow-down@2x.png 2x";
+        $dropdownButtonClickable.append($description, $title, $downArrowImg);
+        this.$view.append($dropdownButtonClickable);
+
+        // set list menu
+        if (type == DropdownMenuType.list || type == DropdownMenuType.widelist) {
+            const $listMenu = document.createElement('ul');
+            $listMenu.className = 'listmenu';
+            $listMenu.style.display = 'none';
+            this.$view.appendChild($listMenu);
         }
-        this.$title = this.$dropdownButton.querySelector('.title');
+
+        // set list menu items
+        if (type == DropdownMenuType.list || type == DropdownMenuType.widelist) {
+            this._setListMenuItems(listMenuItems);
+        }
+
+        this.$title = this.$view.querySelector('.title');
         if (this.$title == null) {
             console.warn(
                 `<span class=title></span> is necessary in HTML.`);
         }
-        this.$dropdownButtonClickable = this.$dropdownButton.querySelector('.dropdownButtonClickable');
+        this.$dropdownButtonClickable = this.$view.querySelector('.dropdownButtonClickable');
         if (this.$dropdownButtonClickable == null) {
             console.warn(
                 `<div class=dropdownButtonClickable></div> is necessary in HTML.`);
         }
         if (this.__type__ == DropdownMenuType.list || this.__type__ == DropdownMenuType.widelist) {
-            this.$listMenu = this.$dropdownButton.querySelector('.listmenu');
+            this.$listMenu = this.$view.querySelector('.listmenu');
             this.$toggleItem = this.$listMenu;
             if (this.$listMenu == null) {
                 console.warn(
@@ -254,9 +246,12 @@ class DropdownButton {
         console.log(`set ${items.length} list menu items into ${this.__id__}.`)
         if (IS_DEBUG) { console.table(items) };
         items.forEach((item) => {
-            this.$listMenu.innerHTML += 
-                this.__list_item_template__
-                .replaceAll('$title', item.title).replace('$value', item.value);
+            let $item = document.createElement('li');
+            $item.className = "listitem";
+            $item.dataset.value = item.value;
+            $item.dataset.title = item.title;
+            $item.textContent = item.title;
+            this.$listMenu.append($item);
         });
     }
 
@@ -288,16 +283,17 @@ class DropdownButton {
             }
         });
         this.$listMenu.addEventListener('click', e => {
-            console.log(this.$listMenu.querySelector(':hover'));
-            console.table(this.$listMenu.querySelector(':hover').dataset);
-            const selectedValue = this.$listMenu.querySelector(':hover').dataset.value;
+            const hoveredItem = this.$listMenu.querySelector(':hover');
+            const selectedValue = hoveredItem.dataset.value;
+            console.log(hoveredItem);
+            console.table(hoveredItem.dataset);
             console.log(`selected value: ${selectedValue}`);
             this._selectedValue = selectedValue;
-            this._setTitle(this.$listMenu.querySelector(':hover').dataset.title);
+            this._setTitle(hoveredItem.dataset.title);
             this.state = DropdownButtonState.onclose;
             // dispatch event
             const event = new CustomEvent('selected', {detail: {id: this.__id__, value: selectedValue}});
-            this.$dropdownButton.dispatchEvent(event);
+            this.$view.dispatchEvent(event);
         });
     }
 
@@ -319,7 +315,7 @@ class DropdownButton {
         under.style.top = '0px';
         under.style.left = '0px';
         under.style.zIndex = 1;
-        this.$dropdownButton.insertBefore(under, $before); // modify this
+        this.$view.insertBefore(under, $before); // modify this
         const __this = _this;
         under.addEventListener('click', e => {
             if (__this._state == DropdownButtonState.onopen) { // modify this
@@ -347,15 +343,16 @@ class DropdownButton {
      * @param {string} message
      */
     alert(onAlert, message) {
-        const id =  this.__id__ + '_alert';
-        let $parent = this.$dropdownButton;
+        // TODO: modify to ensure alertId is set by the format
+        const alertId = this.__id__ + '_alert';
+        let $parent = this.$view;
         let $footer = $parent.querySelector('.footer');
         if (onAlert) {
             // add alert to css
             $parent.classList.add('alert');
 
             // if the alertMessage already exists
-            if (document.getElementById(id) != null) {
+            if (document.getElementById(alertId) != null) {
                 // the same alert is displayed, return
                 if (message == document.getElementById(id).innerText) {
                     return
@@ -369,18 +366,18 @@ class DropdownButton {
             // if no alertMessage exists, add new alert message
             let $alertMessage = document.createElement('p');
             $alertMessage.classList.add('alertMessage');
-            $alertMessage.id = id;
+            $alertMessage.id = alertId;
             $alertMessage.innerText = message;
             $footer.appendChild($alertMessage);
         } else {
             // return if alertMessage is already removed
-            if (document.getElementById(id) == null) { return };
+            if (document.getElementById(alertId) == null) { return };
 
             // add alert to css
             $parent.classList.remove('alert');
 
             // remove alert message
-            let $alertMessage = document.getElementById(id);
+            let $alertMessage = document.getElementById(alertId);
             $footer.removeChild($alertMessage);
         }
     }
