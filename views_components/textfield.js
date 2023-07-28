@@ -71,7 +71,7 @@ const TextFieldType = Object.freeze({
  *         'titleField', TextFieldType.multiplelines, 'title(reqired)', 'title',
  *         'Mona Lisa Title and subject', 140, 4, false);
  * `</code>`
- * @param {string} id - The DOM id where this view is set.
+ * @param {string} id - The parent DOM id where this view is set.
  * @param {TextFieldType} type - {singleline|multipleline}
  * @param {string} title - title text in header
  * @param {string} field_name - name={field_name} in input or textarea.
