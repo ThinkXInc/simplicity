@@ -1,9 +1,12 @@
 'use strict'
 /**
- * @fileoverview business/view_controllers/input_page_view_controller.js
- * InputPageView controller class.
+ * @fileoverview simplicity/view_controllers/input_page_view_controller.js
  * 
- * This class is the super class for SignupViewController, SignupViewController, etc.
+ * InputPageViewController
+ * 
+ * This class is the super class of any form interaction view controller
+ * such as SignupViewController.
+ * 
  * The views are composed of view components below.
  * 
  *  - TextField from textfield.js (text input)

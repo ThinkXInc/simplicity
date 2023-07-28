@@ -1,6 +1,7 @@
 // simplicity/index.js
 
 import './helpers/browser.js';
+import './data/countries.js';
 import './views_components/content_table_view.js';
 import './views_components/dropdown_button.js';
 import './views_components/edit_content_view.js';
