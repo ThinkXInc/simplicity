@@ -1,4 +1,4 @@
-// src/js/simplicity/index.js
+// simplicity/index.js
 
 import './helpers/browser.js';
 import './views_components/content_table_view.js';
