@@ -28,6 +28,91 @@
  *  3. So that the value is not lost when the browser reloads or backs.
  * 
  * <code>
+ *   class User {
+ *      first_name = null;
+ *      last_name = null;
+ *      country = null;
+ *      constractor(first_name, last_name, country) {
+ *        this.first_name = first_name;
+ *        this.last_name = last_name;
+ *        this.country = country;
+ *      }
+ *   }
+ *   class SignupViewController extends InputPageViewController {
+ *      constractor(_id, pages, dataModelClass) {
+ *        super(_id, pages, dataModelClass)
+ *      }
+ *   }
+ *   let vc = SignupViewController(
+ *     'SignupView',
+ *     [
+ *        # Page 1
+ *        [
+ *          new Title('signupViewPage1Title', 'You are welcome.'),
+ *          new Description('signupViewPage1Description', 'Welcome to this useful website.'),
+ *          new FieldTitle('signupViewNameTitle', 'Your Name Here'),
+ *          new TextField('sugnupViewFirstNameTextField', TextFieldType.singleline,
+ *                        'First Name', 'first_name', 'Satoshi', 100, 1, false),
+ *          new TextField('sugnupViewLastNameTextField', TextFieldType.singleline,
+ *                        'Last Name', 'last_name', 'Nakamoto', 100, 1, false),
+ *          new FieldTitle('signupViewCountryTitle', 'Your Country'),
+ *          new FieldDescription('signupViewCountryTitle',
+ *                               '"Your Counrty" means where you were born.'),
+ *          new DropdownButton(
+ *               'countrySelectButton', 'Your Country', 'Please select your country.',
+ *               'country',
+ *               DropdownMenuType.list, 
+ *               DropdownMenuDisplayPositionType.upper,
+ *               [
+ *                   new ListMenu('Afganistan', 0),
+ *                   new ListMenu('Belarus', 1),
+ *                   new ListMenu('China', 2),
+ *                   new ListMenu('Denmark', 3),
+ *                   ...
+ *               ]);
+ *        ],
+ *        # Page 2
+ *        [
+ *          new Title('signupViewPage2Title', 'You are welcome again.'),
+ *          ...
+ *        ],
+ *        ...
+ *     ],
+ *     User
+ *   )
+ * 
+ *   // write these on signup.html
+ *   <section id={_id} class=inputPageView>
+ *     // page 1
+ *     <div id=signupViewPage1Title class=inputPageViewPageTitle>...</div>
+ *     <div id=signupViewPage1Description class=inputPageViewPageDescription>...</div>
+ *     <div id=signupViewFirstNameTextField class=textField>...</div>
+ *     <div id=signupViewLastNameTextField class=textField>...</div>
+ *     // page 2
+ *     <div id=signupViewPage2Title class=inputPageViewPageTitle>...</div>
+ *     ...
+ *   </section>
+ *
+ *   // After the initialization, InputPageViewController finally generates 
+ *   <section id={_id} class=inputPageView>
+ *     <!-- ↓↓↓ these DOM elements are dinamically created ↓↓↓ -->
+ *     <div class=inputPageViewContainer>
+ *       <ul class=inputPageViewPages>
+ *         <li class=inputPageViewPage data-pageIndex=0>
+ *           <div id=signupViewPage1Title class=inputPageViewPageTitle>...</div>
+ *           <div id=signupViewPage1Description class=inputPageViewPageDescription>...</div>
+ *           <div id=signupViewFirstNameTextField class=textField>...</div>
+ *           <div id=signupViewLastNameTextField class=textField>...</div>
+ *           ...
+ *         </li>
+ *         <li class=inputPageViewPage data-page-index=1>
+ *           <div id=signupViewPage2Title class=inputPageViewPageTitle>...</div>
+ *         </li>
+ *       </ul>
+ *     </div>
+ *     <!-- ↑↑↑ these DOM elements are dinamically created ↑↑↑ -->
+ *   </section>
+ 
  * </code>
  * 
  * @author kaz@thinkxinc.com (Kazuki Otsuka)
@@ -85,95 +170,6 @@ class InputPageViewDataModel {
 /**
  * InputPageViewController class.
  * 
- * <code>
- *   class User {
- *      first_name = null;
- *      last_name = null;
- *      country = null;
- *      constractor(first_name, last_name, country) {
- *        this.first_name = first_name;
- *        this.last_name = last_name;
- *        this.country = country;
- *      }
- *   }
- *   class SignupViewController extends InputPageViewController {
- *      constractor(_id, pages, dataModelClass) {
- *        super(_id, pages, dataModelClass)
- *      }
- *   }
- *   let vc = SignupViewController(
- *     'SignupView',
- *     [
- *        # Page 1
- *        [
- *          new Title('signupViewPage1Title', 'You are welcome.'),
- *          new Description('signupViewPage1Description', 'Welcome to this useful website.'),
- *          new FieldTitle('signupViewNameTitle', 'Your Name Here'),
- *          new TextField('sugnupViewFirstNameTextField', TextFieldType.singleline,
- *                        'First Name', 'first_name', 'Satoshi', 100, 1, false),
- *          new TextField('sugnupViewLastNameTextField', TextFieldType.singleline,
- *                        'Last Name', 'last_name', 'Nakamoto', 100, 1, false),
- *          new FieldTitle('signupViewCountryTitle', 'Your Country'),
- *          new FieldDescription('signupViewCountryTitle',
- *                               '"Your Counrty" means where you were born.'),
- *          new DropdownButton(
- *               'countrySelectButton', 'Your Country', 'Please select your country.',
- *               'country',
- *               DropdownMenuType.list, 
- *               DropdownMenuDisplayPositionType.upper,
- *               [
- *                   new ListMenu('Afganistan', 0),
- *                   new ListMenu('Belarus', 1),
- *                   new ListMenu('China', 2),
- *                   new ListMenu('Denmark', 3),
- *                   ...
- *               ]);
- *        ],
- *        # Page 2
- *        [
- *          new Title('signupViewPage2Title', 'You are welcome again.'),
- *          ...
- *        ],
- *        ...
- *     ],
- *     User
- *   )
- * 
- * 
- *   // write these on signup.html
- *   <section id={_id} class=inputPageView>
- *     // page 1
- *     <div id=signupViewPage1Title class=inputPageViewPageTitle>...</div>
- *     <div id=signupViewPage1Description class=inputPageViewPageDescription>...</div>
- *     <div id=signupViewFirstNameTextField class=textField>...</div>
- *     <div id=signupViewLastNameTextField class=textField>...</div>
- *     // page 2
- *     <div id=signupViewPage2Title class=inputPageViewPageTitle>...</div>
- *     ...
- *   </section>
- *
- *   // After the initialization, InputPageViewController finally generates 
- *   <section id={_id} class=inputPageView>
- *     <!-- ↓↓↓ these DOM elements are dinamically created ↓↓↓ -->
- *     <div class=inputPageViewContainer>
- *       <ul class=inputPageViewPages>
- *         <li class=inputPageViewPage data-pageIndex=0>
- *           <div id=signupViewPage1Title class=inputPageViewPageTitle>...</div>
- *           <div id=signupViewPage1Description class=inputPageViewPageDescription>...</div>
- *           <div id=signupViewFirstNameTextField class=textField>...</div>
- *           <div id=signupViewLastNameTextField class=textField>...</div>
- *           ...
- *         </li>
- *         <li class=inputPageViewPage data-page-index=1>
- *           <div id=signupViewPage2Title class=inputPageViewPageTitle>...</div>
- *         </li>
- *       </ul>
- *     </div>
- *     <!-- ↑↑↑ these DOM elements are dinamically created ↑↑↑ -->
- *   </section>
- * 
- * </code>
- * 
  * Usages:
  *  1. Set values of fields
  *      eg.
@@ -183,7 +179,8 @@ class InputPageViewDataModel {
  *      this.setValueForKey('name') = name  // direct insert
  *      x this.values['name'] = name  // not allowed to modify a property directly
  * 
- * @param {string} _id - The DOM id where this view is inserted.
+ * @param {string} parent_id - The DOM id where this view is inserted.
+ * @param {string} _id - This view's DOM id.
  * @param {list} pages - 2-dimentional array of components. (see the sample above)
  * @param {data model} dataModelClass - data model class to be submit to the server.
  * @param {array} validations - {'componentId': [errorType, "error message key", [arg1, arg2,..]]}
@@ -197,6 +194,7 @@ class InputPageViewDataModel {
  * @constructor
  */
 class InputPageViewController {
+    __parent_id__ = null;
     __id__ = null;
     __number_of_pages__ = null;
     __data_model__ = null;
@@ -214,8 +212,9 @@ class InputPageViewController {
     _locale = null;
     _lang = null;
 
-    constructor(_id, pages, dataModelClass, defaults, validations, locale, lang, cookieExcludes=[]) {
-        this.__id__ = _id;
+    constructor(parent_id, id, pages, dataModelClass, defaults, validations, locale, lang, cookieExcludes=[]) {
+        this.__parent_id__ = parent_id;
+        this.__id__ = id;
 
         // setup page components
         if (pages.length == 0) {
@@ -346,11 +345,19 @@ class InputPageViewController {
      * DOM nodes as variables.
      */
     _setElements(pages) {
-        this.$inputPageView = document.getElementById(this.__id__);
+
+        this.$parentView = document.getElementById(self.__parent_id__);
         if (this.$inputPageView == null) {
-            console.warn(
-                `<section id=${this.__id__} class=inputPageView></section> is necessary in HTML.`);
+            console.error(
+                `The parent element id=${this.__parent_id__} is necessary in HTML.`);
         }
+
+        // create view
+        let $inputPageView = document.createElement('div');
+        $inputPageView.id = self.__id__;
+        $inputPageView.classList.add()
+        this.$inputPageView = $inputPageView;
+        this.$parentView.prepend($inputPageView)
 
         // create loading
         let $loading = document.createElement('div');
@@ -1298,302 +1305,5 @@ class InputPageViewController {
         } else {
             return result;
         }
-    }
-}
-
-/* TODO: separate file */
-
-/**
- * Title class for InputPageViewController.
- * 
- * <code>
- * 
- *   // HTML
- *   <h2 id=signupViewPage1Title class=inputPageViewPageTitle></h2>
- * 
- *   // JavaScript
- *   new InputPageViewController(
- *     ...,
- *     [
- *       ...
- *       new Title('signupViewPage1Title', 'Welcome');
- *       ...
- *     ],
- *     ...
- *   )
- * </code>
- * @param {string} _id - The DOM id where this view is inserted.
- * @param {text} text - inner text
- * @constructor
- */
-class Title {
-    __id__
-    constructor(_id, text) {
-        this.__id__ = _id;
-        this._setElements(text);
-    }
-
-    /**
-     * DOM nodes as variables.
-     */
-    _setElements(text) {
-        this.$title = document.getElementById(this.__id__);
-        if (this.$title == null) {
-            console.warn(
-                `<h2 id=${this.__id__} class=inputPageViewPageTitle></h2> is necessary in HTML.`);
-        }
-        this.$title.innerText = text;
-    }
-}
- 
-
-/**
- * Description class for InputPageViewController.
- * 
- * <code>
- * 
- *   // HTML
- *   <p id=signupViewPage1Description class=inputPageViewPageDescription></h2>
- * 
- *   // JavaScript
- *   new InputPageViewController(
- *     ...,
- *     [
- *       ...
- *       new Description('signupViewPage1Description', 'Here is the description of the page.');
- *       ...
- *     ],
- *     ...
- *   )
- * </code>
- * @param {string} _id - The DOM id where this view is inserted.
- * @param {text} text - inner text
- * @constructor
- */
-class Description {
-    __id__
-    constructor(_id, text) {
-        this.__id__ = _id;
-        this._setElements(text);
-    }
-
-    /**
-     * DOM nodes as variables.
-     */
-    _setElements(text) {
-        this.$description = document.getElementById(this.__id__);
-        if (this.$description == null) {
-            console.warn(
-                `<p id=${this.__id__} class=inputPageViewPageDescription></p> is necessary in HTML.`);
-        }
-        this.$description.innerText = text;
-    }
-}
- 
-
-/**
- * Button class for InputPageViewController.
- * 
- * <code>
- * 
- *   // HTML
- *   <button id=signupViewPage1NextButton class=nextButton></h2>
- * 
- *   // JavaScript
- *   new InputPageViewController(
- *     ...,
- *     [
- *       ...
- *       new NextButton('signupViewPage1NextButton', 'next');
- *       ...
- *     ],
- *     ...
- *   )
- * </code>
- * @param {string} _id - The DOM id where this view is inserted.
- * @param {text} text - inner text
- * @constructor
- */
-class NextButton {
-    __id__
-    constructor(_id, text) {
-        this.__id__ = _id;
-        this._setElements(text);
-    }
-
-    /**
-     * DOM nodes as variables.
-     */
-    _setElements(text) {
-        this.$button = document.getElementById(this.__id__);
-        if (this.$button == null) {
-            console.warn(
-                `<button id=${this.__id__} class=nextButton></button> is necessary in HTML.`);
-        }
-        this.$button.innerText = text;
-    }
-}
-
-
-/**
- * Button class for InputPageViewController.
- * 
- * <code>
- * 
- *   // HTML
- *   <button id=signupViewPage2BackButton class=backButton></button>
- * 
- *   // JavaScript
- *   new InputPageViewController(
- *     ...,
- *     [
- *       ...
- *       new BackButton('signupViewPage2BackButton', '←');
- *       ...
- *     ],
- *     ...
- *   )
- * </code>
- * @param {string} _id - The DOM id where this view is inserted.
- * @param {text} text - inner text
- * @constructor
- */
-class BackButton {
-    __id__
-    constructor(_id, text) {
-        this.__id__ = _id;
-        this._setElements(text);
-    }
-
-    /**
-     * DOM nodes as variables.
-     */
-    _setElements(text) {
-        this.$button = document.getElementById(this.__id__);
-        if (this.$button == null) {
-            console.warn(
-                `<button id=${this.__id__} class=backButton></button> is necessary in HTML.`);
-        }
-        this.$button.innerText = text;
-    }
-}
-
-
-/**
- * AlertMessage class for InputPageViewController.
- * 
- * <code>
- * 
- *   // HTML
- *   <div id=signupViewPage1AlertMessage class=AlertMessage></div>
- * 
- *   // JavaScript
- *   new InputPageViewController(
- *     ...,
- *     [
- *       ...
- *       new AlertMessage('signupViewPage2AlertMessage');
- *       ...
- *     ],
- *     ...
- *   )
- * </code>
- * @param {string} _id - The DOM id where this view is inserted.
- * @param {text} text - inner text
- * @constructor
- */
-class AlertMessage {
-    __id__
-
-    _message = null;
-
-    constructor(_id) {
-        this.__id__ = _id;
-        this._setElements();
-    }
-
-    /**
-     * DOM nodes as variables.
-     */
-    _setElements() {
-        this.$container = document.getElementById(this.__id__);
-        
-        this.$message = document.createElement('p');
-        this.$message.id = this.__id__ + '_message';
-        this.$message.classList.add('AlertMessage__message');
-
-        if (this.$message == null) {
-            console.warn(
-                `<p id=${this.__id__} class=AlertMessage__message></p> is necessary in HTML.`);
-        }
-
-        this.$container.appendChild(this.$message);
-    }
-
-    /**
-     * message setter.
-     */
-    set message(message) {
-        this._message = message;
-        console.log(`${this.__id__} message set: ${message}`);
-        // set message
-        this.$message.innerText = message;
-    }
-
-    /**
-     * message getter.
-     */
-    get message() {return this._message;}
-}
-
-/**
- * Wrapper class for InputPageViewController.
- * 
- * <code>
- * 
- *   // HTML
- *   <div id= class=></button>
- * 
- *   // JavaScript
- *   new InputPageViewController(
- *     ...,
- *     [
- *       ...
- *       new Wrapper(
- *             'firstLastNameWrapper',
- *             [
- *                new TextField('firstName'),
- *                new TextField('lastName')
- *             ]
- *        );
- *       ...
- *     ],
- *     ...
- *   )
- * </code>
- * @param {string} _id - The DOM id where this view is inserted.
- * @param {Array} components - view components
- * @constructor
- */
-class Wrapper {
-    __id__
-    components
-    constructor(_id, components) {
-        this.__id__ = _id;
-        this.components = components;
-        this._setElements();
-    }
-
-    /**
-     * DOM nodes as variables.
-     */
-    _setElements() {
-        // NOTE: <div class=wrapper> is created in the constructor of 
-        // InputPageViewController after this function is called.
-        //this.$wrapper = document.getElementById(this.__id__);
-        //if (this.$wrapper == null) {
-        //    console.warn(
-        //        `<div id=${this.__id__} class=wrapper></div> is necessary in HTML.`);
-        //}
     }
 }
