@@ -72,7 +72,7 @@ class ListMenu {
  *         'countrySelectButton', // id
  *         'Your Country', // title
  *         'Please select your country.', // description
- *         'country', // fieldName
+ *         'country', // field_name
  *         DropdownMenuType.list, // type
  *         DropdownMenuDisplayPositionType.upper, // position
  *         listMenuItems, // listMenuItems
@@ -103,11 +103,11 @@ class DropdownButton {
     _selectedValue = null;
     _title = null;
 
-    constructor(parent_id, id, title, description, fieldName, type, position, listMenuItems, htmlTag='div', validators=[]) {
+    constructor(parent_id, id, field_name, title, description, type, position, listMenuItems, htmlTag='div', validators=[]) {
         super(parent_id, id, '', htmlTag, validators);
 
         this.__description__ = description;
-        this.__field_name__ = fieldName;
+        this.__field_name__ = field_name;
         this.__type__ = type;
         this.__items__ = listMenuItems;
         this.__menu_position__ = position;
@@ -182,6 +182,7 @@ class DropdownButton {
      * value setter / getter.
      */
     set value(value) {
+        super.value(value)
         this.selectedValue = value;
     }
 

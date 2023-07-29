@@ -125,11 +125,44 @@ class PositionMap extends ViewComponentBase{
     }
 
     /**
+     * value setter / getter.
+     */
+    get value() {
+        return this._mapCoordinate;
+    }
+
+    set value(value) {
+        if (typeof value === 'Coordinate') {
+            this._mapCoordinate = value;
+        } else {
+            console.error(`PositionMap value must be Coordinate, but got ${typeof value}`);
+        }
+    }
+
+    /**
+     * override of the _setValueToCookies in FormComponentBase
+     * 
+     * @param {*} value 
+     */
+    _setValueToCookies(mapCoordinate) {
+        const cookieNameLat = `${prefix}__${component.__field_name_lat__}`;
+        const cookieNameLng = `${prefix}__${component.__field_name_lng__}`;
+     
+        if (!this.__cookie_exclude__) {
+            Cookies.set(cookieNameLat, mapCoordinate.lat, { expires: 3, secure: true, sameSite: 'strict' });
+            Cookies.set(cookieNameLng, mapCoordinate.lng, { expires: 3, secure: true, sameSite: 'strict' });
+        } else {
+            console.error(`The value of ${this.__id__} is excluded from being stored in cookies.`);
+        }
+    }
+
+    /**
      * mapCoordinate setter.
      */
     set mapCoordinate(mapCoordinate) {
         const previousState = this._mapCoordinate;
         this._mapCoordinate = mapCoordinate;
+        this._setValueToCookies(mapCoordinate);
         console.log(`${this.__id__}.mapCoordinate updated`)
         // reset center position
         if (window.map != null) {

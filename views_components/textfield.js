@@ -93,7 +93,7 @@ class TextField extends ViewComponentBase {
     _text = '';
     _count = null;
 
-    constructor(parent_id, id, type, title, field_name, placeholder,
+    constructor(parent_id, id, field_name, type, title, placeholder,
         htmlTag = 'div', validators = [], 
         max_text_count=999, init_rows=6, vertical_flex=true, has_title=true,
         password_mode=false) {
@@ -139,6 +139,7 @@ class TextField extends ViewComponentBase {
     }
 
     set value(value) {
+        super.value(value)
         if (typeof value === 'string') {
             this._text = value;
         } else {
