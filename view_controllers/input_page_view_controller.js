@@ -199,20 +199,17 @@ class InputPageViewController {
     __number_of_pages__ = null;
     __data_model__ = null;
     __loading_element_id__ = "input_page_view_controller_loading";
-    __cookie_excludes__ = []; 
 
     _page = null;
     _values = {};
 
     _components = [];
     _pageComponents = [];  // [[comp 0 in page 0, comp 1 in page 0, ..], [..],..]
-    _pageErrors = [];  // [[[component, 'error message'], []],..]
-    _validations = [];  // {'componentId': [errorType, "error message key", [arg1, arg2,..]]}
 
     _locale = null;
     _lang = null;
 
-    constructor(parent_id, id, pages, dataModelClass, defaults, locale, lang, cookieExcludes=[]) {
+    constructor(parent_id, id, pages, dataModelClass, locale, lang) {
         this.__parent_id__ = parent_id;
         this.__id__ = id;
 
@@ -220,14 +217,6 @@ class InputPageViewController {
         this._checkProtocolAdherence();
 
         // setup page components
-        if (pages.length == 0) {
-            console.error(`${this.__id__} requires a list of pages with components.`)
-        }
-        pages.forEach((components, i) => {
-            if (components.length == 0) {
-                console.error(`${this.__id__} page ${i} requires at least 1 component.`)
-            }
-        })
         this._setElements(pages);
 
         // set events
@@ -235,15 +224,9 @@ class InputPageViewController {
 
         // data model
         this.__data_model__ = dataModelClass;
-        this.__cookie_excludes__ = cookieExcludes;
         //this._resetValuesInCookie(); // DEBUG:
-        if (defaults == null) {
-           defaults = this._restoreValuesFromCookie();
-        } else {
-           this._setValuesToFields(defaults);
-        }
-        console.table(defaults);
-        this._values = new dataModelClass(defaults);
+
+        // defalut values are set to each component
         console.table(this._values);
         console.log(`data model for ${this.__id__} initialized`);
 
@@ -326,24 +309,17 @@ class InputPageViewController {
     get page() {return this._page}
 
     /**
-     * values setter / getter
-     * 
-     * NOTICE: 
-     * when modify a property in values,
-     * use `setValueForKey(key, value)`
-     * , instead values[key] = value
+     * values  getter
      */
-    set values(values) {
-        const previous = this._values;
-        this._values = values;
-        console.log(`values changed`);
-        console.table(this._values);
-
-        // sync with cookie storage
-        this._setValuesToCookies(this._values);
+    get values() {
+        let _values = {};
+        this.components.forEach((component, i) => {
+            if (component.__field_name__) {
+                _values[component.__field_name__] = component.value;
+            }
+        });
+        return new this.__data_model__(_values);
     }
-
-    get values() {return this._values}
 
     /**
      * errors setter / getter
@@ -362,6 +338,14 @@ class InputPageViewController {
      * DOM nodes as variables.
      */
     _setElements(pages) {
+        if (pages.length == 0) {
+            console.error(`${this.__id__} requires a list of pages with components.`)
+        }
+        pages.forEach((components, i) => {
+            if (components.length == 0) {
+                console.error(`${this.__id__} page ${i} requires at least 1 component.`)
+            }
+        })
 
         this.$parentView = document.getElementById(self.__parent_id__);
         if (this.$inputPageView == null) {
@@ -471,13 +455,13 @@ class InputPageViewController {
         }, false);
     }
 
-    /**
-     * update a property of _values
-     */
-    _setValueForKey(key, value) {
-        let values = this._values 
-        values[key] = value
-        this.values = values
+    _setvalueforkey(key, value) {
+        let component = this.components.find(component => component.__field_name__ === key);
+        if (component) {
+            component.value = value;
+        } else {
+            console.error(`no component found with __field_name__ = ${key}`);
+        }
     }
 
     /**
@@ -486,11 +470,14 @@ class InputPageViewController {
      * @param {dict} newValues
      */
     _setValuesForKeys(newValues) {
-        let values = this._values 
         Object.keys(newValues).forEach((key) => {
-            values[key] = newValues[key]
-        })
-        this.values = values
+            let component = this.components.find(component => component.__field_name__ === key);
+            if (component) {
+                component.value = newValues[key];
+            } else {
+                console.error(`No component found with __field_name__ = ${key}`);
+            }
+        });
     }
 
     /**
@@ -508,35 +495,7 @@ class InputPageViewController {
     }
 
     /**
-     * Set values to Cookie strage.
-     * 
-     * @description __id__ is prefixed to the save key.  {this.__id__}__{field_name}
-     * @param {dict} values {key1: value1, ..} usually this._values
-     * @param {number} expires when the cookie will be removed. [days]
-     * @param {bool} secure if the cookie transmission requires a secure protocol (https)
-     * @param {string} sameSite whether a cookie is sent along with cross-site requests
-     */
-    _setValuesToCookies(values, expires=3, secure=true, sameSite='strict') {
-        const prefix = this.__id__;
-        // set all values
-        Object.keys(values).forEach((key) => {
-            const name = `${prefix}__${key}`
-            const value = this._values[key]
-            if (value != null && !(this.__cookie_excludes__.includes(key))) {
-                // set value if not null
-                Cookies.set(
-                    name, value,
-                    {expires: expires, secure: secure, sameSite: sameSite});
-            } else {
-                // remove if the value is null
-                Cookies.remove(name);
-            }
-        })
-        console.log('cookies saved');
-        console.log(Cookies.get());
-    }
-
-    /**
+     * [WILL DEPRECATE]
      * Get values from Cookie.
      * 
      * @returns {dict} field values {field_name1: value1, ..}
@@ -571,24 +530,7 @@ class InputPageViewController {
     }
 
     /**
-     * Restore values onto components from Cookie.
-     * 
-     * @returns {dict} values object restored from cookie storage.
-     */
-    _restoreValuesFromCookie() {
-        const valuesInCookie = this._getValuesFromCookies();
-        console.table(valuesInCookie);
-
-        // set values to compoents
-        this._setValuesToFields(valuesInCookie);
-
-        // store to this._values
-        this._storeValues(valuesInCookie);
-
-        return valuesInCookie
-    }
-
-    /**
+     * [WILL DEPRECATE]
      * Set field values to components from dataModel.
      * 
      * @param {DataModel} dataModel 
@@ -641,22 +583,10 @@ class InputPageViewController {
         })
     }
 
-    
-    /**
-     * Store values to this._values from dataModel object.
-     * 
-     * @param {DataModel} dataModel - {'fieldName': val, ..}
-     */
-    _storeValues(dataModel) {
-        // store to this._values
-        Object.keys(dataModel).forEach((fieldName) => {
-            this._values[fieldName] = dataModel[fieldName];
-        });
-    }
 
     /**
      * Initialize Cookie strage.
-     * 
+     * *For debug purpose.
      */
     _resetValuesInCookie() {
         const prefix = this.__id__;
