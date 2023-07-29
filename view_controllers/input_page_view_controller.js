@@ -909,150 +909,17 @@ class InputPageViewController {
         // NOTE: override this function
     }
 
-    // TODO: 
     /**
      * @interface
      * 
      * Run validation for a single component.
      * 
-     * @param {TextField/DropdownButton} component 
-     * @param {text/number} value 
-     * @returns {text/bool} error message if an error found. if no, returns true.
+     * @param {ViewComponentBase} component - The component to validate.
+     * @return {string|null} - The error message if validation fails, or null if it passes.
      */
-    /*
-    _validateComponent(component, value) {
-        // this._validations =
-        //  {'componentId': 
-        //         [errorType, "error message", [arg1, arg2,..]]
-        //  }
-        let hasError = false;
-        Object.keys(this._validations).forEach((key) => {
-            if (component.__id__ == key) {
-                const errorSettings = this._validations[key];
-
-                for (let i = 0; i < errorSettings.length; i++) {
-                    const type = errorSettings[i][0]
-                    const msg = errorSettings[i][1]
-                    const args = (errorSettings[i].length > 2) ? errorSettings[i][2] : [] 
-
-                    switch (type) {
-                        case ValidationErrorType.required:
-                            if (!this._validateNotNull(value) || value == '') {
-                                component.alert(true, msg);
-                                hasError = true;
-                                return hasError;
-                            } 
-                        break;
-                        case ValidationErrorType.length:
-                            if (!this._validateLength(value, args[0], args[1])) {
-                                component.alert(true, msg);
-                                hasError = true;
-                                return hasError;
-                            }
-                        break;
-                        case ValidationErrorType.emailFormat:
-                            if (!this._validateFormat(value, RegexType.email)) {
-                                component.alert(true, msg);
-                                hasError = true;
-                                return hasError;
-                            }
-                        break;
-                        case ValidationErrorType.passwordFormat:
-                            if (!this._validateFormat(value, RegexType.password)) {
-                                component.alert(true, msg)
-                                hasError = true;
-                                return hasError;
-                            }
-                        break;
-                        case ValidationErrorType.telFormat:
-                            if (!this._validateFormat(value, RegexType.tel)) {
-                                component.alert(true, msg)
-                                hasError = true;
-                                return hasError;
-                            }
-                        break;
-                        case ValidationErrorType.postalcodeFormat:
-                            if (!this._validateFormat(value, RegexType.postalcode)) {
-                                component.alert(true, msg)
-                                hasError = true;
-                                return hasError;
-                            }
-                        break;
-                    }
-                }
-            }
-            if (!hasError) {
-                component.alert(false);
-            }
-            return hasError
-        })
-        //switch (component.__id__) {
-        //    case 'signupViewOrganizationNameTextField':
-        //        if (!super._validateNotNull(value) || value == '') {
-        //            const msg = 'this field is required.'
-        //            component.alert(true, 'this field is required.');
-        //            return msg
-        //        } else if (!super._validateLength(value, 1, component.__max_text_count__)) {
-        //            const msg = `length must be 1~${component.__max_text_count__}`;
-        //            component.alert(true, msg);
-        //            return msg
-        //        } else {
-        //            component.alert(false);
-        //            return true
-        //        };
-        //        break;
-        //    case 'signupViewOrganizationTypeDropdownButton':
-        //        if (!super._validateNotNull(value) || value == '') {
-        //            const msg = 'this field is required.'
-        //            component.alert(true, msg);
-        //            return msg
-        //        } else {
-        //            component.alert(false);
-        //            return true
-        //        };
-        //        break;
-        //    case 'signupViewOrganizationBusinessDescriptionTextField':
-        //        if (!super._validateNotNull(value) || value == '') {
-        //            const msg = 'this field is required.';
-        //            component.alert(true, msg);
-        //            return msg
-        //        } else if (!super._validateLength(value, 1, component.__max_text_count__)) {
-        //            const msg = `length must be 1~${component.__max_text_count__}`;
-        //            component.alert(true, );
-        //            return msg
-        //        } else {
-        //            component.alert(false);
-        //            return true
-        //        };
-        //        break;
-        //    case 'signupViewCountryDropdownButton':
-        //        if (!super._validateNotNull(value) || value == '') {
-        //            const msg = 'this field is required.'
-        //            component.alert(true, msg);
-        //            return msg
-        //        } else {
-        //            component.alert(false);
-        //            return true
-        //        };
-        //        break;
-        //    // page 2
-        //    case 'signupViewZipcodeTextField':
-        //        if (!super._validateNotNull(value) || value == '') {
-        //            const msg = 'this field is required.';
-        //            component.alert(true, msg);
-        //            return msg
-        //        } else if (!super._validateFormat(value, RegexType.postalcode)) {
-        //            const msg = 'Invalid postal code format. e.g. 123-4567.';
-        //            component.alert(true, msg);
-        //            return msg
-        //        } else {
-        //            component.alert(false);
-        //            return true
-        //        };
-        //        break;
- 
+    _validateComponent(component) {
+        return component.validate()
     }
-    */
 
     /**
      * Run validation for a page.
@@ -1063,15 +930,13 @@ class InputPageViewController {
      * @returns {Array} a 2-dim list of all errors found in the page.
      * [[component, 'error message'], ..}
      */
-    _validateForPage(page) {
+    _validatePage(page) {
         let errors = [];
         this._pageComponents[page].forEach((component, j) => {
             if (component instanceof TextField || component instanceof DropdownButton) {
-                const result = this._validateComponent(
-                    component, this._values[component.__field_name__]);
-                // if result is not true but the error message, add to the errors dict.
-                if (result == false) {
-                    errors.push([component, result]);
+                const errorMessage = this._validateComponent(component);
+                if (errorMessage != null) {
+                    errors.push([component, errorMessage]);
                 }
             }
         });
@@ -1122,84 +987,6 @@ class InputPageViewController {
         };
     }
 
-    /**
-     * Validator for text length.
-     * 
-     * @param {string} text
-     * @param {number} min 
-     * @param {number} max 
-     * @returns {boolean} isValid
-     */
-    _validateLength(text, min, max) {
-        if (text.length > max) {
-            // TODO: message from locale json
-            console.log(`value length must be maximum ${max} but ${text.length}`);
-            return false
-        }
-        if (text.length < min) {
-            // TODO: message from locale json
-            console.log(`value length must be minimum ${min} but ${text.length}`);
-            return false
-        }
-        return true
-    }
-
-    /**
-     * Validator method for text format.
-     * 
-     * @param {string} text 
-     * @param {RegexType} regexType - RegexType enum {email|password}
-     * @returns {boolean} isValid
-     */
-    _validateFormat(text, regexType) {
-        // TODO: enable to be simpilfied?
-        // TODO: message from locale json
-        switch (regexType) {
-            // email
-            case RegexType.email:
-                return String(text)
-                    .toLowerCase()
-                    .match(RegexType.email)
-                    ? true
-                    : console.warn(`${text} is invalid email format.`); false;
-                break;
-            // password
-            case RegexType.password:
-                return String(text)
-                    .match(RegexType.password)
-                    ? true
-                    : console.warn(`invalid password format.`); false;
-                break;
-            // postalcode
-            case RegexType.postalcode:
-                return String(text)
-                    .match(RegexType.postalcode)
-                    ? true
-                    : console.warn(`${text} is invalid postalcode format.`); false;
-                break;
-            // tel
-            case RegexType.tel:
-                return String(text)
-                    .match(RegexType.tel)
-                    ? true
-                    : console.warn(`${text} is invalid tel format.`); false;
-                break;
-            default:
-                console.error(`RegexType ${RegexType} is unrecognized.`);
-                break;
-        }
-    }
-
-    /**
-     * Validator method for not null.
-     * 
-     * @param {*} value 
-     * @returns {boolean} isValid
-     */
-    _validateNotNull(value) {
-        if (value == null) {return false}
-        else {return true}
-    }
 
     /**
      * HTTP POST to submit data.

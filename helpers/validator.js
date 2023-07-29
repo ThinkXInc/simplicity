@@ -21,18 +21,11 @@ const RegexType = Object.freeze({
 class Validator {
     /**
      * Create a validation.
-     * @param {ViewComponent} component - The component this validation applies to.
      * @param {number} errorType - The type of error this validation is checking for.
      * @param {string} errorMessage - The error message to display if the validation fails.
      * @param {Array} args - Additional arguments needed for this validation.
      */
-    constructor(component, errorType, errorMessage, args = []) {
-        if (component == null) {
-            throw new Error('Validator requires component applied to.');
-        }
-        if (typeof component.alert !== 'function') {
-            throw new Error('Component must have an alert function.');
-        }
+    constructor(errorType, errorMessage, args = []) {
         if (errorType == null) {
             throw new Error('Validator requires errorType.');
         }
@@ -40,10 +33,24 @@ class Validator {
             throw new Error('Validator requires errorMessage.');
         }
 
-        this.component = component;
         this.errorType = errorType;
         this.errorMessage = errorMessage;
         this.args = args;
+    }
+
+    /**
+     * Set the component.
+     * @param {ViewComponent} component 
+     */
+    setComponent(component) {
+        if (component == null) {
+            throw new Error('Validator requires component applied to.');
+        }
+        if (typeof component.alert !== 'function') {
+            throw new Error('Component must have an alert function.');
+        }
+
+        this.component = component;
     }
     
     /**

@@ -25,6 +25,11 @@ class ViewComponentBase {
 
         // Apply validators to the component
         this.validators = validators;
+
+        // Set this component as the target for each validator
+        this.validators.forEach(validator => {
+            validator.setComponent(this);
+        });
     }
 
     /**
@@ -71,17 +76,30 @@ class ViewComponentBase {
         return isValid;
     }
 
-    // Placeholder for alert function to be implemented in subclasses
+    /**
+     * @interface
+     * @param {boolean} isError - The error status of the component.
+     * @param {string} message - The error message to be displayed.
+     * 
+     * Handle the alert logic for the component. 
+     * This is a no-op function by default but can be overridden by subclasses if needed.
+     */
     alert(isError, message = '') {
-        throw new Error(`You have to implement the method alert in ${this.__id__}!`);
+        // No-op function, can be overridden in subclasses
     }
 
-    // Placeholder for value property to be implemented in subclasses
+    /**
+     * @property {any} value - The value of the component.
+     * 
+     * Get or Set the value of the component. 
+     * By default, this returns null for the getter and does nothing for the setter.
+     * These can be overridden by subclasses as needed.
+     */
     get value() {
-        throw new Error(`You have to implement the property getter for value in ${this.__id__}!`);
+        return null; // Can be overridden in subclasses
     }
 
     set value(value) {
-        throw new Error(`You have to implement the property setter for value in ${this.__id__}!`);
+        // Can be overridden in subclasses
     }
 }
