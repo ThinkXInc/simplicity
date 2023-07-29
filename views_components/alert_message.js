@@ -42,6 +42,13 @@ class AlertMessage extends ViewComponentBase {
     }
 
     /**
+     * Set the event handler for the button. If the view controller is set and the method 
+     * backButtonTapped exists in the view controller, this method will be called when the button is clicked.
+     */
+    _setEventHandlers() {
+    }
+
+    /**
      * message setter.
      */
     set message(message) {

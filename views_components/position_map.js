@@ -66,7 +66,7 @@ let settings = {
  * @param {bool} streetViewControl - if true, Pegman icon menu appears
  * @param {bool} fullScreenControl - if true, Pegman icon menu appears
  */
-class PositionMap {
+class PositionMap extends ViewComponentBase{
     __id__;
     __field_name_lat__;
     __field_name_lng__;
@@ -78,11 +78,13 @@ class PositionMap {
     _label;
 
     constructor(
-            id, fieldNameLat, fieldNameLng,
+            parent_id, id, fieldNameLat, fieldNameLng,
             defaultMapCoordinate, defaultPointerCoordinate, label,
             mapTypeControl = false, streetViewControl = false,
-            fullScreenControl = false) {
-        this.__id__ = id;
+            fullScreenControl = false, htmlTag = 'div') {
+
+        super(parent_id, id, '', htmlTag);
+
         this.__field_name_lat__ = fieldNameLat;
         this.__field_name_lng__ = fieldNameLng;
         this._label = label;
@@ -120,8 +122,6 @@ class PositionMap {
 
         // set elements
         this._setElements();
-        // set events
-        this._setEventHandlers();
     }
 
     /**
@@ -257,10 +257,30 @@ class PositionMap {
                 console.log(`positionMapPointerCoordinateUpdated event listened in ${_this.__id__}`)
                 const mapPointerId = event.detail.__id__;
                 const newCoordinate = event.detail.coordinate; 
+
+                if(this.viewController && typeof this.viewController._positionMapPointerCoordinateUpdated === "function"){
+                    _this.viewController._positionMapPointerCoordinateUpdated(this, newCoordinate);
+                }else{
+                    console.error('ViewController not set or _positionMapPointerCoordinateUpdated not a function');
+                }
+
                 // update pointerCoordinate
                 this.pointerCoordinate = newCoordinate;
             }
         )
+    }
+}
+
+class PositionMapProtocol extends ViewComponentBase {
+    /**
+     * Called when a PositionMap's pointer coordinate is updated.
+     *
+     * @param {PositionMap} positionMap - The PositionMap whose pointer coordinate has been updated.
+     * @param {Object} newCoordinate - The new coordinate of the pointer.
+     * @throws {Error} If the method is not overridden in the implementing class.
+     */
+    _positionMapPointerCoordinateUpdated(positionMap, newCoordinate) {
+        throw new Error(`The class ${this.constructor.name} must implement _positionMapPointerCoordinateUpdated method!`);
     }
 }
 

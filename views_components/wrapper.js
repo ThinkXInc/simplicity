@@ -44,4 +44,13 @@ class Wrapper extends ViewComponentBase {
         //        `<div id=${this.__id__} class=wrapper></div> is necessary in HTML.`);
         //}
     }
+
+    /**
+     * Set the event handler for the button. If the view controller is set and the method 
+     * backButtonTapped exists in the view controller, this method will be called when the button is clicked.
+     */
+    _setEventHandlers() {
+    }
+
+
 }

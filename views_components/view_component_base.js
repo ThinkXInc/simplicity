@@ -11,6 +11,7 @@ class ViewComponentBase {
     constructor(parent_id, id, text, htmlTag, validators = []) {
         this.__parent_id__ = parent_id;
         this.__id__ = id;
+        this.viewController = viewController;
         this._setElements(text, htmlTag);
 
         // Check if the value property has been defined in subclass
@@ -57,7 +58,28 @@ class ViewComponentBase {
     }
 
     /**
+     * @interface
+     * @param {boolean} isError - The error status of the component.
+     * @param {string} message - The error message to be displayed.
+     * 
+     * Handle the alert logic for the component. 
+     * This is a no-op function by default but can be overridden by subclasses if needed.
+     */
+    _setEventHandlers() {
+        // Default implementation could be empty if no general behavior is needed
+        // Or you could throw an error reminding developers to override this method in the subclass
+        throw new Error(`Instance ${this.id} must implement the method _setEventHandlers in subclass!`);
+    }
+
+    // Set the viewController instance
+    setViewController(viewController) {
+        this.viewController = viewController;
+        this._setEventHandlers();
+    }
+
+    /**
      * Validate the component using its validators.
+     * @interface
      */
     validate() {
         let isValid = true;

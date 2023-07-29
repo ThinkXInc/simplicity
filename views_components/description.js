@@ -21,4 +21,11 @@ class Description extends ViewComponentBase {
     _setElements(text, htmlTag) {
         super._setElements(text, htmlTag);
     }
+
+    /**
+     * Set the event handler for the button. If the view controller is set and the method 
+     * backButtonTapped exists in the view controller, this method will be called when the button is clicked.
+     */
+    _setEventHandlers() {
+    }
 }
