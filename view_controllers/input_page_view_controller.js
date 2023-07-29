@@ -909,6 +909,7 @@ class InputPageViewController {
         // NOTE: override this function
     }
 
+    // TODO: 
     /**
      * @interface
      * 
@@ -918,6 +919,7 @@ class InputPageViewController {
      * @param {text/number} value 
      * @returns {text/bool} error message if an error found. if no, returns true.
      */
+    /*
     _validateComponent(component, value) {
         // this._validations =
         //  {'componentId': 
@@ -1050,6 +1052,7 @@ class InputPageViewController {
         //        break;
  
     }
+    */
 
     /**
      * Run validation for a page.

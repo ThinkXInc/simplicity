@@ -1,6 +1,7 @@
 // simplicity/index.js
 
 import './helpers/browser.js';
+import './helpers/validator.js';
 import './data/countries.js';
 import './views_components/view_component_base.js';
 import './views_components/alert_message.js';
