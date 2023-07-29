@@ -212,9 +212,12 @@ class InputPageViewController {
     _locale = null;
     _lang = null;
 
-    constructor(parent_id, id, pages, dataModelClass, defaults, validations, locale, lang, cookieExcludes=[]) {
+    constructor(parent_id, id, pages, dataModelClass, defaults, locale, lang, cookieExcludes=[]) {
         this.__parent_id__ = parent_id;
         this.__id__ = id;
+
+        // Potentially check protocol adherence here
+        this._checkProtocolAdherence();
 
         // setup page components
         if (pages.length == 0) {
@@ -237,19 +240,12 @@ class InputPageViewController {
         if (defaults == null) {
            defaults = this._restoreValuesFromCookie();
         } else {
-            this._setValuesToFields(defaults);
+           this._setValuesToFields(defaults);
         }
         console.table(defaults);
         this._values = new dataModelClass(defaults);
         console.table(this._values);
         console.log(`data model for ${this.__id__} initialized`);
-
-        // errors
-        this._pageErrors = Array(pages.length);
-
-        // validations
-        this._validations = validations;
-        console.log(this._validations)
 
         // locale
         this._locale = locale;
@@ -269,7 +265,37 @@ class InputPageViewController {
     }
 
     /**
-     * page setter.
+     * This method checks the adherence of the InputPageViewController to the defined protocols.
+     * The protocols checked are: NextButtonProtocol, BackButtonProtocol, TextFieldProtocol, and DropdownButtonProtocol.
+     * If a required method from a protocol is not implemented, it will throw an error.
+     */
+    _checkProtocolAdherence() {
+        this._checkProtocolAdherenceForClass(NextButtonProtocol);
+        this._checkProtocolAdherenceForClass(BackButtonProtocol);
+        this._checkProtocolAdherenceForClass(TextFieldProtocol);
+        this._checkProtocolAdherenceForClass(DropdownButtonProtocol);
+        this._checkProtocolAdherenceForClass(PositionMapProtocol);
+    }
+
+    /**
+     * This method checks the adherence of the InputPageViewController to a given protocol class.
+     * It creates an instance of the protocol class, iterates over its methods, and checks that each is implemented in the InputPageViewController.
+     * If a required method is not implemented, it will throw an error.
+     * 
+     * @param {Object} protocolClass - The protocol class to check adherence to.
+     * @throws {Error} If a required method from the protocol class is not implemented.
+     */
+    _checkProtocolAdherenceForClass(protocolClass) {
+        const protocolInstance = new protocolClass();
+        Object.getOwnPropertyNames(Object.getPrototypeOf(protocolInstance)).forEach(methodName => {
+            if (methodName !== "constructor" && typeof this[methodName] !== "function") {
+                throw new Error(`InputPageViewController must implement ${methodName} method of ${protocolClass.name}`);
+            }
+        });
+    }
+
+    /**
+     * page setter / getter
      * 
      * Display only the page in current state.
      */
@@ -297,13 +323,10 @@ class InputPageViewController {
         }
     }
 
-    /**
-     * page getter.
-     */
     get page() {return this._page}
 
     /**
-     * values setter
+     * values setter / getter
      * 
      * NOTICE: 
      * when modify a property in values,
@@ -320,13 +343,10 @@ class InputPageViewController {
         this._setValuesToCookies(this._values);
     }
 
-    /**
-     * values getter 
-     */
     get values() {return this._values}
 
     /**
-     * errors setter
+     * errors setter / getter
      */
     set errors(errors) {
         const previous = this._errors;
@@ -335,9 +355,6 @@ class InputPageViewController {
         console.table(this._errors);
     }
 
-    /**
-     * errors getter 
-     */
     get errors() {return this._errors}
 
 
@@ -425,27 +442,8 @@ class InputPageViewController {
         }
         $parent.appendChild($elem);
 
-        // set button event
-        if (component.constructor.name == "NextButton") {
-            this._setNextButtonEventHandler(component);
-        }
-        if (component.constructor.name == "BackButton") {
-            this._setBackButtonEventHandler(component);
-        }
-
-        // set form event
-        if (component.constructor.name == "TextField") {
-            this._setTextFieldEventHandler(component);
-        }
-        if (component.constructor.name == "DropdownButton") {
-            this._setDropdownButtonEventHandler(component);
-        }
-        if (component.constructor.name == "RadioButton") {
-            this._setValueChangeEventHandler(component);
-        }
-        if (component.constructor.name == "PositionMap") {
-            this._setPositionMapEventHandler(component);
-        }
+        // Set the viewController for the component
+        component.setViewController(this);
 
         // keep components in the ViewController instance
         this._components.push(component);
@@ -454,7 +452,6 @@ class InputPageViewController {
             this._pageComponents.push([]);
         }
         this._pageComponents[pageIndex].push(component);
-
     }
 
     /**
@@ -681,79 +678,6 @@ class InputPageViewController {
     }
 
     /**
-     * Set eventListener for the NextButton element.
-     * 
-     * @param {NextButton} button 
-     */
-    _setNextButtonEventHandler(button) {
-        console.log(`set eventHandler to ${button.__id__}`);
-        const _this = this;
-        button.$button.addEventListener('click', (e) => {
-            _this._nextButtonTapped(button);
-        })
-    }
-
-    /**
-     * Set eventListener for the BackButton element.
-     * 
-     * @param {BackButton} button 
-     */
-    _setBackButtonEventHandler(button) {
-        console.log(`set eventHandler to ${button.__id__}`);
-        const _this = this;
-        button.$button.addEventListener('click', (e) => {
-            _this._backButtonTapped(button);
-        })
-    }
-
-    /**
-     * Set eventListener for TextField.
-     * 
-     * @param {TextField} textField
-     */
-    _setTextFieldEventHandler(textField) {
-        console.log(`set eventHandler to ${textField.__id__}`);
-        const _this = this;
-        textField.$textArea.addEventListener('blur', (e) => {
-            _this._textFieldUnFocus(textField, textField.text);
-        })
-        textField.$textArea.addEventListener('input', (e) => {
-            _this._textFieldInputValueChanged(textField, textField.text);
-        })
-    }
-
-    /**
-     * Set eventListener for DropdownButton.
-     * 
-     * @param {DropdownButton} dropdownButton 
-     */
-    _setDropdownButtonEventHandler(dropdownButton) {
-        console.log(`set eventHandler to ${dropdownButton.__id__}`);
-        const _this = this;
-        dropdownButton.$dropdownButton.addEventListener('selected', (e) => {
-            const value = e.detail.value;
-            _this._dropdownButtonSelected(dropdownButton, value);
-        })
-    }
-
-    /**
-     * Set evenetListener for PositionMap.
-     * 
-     * @param {PositionMap} positionMap
-     */
-    _setPositionMapEventHandler(positionMap) {
-        console.log(`set eventHandelr to ${positionMap.__id__}`);
-        const _this = this;
-        positionMap.$positionMap.addEventListener('pointerCoordinateUpdated', (e) => {
-            const positionMapId = e.detail.__id__;
-            const newCoordinate = e.detail.coordinate;
-            _this._positionMapPointerCoordinateUpdated(positionMap, newCoordinate);
-
-        })
-
-    }
-
-    /**
      * @interface
      * 
      * Called when the whole page has been loaded.
@@ -773,13 +697,13 @@ class InputPageViewController {
         // NOTE: override this function
     }
 
-
     /**
-     * @interface
+     * @abstract
      * 
-     * Called when the next button is tapped.
+     * This is an abstract method that is called when the next button is tapped. 
+     * Subclasses are expected to override this method to provide specific functionality.
      * 
-     * @param {NextButton} button 
+     * @param {NextButton} nextButton - The next button instance that was tapped.
      */
     _nextButtonTapped(nextButton) {
         console.log(`button ${nextButton.__id__} tapped.`);
@@ -787,44 +711,48 @@ class InputPageViewController {
     }
 
     /**
-     * @interface
-     * 
-     * Called when the back button is tapped.
-     * 
-     * @param {BackButton} backButton 
+     * Called when the back button is tapped. Classes extending InputPageViewController
+     * and implementing BackButtonProtocol should override this method to provide
+     * their own functionality when the back button is clicked.
+     *
+     * @abstract
+     * @param {BackButton} backButton - The back button that was tapped.
+     * @throws {Error} Will throw an error if the method is not overridden in a child class.
      */
     _backButtonTapped(backButton) {
-        console.log(`button ${backButton.__id__} tapped.`);
-        // NOTE: override this function
+        throw new Error("You have to override the method _backButtonTapped!");
     }
 
     /**
-     * @interface
-     * 
-     * Called when a TextField input changed.
-     * 
-     * @param {TextField} textField 
-     * @param {string} value
+     * Called when a TextField input changes.
+     * This method needs to be overridden by subclasses.
+     * @param {TextField} textField - The TextField instance where the input changed.
+     * @param {string} value - The new input value.
      */
     _textFieldInputValueChanged(textField, value) {
+        if(typeof this._valueChanged !== 'function'){
+            throw new Error(`Instance ${this.__id__} must implement the method _valueChanged in subclass!`);
+        }
+        if(typeof this._setValueForKey !== 'function'){
+            throw new Error(`Instance ${this.__id__} must implement the method _setValueForKey in subclass!`);
+        }
         console.log(`textField ${textField.__id__} input with value ${value}.`);
         this._valueChanged(textField, value);
-        // NOTE: override this function
         this._setValueForKey(textField.__field_name__, value)
     }
 
     /**
-     * @interface
-     * 
-     * Called when a TextField is blur(unfocus).
-     * 
-     * @param {TextField} textField 
-     * @param {string} value
+     * Called when a TextField loses focus (unfocus).
+     * This method needs to be overridden by subclasses.
+     * @param {TextField} textField - The TextField instance that lost focus.
+     * @param {string} value - The current value of the TextField.
      */
     _textFieldUnFocus(textField, value) {
+        if(typeof this._unfocused !== 'function'){
+            throw new Error(`Instance ${this.__id__} must implement the method _unfocused in subclass!`);
+        }
         console.log(`textField ${textField.__id__} onblur with value ${value}.`);
         this._unfocused(textField, value);
-        // NOTE: override this function
     }
 
     /**
@@ -842,7 +770,6 @@ class InputPageViewController {
         // NOTE: override this function
         this._setValueForKey(dropdownButton.__field_name__, value)
     }
-
 
     /**
      * @interface
@@ -940,53 +867,8 @@ class InputPageViewController {
                 }
             }
         });
-        // set error object if an error found, otherwise []
-        if (errors.length == 0) {
-            this._pageErrors[page] = [];
-        } else {
-            this._pageErrors[page] = errors;
-        }
         return errors
     }
-
-    /**
-     * Log out pageErrors
-     */
-    _printPageErrors() {
-        console.log('------------- page errors ----------------')
-        this._pageErrors.forEach((pageError, i) => {
-            console.log(`page ${i} `);
-            pageError.forEach((row) => {
-                const name = row[0].__field_name__; 
-                const message = row[1];
-                console.log(`${name} : ${message}`)
-            })
-        });
-    }
-
-    /**
-     * Alert for pageErrors
-     * [DEPRECATED]
-     * 
-     * @param {Array} errors this._pageErrors
-     * @param {function} callback
-     */
-    _alertPageErrors(errors, callback = ()=>{}) {
-        if (errors.length > 0) {
-            // display alert 
-            errors.forEach((error, i) => {
-                const component = error[0];
-                const message = error[1];
-                component.alert(true, message);
-            })
-            callback();
-            return true
-        } else {
-            callback();
-            return false
-        };
-    }
-
 
     /**
      * HTTP POST to submit data.

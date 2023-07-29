@@ -113,8 +113,6 @@ class DropdownButton {
         this.__menu_position__ = position;
 
         this._title = title;
-
-        this._setEventHandlers();
     }
 
 
@@ -293,7 +291,7 @@ class DropdownButton {
     _setEventHandlers() {
         const _this = this;
         this.$dropdownButtonClickable.addEventListener('click', e => {
-            console.log(`button ${_this.__id__} clicked`)
+            console.log(`[event] button ${_this.__id__} clicked`)
             if (_this._state == DropdownButtonState.onclose) {
                 _this.state = DropdownButtonState.onopen;
                 e.stopPropagation();
@@ -306,6 +304,7 @@ class DropdownButton {
             }
         });
         this.$listMenu.addEventListener('click', e => {
+            console.log(`[event] list menu ${_this.__id__} clicked`)
             const hoveredItem = this.$listMenu.querySelector(':hover');
             const selectedValue = hoveredItem.dataset.value;
             console.log(hoveredItem);
@@ -314,9 +313,16 @@ class DropdownButton {
             this._selectedValue = selectedValue;
             this._setTitle(hoveredItem.dataset.title);
             this.state = DropdownButtonState.onclose;
-            // dispatch event
-            const event = new CustomEvent('selected', {detail: {id: this.__id__, value: selectedValue}});
-            this.$view.dispatchEvent(event);
+            // TODO: delete when unnecessary for the long term 
+            // // dispatch event
+            // const event = new CustomEvent('selected', {detail: {id: this.__id__, value: selectedValue}});
+            // this.$view.dispatchEvent(event);
+
+            if(this.viewController && typeof this.viewController._dropdownButtonSelected === "function"){
+                this.viewController._dropdownButtonSelected(this, selectedValue);
+            } else {
+                console.error('ViewController not set or _dropdownButtonSelected not a function');
+            }
         });
     }
 
@@ -397,5 +403,18 @@ class DropdownButton {
                 }
             }
         }
+    }
+}
+
+class DropdownButtonProtocol {
+    /**
+     * Called when a DropdownButton is selected.
+     *
+     * @param {DropdownButton} dropdownButton
+     * @param {string} value
+     * @throws {Error} If the method is not overridden in the implementing class.
+     */
+    _dropdownButtonSelected(dropdownButton, value) {
+        throw new Error(`The class ${this.constructor.name} must implement _dropdownButtonSelected method!`);
     }
 }

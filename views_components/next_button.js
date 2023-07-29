@@ -7,8 +7,8 @@
  */
 class NextButton extends ViewComponentBase {
 
-    constructor(parent_id, id, text) {
-        super(parent_id, id, text, 'button');
+    constructor(parent_id, id, text, htmlTag = 'button') {
+        super(parent_id, id, text);
     }
 
     /**
@@ -19,5 +19,33 @@ class NextButton extends ViewComponentBase {
      */
     _setElements(text, htmlTag) {
         super._setElements(text, htmlTag);
+    }
+
+    /**
+     * Set the event handler for the button. If the view controller is set and the method 
+     * nextButtonTapped exists in the view controller, this method will be called when the button is clicked.
+     */
+    _setEventHandlers() {
+        console.log(`Set the click event handler for ${this.__id__}.`);
+        this.$view.addEventListener('click', () => {
+            if(this.viewController && typeof this.viewController.nextButtonTapped === "function"){
+                this.viewController.nextButtonTapped(this);
+            }else{
+                console.error('ViewController not set or nextButtonTapped not a function');
+            }
+        })
+    }
+}
+
+class NextButtonProtocol {
+    /**
+     * Protocol method to handle button tap. This method should be implemented in the classes 
+     * that conform to this protocol.
+     * @abstract
+     * @param {NextButton} button - The next button that was tapped.
+     * @throws {Error} Will throw an error if the method is not implemented.
+     */
+    _nextButtonTapped(button) {
+        throw new Error("You have to implement the method nextButtonTapped!");
     }
 }

@@ -125,8 +125,6 @@ class TextField extends ViewComponentBase {
  
         // initialize view elements
         this._setElements();
-        // set eventhandlers
-        this._setEventHandlers();
         // set counter 
         this.count = 0;
         // password mode
@@ -303,10 +301,17 @@ class TextField extends ViewComponentBase {
      */
     _setEventHandlers() {
         const _this = this;
+        console.log(`Set the input event handler for ${this.__id__}.`);
         this.$textArea.addEventListener('input', (e) => {
-            console.log(`text in textarea changed. -> ${_this.$textArea.value}`)
+            console.log(`[event] text in textarea changed. -> ${_this.$textArea.value}`)
             _this.text = _this.$textArea.value;
             _this.count = _this.$textArea.value.length;
+
+            if(this.viewController && typeof this.viewController._textFieldInputValueChanged === "function"){
+                this.viewController._textFieldInputValueChanged(this, _this.$textArea.value);
+            } else {
+                console.error('ViewController not set or _textFieldInputValueChanged not a function');
+            }
 
             // set state as the text count 
             console.log(`max text count: ${_this.__max_text_count__} count: ${_this.count}`);
@@ -321,17 +326,26 @@ class TextField extends ViewComponentBase {
 
         // auto resize vertically
         if (_this.__vertical_flex__) {
+            console.log(`Set the keydown event handler for ${this.__id__}.`);
             _this.$textArea.addEventListener('keydown', ()=> {
+                console.log(`[event] keydown -> ${_this.$textArea.value}`)
                 setTimeout(()=> {
                     this.$textArea.style.cssText = `height:auto; height:${this.$textArea.scrollHeight}px;`;
                 }, 0);
             });
         }
 
-        // onfocus
-
-        // on
+        console.log(`Set the blur event handler for ${this.__id__}.`);
+        this.$textArea.addEventListener('blur', () => {
+            console.log(`[event] blur -> ${_this.$textArea.value}`)
+            if (this.viewController && typeof this.viewController._textFieldUnFocus === "function") {
+                this.viewController._textFieldUnFocus(this, _this.$textArea.value);
+            } else {
+                console.error('ViewController not set or _textFieldUnFocus not a function');
+            }
+        });
     }
+
 
     /**
      * Sets the validation state and input state of the TextField.
@@ -425,3 +439,29 @@ class TextField extends ViewComponentBase {
     }
 }
 
+
+class TextFieldProtocol {
+    /**
+     * To be overridden in the ViewController. 
+     * Called when the input value of a TextField changes.
+     * 
+     * @param {TextField} textField - The TextField that triggered the event.
+     * @param {string} value - The current input value of the TextField.
+     * @throws {Error} If the method is not overridden in the ViewController.
+     */
+    _textFieldInputValueChanged(textField, value) {
+        throw new Error(`ViewController of TextField ${textField.__id__} must implement _textFieldInputValueChanged method!`);
+    }
+
+    /**
+     * To be overridden in the ViewController. 
+     * Called when the TextField loses focus.
+     * 
+     * @param {TextField} textField - The TextField that triggered the event.
+     * @param {string} value - The current input value of the TextField.
+     * @throws {Error} If the method is not overridden in the ViewController.
+     */
+    _textFieldUnFocus(textField, value) {
+        throw new Error(`ViewController of TextField ${textField.__id__} must implement _textFieldUnFocus method!`);
+    }
+}
