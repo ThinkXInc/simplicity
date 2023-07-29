@@ -37,25 +37,52 @@ class ListMenu {
  * usage:
  * `<code>`
  * 
- *      <div class="dropdownButtonClickable cf">
-            <h6 class=description>$description</h6>
-            <span class=title>$title</span>
-            <img class=downarrow src=/img/icons/arrow-down.png srcset="/img/icons/arrow-down@2x.png 2x"/>
-            <div class="footer cf"></div>
-        </div>
- *  var dropdownButton = new DropdownButton(
- *      'countrySelectButton', 'Your Country', 'Please select your country.',
- *      'country',
-        DropdownMenuType.list, 
-        DropdownMenuDisplayPositionType.upper,
-        [
-            new ListMenu('Afganistan', 12),
-            new ListMenu('Belarus', 73),
-            new ListMenu('China', 981),
-            new ListMenu('Denmark', 33),
-            ...
-        ]);
- *  dropdownButton.state = close;
+ *     <div class="dropdownButton">
+ *         <div class="dropdownButtonClickable cf">
+ *             <h6 class="description">Description here</h6>
+ *             <span class="title">Title here</span>
+ *             <img class="downarrow" src="/img/icons/arrow-down.png" srcset="/img/icons/arrow-down@2x.png 2x" />
+ *             <div class="footer cf"></div>
+ *         </div>
+ *         <ul class="listmenu">
+ *             <li class="listitem" data-value="item1" data-title="Item 1">Item 1</li>
+ *             <li class="listitem" data-value="item2" data-title="Item 2">Item 2</li>
+ *             <!-- More list items go here -->
+ *         </ul>
+ *     </div>
+ * 
+ * 
+ *     // Creating list menu items
+ *     let listMenuItems = [
+ *         {title: 'Afganistan', value: 12},
+ *         {title: 'Belarus', value: 73},
+ *         {title: 'China', value: 981},
+ *         // More list items go here...
+ *     ];
+ *     
+ *     // Defining a validator
+ *     let validator = new Validator(
+ *         dropdownButton, 
+ *         ValidationErrorType.required, 
+ *         "This field is required."
+ *     );
+ *     
+ *     let dropdownButton = new DropdownButton(
+ *         'parent_id_here', // parent_id
+ *         'countrySelectButton', // id
+ *         'Your Country', // title
+ *         'Please select your country.', // description
+ *         'country', // fieldName
+ *         DropdownMenuType.list, // type
+ *         DropdownMenuDisplayPositionType.upper, // position
+ *         listMenuItems, // listMenuItems
+ *         'div', // htmlTag (optional)
+ *         [validator] // validators (optional)
+ *     );
+ *     
+ *     // Set the initial state
+ *     dropdownButton.state = DropdownButtonState.onclose;
+* 
  * `</code>`
  * @param {string} id - The DOM id where this view is inserted.
  * @param {string} title - displayed title.
@@ -65,22 +92,6 @@ class ListMenu {
  * @param {[ListMenu]} listMenuItems - list of ListMenu with title, value.
  */
 class DropdownButton {
-
-    __inner_template__ = `
-        <div class="dropdownButtonClickable cf">
-            <h6 class=description>$description</h6>
-            <span class=title>$title</span>
-            <img class=downarrow src=/img/icons/arrow-down.png srcset="/img/icons/arrow-down@2x.png 2x"/>
-            <div class="footer cf"></div>
-        </div>
-    `
-    __list_menu_template__ = `
-        <ul class=listmenu style=display:none;>
-        </ul>
-    `
-    __list_item_template__ = `
-        <li class=listitem data-value=$value data-title="$title">$title</li>
-    `
 
     __description__ = null;
     __field_name__ = null;
@@ -92,10 +103,9 @@ class DropdownButton {
     _selectedValue = null;
     _title = null;
 
-    constructor(parent_id, id, title, description, fieldName, type, position, listMenuItems, htmlTag='div') {
-        super(parent_id, id, '', htmlTag);
-   
-        // set configuration variables
+    constructor(parent_id, id, title, description, fieldName, type, position, listMenuItems, htmlTag='div', validators=[]) {
+        super(parent_id, id, '', htmlTag, validators);
+
         this.__description__ = description;
         this.__field_name__ = fieldName;
         this.__type__ = type;
@@ -104,9 +114,9 @@ class DropdownButton {
 
         this._title = title;
 
-        // set event handlers
         this._setEventHandlers();
     }
+
 
     /* setters */
 
@@ -149,7 +159,7 @@ class DropdownButton {
     }
  
     /**
-     * selectedValue setter.
+     * selectedValue setter / getter.
      */
     set selectedValue(selectedValue) {
         const previousState = this._selectedValue;
@@ -168,36 +178,53 @@ class DropdownButton {
         this.$view.dispatchEvent(event);
     }
 
-    /**
-     * selectedValue getter.
-     */
     get selectedValue() {return this._selectedValue;}
+
+    /**
+     * value setter / getter.
+     */
+    set value(value) {
+        this.selectedValue = value;
+    }
+
+    get value() {
+        return this.selectedValue;
+    }
  
+
     /* private methods */
 
     /**
      * DOM nodes as variables.
      */
     _setElements(title, htmlTag) {
+        // Set up basic elements via parent class.
         super._setElements(title, htmlTag);
+        this.$view.classList.add('dropdownButton');
 
-        $this.view.classList.add('dropdownButton');
-
-        // set html elements
+        // Create and configure dropdown button clickable container.
         let $dropdownButtonClickable = document.createElement('div');
         $dropdownButtonClickable.className = "dropdownButtonClickable cf";
+        this.$view.append($dropdownButtonClickable);
+
+        // Create and configure description.
         let $description = document.createElement('h6');
         $description.className = "description";
         $description.textContent = this.__description__;
-        let $title = document.createElement('$title');
+        $dropdownButtonClickable.appendChild($description);
+
+        // Create and configure title.
+        let $title = document.createElement('span');
         $title.className = "title";
         $title.textContent = this._title;
+        $dropdownButtonClickable.appendChild($title);
+
+        // Create and configure down arrow image.
         let $downArrowImg = document.createElement('img');
         $downArrowImg.className = "downarrow";
         $downArrowImg.src = "/img/icons/arrow-down.png";
         $downArrowImg.srcset = "/img/icons/arrow-down@2x.png 2x";
-        $dropdownButtonClickable.append($description, $title, $downArrowImg);
-        this.$view.append($dropdownButtonClickable);
+        $dropdownButtonClickable.appendChild($downArrowImg);
 
         // set list menu
         if (type == DropdownMenuType.list || type == DropdownMenuType.widelist) {
@@ -212,23 +239,19 @@ class DropdownButton {
             this._setListMenuItems(listMenuItems);
         }
 
+        // Assign class properties to corresponding HTML elements for easy access.
         this.$title = this.$view.querySelector('.title');
-        if (this.$title == null) {
-            console.warn(
-                `<span class=title></span> is necessary in HTML.`);
-        }
         this.$dropdownButtonClickable = this.$view.querySelector('.dropdownButtonClickable');
-        if (this.$dropdownButtonClickable == null) {
-            console.warn(
-                `<div class=dropdownButtonClickable></div> is necessary in HTML.`);
-        }
         if (this.__type__ == DropdownMenuType.list || this.__type__ == DropdownMenuType.widelist) {
             this.$listMenu = this.$view.querySelector('.listmenu');
             this.$toggleItem = this.$listMenu;
-            if (this.$listMenu == null) {
-                console.warn(
-                    `<ul class=listmenu></ul> is necessary in HTML.`);
-            }
+        }
+
+        // Log warnings for missing HTML elements.
+        if (!this.$title) console.warn(`<span class=title></span> is necessary in HTML.`);
+        if (!this.$dropdownButtonClickable) console.warn(`<div class=dropdownButtonClickable></div> is necessary in HTML.`);
+        if (this.__type__ == DropdownMenuType.list || this.__type__ == DropdownMenuType.widelist) {
+            if (!this.$listMenu) console.warn(`<ul class=listmenu></ul> is necessary in HTML.`);
         }
     }
 
@@ -350,35 +373,29 @@ class DropdownButton {
         if (onAlert) {
             // add alert to css
             $parent.classList.add('alert');
+            let $alertMessage = document.getElementById(alertId);
 
-            // if the alertMessage already exists
-            if (document.getElementById(alertId) != null) {
-                // the same alert is displayed, return
-                if (message == document.getElementById(id).innerText) {
-                    return
-                // or update the message
-                } else {
-                    document.getElementById(id).innerText = message;
-                    return
-                }
+            if (!$alertMessage) {
+                // if no alertMessage exists, add new alert message
+                $alertMessage = document.createElement('p');
+                $alertMessage.classList.add('alertMessage');
+                $alertMessage.id = alertId;
+                $footer.appendChild($alertMessage);
             };
-
-            // if no alertMessage exists, add new alert message
-            let $alertMessage = document.createElement('p');
-            $alertMessage.classList.add('alertMessage');
-            $alertMessage.id = alertId;
             $alertMessage.innerText = message;
-            $footer.appendChild($alertMessage);
+
         } else {
             // return if alertMessage is already removed
-            if (document.getElementById(alertId) == null) { return };
-
-            // add alert to css
-            $parent.classList.remove('alert');
-
-            // remove alert message
             let $alertMessage = document.getElementById(alertId);
-            $footer.removeChild($alertMessage);
+            if (document.getElementById(alertId) == null) { 
+                return 
+            } else {
+                // remove alert
+                $parent.classList.remove('alert');
+                if ($alertMessage) {
+                    $footer.removeChild($alertMessage);
+                }
+            }
         }
     }
 }
