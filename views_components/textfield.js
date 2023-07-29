@@ -22,9 +22,42 @@ const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
  * @classdesc `<div id={id} class=textField>` is necessary in HTML.
  * usage:
  * `<code>`
- *     titleField = new TextField(
- *         'titleField', TextFieldType.multiplelines, 'title(reqired)', 'title',
- *         'Mona Lisa Title and subject', 140, 4, false);
+ * 
+ *   <div id="{this.__id__}" class="textField">
+ *      <div class="name inputouter">
+ *          <h6 class="title">{this.__title__}</h6>
+ *          <input class="{this.__field_name__}form" name="{this.__field_name__}" type="text" autocomplete="off">
+ *          <div class="footer cf">
+ *              <span class="indicator"></span>
+ *              <span class="message"></span>
+ *              <span class="counter"></span>
+ *          </div>
+ *      </div>
+ *   </div>
+ * 
+ * 
+ *  // Initialize the validators
+ *  let requiredValidator = new Validator(titleField, ValidationErrorType.required, 'This field is required');
+ *  let lengthValidator = new Validator(titleField, ValidationErrorType.length, 'The length of the text exceeds the limit', [140]);  // assuming max length of 140
+ * 
+ *  let validators = [requiredValidator, lengthValidator];
+ * 
+ *  // Initialize the TextField
+ *  let titleField = new TextField(
+ *      'parentView',  // parent_id
+ *      'titleField',  // id
+ *      TextFieldType.multiplelines,  // single or multi
+ *      'title(reqired)',  // title
+ *      'title',  // field name
+ *      'Mona Lisa Title and subject',  // placeholder
+ *      'div',  // the HTML tag
+ *      validators,  // Pass in the validators
+ *      140,  // max text count
+ *      4,  // init rows
+ *      false,  // vertical flex
+ *      true,  // assuming the title is visible
+ *      false  // assuming password mode is off
+ *  );
  * `</code>`
  * @param {string} parent_id - The id of the parent element.
  * @param {string} id - The id for the TextField element.
@@ -39,28 +72,6 @@ const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
  * @param {boolean} password_mode - Whether the TextField is in password mode. Defaults to false.
  */
 class TextField extends ViewComponentBase {
-    __inner_template_single__ = `
-        <div class="name inputouter">
-            <h6 class=title>$title</h6>
-            <input class=$field_nameform name=$field_name type=text autocomplete=off/>
-            <div class="footer cf">
-                <span class=indicator></span>
-                <span class=message></span>
-                <span class=counter></span>
-            </div>
-        </div>
-    `
-    __inner_template_multiple__ = `
-        <div class="name inputouter">
-            <h6 class=title>$title</h6>
-            <textarea class=$field_nameform name=$field_name rows=$rows contenteditable></textarea>
-            <div class="footer cf">
-                <span class=indicator></span>
-                <span class=message></span>
-                <span class=counter></span>
-            </div>
-        </div>
-    `
 
     __counter_format__ = `$count/$maxcount`;
 
@@ -83,11 +94,11 @@ class TextField extends ViewComponentBase {
     _count = null;
 
     constructor(parent_id, id, type, title, field_name, placeholder,
-            htmlTag = 'div',
-            max_text_count=999, init_rows=6, vertical_flex=true, has_title=true,
-            password_mode=false) {
+        htmlTag = 'div', validators = [], 
+        max_text_count=999, init_rows=6, vertical_flex=true, has_title=true,
+        password_mode=false) {
 
-        super(parent_id, id, '', htmlTag);
+        super(parent_id, id, '', htmlTag, validators);
 
         // set options
         const options = [
@@ -114,8 +125,6 @@ class TextField extends ViewComponentBase {
  
         // initialize view elements
         this._setElements();
-        // initialize layout
-        this._initLayout();
         // set eventhandlers
         this._setEventHandlers();
         // set counter 
@@ -125,7 +134,22 @@ class TextField extends ViewComponentBase {
     }
 
     /**
-     * text setter.
+     * value setter / getter.
+     */
+    get value() {
+        return this._text;
+    }
+
+    set value(value) {
+        if (typeof value === 'string') {
+            this._text = value;
+        } else {
+            console.error(`TextField value must be a string, but got ${typeof value}`);
+        }
+    }
+
+    /**
+     * text setter /getter.
      */
     set text(text) {
         this._text = text;
@@ -140,13 +164,10 @@ class TextField extends ViewComponentBase {
         this.$textField.dispatchEvent(event);
     }
 
-    /**
-     * text getter.
-     */
     get text() {return this._text}
 
     /**
-     * count setter.
+     * count setter / getter.
      */
     set count(count) {
         this._count = count;
@@ -155,9 +176,6 @@ class TextField extends ViewComponentBase {
             .replace('$count', count).replace('$maxcount', this.__max_text_count__);
     }
 
-    /**
-     * count getter.
-     */
     get count() {return this._count}
 
     /**
@@ -240,41 +258,44 @@ class TextField extends ViewComponentBase {
      */
     _setElements(text, htmlTag) {
         super._setElements('', 'div'); // call super method to create the div element
-
+    
         // textField
         this.$textField = this.$view;
         this.$textField ?? console.warn(`<section id=${this.__id__} class=textField></section> is necessary in HTML.`);
- 
-        // setting innerHTML for the div
-        this.$textField.innerHTML = (this.__type__ == TextFieldType.singleline) ?
-            this.__inner_template_single__.replaceAll('$field_name', this.__field_name__)
-                .replaceAll('$title', this.__title__).replaceAll('$rows', this.__init_rows__)
-            : this.__inner_template_multiple__.replaceAll('$field_name', this.__field_name__)
-                .replaceAll('$title', this.__title__).replaceAll('$rows', this.__init_rows__);
-   
-        // title
-        this.$title = this.$textField?.querySelector('.title');
-        this.$title ?? console.warn(`<h6 class=title> is necessary in HTML.`);
-        if (!this.__has_title__) this.$title?.remove();
-
-        // textArea
-        this.$textArea = this.__type__ == TextFieldType.singleline 
-            ? this.$textField?.querySelector('input') 
-            : this.$textField?.querySelector('textarea');
-        this.$textArea ?? console.warn(`<input> is necessary in HTML.`);
-        this._setPlaceholder(this.__placeholder__);
-
-        // indicator, message, counter
+    
+        // create new elements
+        const $nameInputOuter = document.createElement('div');
+        $nameInputOuter.className = 'name inputouter';
+    
+        const $title = document.createElement('h6');
+        $title.className = 'title';
+        $title.textContent = this.__title__;
+        $nameInputOuter.appendChild($title);
+        if (!this.__has_title__) $title.remove();
+    
+        const $inputElem = document.createElement(this.__type__ == TextFieldType.singleline ? 'input' : 'textarea');
+        $inputElem.className = this.__field_name__ + 'form';
+        $inputElem.name = this.__field_name__;
+        $inputElem.type = 'text';
+        $inputElem.autocomplete = 'off';
+        if (this.__type__ !== TextFieldType.singleline) {
+            $inputElem.rows = this.__init_rows__;
+            $inputElem.contentEditable = true;
+        }
+        $nameInputOuter.appendChild($inputElem);
+        this.$textArea = $inputElem;
+    
+        const $footer = document.createElement('div');
+        $footer.className = 'footer cf';
         ['indicator', 'message', 'counter'].forEach(elem => {
-            this[`$${elem}`] = this.$textField?.querySelector(`.${elem}`);
-            this[`$${elem}`] ?? console.warn(`<span class=${elem}> is necessary in HTML.`);
+            const $span = document.createElement('span');
+            $span.className = elem;
+            $footer.appendChild($span);
+            this[`$${elem}`] = $span;
         });
-    }
-
-    /**
-     * Initialize the layout for display.
-     */
-    _initLayout() {
+        $nameInputOuter.appendChild($footer);
+    
+        this.$textField.appendChild($nameInputOuter);
     }
 
     /**
@@ -354,6 +375,22 @@ class TextField extends ViewComponentBase {
 
     /**
      * Add/Remove alert.
+     * 
+     * When an alert is triggered, the alert method will add a 'alert' class to the textField 
+     * and add a paragraph tag within the footer, resulting in:
+     * 
+     * <div id="{this.__id__}" class="textField alert">
+     *    <div class="name inputouter">
+     *        <h6 class="title">{this.__title__}</h6>
+     *        <input class="{this.__field_name__}form" name="{this.__field_name__}" type="text" autocomplete="off">
+     *        <div class="footer cf">
+     *            <span class="indicator"></span>
+     *            <span class="message"></span>
+     *            <span class="counter"></span>
+     *            <p class="alertMessage" id="{this.__id__}_alert">{message}</p>
+     *        </div>
+     *    </div>
+     * </div>
      * 
      * @param {bool} onAlert 
      * @param {string} message
