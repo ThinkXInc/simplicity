@@ -1,6 +1,9 @@
 /**
  * A class for Wrapper components.
  * 
+ * NOTE: <div class=wrapper> is created in the constructor of 
+ *       InputPageViewController after this function is called.
+ * 
  * <code>
  *       new Wrapper(
  *             'theParentView',
@@ -21,12 +24,20 @@ class Wrapper extends ViewComponentBase {
     components;
 
     constructor(parent_id, id, components, htmlTag='div') {
-        // Call the constructor of the base class
         super(parent_id, id, '', htmlTag);
 
-        // components
+        if (!Array.isArray(components)) {
+            throw new Error("Components must be an array.");
+        }
+
+        components.forEach(component => {
+            if (!(component instanceof ViewComponentBase)) {
+                throw new Error("All components must be a subclass of ViewComponentBase.");
+            }
+        });
+
         this.components = components;
-   }
+    }
 
     /**
      * Overrides the _setElements method in the base class.
@@ -35,14 +46,6 @@ class Wrapper extends ViewComponentBase {
         super._setElements(text, htmlTag);
 
         this.$view.classList.add('wrapper');
-
-        // NOTE: <div class=wrapper> is created in the constructor of 
-        // InputPageViewController after this function is called.
-        //this.$wrapper = document.getElementById(this.__id__);
-        //if (this.$wrapper == null) {
-        //    console.warn(
-        //        `<div id=${this.__id__} class=wrapper></div> is necessary in HTML.`);
-        //}
     }
 
     /**
