@@ -252,6 +252,7 @@ class InputPageViewController {
         this._checkProtocolAdherenceForClass(TextFieldProtocol);
         this._checkProtocolAdherenceForClass(DropdownButtonProtocol);
         this._checkProtocolAdherenceForClass(PositionMapProtocol);
+        this._checkProtocolAdherenceForClass(FileUploadViewProtocol);
         this._checkProtocolAdherenceForClass(LoadingProtocol);
     }
 
@@ -438,7 +439,9 @@ class InputPageViewController {
         }, false);
     }
 
-    _setvalueforkey(key, value) {
+    /*
+    [WILL DEPRECATED]
+    _setValueForKey(key, value) {
         let component = this.components.find(component => component.__field_name__ === key);
         if (component) {
             component.value = value;
@@ -446,12 +449,15 @@ class InputPageViewController {
             console.error(`no component found with __field_name__ = ${key}`);
         }
     }
+    */
 
     /**
+    [WILL DEPRECATED]
      * update multiple properties of _values
      * 
      * @param {dict} newValues
      */
+    /*
     _setValuesForKeys(newValues) {
         Object.keys(newValues).forEach((key) => {
             let component = this.components.find(component => component.__field_name__ === key);
@@ -462,6 +468,7 @@ class InputPageViewController {
             }
         });
     }
+    */
 
     /**
      * Update url ?page= in browser's addressbar.
@@ -646,12 +653,12 @@ class InputPageViewController {
         if(typeof this._valueChanged !== 'function'){
             throw new Error(`Instance ${this.__id__} must implement the method _valueChanged in subclass!`);
         }
-        if(typeof this._setValueForKey !== 'function'){
-            throw new Error(`Instance ${this.__id__} must implement the method _setValueForKey in subclass!`);
-        }
         console.log(`textField ${textField.__id__} input with value ${value}.`);
         this._valueChanged(textField, value);
-        this._setValueForKey(textField.__field_name__, value)
+        //this._setValueForKey(textField.__field_name__, value)
+        //if(typeof this._setValueForKey !== 'function'){
+        //    throw new Error(`Instance ${this.__id__} must implement the method _setValueForKey in subclass!`);
+        //}
     }
 
     /**
@@ -681,7 +688,7 @@ class InputPageViewController {
         this._unfocused(dropdownButton, value);
         this._valueChanged(dropdownButton, value);
         // NOTE: override this function
-        this._setValueForKey(dropdownButton.__field_name__, value)
+        //this._setValueForKey(dropdownButton.__field_name__, value)
     }
 
     /**
@@ -695,13 +702,27 @@ class InputPageViewController {
         console.log(`positionMap ${positionMap.__id__}.pointerCoordinate updated with value ${newCoordinate.lat} ${newCoordinate.lng}`);
         const keyLat = `${positionMap.__field_name_lat__}`;
         const keyLng = `${positionMap.__field_name_lng__}`;
-        this._setValuesForKeys(
-            {
-                [keyLat]: newCoordinate.lat,
-                [keyLng]: newCoordinate.lng
-            }
-        )
+        this._valueChanged(positionMap, newCoordinate);
+        //this._setValuesForKeys(
+        //    {
+        //        [keyLat]: newCoordinate.lat,
+        //        [keyLng]: newCoordinate.lng
+        //    }
+        //)
         // NOTE: override this function
+    }
+
+    /**
+     * @interface
+     * FileUploadView protocol
+     */
+    fileUploadViewStateChange(fileUploadView, state) {
+    }
+    fileUploadViewFileUploaded(fileUploadView, file) {
+    }
+    fileUploadViewFocusChange(fileUploadView, focus) {
+    }
+    fileUploadViewFileRemoved(fileUploadView, cell) {
     }
 
     /**

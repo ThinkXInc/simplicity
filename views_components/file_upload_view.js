@@ -11,18 +11,7 @@
  */
 
 
-/**
- * FileUploadView Showing State Enum.
- */
-const FileUploadViewShowingState = Object.freeze({
-    onhide: 0,
-    onshow: 1,
-});
-
-
-/**
- * FileUploadView Upload State Enum.
- */
+const FileUploadViewShowingState = Object.freeze({ onhide: 0, onshow: 1, });
 const FileUploadViewUploadState = Object.freeze({
     onready: 0,
     onuploading: 1,
@@ -45,38 +34,39 @@ const FileType = Object.freeze({
  * @classdesc `<ul class=fileUploadTableViewCell id={id}></ul>` is necessary in HTML.
  * usage:
  * `<code>`
+ * 
+ * html:
+ * 
+ *     <div id=$id class=uploadFileTableViewCell>
+ *       <img src=$uploadedFileTypeIcon/> 
+ *       <div class = uploadProgressDetails style= "border:2px;">
+ *           <div class = fileNameAndPercentage style= "border:2px;">
+ *               <div style = "text-overflow: ellipsis; padding-right:20px">$uploadedFileName</div>
+ *               <div class = "uploadStatusIndicator">$uploadStatusIndicator</div>
+ *       </div>
+ *           <div id="uploadIndicatorContainer">
+ *                   <div id="uploadIndicator" class = "uploadIndicator">
+ *                   </div>
+ *           </div>            
+ *       </div>
+ *       <div id= "uploadCancelButton" class="close-icon">
+ *       </div>
+ *     </div>
+ * 
+ * usage:
+ * 
  *  var cell = new FileUploadTableViewCell(table_view_id, index_of_cell);  // insert to table automatically
  *  cell.content = content; // update html automatically
  * `</code>`
  * @param {string} id - The DOM id where this view is inserted.
  */
 class FileUploadTableViewCell {
-    __template__ = `\
-    <div id=$id class=uploadFileTableViewCell>
-        <img src=$uploadedFileTypeIcon/> 
-        <div class = uploadProgressDetails style= "border:2px;">
-            <div class = fileNameAndPercentage style= "border:2px;">
-                <div style = "text-overflow: ellipsis; padding-right:20px">$uploadedFileName</div>
-                <div class = "uploadStatusIndicator">$uploadStatusIndicator</div>
-        </div>
-            <div id="uploadIndicatorContainer">
-                    <div id="uploadIndicator" class = "uploadIndicator">
-                    </div>
-            </div>            
-        </div>
-        <div id= "uploadCancelButton" class="close-icon">
-        </div>
-    </div>
-    `;
-
-    // settings
     __id__ = null;
     __table_view_id__ = null;
     __index__ = null;
     __uploadedFileName__ = null;
     __uploadedFileTypeIcon__ = null;
 
-    // values
     _content = {};
     index = null;
 
@@ -106,7 +96,6 @@ class FileUploadTableViewCell {
         // set state of upload indicator
         this.$uploadIndicator.style.width = state
         this.$uploadStatusIndicator.innerHTML = state
-           
     }
 
     /**
@@ -118,8 +107,6 @@ class FileUploadTableViewCell {
             console.warn(`<ul id=${this.__table_view_id__}></ul> not found.`);
         }
         console.log(this.$tableView)
-        
-        
     }
 
     /**
@@ -133,18 +120,48 @@ class FileUploadTableViewCell {
      * Reset cell content.
      */
     _resetCell() {
-        // set texts by this._content
-        this.__template__ = this.__template__.replace('$id', this.__id__);
-        this.__template__ = this.__template__.replace('$uploadedFileTypeIcon', this.__uploadedFileTypeIcon__);
-        this.__template__ = this.__template__.replace('$uploadedFileName', this.__uploadedFileName__);  
-        this.$tableView.innerHTML += this.__template__;
-        this.$cellView = document.getElementById(this.__id__);
-        if (this.$cellView == null) {
-            console.warn(`<li id=${this.__id__} class=fileUploadTableViewCell></li> not found.`);
-        }
-        this.$uploadStatusIndicator = this.$cellView.querySelector('.uploadStatusIndicator');
-        this.$uploadIndicator = this.$cellView.querySelector('.uploadIndicator');
-        this.$uploadCancelButton = this.$cellView.querySelector('.close-icon');
+        // Create new cell view element
+        this.$cellView = document.createElement('div');
+        this.$cellView.id = this.__id__;
+        this.$cellView.classList.add('uploadFileTableViewCell');
+
+        // Create child elements of the cell view
+        const img = document.createElement('img');
+        img.src = this.__uploadedFileTypeIcon__;
+        this.$cellView.appendChild(img);
+
+        const uploadProgressDetails = document.createElement('div');
+        uploadProgressDetails.classList.add('uploadProgressDetails');
+        this.$cellView.appendChild(uploadProgressDetails);
+
+        const fileNameAndPercentage = document.createElement('div');
+        fileNameAndPercentage.classList.add('fileNameAndPercentage');
+        uploadProgressDetails.appendChild(fileNameAndPercentage);
+
+        const uploadedFileNameElement = document.createElement('div');
+        uploadedFileNameElement.innerText = this.__uploadedFileName__;
+        fileNameAndPercentage.appendChild(uploadedFileNameElement);
+
+        this.$uploadStatusIndicator = document.createElement('div');
+        this.$uploadStatusIndicator.classList.add('uploadStatusIndicator');
+        fileNameAndPercentage.appendChild(this.$uploadStatusIndicator);
+
+        const uploadIndicatorContainer = document.createElement('div');
+        uploadIndicatorContainer.id = "uploadIndicatorContainer";
+        uploadProgressDetails.appendChild(uploadIndicatorContainer);
+
+        this.$uploadIndicator = document.createElement('div');
+        this.$uploadIndicator.id = "uploadIndicator";
+        this.$uploadIndicator.classList.add('uploadIndicator');
+        uploadIndicatorContainer.appendChild(this.$uploadIndicator);
+
+        this.$uploadCancelButton = document.createElement('div');
+        this.$uploadCancelButton.id = "uploadCancelButton";
+        this.$uploadCancelButton.classList.add('close-icon');
+        this.$cellView.appendChild(this.$uploadCancelButton);
+
+        // Add the newly created cell to the table
+        this.$tableView.appendChild(this.$cellView);
     }
 
     /* public functions */
@@ -157,54 +174,64 @@ class FileUploadTableViewCell {
 /**
  * FileUploadView component class.
  * @constructor
- * @classdesc `<div id={id} class=fileUploadView>` is necessary in HTML.
- * usage:
+ * @classdesc
  * `<code>`
+ * 
+ *  html:
+ * 
+ *       <div class=fileUploadView>
+ *         <h3 class=title style="text-align: center;">$title</h3>
+ *         <p class=subtitle style="text-align: center;">$subtitle</p>
+ *         <div class=dropArea>
+ *             <img class=dropImage/>
+ *             <h5 class=dropTitle>$dropTitle</h5>
+ *             <p class=or>$or</p>
+ *             <label style="padding:20px;">
+ *             <input type="file" id ="upload" class="browseButton" style="display: none;" />
+ *             <span class=browseButton>$browseButton</span>
+ *             </label>
+ *         </div>
+ *         <div id =uploadedFilesTable><div>
+ *       </div>
+ *
+ *  usage:
+ * 
  *     documentUploadView = new FileUploadView(
+ *         'parent_id',
  *         'documentUploadView',
- *         [FileExtension.png, FileExtension.jpg]
- *         )
+ *         [FileExtension.png, FileExtension.jpg],
+ *         'Upload Documents', 
+ *         'Please upload your documents', 
+ *         'OR',
+ *         'Browse Files',
+ *         'Drag & Drop Files Here',
+ *         'Uploaded Files'
+ *     )
+ * 
  * `</code>`
+ * @param {string} parent_id - The DOM id of the parent element where this view will be appended.
  * @param {string} id - The DOM id where this view is set.
- * @param {list of FileExtension} acceptable_file_extensions - eg. [FileExtension.jpg, FileExtension.png]
+ * @param {list of FileExtension} requested_file_extensions - eg. [FileExtension.jpg, FileExtension.png]
  * @param {string} title - title text
  * @param {string} subtitle - subtitle text
- * @param {string} dropTitle - drag & drop area title text
- * @param {string} or - drag & drop area OR text
+ * @param {string} orTitle - drag & drop area OR text
  * @param {string} browseButtonTitle - browse file button text
+ * @param {string} dropTitle - drag & drop area title text
  * @param {string} uploadedFilesTableTitle - uploadFilesTable title
  */
 class FileUploadView {
-    __inner_template__ = `
-        <div class=fileUploadView>
-            <h3 class=title style="text-align: center;">$title</h3>
-            <p class=subtitle style="text-align: center;">$subtitle</p>
-            <div class=dropArea>
-                <img class=dropImage/>
-                <h5 class=dropTitle>$dropTitle</h5>
-                <p class=or>$or</p>
-                <label style="padding:20px;">
-                <input type="file" id ="upload" class="browseButton" style="display: none;" />
-                <span class=browseButton>$browseButton</span>
-                </label>
-            </div>
-            <div id =uploadedFilesTable><div>
-        </div>
-    `
-   
-    __upload_file_table_title__ = `<h3 class=uploadedFilesTableTitle>$uploadedFilesTableTitle</h3>` 
+    //__upload_file_table_title__ = `<h3 class=uploadedFilesTableTitle>$uploadedFilesTableTitle</h3>` 
     __acceptable_file_extensions__ = ['jpg', 'png', 'pdf', 'wav', 'aiff', 'mp3']
 
-    __id__ = null;
     __requested_file_extensions__ = null;
 
     __title__ = null;
     __subtitle__ = null;
     __dropTitle__ = null ;
     __browseButtonTitle__ = null;
-    __or__ = null;
+    __orTitle__ = null;
     __uploadedFilesTableTitle__ = null;
-    _cells__ = [];
+    __cells__ = [];
     __cell_index__ = 0;
     __uploadedFilesTableId__ = 'uploadedFilesTable'; 
 
@@ -216,10 +243,13 @@ class FileUploadView {
     _file = null;
 
     constructor(
-        id, requested_file_extensions,
-        title, subtitle, or, browseButtonTitle, dropTitle ,
+        parent_id, id,
+        requested_file_extensions,
+        title, subtitle, orTitle, browseButtonTitle, dropTitle,
         uploadedFilesTableTitle
-        ) {
+    ) {
+        super(parent_id, id, title, 'div');
+
         // set 
         this.__id__ = id;
         this.__title__ =  title;
@@ -227,7 +257,7 @@ class FileUploadView {
         this.__requested_file_extensions__ = requested_file_extensions;
         this.__dropTitle__ = dropTitle ;
         this.__browseButtonTitle__ = browseButtonTitle;
-        this.__or__ = or;
+        this.__orTitle__ = orTitle;
         this.__uploadedFilesTableTitle__ = uploadedFilesTableTitle
 
         // validate acceptable file extensions format
@@ -250,13 +280,7 @@ class FileUploadView {
         // TODO: other validations
 
         // set html elements
-        document.getElementById(id).innerHTML = this.__inner_template__
-            .replace('$title', title)
-            .replace('$subtitle', subtitle)
-            .replace('$or', or)
-            .replace('$dropTitle', dropTitle)
-            .replace('$browseButton', browseButtonTitle)
-            ;
+        this._createElements();
 
         // initialize view elements
         this._setElements();
@@ -265,10 +289,11 @@ class FileUploadView {
     }
 
     /**
-     * showing state setter.
+     * showing state setter / getter.
      */
     set showingstate(showingstate) {
         this._showingstate = showingstate;
+        this.controller.fileUploadViewStateChange(this, this._showingstate); // <-- protocol function call
         switch (state) {
             case FileUploadViewShowingState.onhide:
                 console.log(`FileUploadView ${this.__id__} showing state changed -> onhide`);
@@ -279,26 +304,80 @@ class FileUploadView {
         }
     }
 
-    /**
-     * showing state getter.
-     */
     get showingstate() {return this._showingstate}
 
     /**
-     * upload state setter.
+     * upload state setter / getter.
      */
     set uploadstate(uploadstate) {
         this._uploadstate = uploadstate;
+        this.controller.fileUploadViewStateChange(this, this._uploadstate); // <-- protocol function call
         switch (state) {
             case FileUploadViewUploadState.onready:
                 break
         }
     }
 
-    /**
-     * upload state getter.
-     */
     get uploadstate() {return this._uploadstate}
+
+
+    _createElements() {
+        const container = document.getElementById(this.__id__);
+
+        const fileUploadView = document.createElement('div');
+        fileUploadView.classList.add('fileUploadView');
+        container.appendChild(fileUploadView);
+
+        const title = document.createElement('h3');
+        title.classList.add('title');
+        title.style.textAlign = "center";
+        title.innerText = this.__title__;
+        fileUploadView.appendChild(title);
+
+        const subtitle = document.createElement('p');
+        subtitle.classList.add('subtitle');
+        subtitle.style.textAlign = "center";
+        subtitle.innerText = this.__subtitle__;
+        fileUploadView.appendChild(subtitle);
+
+        const dropArea = document.createElement('div');
+        dropArea.classList.add('dropArea');
+        fileUploadView.appendChild(dropArea);
+
+        const dropImage = document.createElement('img');
+        dropImage.classList.add('dropImage');
+        dropArea.appendChild(dropImage);
+
+        const dropTitle = document.createElement('h5');
+        dropTitle.classList.add('dropTitle');
+        dropTitle.innerText = this.__dropTitle__;
+        dropArea.appendChild(dropTitle);
+
+        const or = document.createElement('p');
+        or.classList.add('or');
+        or.innerText = this.__or__;
+        dropArea.appendChild(or);
+
+        const label = document.createElement('label');
+        label.style.padding = "20px";
+        dropArea.appendChild(label);
+
+        const fileInput = document.createElement('input');
+        fileInput.type = "file";
+        fileInput.id = "upload";
+        fileInput.classList.add('browseButton');
+        fileInput.style.display = "none";
+        label.appendChild(fileInput);
+
+        const browseButton = document.createElement('span');
+        browseButton.classList.add('browseButton');
+        browseButton.innerText = this.__browseButtonTitle__;
+        label.appendChild(browseButton);
+
+        const uploadedFilesTable = document.createElement('div');
+        uploadedFilesTable.id = this.__uploadedFilesTableId__;
+        fileUploadView.appendChild(uploadedFilesTable);
+    }
 
     /**
      * DOM nodes as variables.
@@ -363,6 +442,7 @@ class FileUploadView {
 
             //Add file cell to table
             this._addFileUploadCell(file, filename)
+            this.controller.fileUploadViewFileUploaded(this, file); // <-- protocol function call
 
             e.preventDefault(); 
         });  
@@ -398,7 +478,7 @@ class FileUploadView {
         var cell = new FileUploadTableViewCell(this.__uploadedFilesTableId__, this.__cell_index__);
         cell.content = fileName;
         this._setFileUploadCellEventHandler(cell)
-        this._cells__.push(cell)
+        this.__cells__.push(cell)
         this.__cell_index__ +=1;
 
         // used for the purpose of upload indicator demo
@@ -446,13 +526,77 @@ class FileUploadView {
     _setFileUploadCellEventHandler(cell){
         console.log(document.getElementById(cell.__id__));
 
-    console.log(`set event for ${cell.__id__}`);
+        console.log(`set event for ${cell.__id__}`);
             currentCell = document.getElementById(cell.__id__);
             currentCell.querySelector('.close-icon').addEventListener('click', e => {
                 console.log(`cell ${cell.__id__} clicked`);
                 currentCell.remove()
-                
+                this.controller.fileUploadViewFileRemoved(this, cell); // <-- protocol function call
             });
     }
-    /* private functions */
+
+
+    /* public functions */
+
+    /**
+     * Add/Remove alert.
+     * 
+
+     * @param {bool} onAlert 
+     * @param {string} message
+     */
+    alert(onAlert, message) {
+        // TODO:
+    }
 }
+
+class FileUploadViewProtocol {
+    /**
+     * To be overridden in the ViewController. 
+     * Called when the state of the FileUploadView changes.
+     * 
+     * @param {FileUploadView} fileUploadView - The FileUploadView that triggered the event.
+     * @param {string} state - The current state of the FileUploadView.
+     * @throws {Error} If the method is not overridden in the ViewController.
+     */
+    fileUploadViewStateChange(fileUploadView, state) {
+        throw new Error(`ViewController of FileUploadView ${fileUploadView.__id__} must implement _fileUploadViewStateChange method!`);
+    }
+
+    /**
+     * To be overridden in the ViewController. 
+     * Called when a new file is uploaded via the FileUploadView.
+     * 
+     * @param {FileUploadView} fileUploadView - The FileUploadView that triggered the event.
+     * @param {File} file - The file that was uploaded.
+     * @throws {Error} If the method is not overridden in the ViewController.
+     */
+    fileUploadViewFileUploaded(fileUploadView, file) {
+        throw new Error(`ViewController of FileUploadView ${fileUploadView.__id__} must implement _fileUploadViewFileUploaded method!`);
+    }
+
+    /**
+     * To be overridden in the ViewController. 
+     * Called when the FileUploadView is focused or loses focus.
+     * 
+     * @param {FileUploadView} fileUploadView - The FileUploadView that triggered the event.
+     * @param {boolean} focus - true if the FileUploadView is currently focused, false otherwise.
+     * @throws {Error} If the method is not overridden in the ViewController.
+     */
+    fileUploadViewFocusChange(fileUploadView, focus) {
+        throw new Error(`ViewController of FileUploadView ${fileUploadView.__id__} must implement _fileUploadViewFocusChange method!`);
+    }
+
+    /**
+     * To be overridden in the ViewController. 
+     * Called when a file upload cell is removed from the FileUploadView.
+     * 
+     * @param {FileUploadView} fileUploadView - The FileUploadView that triggered the event.
+     * @param {FileUploadTableViewCell} cell - The cell that was removed.
+     * @throws {Error} If the method is not overridden in the ViewController.
+     */
+    fileUploadViewFileRemoved(fileUploadView, cell) {
+        throw new Error(`ViewController of FileUploadView ${fileUploadView.__id__} must implement _fileUploadViewFileRemoved method!`);
+    }
+}
+
