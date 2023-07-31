@@ -219,7 +219,7 @@ class FileUploadTableViewCell {
  * @param {string} dropTitle - drag & drop area title text
  * @param {string} uploadedFilesTableTitle - uploadFilesTable title
  */
-class FileUploadView {
+class FileUploadView extends ViewComponentBase {
     //__upload_file_table_title__ = `<h3 class=uploadedFilesTableTitle>$uploadedFilesTableTitle</h3>` 
     __acceptable_file_extensions__ = ['jpg', 'png', 'pdf', 'wav', 'aiff', 'mp3']
 
