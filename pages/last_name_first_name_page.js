@@ -26,18 +26,20 @@
  * };
  * let lastNameFirstNamePage = new LastNameFirstNamePage('signupView', myLocale, 'en');
  */
-class LastNameFirstNamePage extends Page {
-    __first_name_component_id__ = 'firstNameTextField';
-    __last_name_component_id__ = 'lastNameTextField';
-    __next_button_component_id__ = 'lastNameFirstNamePageNextButton';
-    __back_button_component_id__ = 'lastNameFirstNamePageBackButton';
-    __title_component_id__ = 'lastNameFirstNamePageTitle';
-    
-    __first_name_field_name__ = 'first_name';
-    __last_name_field_name__ = 'last_name';
 
+class LastNameFirstNamePage extends Page {
     constructor(
-        parent_id, id, locale, lang = 'en',
+        parent_id, 
+        id, 
+        locale, 
+        lang = 'en',
+        first_name_component_id = 'firstNameTextField',
+        last_name_component_id = 'lastNameTextField',
+        next_button_component_id = 'lastNameFirstNamePageNextButton',
+        back_button_component_id = 'lastNameFirstNamePageBackButton',
+        title_component_id = 'lastNameFirstNamePageTitle',
+        first_name_field_name = 'first_name',
+        last_name_field_name = 'last_name',
         locale_key_first_name_title = 'first_name_text_field_title',
         locale_key_first_name_placeholder = 'first_name_text_field_placeholder',
         locale_key_last_name_title = 'last_name_text_field_title',
@@ -56,10 +58,10 @@ class LastNameFirstNamePage extends Page {
         // Initialize the TextFields
         let firstNameField = new TextField(
             parent_id,
-            this.__first_name_component_id__,
+            first_name_component_id,
             TextFieldType.singleline,
             locale[locale_key_first_name_title][lang],
-            this.__first_name_field_name__,
+            first_name_field_name,
             locale[locale_key_first_name_placeholder][lang],
             'div',
             validators,
@@ -72,10 +74,10 @@ class LastNameFirstNamePage extends Page {
 
         let lastNameField = new TextField(
             parent_id,
-            this.__last_name_component_id__,
+            last_name_component_id,
             TextFieldType.singleline,
             locale[locale_key_last_name_title][lang],
-            this.__last_name_field_name__,
+            last_name_field_name,
             locale[locale_key_last_name_placeholder][lang],
             'div',
             validators,
@@ -87,13 +89,14 @@ class LastNameFirstNamePage extends Page {
         );
 
         // Initialize the Title
-        let title = new Title(parent_id, this.__title_component_id__, locale[locale_key_title][lang]);
+        let title = new Title(parent_id, title_component_id, locale[locale_key_title][lang]);
 
         // Initialize the Buttons
-        let backButton = new BackButton(parent_id, this.__back_button_component_id__, locale[locale_key_back_button][lang]);
-        let nextButton = new NextButton(parent_id, this.__next_button_component_id__, locale[locale_key_next_button][lang]);
+        let backButton = new BackButton(parent_id, back_button_component_id, locale[locale_key_back_button][lang]);
+        let nextButton = new NextButton(parent_id, next_button_component_id, locale[locale_key_next_button][lang]);
 
         // Call the constructor of the base class
         super(parent_id, id, [title, firstNameField, lastNameField, backButton, nextButton]);
+
     }
 }

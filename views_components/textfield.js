@@ -275,7 +275,9 @@ class TextField extends ViewComponentBase {
         const $inputElem = document.createElement(this.__type__ == TextFieldType.singleline ? 'input' : 'textarea');
         $inputElem.className = this.__field_name__ + 'form';
         $inputElem.name = this.__field_name__;
-        $inputElem.type = 'text';
+        if ($inputElem instanceof HTMLInputElement) {
+            $inputElem.type = 'text';
+        }
         $inputElem.autocomplete = 'off';
         if (this.__type__ !== TextFieldType.singleline) {
             $inputElem.rows = this.__init_rows__;
