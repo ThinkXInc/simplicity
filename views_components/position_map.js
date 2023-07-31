@@ -312,7 +312,7 @@ class PositionMapProtocol extends ViewComponentBase {
      * @param {Object} newCoordinate - The new coordinate of the pointer.
      * @throws {Error} If the method is not overridden in the implementing class.
      */
-    _positionMapPointerCoordinateUpdated(positionMap, newCoordinate) {
+    positionMapPointerCoordinateUpdated(positionMap, newCoordinate) {
         throw new Error(`The class ${this.constructor.name} must implement _positionMapPointerCoordinateUpdated method!`);
     }
 }

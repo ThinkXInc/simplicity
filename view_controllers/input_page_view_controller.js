@@ -1,123 +1,69 @@
-'use strict'
 /**
  * @fileoverview simplicity/view_controllers/input_page_view_controller.js
  * 
  * InputPageViewController
  * 
- * This class is the super class of any form interaction view controller
- * such as SignupViewController.
+ * This class serves as the base class for all form interaction view controllers,
+ * such as the SignupViewController.
  * 
- * The views are composed of view components below.
+ * It constructs views using the following components:
  * 
- *  - TextField from textfield.js (text input)
- *  - DropdownButton from dropdown_button.js (select with table)
- *  - RadioButton from radio_button.js (select with radio buttons) *todo
- *  - Title
- *  - Description
- *  - FieldTitle *todo
- *  - FieldDescription *todo
- *  - AlertText
- *  - NextButton
- *  - BackButton
+ *  - TextField: text input from textfield.js
+ *  - DropdownButton: select with table from dropdown_button.js
+ *  - RadioButton: select with radio buttons from radio_button.js *todo
+ *  - Title: title of the form field or page
+ *  - Description: description of the form field or page
+ *  - FieldTitle: title of a specific field *todo
+ *  - FieldDescription: description of a specific field *todo
+ *  - AlertText: alert or error message text
+ *  - NextButton: button for navigating to the next page
+ *  - BackButton: button for navigating to the previous page
  * 
- * The subclasses of InputPageViewController mainly work on the validation of each form values. 
+ * Subclasses of InputPageViewController primarily focus on the validation of each form value.
  * 
- * This class provides with common functions below.
- *  1. The value is retained in the cookie at each page transition
- *  2. The URL is rewritten in JS for each screen transition.
- *  3. So that the value is not lost when the browser reloads or backs.
+ * This class provides the following common functionalities:
+ *  1. Values are retained in the cookie during each page transition.
+ *  2. The URL is rewritten using JavaScript for each screen transition.
+ *  3. Values are not lost when the browser reloads or navigates back.
  * 
+ * Usage example:
+ *
  * <code>
+ *   // Define a data model to be submitted.
  *   class User {
- *      first_name = null;
- *      last_name = null;
- *      country = null;
- *      constractor(first_name, last_name, country) {
+ *      constructor(first_name, last_name, country) {
  *        this.first_name = first_name;
  *        this.last_name = last_name;
  *        this.country = country;
  *      }
  *   }
+ *
+ *   // Define SignupViewController extending from InputPageViewController
  *   class SignupViewController extends InputPageViewController {
- *      constractor(_id, pages, dataModelClass) {
+ *      constructor(_id, pages, dataModelClass) {
  *        super(_id, pages, dataModelClass)
  *      }
  *   }
- *   let vc = SignupViewController(
- *     'SignupView',
- *     [
- *        # Page 1
- *        [
- *          new Title('signupViewPage1Title', 'You are welcome.'),
- *          new Description('signupViewPage1Description', 'Welcome to this useful website.'),
- *          new FieldTitle('signupViewNameTitle', 'Your Name Here'),
- *          new TextField('sugnupViewFirstNameTextField', TextFieldType.singleline,
- *                        'First Name', 'first_name', 'Satoshi', 100, 1, false),
- *          new TextField('sugnupViewLastNameTextField', TextFieldType.singleline,
- *                        'Last Name', 'last_name', 'Nakamoto', 100, 1, false),
- *          new FieldTitle('signupViewCountryTitle', 'Your Country'),
- *          new FieldDescription('signupViewCountryTitle',
- *                               '"Your Counrty" means where you were born.'),
- *          new DropdownButton(
- *               'countrySelectButton', 'Your Country', 'Please select your country.',
- *               'country',
- *               DropdownMenuType.list, 
- *               DropdownMenuDisplayPositionType.upper,
- *               [
- *                   new ListMenu('Afganistan', 0),
- *                   new ListMenu('Belarus', 1),
- *                   new ListMenu('China', 2),
- *                   new ListMenu('Denmark', 3),
- *                   ...
- *               ]);
- *        ],
- *        # Page 2
- *        [
- *          new Title('signupViewPage2Title', 'You are welcome again.'),
- *          ...
- *        ],
- *        ...
- *     ],
- *     User
- *   )
  * 
- *   // write these on signup.html
- *   <section id={_id} class=inputPageView>
- *     // page 1
- *     <div id=signupViewPage1Title class=inputPageViewPageTitle>...</div>
- *     <div id=signupViewPage1Description class=inputPageViewPageDescription>...</div>
- *     <div id=signupViewFirstNameTextField class=textField>...</div>
- *     <div id=signupViewLastNameTextField class=textField>...</div>
- *     // page 2
- *     <div id=signupViewPage2Title class=inputPageViewPageTitle>...</div>
- *     ...
- *   </section>
+ *   // Define pages
+ *   const page_1 =  
+ *   const page_2 = 
+ *   let pages = [page_1, page2]
  *
- *   // After the initialization, InputPageViewController finally generates 
- *   <section id={_id} class=inputPageView>
- *     <!-- ↓↓↓ these DOM elements are dinamically created ↓↓↓ -->
- *     <div class=inputPageViewContainer>
- *       <ul class=inputPageViewPages>
- *         <li class=inputPageViewPage data-pageIndex=0>
- *           <div id=signupViewPage1Title class=inputPageViewPageTitle>...</div>
- *           <div id=signupViewPage1Description class=inputPageViewPageDescription>...</div>
- *           <div id=signupViewFirstNameTextField class=textField>...</div>
- *           <div id=signupViewLastNameTextField class=textField>...</div>
- *           ...
- *         </li>
- *         <li class=inputPageViewPage data-page-index=1>
- *           <div id=signupViewPage2Title class=inputPageViewPageTitle>...</div>
- *         </li>
- *       </ul>
- *     </div>
- *     <!-- ↑↑↑ these DOM elements are dinamically created ↑↑↑ -->
- *   </section>
- 
+ *   // Initialize a SignupViewController
+ *   let vc = new SignupViewController(
+ *     'SignupView',
+ *     pages,
+ *     User,  // User model class
+ *     new LoadingBar('content', 'loading')
+ *   );
+ *
+ *   // After the initialization, the DOM elements are dynamically generated by InputPageViewController
+ *   ...
  * </code>
  * 
  * @author kaz@thinkxinc.com (Kazuki Otsuka)
  **/
-
 const RegexType = Object.freeze({
     email: /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
     password: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/,
@@ -168,48 +114,90 @@ class InputPageViewDataModel {
 
 
 /**
- * InputPageViewController class.
+ * InputPageViewController - This class is responsible for managing the user interactions on the input page, 
+ * ensuring protocol adherence of its various components, and managing the state of the page.
+ *
+ * @param {string} parent_id - The id of the parent element where this controller's view will be appended.
+ * @param {string} id - The id for this page view controller instance.
+ * @param {Array} pages - An array containing the components to be displayed on each page. Each element of the array should be an array of components.
+ * @param {Object} dataModelClass - The class of the data model that this controller will use to store its state.
+ * @param {Object} locale - The localization data used for this view controller.
+ * @param {string} lang - The language code to be used in the localization process.
+ * @param {Object} loading - The object that manages the loading state of the view.
+ *
+ * This class also includes various getters and setters for managing the state of the controller 
+ * (e.g. current page, errors, values etc.). Moreover, it has methods for checking the protocol adherence of
+ * the components, setting elements, setting event handlers, managing component values, setting alerts, 
+ * validation, network requests, loading states, navigation, and others.
+ *
+ * Some methods must be overridden in a subclass, namely:
+ * - viewLoaded()
+ * - pageChanged(page)
+ * - valueChanged(component, value)
+ * - unfocused(component, value)
+ * - backButtonTapped(backButton)
+ *
+ * This controller expects its components to adhere to specific protocols. Each component type has an associated protocol:
+ * - NextButton: NextButtonProtocol
+ * - BackButton: BackButtonProtocol
+ * - TextField: TextFieldProtocol
+ * - DropdownButton: DropdownButtonProtocol
+ * - PositionMap: PositionMapProtocol
+ * - Loading: LoadingProtocol
+ *
+ * For each protocol, the component must implement the methods listed in the protocol.
  * 
- * Usages:
- *  1. Set values of fields
- *      eg.
- *      newValues['name'] = name
- *      this.values = newValues  // automatically store into the cookie strage
+ * propaties setter/getter
+ * @method set page - Sets the current page and manages page visibility.
+ * @method get page - Gets the current page.
+ * @method get values - Gets the values of the components as an instance of the data model.
+ * @method set errors - Sets the errors and logs the change.
+ * @method get errors - Gets the errors.
  * 
- *      this.setValueForKey('name') = name  // direct insert
- *      x this.values['name'] = name  // not allowed to modify a property directly
+ * methods
+ * @method setAlertMessage - Sets an alert message to a specified component.
+ * @method validateComponent - Validates a specific component.
+ * @method validatePage - Validates all components in a specific page.
+ * @method post - Sends a POST request to a specified URL with the current values.
+ * @method startLoading - Starts loading.
+ * @method stopLoading - Stops loading.
+ * @method goTo - Navigates to a specified URL.
+ * @method componentByFieldName - Returns a component by a field name.
+ * @method componentById - Returns a component by an id.
+ *
+ * setup or internal functions
+ * @method _checkProtocolAdherence - Verifies if the InputPageViewController adheres to required protocols.
+ * @method _checkProtocolAdherenceForClass - Checks the adherence to a specific protocol class.
+ * @method _setElements - Sets the elements of the input pages and their components.
+ * @method _setPageComponent - Sets a component in a specific page.
+ * @method _setEventHandlers - Sets the event handlers for the page load and hash change events.
+ * @method _setvalueforkey - Sets the value of a specific key (component field name).
+ * @method _setValuesForKeys - Sets the values for multiple keys (component field names).
+ * @method _updatePageNumberInBrowswerURL - Updates the page number in the URL.
  * 
- * @param {string} parent_id - The DOM id where this view is inserted.
- * @param {string} _id - This view's DOM id.
- * @param {list} pages - 2-dimentional array of components. (see the sample above)
- * @param {data model} dataModelClass - data model class to be submit to the server.
- * @param {array} validations - {'componentId': [errorType, "error message key", [arg1, arg2,..]]}
- * @param {dict} locale - locale json
- * @param {string} lang - initial language e.g. ja
- * @property @private
- * @property @public
- * @interface _nextButtonTapped(nextButton)
- * @method @private
- * @method @public
- * @constructor
+ * event handlers
+ * @method _viewLoaded - Called when the view is loaded.
+ * @method _pageChanged - Called when the page is changed.
+ * @method _nextButtonTapped - Called when the 'Next' button is tapped.
+ * @method _backButtonTapped - Called when the 'Back' button is tapped, must be overridden in the subclass.
+ * @method _textFieldInputValueChanged - Called when a text field input value is changed.
+ * @method _textFieldUnFocus - Called when a text field loses focus.
+ * @method _dropdownButtonSelected - Called when a dropdown button is selected.
+ * @method _positionMapPointerCoordinateUpdated - Called when the pointer coordinate is updated on a position map.
+ * @method _valueChanged - Called when a component value is changed, should be overridden in the subclass.
+ * @method _unfocused - Called when a component loses focus, should be overridden in the subclass.
  */
 class InputPageViewController {
-    __parent_id__ = null;
-    __id__ = null;
-    __number_of_pages__ = null;
-    __data_model__ = null;
-    __loading_element_id__ = "input_page_view_controller_loading";
-
-    _page = null;
-    _values = {};
-
-    _components = [];
+    _page = null;  // Current page index
+    _values = {};  // Object for storing form values
+    
+    _components = [];  // Array for storing all form components
     _pageComponents = [];  // [[comp 0 in page 0, comp 1 in page 0, ..], [..],..]
+    
+    _locale = null;  // Locale text dictionary 
+    _lang = null;  // Language of the user
 
-    _locale = null;
-    _lang = null;
-
-    constructor(parent_id, id, pages, dataModelClass, locale, lang) {
+    constructor(parent_id, id, pages, dataModelClass, locale, lang, loading) {
         this.__parent_id__ = parent_id;
         this.__id__ = id;
 
@@ -245,6 +233,9 @@ class InputPageViewController {
         } else {
             console.log(`initial language is set as ${lang}`);
         }
+
+        // loading
+        this.loading = loading
     }
 
     /**
@@ -258,6 +249,7 @@ class InputPageViewController {
         this._checkProtocolAdherenceForClass(TextFieldProtocol);
         this._checkProtocolAdherenceForClass(DropdownButtonProtocol);
         this._checkProtocolAdherenceForClass(PositionMapProtocol);
+        this._checkProtocolAdherenceForClass(LoadingProtocol);
     }
 
     /**
@@ -359,15 +351,6 @@ class InputPageViewController {
         $inputPageView.classList.add()
         this.$inputPageView = $inputPageView;
         this.$parentView.prepend($inputPageView)
-
-        // create loading
-        let $loading = document.createElement('div');
-        $loading.id = this.__loading_element_id__;
-        $loading.style.height = '7px';
-        $loading.style.width = '100%';
-        this.$inputPageView.prepend($loading);
-        this.$loading = $loading;
-        console.log('loading element created.')
 
         // create container
         let $container = document.createElement('div');
@@ -613,7 +596,7 @@ class InputPageViewController {
      * Called when the whole page has been loaded.
      * 
      */
-    _viewLoaded() {
+    viewLoaded() {
         // NOTE: override this function
     }
 
@@ -623,7 +606,7 @@ class InputPageViewController {
      * Called when page changed.
      * @param {Int} page
      */
-    _pageChanged(page) {
+    pageChanged(page) {
         // NOTE: override this function
     }
 
@@ -635,7 +618,7 @@ class InputPageViewController {
      * 
      * @param {NextButton} nextButton - The next button instance that was tapped.
      */
-    _nextButtonTapped(nextButton) {
+    nextButtonTapped(nextButton) {
         console.log(`button ${nextButton.__id__} tapped.`);
         // NOTE: override this function
     }
@@ -649,7 +632,7 @@ class InputPageViewController {
      * @param {BackButton} backButton - The back button that was tapped.
      * @throws {Error} Will throw an error if the method is not overridden in a child class.
      */
-    _backButtonTapped(backButton) {
+    backButtonTapped(backButton) {
         throw new Error("You have to override the method _backButtonTapped!");
     }
 
@@ -659,7 +642,7 @@ class InputPageViewController {
      * @param {TextField} textField - The TextField instance where the input changed.
      * @param {string} value - The new input value.
      */
-    _textFieldInputValueChanged(textField, value) {
+    textFieldInputValueChanged(textField, value) {
         if(typeof this._valueChanged !== 'function'){
             throw new Error(`Instance ${this.__id__} must implement the method _valueChanged in subclass!`);
         }
@@ -677,7 +660,7 @@ class InputPageViewController {
      * @param {TextField} textField - The TextField instance that lost focus.
      * @param {string} value - The current value of the TextField.
      */
-    _textFieldUnFocus(textField, value) {
+    textFieldUnFocus(textField, value) {
         if(typeof this._unfocused !== 'function'){
             throw new Error(`Instance ${this.__id__} must implement the method _unfocused in subclass!`);
         }
@@ -693,7 +676,7 @@ class InputPageViewController {
      * @param {DropdownButton} dropdownButton
      * @param {string} value
      */
-    _dropdownButtonSelected(dropdownButton, value) {
+    dropdownButtonSelected(dropdownButton, value) {
         console.log(`dropdownButton ${dropdownButton.__id__} selected with value ${value}.`);
         this._unfocused(dropdownButton, value);
         this._valueChanged(dropdownButton, value);
@@ -708,7 +691,7 @@ class InputPageViewController {
      * 
      * @param {Coordinate} newCoordinate 
      */
-    _positionMapPointerCoordinateUpdated(positionMap, newCoordinate) {
+    positionMapPointerCoordinateUpdated(positionMap, newCoordinate) {
         console.log(`positionMap ${positionMap.__id__}.pointerCoordinate updated with value ${newCoordinate.lat} ${newCoordinate.lng}`);
         const keyLat = `${positionMap.__field_name_lat__}`;
         const keyLng = `${positionMap.__field_name_lng__}`;
@@ -730,7 +713,7 @@ class InputPageViewController {
      * @param {TextField/DropdownButton} component
      * @param {string} value
      */
-    _valueChanged(component, value) {
+    valueChanged(component, value) {
         // NOTE: override this function
     }
 
@@ -743,7 +726,7 @@ class InputPageViewController {
      * @param {TextField/DropdownButton} component
      * @param {string} value
      */
-    _unfocused(component, value) {
+    unfocused(component, value) {
         // NOTE: override this function
     }
 
@@ -755,7 +738,7 @@ class InputPageViewController {
      * @param {AlertMessage} alertMessage
      * @param {string} message 
      */
-    _setAlertMessage(alertMessageId, message) {
+    setAlertMessage(alertMessageId, message) {
         let alertMessage = this._componentById(alertMessageId);
         if (alertMessage == null) {
             console.error(`AlertMessage component id:${alertMessageId} not found in PageViewController.components`);
@@ -807,7 +790,7 @@ class InputPageViewController {
      * @param {function} onsuccess
      * @param {function} onfailed
      */
-    _post(url, onsuccess, onfailed) {
+    post(url, onsuccess, onfailed) {
         fetch(
             url,
             {
@@ -831,34 +814,19 @@ class InputPageViewController {
     }
 
     /**
-     * Toggle loading.
-     * 
-     * This function only place or remove <div id=this.__loading_element_id__>.
-     * 
-     * @param {bool} isLoading
+     * @method
+     * Start loading. Implement this in subclass.
      */
-    _loading(isLoading) {
-        if (isLoading) {
-            this._startLoading(this.$loading);
-        } else {
-            this._stopLoading(this.$loading);
-        }
+    startLoading() {
+        this.loading.startLoading();
     }
 
     /**
-     * @interface
-     * 
-     * @param {DOM element} $loading
+     * @method
+     * Stop loading. Implement this in subclass.
      */
-    _startLoading($loading) {
-    }
-
-    /**
-     * @interface
-     * 
-     * @param {DOM element} $loading
-     */
-    _stopLoading($loading) {
+    stopLoading() {
+        this.loading.stopLoading();
     }
 
     /**
@@ -866,7 +834,7 @@ class InputPageViewController {
      * 
      * @param {string} newUrl 
      */
-    _goTo(newUrl) {
+    goTo(newUrl) {
         document.location.href = newUrl;
     }
 
@@ -875,7 +843,7 @@ class InputPageViewController {
      * 
      * @param {string} fieldName 
      */
-    _componentByFieldName(fieldName) {
+    componentByFieldName(fieldName) {
         let result;
         this._components.forEach((component) => {
             console.log(component.__field_name__)
@@ -895,7 +863,7 @@ class InputPageViewController {
      * 
      * @param {string} __id__
      */
-    _componentById(__id__) {
+    componentById(__id__) {
         let result;
         this._components.forEach((component) => {
             if (component.__id__ == __id__) {

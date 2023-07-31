@@ -8,7 +8,7 @@
 class NextButton extends ViewComponentBase {
 
     constructor(parent_id, id, text, htmlTag = 'button') {
-        super(parent_id, id, text);
+        super(parent_id, id, text, htmlTag);
     }
 
     /**
@@ -45,7 +45,7 @@ class NextButtonProtocol {
      * @param {NextButton} button - The next button that was tapped.
      * @throws {Error} Will throw an error if the method is not implemented.
      */
-    _nextButtonTapped(button) {
+    nextButtonTapped(button) {
         throw new Error("You have to implement the method nextButtonTapped!");
     }
 }
