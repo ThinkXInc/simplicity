@@ -415,7 +415,7 @@ class DropdownButtonProtocol {
      * @param {string} value
      * @throws {Error} If the method is not overridden in the implementing class.
      */
-    _dropdownButtonSelected(dropdownButton, value) {
+    dropdownButtonSelected(dropdownButton, value) {
         throw new Error(`The class ${this.constructor.name} must implement _dropdownButtonSelected method!`);
     }
 }

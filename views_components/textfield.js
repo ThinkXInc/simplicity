@@ -450,7 +450,7 @@ class TextFieldProtocol {
      * @param {string} value - The current input value of the TextField.
      * @throws {Error} If the method is not overridden in the ViewController.
      */
-    _textFieldInputValueChanged(textField, value) {
+    textFieldInputValueChanged(textField, value) {
         throw new Error(`ViewController of TextField ${textField.__id__} must implement _textFieldInputValueChanged method!`);
     }
 
@@ -462,7 +462,7 @@ class TextFieldProtocol {
      * @param {string} value - The current input value of the TextField.
      * @throws {Error} If the method is not overridden in the ViewController.
      */
-    _textFieldUnFocus(textField, value) {
+    textFieldUnFocus(textField, value) {
         throw new Error(`ViewController of TextField ${textField.__id__} must implement _textFieldUnFocus method!`);
     }
 }

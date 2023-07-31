@@ -46,7 +46,7 @@ class BackButtonProtocol {
      * @param {BackButton} button - The back button that was tapped.
      * @throws {Error} Will throw an error if the method is not implemented.
      */
-    _backButtonTapped(button) {
+    backButtonTapped(button) {
         throw new Error("You have to implement the method backButtonTapped!");
     }
 }

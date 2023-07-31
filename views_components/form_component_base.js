@@ -30,6 +30,35 @@ class FormComponentBase extends ViewComponentBase {
         console.log(`${cookieName} removed from cookie.`);
     }
 
+    /**
+     * Validate the component using its validators.
+     * @interface
+     */
+    validate() {
+        let isValid = true;
+        for (let validator of this.validators) {
+            let errorMessage = validator.validate(this.value);
+            if (errorMessage !== null) {
+                this.alert(true, errorMessage);
+                isValid = false;
+                break;
+            }
+        }
+        if (isValid) {
+            this.alert(false);
+            console.log(`No validation errors found in ${this.__id__}`);
+        }
+        return isValid;
+    }
+
+    /**
+     * @interface
+     * @param {boolean} isError - The error status of the component.
+     * @param {string} message - The error message to be displayed.
+     * 
+     * Handle the alert logic for the component. 
+     * This is a no-op function by default but can be overridden by subclasses if needed.
+     */
     // override this in subclasses
     alert(isError, message = '') {
         throw new Error(`The subclass class of ${this.constructor.name} must implement alert method!`);
