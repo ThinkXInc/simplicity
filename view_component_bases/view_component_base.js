@@ -11,18 +11,7 @@ class ViewComponentBase {
     constructor(parent_id, id, text, htmlTag, validators = []) {
         this.__parent_id__ = parent_id;
         this.__id__ = id;
-        this.viewController = viewController;
         this._setElements(text, htmlTag);
-
-        // Check if the value property has been defined in subclass
-        if (this.value === undefined) {
-            throw new TypeError("Must override property 'value'");
-        }
-
-        // Check if alert function has been defined in subclass
-        if (typeof this.alert !== "function") {
-            throw new TypeError("Must override method 'alert'");
-        }
 
         // Apply validators to the component
         this.validators = validators;
@@ -31,6 +20,19 @@ class ViewComponentBase {
         this.validators.forEach(validator => {
             validator.setComponent(this);
         });
+    }
+
+    init() {
+        this._checkProperties()
+    }
+
+    _checkProperties() {
+        if (typeof this.alert !== "function") {
+            throw new TypeError("Subclass must override 'alert' method");
+        }
+        if (typeof this._setEventHandlers !== "function") {
+            throw new TypeError("Subclass must implement '_setEventHandlers' method");
+        }
     }
 
     /**
