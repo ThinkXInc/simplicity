@@ -91,7 +91,7 @@ class ListMenu {
  * @param {DropdownMenuDisplayPositionType} position - {bottom|bottomover|upper|upperover} 
  * @param {[ListMenu]} listMenuItems - list of ListMenu with title, value.
  */
-class DropdownButton {
+class DropdownButton extends ViewComponentBase{
 
     __description__ = null;
     __field_name__ = null;
