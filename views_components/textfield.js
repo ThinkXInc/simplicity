@@ -19,11 +19,10 @@ const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
  /**
  * A class for TextField components.
  * @constructor
- * @classdesc `<div id={id} class=textField>` is necessary in HTML.
- * usage:
+ * @classdesc 
  * `<code>`
- * 
- *   <div id="{this.__id__}" class="textField">
+ * html:
+ *    <div id="{this.__id__}" class="textField">
  *      <div class="name inputouter">
  *          <h6 class="title">{this.__title__}</h6>
  *          <input class="{this.__field_name__}form" name="{this.__field_name__}" type="text" autocomplete="off">
@@ -35,6 +34,7 @@ const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
  *      </div>
  *   </div>
  * 
+ * usage:
  * 
  *  // Initialize the validators
  *  let requiredValidator = new Validator(titleField, ValidationErrorType.required, 'This field is required');
