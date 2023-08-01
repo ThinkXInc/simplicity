@@ -72,7 +72,7 @@ const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
  * @param {boolean} has_title - Whether the TextField has a title. Defaults to true.
  * @param {boolean} password_mode - Whether the TextField is in password mode. Defaults to false.
  */
-class TextField extends ViewComponentBase {
+class TextField extends FormComponentBase {
 
     __counter_format__ = `$count/$maxcount`;
 
@@ -140,9 +140,9 @@ class TextField extends ViewComponentBase {
     }
 
     set value(value) {
-        super.value(value)
         if (typeof value === 'string') {
             this._text = value;
+            super.value(value)
         } else {
             console.error(`TextField value must be a string, but got ${typeof value}`);
         }
@@ -405,7 +405,7 @@ class TextField extends ViewComponentBase {
      *            <span class="indicator"></span>
      *            <span class="message"></span>
      *            <span class="counter"></span>
-     *            <p class="alertMessage" id="{this.__id__}_alert">{message}</p>
+     *            <p class="alertMessage" id="{this.__id__}__alert">{message}</p>
      *        </div>
      *    </div>
      * </div>
@@ -414,18 +414,22 @@ class TextField extends ViewComponentBase {
      * @param {string} message
      */
     alert(onAlert, message) {
-        const id = this.__id__ + '_alert';
+        const id = this.__id__ + '__alert';
         const $parent = this.$textField;
         const $footer = $parent.querySelector('.footer');
         let $alertMessage = $footer.querySelector('#' + id);
     
         if (onAlert) {
+            console.log(`Alert turned on for ${this.__id__} with message: ${message}`);
             $parent.classList.add('alert');
     
             // If the alertMessage already exists, update it or return if it's the same.
             if ($alertMessage) {
                 if (message !== $alertMessage.innerText) {
                     $alertMessage.innerText = message;
+                    console.log(`Updated alert message for ${this.__id__} to: ${message}`);
+                } else {
+                    console.log(`Alert message for ${this.__id__} is already set to: ${message}`);
                 }
                 return;
             }
@@ -436,11 +440,16 @@ class TextField extends ViewComponentBase {
             $alertMessage.id = id;
             $alertMessage.innerText = message;
             $footer.appendChild($alertMessage);
+            console.log(`Created new alert message for ${this.__id__} with message: ${message}`);
         } else if ($alertMessage) { // Only run if $alertMessage exists
+            console.log(`Alert turned off for ${this.__id__}`);
             $parent.classList.remove('alert');
             $footer.removeChild($alertMessage);
+        } else {
+            //DEBUG: console.log(`Alert method called for ${this.__id__} to remove the message but not found.`);
         }
     }
+    
 }
 
 

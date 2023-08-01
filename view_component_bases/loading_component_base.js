@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Base class for loading components. Manages loading state and display style.
  * 

@@ -1,3 +1,4 @@
+'use strict';
 /**
  * @fileoverview simplicity/view_controllers/input_page_view_controller.js
  * 
@@ -191,18 +192,24 @@ class InputPageViewDataModel {
  * @method unfocused - Called when a component loses focus, should be overridden in the subclass.
  */
 class InputPageViewController {
-    _page = null;  // Current page index
+    _pageIndex = null;  // Current page index
     _values = {};  // Object for storing form values
     
+    _pages = [];
     _components = [];  // Array for storing all form components
     _pageComponents = [];  // [[comp 0 in page 0, comp 1 in page 0, ..], [..],..]
     
     _locale = null;  // Locale text dictionary 
     _lang = null;  // Language of the user
 
-    constructor(parent_id, id, pages, dataModelClass, locale, lang, loading) {
+    constructor(parent_id, id, pages, dataModelClass, locale, lang, loading, defaultPageIndex = 0) {
         this.__parent_id__ = parent_id;
         this.__id__ = id;
+        this._locale = locale;
+        this._lang = lang;
+
+        this.pages = pages;
+        this.loading = loading;
 
         // Potentially check protocol adherence here
         this._checkProtocolAdherence();
@@ -222,8 +229,6 @@ class InputPageViewController {
         console.log(`data model for ${this.__id__} initialized`);
 
         // locale
-        this._locale = locale;
-        this._lang = lang;
         console.log(locale);
         console.log(lang);
         if (this._locale == null) {
@@ -239,6 +244,9 @@ class InputPageViewController {
 
         // loading
         this.loading = loading
+
+        // start page index
+        this.pageIndex = defaultPageIndex;
     }
 
     /**
@@ -274,18 +282,18 @@ class InputPageViewController {
     
 
     /**
-     * page setter / getter
+     * pageIndex setter / getter
      * 
-     * Display only the page in current state.
+     * Display only the pageIndex in current state.
      */
-    set page(page) {
-        const previousPage = this._page;
-        console.log(`page changed ${previousPage} -> ${page}`)
-        this._page = page;
+    set pageIndex(pageIndex) {
+        const previousPageIndex = this._pageIndex;
+        debuglog(`pageIndex changed ${previousPageIndex} -> ${pageIndex}`)
+        this._pageIndex = pageIndex;
         // display only the page in current state.
         let $pages = this.$inputPageView.querySelectorAll('.inputPageViewPage')
         $pages.forEach(($page, i) => {
-            if (parseInt($page.dataset.pageIndex) == this._page) {
+            if (parseInt($page.dataset.pageIndex) == this._pageIndex) {
                 $page.classList.add('show');
                 $page.style.display = "flex";
                 $page.style.flexDirection = "column";
@@ -294,15 +302,15 @@ class InputPageViewController {
                 $page.style.display = "none";
             }
         })
-        if (!(isNaN(this._page))) {
+        if (!(isNaN(this._pageIndex))) {
             // call interface
-            this._pageChanged(this._page);
+            this.pageIndexChanged(this._pageIndex);
             // update browser's url
-            this._updatePageNumberInBrowswerURL(this._page);
+            this._updatePageNumberInBrowswerURL(this._pageIndex);
         }
     }
 
-    get page() {return this._page}
+    get pageIndex() {return this._pageIndex}
 
     /**
      * values  getter
@@ -356,6 +364,9 @@ class InputPageViewController {
         $container.id = 'inputPageViewContainer';
         $container.classList.add($container.id);
         this.$inputPageView.appendChild($container);
+
+        // loading
+        this.loading.addToParent($container);
 
         // create pages
         console.log(`${pages.length} pages detected.`)
@@ -429,9 +440,9 @@ class InputPageViewController {
         })
         window.addEventListener('hashchange', (event) => {
             console.log('hashchange event detected');
-            console.log(`url changed. -> ${PageControl.getRelativePath()}`)
+            console.log(`url changed. -> ${Browser.getRelativePath()}`)
             const page = Browswer.getValueFromHash('page', 'int');
-            _this.page = page;
+            _this.pageIndex = page;
         }, false);
     }
 
@@ -477,7 +488,7 @@ class InputPageViewController {
             console.error(`invalid page number ${page} of type ${typeof page}`);
             return
         }
-        PageControl.updateValueInHash('page', String(page), true);
+        Browser.updateValueInHash('page', String(page), true);
     }
 
     /**
@@ -606,24 +617,62 @@ class InputPageViewController {
     /**
      * @interface
      * 
-     * Called when page changed.
-     * @param {Int} page
+     * Called when pageIndex changed.
+     * @param {Int} pageIndex
      */
-    pageChanged(page) {
+    pageIndexChanged(pageIndex) {
         // NOTE: override this function
     }
 
     /**
-     * @abstract
-     * 
-     * This is an abstract method that is called when the next button is tapped. 
-     * Subclasses are expected to override this method to provide specific functionality.
-     * 
+     * Method that is called when the next button is tapped.
+     * If it's not the last page, this function validates the current page and moves to the next one if validation passes.
+     * If it's the last page, this function submits the form values.
+     * This method can be overridden by subclasses to provide specific functionality.
+     *
      * @param {NextButton} nextButton - The next button instance that was tapped.
      */
     nextButtonTapped(nextButton) {
-        console.log(`button ${nextButton.__id__} tapped.`);
-        // NOTE: override this function
+        console.debug(`Button ${nextButton.__id__} tapped.`);
+        
+        // If not the last page
+        if (this.pageIndex < this.pages.length - 1) {
+            this.startLoading();
+        
+            // Validate current page
+            const errors = this._validatePage(this.pageIndex);
+            if (errors.length > 0) {
+                this.stopLoading();
+                return; // Return early if there are validation errors
+            }
+        
+            // If validation passes, move to the next page
+            this.pageIndex += 1;
+            this.stopLoading();
+        
+        } else { // If this is the last page
+            this.startLoading();
+        
+            // Validate all pages
+            const hasError = this.pages.some((page, i) => {
+                const errors = this._validatePage(i);
+                return errors.length > 0; // Return true on the first error encountered
+            });
+        
+            if (hasError) {
+                this.stopLoading();
+                return; // Return early if there are validation errors
+            }
+        
+            // Submit value
+            console.log('------> Request Payload');  // DEBUG:
+            console.table(this._values);
+            console.log(`[Request data] ${JSON.stringify(this._values)}`);
+            console.log('<------ Request Payload');  // DEBUG:
+            
+            this._submit();
+            this.stopLoading();
+        }
     }
 
     /**
@@ -636,7 +685,10 @@ class InputPageViewController {
      * @throws {Error} Will throw an error if the method is not overridden in a child class.
      */
     backButtonTapped(backButton) {
-        throw new Error("You have to override the method _backButtonTapped!");
+        debuglog(`button ${backButton.__id__} tapped.`);
+        if (this.pageIndex > 0) {
+            this.pageIndex = this.pageIndex - 1;
+        }
     }
 
     /**
@@ -775,6 +827,7 @@ class InputPageViewController {
      * @return {string|null} - The error message if validation fails, or null if it passes.
      */
     _validateComponent(component) {
+        debuglog(`Validating component: ${component.__id__}`)
         return component.validate()
     }
 
@@ -783,13 +836,14 @@ class InputPageViewController {
      * 
      * @description _validateComponent(component, value) must be implemented.
      * 
-     * @param {number} page 
+     * @param {number} pageIndex
      * @returns {Array} a 2-dim list of all errors found in the page.
      * [[component, 'error message'], ..}
      */
-    _validatePage(page) {
+    _validatePage(pageIndex) {
         let errors = [];
-        this._pageComponents[page].forEach((component, j) => {
+        console.log(`Validate page: ${pageIndex}`);
+        this._pageComponents[pageIndex].forEach((component, j) => {
             if (component instanceof TextField || component instanceof DropdownButton) {
                 const errorMessage = this._validateComponent(component);
                 if (errorMessage != null) {
@@ -797,6 +851,7 @@ class InputPageViewController {
                 }
             }
         });
+        console.log(`${errors.length} errors found.`)
         return errors
     }
 

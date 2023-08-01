@@ -31,25 +31,35 @@ class FormComponentBase extends ViewComponentBase {
     }
 
     /**
-     * Validate the component using its validators.
+     * Validates the current component using its set validators.
+     * It iterates through each validator, and if an error message is returned,
+     * it triggers an alert with the error message, marks the component as invalid, and breaks the loop.
+     * If no validation errors are found, it deactivates the alert and logs a message stating that no validation errors were found.
+     *
      * @interface
+     * @returns {null|string} - Null if the component is valid; the error message string if the component is not valid.
      */
     validate() {
-        let isValid = true;
+        let errorMessage = null;
         for (let validator of this.validators) {
-            let errorMessage = validator.validate(this.value);
+            console.log(`Running validator: ${validator.constructor.name}`);
+            errorMessage = validator.validate(this.value);
             if (errorMessage !== null) {
+                console.log(`Validation error found for ${this.__id__}: ${errorMessage}`);
                 this.alert(true, errorMessage);
-                isValid = false;
                 break;
             }
         }
-        if (isValid) {
-            this.alert(false);
+        if (errorMessage === null) {
             console.log(`No validation errors found in ${this.__id__}`);
+            this.alert(false);
+        } else {
+            console.log(`Validation failed for ${this.__id__}`);
         }
-        return isValid;
+        console.log(`Finished validation for ${this.__id__} with result: ${errorMessage ? "Error: " + errorMessage : "No errors"}`);
+        return errorMessage;
     }
+    
 
     /**
      * @interface

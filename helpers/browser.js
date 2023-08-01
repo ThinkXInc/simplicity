@@ -7,6 +7,16 @@
  * @author kaz@thinkxinc.com (Kazuki Otsuka)
  */
 class Browser {
+
+  /**
+   * Syncronously move page.
+   * 
+   * @param {String} relativePath 
+   */
+    static goTo(relativePath) {
+      window.location = relativePath;
+  }
+
   /**
    * Update url in address bar.
    * 
@@ -14,7 +24,7 @@ class Browser {
    * @param {string} path /path/to?key1=val1&key2=val2 or #key=val
    * @param {bool} withHTML whether to push the current html and title into history.
    */
-  pushHistoryState(path, withHTML = true) {
+  static pushHistoryState(path, withHTML = true) {
     let htmlState = null;
 
     if (withHTML) {
@@ -31,7 +41,7 @@ class Browser {
    * 
    * @returns {string} html in <document><content>
    */
-  getHTML() {
+  static getHTML() {
     const html = document.getElementById('content').innerHTML;
     return html;
   }
@@ -137,7 +147,7 @@ class Browser {
    * @param {string} value 
    * @param {boolean} withHTML 
    */
-  updateValueInHash(key, value, withHTML = false) {
+  static updateValueInHash(key, value, withHTML = false) {
     let hash = window.location.hash.replace('#', '');
     let keyVals = (hash === '') ? [] : hash.split('&');
     let newhash = '';
