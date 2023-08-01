@@ -37,6 +37,7 @@ class LastNameFirstNamePage extends Page {
         init_rows = 1,
         first_name_field_name = 'first_name',
         last_name_field_name = 'last_name',
+        validators = [],
     ) {
         debuglog(`LastNameFirstNamePage initialize parent_id: ${parent_id}, page_id: ${page_id}`);
 
@@ -56,12 +57,6 @@ class LastNameFirstNamePage extends Page {
         let locale_key_back_button = Page.createLocaleKey(page_id, 'BackButton', 'title');
         let locale_key_next_button = Page.createLocaleKey(page_id, 'NextButton', 'title');
         
-        // Initialize the validators
-        let requiredValidator = new Validator(ValidationErrorType.required, 'This field is required');
-        let lengthValidator = new Validator(ValidationErrorType.length, 'The length of the text exceeds the limit', [max_text_count]); 
-
-        let validators = [requiredValidator, lengthValidator];
-
         // Initialize the TextFields
         let firstNameField = new TextField(
             parent_id,

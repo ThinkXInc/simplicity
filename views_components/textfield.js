@@ -311,10 +311,10 @@ class TextField extends FormComponentBase {
             _this.text = _this.$textArea.value;
             _this.count = _this.$textArea.value.length;
 
-            if(this.viewController && typeof this.viewController._textFieldInputValueChanged === "function"){
-                this.viewController._textFieldInputValueChanged(this, _this.$textArea.value);
+            if(this.viewController && typeof this.viewController.textFieldInputValueChanged === "function"){
+                this.viewController.textFieldInputValueChanged(this, _this.$textArea.value);
             } else {
-                console.error('ViewController not set or _textFieldInputValueChanged not a function');
+                console.error('ViewController not set or textFieldInputValueChanged not a function');
             }
 
             // set state as the text count 
@@ -342,10 +342,10 @@ class TextField extends FormComponentBase {
         debuglog(`Set the blur event handler for ${this.__id__}.`);
         this.$textArea.addEventListener('blur', () => {
             console.log(`[event] blur -> ${_this.$textArea.value}`)
-            if (this.viewController && typeof this.viewController._textFieldUnFocus === "function") {
-                this.viewController._textFieldUnFocus(this, _this.$textArea.value);
+            if (this.viewController && typeof this.viewController.textFieldUnFocus === "function") {
+                this.viewController.textFieldUnFocus(this, _this.$textArea.value);
             } else {
-                console.error('ViewController not set or _textFieldUnFocus not a function');
+                console.error('ViewController not set or textFieldUnFocus not a function');
             }
         });
     }
@@ -463,7 +463,7 @@ class TextFieldProtocol {
      * @throws {Error} If the method is not overridden in the ViewController.
      */
     textFieldInputValueChanged(textField, value) {
-        throw new Error(`ViewController of TextField ${textField.__id__} must implement _textFieldInputValueChanged method!`);
+        throw new Error(`ViewController of TextField ${textField.__id__} must implement textFieldInputValueChanged method!`);
     }
 
     /**
@@ -475,6 +475,6 @@ class TextFieldProtocol {
      * @throws {Error} If the method is not overridden in the ViewController.
      */
     textFieldUnFocus(textField, value) {
-        throw new Error(`ViewController of TextField ${textField.__id__} must implement _textFieldUnFocus method!`);
+        throw new Error(`ViewController of TextField ${textField.__id__} must implement textFieldUnFocus method!`);
     }
 }

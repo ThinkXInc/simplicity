@@ -698,11 +698,11 @@ class InputPageViewController {
      * @param {string} value - The new input value.
      */
     textFieldInputValueChanged(textField, value) {
-        if(typeof this._valueChanged !== 'function'){
-            throw new Error(`Instance ${this.__id__} must implement the method _valueChanged in subclass!`);
+        if(typeof this.valueChanged !== 'function'){
+            throw new Error(`Instance ${this.__id__} must implement the method valueChanged in subclass!`);
         }
         console.log(`textField ${textField.__id__} input with value ${value}.`);
-        this._valueChanged(textField, value);
+        this.valueChanged(textField, value);
         //this._setValueForKey(textField.__field_name__, value)
         //if(typeof this._setValueForKey !== 'function'){
         //    throw new Error(`Instance ${this.__id__} must implement the method _setValueForKey in subclass!`);
@@ -716,11 +716,11 @@ class InputPageViewController {
      * @param {string} value - The current value of the TextField.
      */
     textFieldUnFocus(textField, value) {
-        if(typeof this._unfocused !== 'function'){
-            throw new Error(`Instance ${this.__id__} must implement the method _unfocused in subclass!`);
+        if(typeof this.unfocused !== 'function'){
+            throw new Error(`Instance ${this.__id__} must implement the method unfocused in subclass!`);
         }
         console.log(`textField ${textField.__id__} onblur with value ${value}.`);
-        this._unfocused(textField, value);
+        this.unfocused(textField, value);
     }
 
     /**
@@ -733,8 +733,8 @@ class InputPageViewController {
      */
     dropdownButtonSelected(dropdownButton, value) {
         console.log(`dropdownButton ${dropdownButton.__id__} selected with value ${value}.`);
-        this._unfocused(dropdownButton, value);
-        this._valueChanged(dropdownButton, value);
+        this.unfocused(dropdownButton, value);
+        this.valueChanged(dropdownButton, value);
         // NOTE: override this function
         //this._setValueForKey(dropdownButton.__field_name__, value)
     }
@@ -750,7 +750,7 @@ class InputPageViewController {
         console.log(`positionMap ${positionMap.__id__}.pointerCoordinate updated with value ${newCoordinate.lat} ${newCoordinate.lng}`);
         const keyLat = `${positionMap.__field_name_lat__}`;
         const keyLng = `${positionMap.__field_name_lng__}`;
-        this._valueChanged(positionMap, newCoordinate);
+        this.valueChanged(positionMap, newCoordinate);
         //this._setValuesForKeys(
         //    {
         //        [keyLat]: newCoordinate.lat,

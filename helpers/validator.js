@@ -1,4 +1,9 @@
-const ValidationErrorType = Object.freeze({ required: 0, length: 1, emailFormat: 2, passwordFormat: 3, telFormat: 4, notcorrespond: 99 })
+const ValidationErrorType = Object.freeze(
+    { 
+        required: 'required', length: 'length',
+        emailFormat: 'email_format', passwordFormat: 'password_format',
+        telFormat: 'tel_format', postalCodeFormat: 'postal_code_format', notCorresponding: 'not_corresponding' })
+
 
 const RegexType = Object.freeze({
     email: /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
@@ -25,18 +30,30 @@ class Validator {
      * @param {string} errorMessage - The error message to display if the validation fails.
      * @param {Array} args - Additional arguments needed for this validation.
      */
-    constructor(errorType, errorMessage, args = []) {
+    constructor(errorType, locale, lang, args = []) {
         if (errorType == null) {
             throw new Error('Validator requires errorType.');
         }
-        if (errorMessage == null) {
-            throw new Error('Validator requires errorMessage.');
+        if (locale == null) {
+            throw new Error('Validator requires locale object.');
         }
 
         this.errorType = errorType;
-        this.errorMessage = errorMessage;
+        this.locale = locale;
+        this.errorMessage = locale.get(errorType, lang) 
         this.args = args;
-    }
+
+        // Check for minimum and maximum values if errorType is length
+        if (errorType === ValidationErrorType.length) {
+            if (args.length !== 2 || typeof args[0] !== 'number' || typeof args[1] !== 'number') {
+                throw new Error('For length validation, args must contain exactly two numeric elements: [min, max].');
+            }
+            if (!/\$0.*\$1/.test(this.errorMessage)) {
+                throw new Error('For length validation, error message must include $0 and $1 placeholders.');
+            }
+            this.errorMessage = this._replacePlaceholders(this.errorMessage, args);
+        }
+   }
 
     /**
      * Set the component.
@@ -85,7 +102,7 @@ class Validator {
                     return this.errorMessage;
                 }
                 break;
-            case ValidationErrorType.notcorrespond:
+            case ValidationErrorType.notCorresponding:
                 if (!this._validateNotCorrespond(value)) {
                     return this.errorMessage;
                 }
@@ -123,5 +140,14 @@ class Validator {
      */
     _validateFormat(value, regex) {
         return regex.test(value);
+    }
+
+    _replacePlaceholders(errorMessage, args) {
+        let replacedMessage = errorMessage;
+        for (let i = 0; i < args.length; i++) {
+            const placeholder = `$${i}`;
+            replacedMessage = replacedMessage.replace(placeholder, args[i]);
+        }
+        return replacedMessage;
     }
 }
