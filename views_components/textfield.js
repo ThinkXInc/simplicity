@@ -46,9 +46,9 @@ const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
  *  let titleField = new TextField(
  *      'parentView',  // parent_id
  *      'titleField',  // id
+ *      'title',  // field name
  *      TextFieldType.multiplelines,  // single or multi
  *      'title(reqired)',  // title
- *      'title',  // field name
  *      'Mona Lisa Title and subject',  // placeholder
  *      'div',  // the HTML tag
  *      validators,  // Pass in the validators
@@ -58,13 +58,14 @@ const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
  *      true,  // assuming the title is visible
  *      false  // assuming password mode is off
  *  );
- * `</code>`
  * @param {string} parent_id - The id of the parent element.
  * @param {string} id - The id for the TextField element.
+ * @param {string} field_name - The name of the TextField.
  * @param {string} type - The type of TextField.
  * @param {string} title - The title to display in the TextField.
- * @param {string} field_name - The name of the TextField.
  * @param {string} placeholder - The placeholder text for the TextField.
+ * @param {string} htmlTag - The HTML tag to use for the TextField. Defaults to 'div'.
+ * @param {Validator[]} validators - The validators for the TextField.
  * @param {number} max_text_count - The maximum character count for the TextField. Defaults to 999.
  * @param {number} init_rows - The initial number of rows in the TextField. Defaults to 6.
  * @param {boolean} vertical_flex - Whether the TextField has vertical flexibility. Defaults to true.

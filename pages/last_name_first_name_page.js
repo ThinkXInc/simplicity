@@ -38,7 +38,7 @@ class LastNameFirstNamePage extends Page {
         first_name_field_name = 'first_name',
         last_name_field_name = 'last_name',
     ) {
-        console.log(`LastNameFirstNamePage initialize parent_id: ${parent_id}, page_id: ${page_id}`);
+        debuglog(`LastNameFirstNamePage initialize parent_id: ${parent_id}, page_id: ${page_id}`);
 
         // define default ids and locale keys
         let first_name_component_id = Page.createComponentId(parent_id, page_id, 'TextField', first_name_field_name);
@@ -66,9 +66,9 @@ class LastNameFirstNamePage extends Page {
         let firstNameField = new TextField(
             parent_id,
             first_name_component_id,
+            first_name_field_name,
             TextFieldType.singleline,
             locale.get(locale_key_first_name_title, lang),
-            first_name_field_name,
             locale.get(locale_key_first_name_placeholder, lang),
             'div',
             validators,
@@ -82,9 +82,9 @@ class LastNameFirstNamePage extends Page {
         let lastNameField = new TextField(
             parent_id,
             last_name_component_id,
+            last_name_field_name,
             TextFieldType.singleline,
             locale.get(locale_key_last_name_title, lang),
-            last_name_field_name,
             locale.get(locale_key_last_name_placeholder, lang),
             'div',
             validators,

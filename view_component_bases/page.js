@@ -1,6 +1,14 @@
 /**
- * Class representing a Page containing multiple view components.
- * Each component should be an instance of ViewComponentBase or Wrapper.
+ * Represents a page consisting of a collection of components. 
+ * Each component must be an instance of ViewComponentBase or Wrapper.
+ *
+ * @extends ViewComponentBase
+ * 
+ * @param {string} id - The unique identifier for the page.
+ * @param {Array} components - An array of components that make up the page.
+ * 
+ * @throws {Error} If the components parameter is not an array or if any component 
+ * is not a subclass of ViewComponentBase or Wrapper.
  */
 class Page {
     components;
@@ -16,16 +24,18 @@ class Page {
      * if any element in the components array is not an instance of ViewComponentBase or Wrapper.
      */
     constructor(parent_id, page_id, components = []) {
+        debuglog(`Construct ${page_id}`)
         this.__parent_id__ = parent_id;
         this.__id__ = page_id;
 
+        console.log(components);
         if (!Array.isArray(components)) {
-            throw new Error("Components must be an array.");
+            throw new Error(`Components must be an array, but got ${typeof components}.`);
         }
 
         components.forEach(component => {
-            if (!(component instanceof ViewComponentBase) && !(component instanceof Wrapper)) {
-                throw new Error("All components must be a subclass of ViewComponentBase or Wrapper.");
+            if (!this.isInheritedFrom(component, ViewComponentBase) && !this.isInheritedFrom(component, Wrapper)) {
+                throw new Error(`All components must be a subclass of ViewComponentBase or Wrapper, but got ${component.constructor.name}.`);
             }
         });
 
@@ -88,4 +98,24 @@ class Page {
 
         return parts.join("__");
     }
+
+    /**
+     * Checks whether a given object is inherited from a specified superclass.
+     * 
+     * @param {Object} object - The object to check.
+     * @param {Function} superClass - The superclass to compare against.
+     * @returns {boolean} - True if the object is a subclass of the superclass, false otherwise.
+     */
+    isInheritedFrom(object, superClass) {
+        let currentProto = Object.getPrototypeOf(object.constructor);
+
+        while (currentProto) {
+            if (currentProto.name === superClass.name) {
+                return true;
+            }
+            currentProto = Object.getPrototypeOf(currentProto);
+        }
+        return false;
+    }
+    
 }

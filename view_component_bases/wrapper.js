@@ -27,7 +27,7 @@ class Wrapper extends ViewComponentBase {
         super(parent_id, id, '', htmlTag);
 
         if (!Array.isArray(components)) {
-            throw new Error("Components must be an array.");
+            throw new Error(`Components must be an array, but got ${typeof components}.`);
         }
 
         components.forEach(component => {

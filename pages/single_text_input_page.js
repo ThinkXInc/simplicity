@@ -26,6 +26,7 @@ class SingleTextInputPage extends Page {
     constructor(parent_id, page_id, locale, lang = 'en', 
                 field_name = 'single_text_input_field', 
                 max_text_count = 140, init_rows = 1, validators = []) {
+        debuglog(`SingleTextInputPage initialize parent_id: ${parent_id}, page_id: ${page_id}`);
         // define default ids and locale keys
         let field_component_id = Page.createComponentId(parent_id, page_id, 'TextField', field_name);
         let next_button_component_id = Page.createComponentId(parent_id, page_id, 'NextButton', 'next_button');
@@ -42,9 +43,9 @@ class SingleTextInputPage extends Page {
         let textField = new TextField(
             parent_id,
             field_component_id,
+            field_name,
             TextFieldType.singleline,
             locale.get(locale_key_field_title, lang),
-            field_name,
             locale.get(locale_key_field_placeholder, lang),
             'div',
             validators,
