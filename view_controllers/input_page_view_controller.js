@@ -179,16 +179,16 @@ class InputPageViewDataModel {
  * @method _updatePageNumberInBrowswerURL - Updates the page number in the URL.
  * 
  * event handlers
- * @method _viewLoaded - Called when the view is loaded.
- * @method _pageChanged - Called when the page is changed.
- * @method _nextButtonTapped - Called when the 'Next' button is tapped.
- * @method _backButtonTapped - Called when the 'Back' button is tapped, must be overridden in the subclass.
- * @method _textFieldInputValueChanged - Called when a text field input value is changed.
- * @method _textFieldUnFocus - Called when a text field loses focus.
- * @method _dropdownButtonSelected - Called when a dropdown button is selected.
- * @method _positionMapPointerCoordinateUpdated - Called when the pointer coordinate is updated on a position map.
- * @method _valueChanged - Called when a component value is changed, should be overridden in the subclass.
- * @method _unfocused - Called when a component loses focus, should be overridden in the subclass.
+ * @method viewDidLoad - Called when the view is loaded.
+ * @method pageChanged - Called when the page is changed.
+ * @method nextButtonTapped - Called when the 'Next' button is tapped.
+ * @method backButtonTapped - Called when the 'Back' button is tapped, must be overridden in the subclass.
+ * @method textFieldInputValueChanged - Called when a text field input value is changed.
+ * @method textFieldUnFocus - Called when a text field loses focus.
+ * @method dropdownButtonSelected - Called when a dropdown button is selected.
+ * @method positionMapPointerCoordinateUpdated - Called when the pointer coordinate is updated on a position map.
+ * @method valueChanged - Called when a component value is changed, should be overridden in the subclass.
+ * @method unfocused - Called when a component loses focus, should be overridden in the subclass.
  */
 class InputPageViewController {
     _page = null;  // Current page index
@@ -265,13 +265,13 @@ class InputPageViewController {
      * @throws {Error} If a required method from the protocol class is not implemented.
      */
     _checkProtocolAdherenceForClass(protocolClass) {
-        const protocolInstance = new protocolClass();
-        Object.getOwnPropertyNames(Object.getPrototypeOf(protocolInstance)).forEach(methodName => {
+        Object.getOwnPropertyNames(protocolClass.prototype).forEach(methodName => {
             if (methodName !== "constructor" && typeof this[methodName] !== "function") {
                 throw new Error(`InputPageViewController must implement ${methodName} method of ${protocolClass.name}`);
             }
         });
     }
+    
 
     /**
      * page setter / getter
@@ -338,8 +338,8 @@ class InputPageViewController {
             console.error(`${this.__id__} requires a list of pages with components.`)
         }
 
-        this.$parentView = document.getElementById(self.__parent_id__);
-        if (this.$inputPageView == null) {
+        this.$parentView = document.getElementById(this.__parent_id__);
+        if (this.$parentView == null) {
             console.error(
                 `The parent element id=${this.__parent_id__} is necessary in HTML.`);
         }
@@ -378,7 +378,7 @@ class InputPageViewController {
     
             $pagesContainer.appendChild($page);
         });
-        $container.appendChild($pages);
+        $container.appendChild($pagesContainer);
     }
 
     /**
@@ -396,7 +396,7 @@ class InputPageViewController {
             $wrapper.classList.add('wrapper');
             component.components.forEach((componentInWrapper, k) => {
                 this._setPageComponent(componentInWrapper, $wrapper, pageIndex, k);
-                componentInWrapper.addToDOM($wrapper);
+                componentInWrapper.addToParent($wrapper);
             });
         } else {
             let _id = component.__id__;
@@ -406,7 +406,7 @@ class InputPageViewController {
     
             // Set the viewController for the component
             component.setViewController(this);
-            component.addToDOM($parent);
+            component.addToParent($parent);
     
             // keep components in the ViewController instance
             this._components.push(component);
@@ -425,7 +425,7 @@ class InputPageViewController {
         const _this = this;
         window.addEventListener('load', (event) => {
             console.log('** the whole page has been loaded. **');
-            _this._viewLoaded();
+            _this.viewDidLoad();
         })
         window.addEventListener('hashchange', (event) => {
             console.log('hashchange event detected');
@@ -599,7 +599,7 @@ class InputPageViewController {
      * Called when the whole page has been loaded.
      * 
      */
-    viewLoaded() {
+    viewDidLoad() {
         // NOTE: override this function
     }
 

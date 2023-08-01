@@ -9,7 +9,7 @@
  */
 class ViewComponentBase {
     constructor(parent_id, id, text, htmlTag, validators = []) {
-        debuglog(`Initializing ${id}`)
+        debuglog(`Initializing ${this.constructor.name} with id=${id}`)
         this.__parent_id__ = parent_id;
         this.__id__ = id;
         this._setElements(text, htmlTag);

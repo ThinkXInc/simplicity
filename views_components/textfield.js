@@ -305,7 +305,7 @@ class TextField extends ViewComponentBase {
      */
     _setEventHandlers() {
         const _this = this;
-        console.log(`Set the input event handler for ${this.__id__}.`);
+        debuglog(`Set the input event handler for ${this.__id__}.`);
         this.$textArea.addEventListener('input', (e) => {
             console.log(`[event] text in textarea changed. -> ${_this.$textArea.value}`)
             _this.text = _this.$textArea.value;
@@ -330,7 +330,7 @@ class TextField extends ViewComponentBase {
 
         // auto resize vertically
         if (_this.__vertical_flex__) {
-            console.log(`Set the keydown event handler for ${this.__id__}.`);
+            debuglog(`Set the keydown event handler for ${this.__id__}.`);
             _this.$textArea.addEventListener('keydown', ()=> {
                 console.log(`[event] keydown -> ${_this.$textArea.value}`)
                 setTimeout(()=> {
@@ -339,7 +339,7 @@ class TextField extends ViewComponentBase {
             });
         }
 
-        console.log(`Set the blur event handler for ${this.__id__}.`);
+        debuglog(`Set the blur event handler for ${this.__id__}.`);
         this.$textArea.addEventListener('blur', () => {
             console.log(`[event] blur -> ${_this.$textArea.value}`)
             if (this.viewController && typeof this.viewController._textFieldUnFocus === "function") {

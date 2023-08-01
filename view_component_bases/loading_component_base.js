@@ -57,8 +57,8 @@ class LoadingProtocol {
      * @param {LoadingComponentBase} loading - The loading component to start.
      * @throws {Error} Will throw an error if the method is not implemented.
      */
-    _startLoading(loading) {
-        throw new Error('You have to implement the method _startLoading!');
+    startLoading(loading) {
+        throw new Error('You have to implement the method startLoading!');
     }
 
     /**
@@ -68,7 +68,7 @@ class LoadingProtocol {
      * @param {LoadingComponentBase} loading - The loading component to stop.
      * @throws {Error} Will throw an error if the method is not implemented.
      */
-    _stopLoading(loading) {
-        throw new Error('You have to implement the method _stopLoading!');
+    stopLoading(loading) {
+        throw new Error('You have to implement the method stopLoading!');
     }
 }
