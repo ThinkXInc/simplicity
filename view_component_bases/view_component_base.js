@@ -41,23 +41,36 @@ class ViewComponentBase {
      * @param {string} htmlTag - The type of HTML element to create (e.g., 'div', 'h2', etc.).
      */
     _setElements(text, htmlTag) {
-        // parent view
-        this.$parentView = document.getElementById(this.__parent_id__);
-        if (this.$parentView == null) {
-            console.error(
-                `The parent element id=${this.__parent_id__} is necessary in HTML.`);
-        }
-
         // create view
-        let $view = document.createElement(htmlTag);
-        $view.id = this.__id__;
-        $view.innerText = text;
-
-        this.$view = $view;
-        this.$parentView.appendChild($view);
-
+        this.$view = document.createElement(htmlTag);
+        this.$view.id = this.__id__;
+        this.$view.innerText = text;
         this.$view.classList.add(`${this.__parent_id__}_${this.__id__}`);
     }
+
+    /**
+     * Adds this component to the given parent DOM element.
+     *
+     * This method is necessary because it encapsulates the responsibility of 
+     * adding the component to the DOM within the component itself. This allows 
+     * for greater flexibility as the component can be appended to various 
+     * parent DOM elements as required, and ensures that the component has 
+     * control over its own representation in the DOM.
+     *
+     * @param {HTMLElement} $parent - The parent DOM element to which this 
+     * component will be appended. If not provided or null, an error is logged.
+     *
+     * @returns {void}
+     */
+    addToParent($parent) {
+        if (!$parent) {
+            console.error(
+                `The parent element id=${this.__parent_id__} is necessary in HTML.`);
+        } else {
+            $parent.appendChild(this.$view);
+        }
+    }
+
 
     /**
      * @interface

@@ -367,7 +367,7 @@ class InputPageViewController {
     
             // create page DOM element
             let $page = document.createElement('div');
-            $page.id = `${this.__id__}__Page__${i}`;
+            $page.id = page.__id__;
             $page.classList.add('inputPageViewPage');
             $page.dataset.pageIndex = i;
     
@@ -394,23 +394,19 @@ class InputPageViewController {
             let $wrapper = document.createElement('div');
             $wrapper.id = component.__id__;
             $wrapper.classList.add('wrapper');
-            $parent.appendChild($wrapper);
             component.components.forEach((componentInWrapper, k) => {
                 this._setPageComponent(componentInWrapper, $wrapper, pageIndex, k);
+                componentInWrapper.addToDOM($wrapper);
             });
         } else {
             let _id = component.__id__;
             if (_id == null) {
                 console.error(`page ${pageIndex} component ${componentIndex}: no __id__ is set in the instance.`);
             }
-            let $elem = document.getElementById(_id);
-            if ($elem == null) {
-                console.error(`<div id=${_id}> is necessary in HTML.`);
-            }
-            $parent.appendChild($elem);
     
             // Set the viewController for the component
             component.setViewController(this);
+            component.addToDOM($parent);
     
             // keep components in the ViewController instance
             this._components.push(component);

@@ -2,6 +2,7 @@
  * LastNameFirstNamePage is a subclass of Page that specifically represents a page with text fields for last name and first name, and back/next buttons.
  *
  * @param {string} parent_id - The id of the parent element in which this page is placed.
+ * @param {string} page_id - The id of page
  * @param {object} locale - The dictionary containing localized strings.
  * @param {string} lang - The current language. Default is 'en'.
  * @param {string} locale_key_first_name_title - The key for the first name title in the locale dictionary.
@@ -26,29 +27,35 @@
  * };
  * let lastNameFirstNamePage = new LastNameFirstNamePage('signupView', myLocale, 'en');
  */
-
 class LastNameFirstNamePage extends Page {
     constructor(
         parent_id, 
-        id, 
+        page_id, 
         locale, 
         lang = 'en',
-        first_name_component_id = 'firstNameTextField',
-        last_name_component_id = 'lastNameTextField',
-        next_button_component_id = 'lastNameFirstNamePageNextButton',
-        back_button_component_id = 'lastNameFirstNamePageBackButton',
-        title_component_id = 'lastNameFirstNamePageTitle',
+        max_text_count = 140, 
+        init_rows = 1,
         first_name_field_name = 'first_name',
         last_name_field_name = 'last_name',
-        locale_key_first_name_title = 'first_name_text_field_title',
-        locale_key_first_name_placeholder = 'first_name_text_field_placeholder',
-        locale_key_last_name_title = 'last_name_text_field_title',
-        locale_key_last_name_placeholder = 'last_name_text_field_placeholder',
-        locale_key_title = 'last_name_first_name_page_title',
-        locale_key_back_button = 'last_name_first_name_back_button_text',
-        locale_key_next_button = 'last_name_first_name_next_button_text',
-        max_text_count = 140, init_rows = 1
     ) {
+        console.log(`LastNameFirstNamePage initialize parent_id: ${parent_id}, page_id: ${page_id}`);
+
+        // define default ids and locale keys
+        let first_name_component_id = Page.createComponentId(parent_id, page_id, 'TextField', first_name_field_name);
+        let last_name_component_id = Page.createComponentId(parent_id, page_id, 'TextField', last_name_field_name);
+        let next_button_component_id = Page.createComponentId(parent_id, page_id, 'NextButton', 'next_button');
+        let back_button_component_id = Page.createComponentId(parent_id, page_id, 'BackButton', 'back_button');
+        let title_component_id = Page.createComponentId(parent_id, page_id, 'Title');
+
+        // Locale keys are generated as {page_id}__{component class name}__{field name}__{role}
+        let locale_key_first_name_title = Page.createLocaleKey(page_id, 'TextField', first_name_field_name, 'title');
+        let locale_key_first_name_placeholder = Page.createLocaleKey(page_id, 'TextField', first_name_field_name, 'placeholder');
+        let locale_key_last_name_title = Page.createLocaleKey(page_id, 'TextField', last_name_field_name, 'title');
+        let locale_key_last_name_placeholder = Page.createLocaleKey(page_id, 'TextField', last_name_field_name, 'placeholder');
+        let locale_key_title = Page.createLocaleKey(page_id, 'Title', 'title');
+        let locale_key_back_button = Page.createLocaleKey(page_id, 'BackButton', 'title');
+        let locale_key_next_button = Page.createLocaleKey(page_id, 'NextButton', 'title');
+        
         // Initialize the validators
         let requiredValidator = new Validator(ValidationErrorType.required, 'This field is required');
         let lengthValidator = new Validator(ValidationErrorType.length, 'The length of the text exceeds the limit', [max_text_count]); 
@@ -60,9 +67,9 @@ class LastNameFirstNamePage extends Page {
             parent_id,
             first_name_component_id,
             TextFieldType.singleline,
-            locale[locale_key_first_name_title][lang],
+            locale.get(locale_key_first_name_title, lang),
             first_name_field_name,
-            locale[locale_key_first_name_placeholder][lang],
+            locale.get(locale_key_first_name_placeholder, lang),
             'div',
             validators,
             max_text_count,
@@ -76,9 +83,9 @@ class LastNameFirstNamePage extends Page {
             parent_id,
             last_name_component_id,
             TextFieldType.singleline,
-            locale[locale_key_last_name_title][lang],
+            locale.get(locale_key_last_name_title, lang),
             last_name_field_name,
-            locale[locale_key_last_name_placeholder][lang],
+            locale.get(locale_key_last_name_placeholder, lang),
             'div',
             validators,
             max_text_count,
@@ -89,14 +96,13 @@ class LastNameFirstNamePage extends Page {
         );
 
         // Initialize the Title
-        let title = new Title(parent_id, title_component_id, locale[locale_key_title][lang]);
+        let title = new Title(parent_id, title_component_id, locale.get(locale_key_title, lang));
 
         // Initialize the Buttons
-        let backButton = new BackButton(parent_id, back_button_component_id, locale[locale_key_back_button][lang]);
-        let nextButton = new NextButton(parent_id, next_button_component_id, locale[locale_key_next_button][lang]);
+        let backButton = new BackButton(parent_id, back_button_component_id, locale.get(locale_key_back_button, lang));
+        let nextButton = new NextButton(parent_id, next_button_component_id, locale.get(locale_key_next_button, lang));
 
         // Call the constructor of the base class
-        super(parent_id, id, [title, firstNameField, lastNameField, backButton, nextButton]);
-
+        super(parent_id, page_id, [title, firstNameField, lastNameField, backButton, nextButton]);
     }
 }
