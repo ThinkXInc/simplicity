@@ -158,6 +158,18 @@ class InputPageViewDataModel {
  * @method set errors - Sets the errors and logs the change.
  * @method get errors - Gets the errors.
  * 
+ * event handlers
+ * @method viewDidLoad - Called when the view is loaded.
+ * @method pageChanged - Called when the page is changed.
+ * @method nextButtonTapped - Called when the 'Next' button is tapped.
+ * @method backButtonTapped - Called when the 'Back' button is tapped, must be overridden in the subclass.
+ * @method textFieldInputValueChanged - Called when a text field input value is changed.
+ * @method textFieldOnBlur - Called when a text field loses focus.
+ * @method dropdownButtonSelected - Called when a dropdown button is selected.
+ * @method positionMapPointerCoordinateUpdated - Called when the pointer coordinate is updated on a position map.
+ * @method valueChanged - Called when a component value is changed, should be overridden in the subclass.
+ * @method unfocused - Called when a component loses focus, should be overridden in the subclass.
+ * 
  * methods
  * @method setAlertMessage - Sets an alert message to a specified component.
  * @method validateComponent - Validates a specific component.
@@ -178,18 +190,6 @@ class InputPageViewDataModel {
  * @method _setvalueforkey - Sets the value of a specific key (component field name).
  * @method _setValuesForKeys - Sets the values for multiple keys (component field names).
  * @method _updatePageNumberInBrowswerURL - Updates the page number in the URL.
- * 
- * event handlers
- * @method viewDidLoad - Called when the view is loaded.
- * @method pageChanged - Called when the page is changed.
- * @method nextButtonTapped - Called when the 'Next' button is tapped.
- * @method backButtonTapped - Called when the 'Back' button is tapped, must be overridden in the subclass.
- * @method textFieldInputValueChanged - Called when a text field input value is changed.
- * @method textFieldOnBlur - Called when a text field loses focus.
- * @method dropdownButtonSelected - Called when a dropdown button is selected.
- * @method positionMapPointerCoordinateUpdated - Called when the pointer coordinate is updated on a position map.
- * @method valueChanged - Called when a component value is changed, should be overridden in the subclass.
- * @method unfocused - Called when a component loses focus, should be overridden in the subclass.
  */
 class InputPageViewController {
     _pageIndex = null;  // Current page index
@@ -632,6 +632,7 @@ class InputPageViewController {
      *
      * @param {NextButton} nextButton - The next button instance that was tapped.
      */
+
     nextButtonTapped(nextButton) {
         console.debug(`Button ${nextButton.__id__} tapped.`);
         
@@ -649,8 +650,9 @@ class InputPageViewController {
             // If validation passes, move to the next page
             this.pageIndex += 1;
             this.stopLoading();
-        
-        } else { // If this is the last page
+
+        // If this is the last page
+        } else { 
             this.startLoading();
         
             // Validate all pages
@@ -674,6 +676,7 @@ class InputPageViewController {
             this.stopLoading();
         }
     }
+    
 
     /**
      * Called when the back button is tapped. Classes extending InputPageViewController
@@ -842,7 +845,6 @@ class InputPageViewController {
      */
     _validatePage(pageIndex) {
         let errors = [];
-        console.log(`Validate page: ${pageIndex}`);
         this._pageComponents[pageIndex].forEach((component, j) => {
             if (component instanceof TextField || component instanceof DropdownButton) {
                 const errorMessage = this._validateComponent(component);
@@ -851,7 +853,7 @@ class InputPageViewController {
                 }
             }
         });
-        console.log(`${errors.length} errors found.`)
+        console.log(`Page ${pageIndex} validated: ${errors.length} errors found.`)
         return errors
     }
 

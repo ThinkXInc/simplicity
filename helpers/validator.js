@@ -1,6 +1,6 @@
 const ValidationErrorType = Object.freeze(
     { 
-        required: 'required', length: 'length',
+        required: 'required', maxLength: 'max_length',
         emailFormat: 'email_format', passwordFormat: 'password_format',
         telFormat: 'tel_format', postalCodeFormat: 'postal_code_format', notCorresponding: 'not_corresponding' })
 
@@ -30,7 +30,7 @@ class Validator {
      * @param {string} errorMessage - The error message to display if the validation fails.
      * @param {Array} args - Additional arguments needed for this validation.
      */
-    constructor(errorType, locale, lang, args = []) {
+    constructor(errorType, locale, lang, maxLength = 9999999) {
         if (errorType == null) {
             throw new Error('Validator requires errorType.');
         }
@@ -40,20 +40,20 @@ class Validator {
 
         this.errorType = errorType;
         this.locale = locale;
-        this.errorMessage = locale.get(errorType, lang) 
-        this.args = args;
+        this.errorMessage = locale.get(errorType, lang);
+        this.maxLength = maxLength;
 
-        // Check for minimum and maximum values if errorType is length
-        if (errorType === ValidationErrorType.length) {
-            if (args.length !== 2 || typeof args[0] !== 'number' || typeof args[1] !== 'number') {
-                throw new Error('For length validation, args must contain exactly two numeric elements: [min, max].');
+        // Check for maxLength value if errorType is maxLength
+        if (errorType === ValidationErrorType.maxLength) {
+            if (!Number.isInteger(this.maxLength)) {
+                throw new Error('For length validation, maxLength must be a number.');
             }
-            if (!/\$0.*\$1/.test(this.errorMessage)) {
-                throw new Error('For length validation, error message must include $0 and $1 placeholders.');
+            if (!/\$0/.test(this.errorMessage)) {
+                throw new Error('For length validation, error message must include $0 placeholder.');
             }
-            this.errorMessage = this._replacePlaceholders(this.errorMessage, args);
+            this.errorMessage = this.errorMessage.replace('$0', this.maxLength);
         }
-   }
+    }
 
     /**
      * Set the component.
@@ -82,8 +82,8 @@ class Validator {
                     return this.errorMessage;
                 } 
                 break;
-            case ValidationErrorType.length:
-                if (!this._validateLength(value)) {
+            case ValidationErrorType.maxLength:
+                if (!this._validateMaxLength(value)) {
                     return this.errorMessage;
                 }
                 break;
@@ -131,14 +131,12 @@ class Validator {
     }
     
     /**
-     * Check if a value's length is within the provided range.
+     * Check if a value's length is less than or equal to the provided maxLength.
      * @param {string} value - The value to check.
      * @return {boolean} - Whether or not the value's length is within the range.
      */
-    _validateLength(value) {
-        const minLength = this.args[0];
-        const maxLength = this.args[1];
-        return value.length >= minLength && value.length <= maxLength;
+    _validateMaxLength(value) {
+        return value.length <= this.maxLength;
     }
     
     /**
@@ -149,14 +147,5 @@ class Validator {
      */
     _validateFormat(value, regex) {
         return regex.test(value);
-    }
-
-    _replacePlaceholders(errorMessage, args) {
-        let replacedMessage = errorMessage;
-        for (let i = 0; i < args.length; i++) {
-            const placeholder = `$${i}`;
-            replacedMessage = replacedMessage.replace(placeholder, args[i]);
-        }
-        return replacedMessage;
     }
 }
