@@ -185,7 +185,7 @@ class InputPageViewDataModel {
  * @method nextButtonTapped - Called when the 'Next' button is tapped.
  * @method backButtonTapped - Called when the 'Back' button is tapped, must be overridden in the subclass.
  * @method textFieldInputValueChanged - Called when a text field input value is changed.
- * @method textFieldUnFocus - Called when a text field loses focus.
+ * @method textFieldOnBlur - Called when a text field loses focus.
  * @method dropdownButtonSelected - Called when a dropdown button is selected.
  * @method positionMapPointerCoordinateUpdated - Called when the pointer coordinate is updated on a position map.
  * @method valueChanged - Called when a component value is changed, should be overridden in the subclass.
@@ -715,7 +715,7 @@ class InputPageViewController {
      * @param {TextField} textField - The TextField instance that lost focus.
      * @param {string} value - The current value of the TextField.
      */
-    textFieldUnFocus(textField, value) {
+    textFieldOnBlur(textField, value) {
         if(typeof this.unfocused !== 'function'){
             throw new Error(`Instance ${this.__id__} must implement the method unfocused in subclass!`);
         }

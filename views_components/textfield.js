@@ -86,9 +86,9 @@ class TextField extends FormComponentBase {
 
     // states
     _state = null;
-    _loadingstate = null;
-    _validationstate = null;
-    _inputstate = null;
+    _loadingState = null;
+    _validationState = null;
+    _inputState = null;
 
     // data
     _text = '';
@@ -128,6 +128,8 @@ class TextField extends FormComponentBase {
         this._setElements();
         // set counter 
         this.count = 0;
+        // validators
+        this.validators = validators;
         // password mode
         this._togglePasswordMode(this.__password_mode__);
     }
@@ -194,57 +196,57 @@ class TextField extends FormComponentBase {
     }
 
     /**
-     * loadingstate setter.
+     * loadingState setter.
      */
-    set loadingstate(state) {
-        this._loadingstate = state;
+    set loadingState(state) {
+        this._loadingState = state;
         switch (state) {
             case TextFieldLoadingState.none:
-                console.log(`TextField ${this.__id__} loadingstate changed -> none`);
+                console.log(`TextField ${this.__id__} loadingState changed -> none`);
                 break
             case TextFieldLoadingState.onloading:
-                console.log(`TextField ${this.__id__} loadingstate changed -> onloading`);
+                console.log(`TextField ${this.__id__} loadingState changed -> onloading`);
                 break
         }
     }
 
     /**
-     * validationstate setter.
+     * validationState setter.
      */
-    set validationstate(state) {
-        this._validationstate = state;
+    set validationState(state) {
+        this._validationState = state;
         switch (state) {
             case TextFieldValidationState.none:
-                console.log(`TextField ${this.__id__} validationstate changed -> none`);
+                console.log(`TextField ${this.__id__} validationState changed -> none`);
                 this.$textField.classList.remove('alert');
                 break
             case TextFieldValidationState.onalert:
-                console.log(`TextField ${this.__id__} validationstate changed -> onalert`);
+                console.log(`TextField ${this.__id__} validationState changed -> onalert`);
                 this.$textField.classList.add('alert');
                 break
             case TextFieldValidationState.onverified:
-                console.log(`TextField ${this.__id__} validationstate changed -> onverified`);
+                console.log(`TextField ${this.__id__} validationState changed -> onverified`);
                 this.$textField.classList.remove('alert');
                 break
         }
     }
 
     /**
-     * inputstate setter.
+     * inputState setter.
      */
-    set inputstate(state) {
-        this._inputstate = state;
+    set inputState(state) {
+        this._inputState = state;
         switch (state) {
             case TextFieldInputState.empty:
-                console.log(`TextField ${this.__id__} inputstate changed -> empty`);
+                console.log(`TextField ${this.__id__} inputState changed -> empty`);
                 this.$textField.classList.remove('overMaximumTextCount');
                 break
             case TextFieldInputState.filled:
-                console.log(`TextField ${this.__id__} inputstate changed -> filled`);
+                console.log(`TextField ${this.__id__} inputState changed -> filled`);
                 this.$textField.classList.remove('overMaximumTextCount');
                 break
             case TextFieldInputState.overmaximum:
-                console.log(`TextField ${this.__id__} inputstate changed -> overmaximum`);
+                console.log(`TextField ${this.__id__} inputState changed -> overmaximum`);
                 this.$textField.classList.add('overMaximumTextCount');
                 break
         }
@@ -342,10 +344,10 @@ class TextField extends FormComponentBase {
         debuglog(`Set the blur event handler for ${this.__id__}.`);
         this.$textArea.addEventListener('blur', () => {
             console.log(`[event] blur -> ${_this.$textArea.value}`)
-            if (this.viewController && typeof this.viewController.textFieldUnFocus === "function") {
-                this.viewController.textFieldUnFocus(this, _this.$textArea.value);
+            if (this.viewController && typeof this.viewController.textFieldOnBlur === "function") {
+                this.viewController.textFieldOnBlur(this, _this.$textArea.value);
             } else {
-                console.error('ViewController not set or textFieldUnFocus not a function');
+                console.error('ViewController not set or textFieldOnBlur not a function');
             }
         });
     }
@@ -362,8 +364,8 @@ class TextField extends FormComponentBase {
      * TextFieldInputState can be 'overmaximum', 'empty', 'filled', or other states defined in the enumeration.
      */
     _setState(validationState, inputState) {
-        this.validationstate = validationState;
-        this.inputstate = inputState;
+        this.validationState = validationState;
+        this.inputState = inputState;
     }
 
     /* private functions */
@@ -474,7 +476,7 @@ class TextFieldProtocol {
      * @param {string} value - The current input value of the TextField.
      * @throws {Error} If the method is not overridden in the ViewController.
      */
-    textFieldUnFocus(textField, value) {
-        throw new Error(`ViewController of TextField ${textField.__id__} must implement textFieldUnFocus method!`);
+    textFieldOnBlur(textField, value) {
+        throw new Error(`ViewController of TextField ${textField.__id__} must implement textFieldOnBlur method!`);
     }
 }

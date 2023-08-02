@@ -42,7 +42,7 @@ class FormComponentBase extends ViewComponentBase {
     validate() {
         let errorMessage = null;
         for (let validator of this.validators) {
-            console.log(`Running validator: ${validator.constructor.name}`);
+            console.log(`Running validator: ${validator.errorType}`);
             errorMessage = validator.validate(this.value);
             if (errorMessage !== null) {
                 console.log(`Validation error found for ${this.__id__}: ${errorMessage}`);

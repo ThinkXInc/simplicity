@@ -78,7 +78,7 @@ class Validator {
     validate(value) {
         switch (this.errorType) {
             case ValidationErrorType.required:
-                if (!this._validateNotNull(value)) {
+                if (!this._validateNotNullOrEmpty(value)) {
                     return this.errorMessage;
                 } 
                 break;
@@ -111,7 +111,16 @@ class Validator {
 
         return null;
     }
-    
+
+    /**
+     * Check if a value is not null, undefined, or an empty string.
+     * @param {string} value - The value to check.
+     * @return {boolean} - Whether or not the value is not null, undefined, or an empty string.
+     */
+    _validateNotNullOrEmpty(value) {
+        return value != null && value != undefined && value != '';
+    }
+
     /**
      * Check if a value is not null or undefined.
      * @param {string} value - The value to check.
