@@ -202,7 +202,17 @@ class InputPageViewController {
     _locale = null;  // Locale text dictionary 
     _lang = null;  // Language of the user
 
-    constructor(parent_id, id, pages, dataModelClass, locale, lang, loading, defaultPageIndex = 0) {
+    constructor(
+            parent_id,
+            id,
+            pages,
+            dataModelClass,
+            locale,
+            lang,
+            loading,
+            defaultPageIndex = 0,
+            isEnterButtonToNext = true
+            ) {
         this.__parent_id__ = parent_id;
         this.__id__ = id;
         this._locale = locale;
@@ -210,6 +220,7 @@ class InputPageViewController {
 
         this.pages = pages;
         this.loading = loading;
+        this.isEnterButtonToNext = isEnterButtonToNext;
 
         // Potentially check protocol adherence here
         this._checkProtocolAdherence();
@@ -444,6 +455,15 @@ class InputPageViewController {
             const page = Browswer.getValueFromHash('page', 'int');
             _this.pageIndex = page;
         }, false);
+        if(this.isEnterButtonToNext) {
+            window.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    // "Enter" was pressed, call nextButtonTapped()
+                    _this._navigateToNextPageOrSubmitData();
+                    event.preventDefault(); // to prevent form submission or other default behavior
+                }
+            });
+        }
     }
 
     /*
@@ -633,12 +653,15 @@ class InputPageViewController {
      *
      * @param {NextButton} nextButton - The next button instance that was tapped.
      */
-
     nextButtonTapped(nextButton) {
         console.debug(`Button ${nextButton.__id__} tapped.`);
         console.log(this.values);
         console.log(this._getValuesFromCookies());
         
+        this._navigateToNextPageOrSubmitData();
+    }
+
+    _navigateToNextPageOrSubmitData() {
         // If not the last page
         if (this.pageIndex < this.pages.length - 1) {
             this.startLoading();
