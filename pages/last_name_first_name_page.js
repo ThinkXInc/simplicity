@@ -61,19 +61,19 @@ class LastNameFirstNamePage extends Page {
         
         // Initialize the TextFields
         let firstNameField = new TextField(
-            parent_id,
-            first_name_component_id,
-            first_name_field_name,
-            TextFieldType.singleline,
-            locale.get(locale_key_first_name_title, lang),
-            locale.get(locale_key_first_name_placeholder, lang),
-            'div',
-            validators,
-            max_text_count,
-            init_rows,
-            false,
-            true,
-            false
+            parent_id,  // Parent Component ID
+            first_name_component_id,  // This TextField Component ID
+            first_name_field_name,  // This TextField's field name
+            TextFieldType.singleline,  // Type of TextField
+            locale.get(locale_key_first_name_title, lang),  // Title for TextField
+            locale.get(locale_key_first_name_placeholder, lang),  // Placeholder for TextField
+            'div',  // HTML Tag for TextField
+            validators,  // Validators for TextField
+            max_text_count,  // Maximum number of characters allowed
+            init_rows,  // Initial number of rows in the TextField
+            false,  // vertical_flex: if the TextField should vertically flex to fill space
+            true,  // has_title: if the TextField should have a title
+            false  // password_mode: if the TextField is for password input
         );
 
         let lastNameField = new TextField(

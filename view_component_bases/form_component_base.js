@@ -1,33 +1,88 @@
+/**
+ * FormComponentBase is a base class for form components, providing functionalities to handle
+ * form field values and their interactions with cookies. 
+ * 
+ * The constructor takes in several parameters, including field_name for identifying the form field,
+ * and other parameters for cookie handling (like cookieExclude, hasCookiePrefix and isDefaultValueRestoredFromCookie).
+ * 
+ * Other methods like _getValueFromCookies(), _setValueToCookies(value), _removeValueInCookies() and 
+ * _restoreValueFromCookie() provide utilities for interacting with the cookies.
+ */
 class FormComponentBase extends ViewComponentBase {
-    constructor(parent_id, id, field_name, text, htmlTag, viewController, validators = [], defaultValue = null, cookieExclude = false) {
-        super(parent_id, id, text, htmlTag, viewController, validators);
-        this.__cookie_exclude__ = cookieExclude; //fields you don't want to be saved in cookies.
+    constructor(
+        parent_id, 
+        id, 
+        field_name, 
+        text, 
+        htmlTag, 
+        validators = [], 
+        defaultValue = null, 
+        cookieExclude = false, 
+        hasCookiePrefix = false, 
+    ) {
+        super(parent_id, id, text, htmlTag, validators);
+
         this.__field_name__ = field_name;
-        this.value = defaultValue;  // this will trigger the setter and save the default value to cookies if necessary.
+        this.__cookie_exclude__ = cookieExclude; //fields you don't want to be saved in cookies.
+        this.__cookie_prefix__ = hasCookiePrefix ? `${parent_id}__` : '';
+        this.__cookie_name__ = `${this.__cookie_prefix__}${field_name}`;
+
+        // Set the default value.
+        // This will trigger the setter and save the value to cookies.
+        if (defaultValue !== null) {
+            this.value = defaultValue; // If defaultValue is set, use it.
+        }
     }
 
+    /**
+     * Retrieves the value of this field from cookies.
+     * @return {string|null} - The value of this field stored in cookies, or null if it does not exist.
+     */
     _getValueFromCookies() {
-        const cookieName = `${this.__field_name__}`;
-        const value = Cookies.get(cookieName);
+        const value = Cookies.get(this.__cookie_name__);
         if (value !== undefined) {
             return value;
         }
         return null;
     }
 
+    /**
+     * Sets a value to cookies for this field.
+     * @param {string|null} value - The value to be set to cookies. If it's null, the function will do nothing.
+     */
     _setValueToCookies(value) {
-        const cookieName = `${this.__field_name__}`;
-        if (!this.__cookie_exclude__) {
-            Cookies.set(cookieName, value, { expires: 3, secure: true, sameSite: 'strict' });
-        } else {
-            console.error(`The value of ${this.__id__} is excluded from being stored in cookies.`);
+        if (value !== null) {
+            if (!this.__cookie_exclude__) {
+                Cookies.set(this.__cookie_name__, value, { expires: 3, secure: true, sameSite: 'strict' });
+                console.log(`Save cookie => key: ${this.__cookie_name__} value: ${value}`);
+            } else {
+                console.error(`The value of ${this.__id__} is excluded from being stored in cookies.`);
+            }
         }
     }
 
+    /**
+     * Removes the value of this field from cookies.
+     */
     _removeValueInCookies() {
-        const cookieName = `${this.__field_name__}`;
-        Cookies.remove(cookieName);
-        console.log(`${cookieName} removed from cookie.`);
+        Cookies.remove(this.__cookie_name__);
+        console.log(`${this.__cookie_name__} removed from cookie.`);
+    }
+
+    /**
+     * Restores the value of this field from cookies and sets it as the current value.
+     * @param {boolean} ignoreNull - if true, the function will not overwrite the current value with null if the cookie value is null.
+     */
+    _restoreValueFromCookie(ignoreNull = true) {
+        const cookieValue = this._getValueFromCookies();
+
+        if (ignoreNull && cookieValue === null) {
+            debuglog(`Cookie value is null and ignoreNull is set to true. Current value not overwritten.`);
+            return;
+        }
+
+        console.log(`Restoring value from cookie ${this.__cookie_name__}: ${cookieValue}`);
+        this.value = cookieValue;
     }
 
     /**
@@ -79,7 +134,8 @@ class FormComponentBase extends ViewComponentBase {
     }
 
     // override this in subclasses
+    // NOTE: this setter is necessary to set the defaultValue
     set value(value) {
-        this._setValueToCookies(value); // the value is saved to cookies whenever it's set.
+        throw new Error(`The subclass class of ${this.constructor.name} must implement setter for value!`);
     }
 }

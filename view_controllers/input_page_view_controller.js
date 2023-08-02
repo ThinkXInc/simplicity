@@ -317,7 +317,7 @@ class InputPageViewController {
      */
     get values() {
         let _values = {};
-        this.components.forEach((component, i) => {
+        this._components.forEach((component, i) => {
             if (component.__field_name__) {
                 _values[component.__field_name__] = component.value;
             }
@@ -498,19 +498,18 @@ class InputPageViewController {
      * @returns {dict} field values {field_name1: value1, ..}
      */
     _getValuesFromCookies() {
-        const prefix = this.__id__;
         let valuesInCookie = {};
         this._components.forEach((component) => {
             if (component instanceof TextField || component instanceof DropdownButton) {
-                const name = `${prefix}__${component.__field_name__}`;
+                const name = `${component.__field_name__}`;
                 const value = Cookies.get(name);
                 if (value != null) {
                     valuesInCookie[component.__field_name__] = Cookies.get(name);
                 }
             }
             if (component instanceof PositionMap) {
-                const name_lat = `${prefix}__${component.__field_name_lat__}`;
-                const name_lng = `${prefix}__${component.__field_name_lng__}`;
+                const name_lat = `${component.__field_name_lat__}`;
+                const name_lng = `${component.__field_name_lng__}`;
                 const value_lat = Cookies.get(name_lat);
                 const value_lng = Cookies.get(name_lng);
                 if (value_lat != null) {
@@ -532,6 +531,7 @@ class InputPageViewController {
      * 
      * @param {DataModel} dataModel 
      */
+    /*
     _setValuesToFields(dataModel) {
         // set values to compoents
         this._components.forEach((component) => {
@@ -579,6 +579,7 @@ class InputPageViewController {
             }
         })
     }
+    */
 
 
     /**
@@ -635,6 +636,8 @@ class InputPageViewController {
 
     nextButtonTapped(nextButton) {
         console.debug(`Button ${nextButton.__id__} tapped.`);
+        console.log(this.values);
+        console.log(this._getValuesFromCookies());
         
         // If not the last page
         if (this.pageIndex < this.pages.length - 1) {

@@ -94,12 +94,27 @@ class TextField extends FormComponentBase {
     _text = '';
     _count = null;
 
-    constructor(parent_id, id, field_name, type, title, placeholder,
-        htmlTag = 'div', validators = [], 
-        max_text_count=999, init_rows=6, vertical_flex=true, has_title=true,
-        password_mode=false) {
+    constructor(
+        parent_id, 
+        id, 
+        field_name, 
+        type, 
+        title, 
+        placeholder,
+        htmlTag = 'div', 
+        validators = [], 
+        max_text_count = 999, 
+        init_rows = 6, 
+        vertical_flex = false, 
+        has_title = true,
+        password_mode = false,
+        defaultValue = null, 
+        cookieExclude = false, 
+        hasCookiePrefix = false, 
+        isDefaultValueRestoredFromCookie = true
+    ) {
 
-        super(parent_id, id, '', htmlTag, validators);
+        super(parent_id, id, field_name, '', htmlTag, validators, defaultValue, cookieExclude, hasCookiePrefix, isDefaultValueRestoredFromCookie);
 
         // set options
         const options = [
@@ -132,10 +147,12 @@ class TextField extends FormComponentBase {
         this.validators = validators;
         // password mode
         this._togglePasswordMode(this.__password_mode__);
+        // restore from cookie
+        this._restoreValueFromCookie();
     }
 
     /**
-     * value setter / getter.
+     * value getter / setter.
      */
     get value() {
         return this._text;
@@ -143,12 +160,12 @@ class TextField extends FormComponentBase {
 
     set value(value) {
         if (typeof value === 'string' || value == null) {
-            this._text = value;
+            debuglog(`Set value "${value}" to the textField.text.`)
+            this.text = value;
         } else {
             console.error(`TextField value must be a string or null, but got ${typeof value} : ${value}`);
         }
     }
-
 
     /**
      * text setter /getter.
@@ -156,6 +173,7 @@ class TextField extends FormComponentBase {
     set text(text) {
         this._text = text;
         this.$textArea.value = text;
+        console.log(this.$textArea.value)
         // count
         if (text) {
             this.count = text.length;
@@ -163,6 +181,8 @@ class TextField extends FormComponentBase {
         // dispatch event
         const event = new CustomEvent('textupdated', {detail: {new: text,}});
         this.$textField.dispatchEvent(event);
+        // save cookie
+        this._setValueToCookies(text);
     }
 
     get text() {return this._text}
