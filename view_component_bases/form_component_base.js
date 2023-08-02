@@ -42,7 +42,7 @@ class FormComponentBase extends ViewComponentBase {
     validate() {
         let errorMessage = null;
         for (let validator of this.validators) {
-            console.log(`Running validator: ${validator.errorType}`);
+            debuglog(`Running validator: ${validator.errorType}`);
             errorMessage = validator.validate(this.value);
             if (errorMessage !== null) {
                 console.log(`Validation error found for ${this.__id__}: ${errorMessage}`);
@@ -51,12 +51,11 @@ class FormComponentBase extends ViewComponentBase {
             }
         }
         if (errorMessage === null) {
-            console.log(`No validation errors found in ${this.__id__}`);
+            debuglog(`No validation errors found in ${this.__id__}`);
             this.alert(false);
         } else {
-            console.log(`Validation failed for ${this.__id__}`);
+            debuglog(`Validation failed for ${this.__id__} with result: ${errorMessage ? "Error: " + errorMessage : "No errors"}`);
         }
-        console.log(`Finished validation for ${this.__id__} with result: ${errorMessage ? "Error: " + errorMessage : "No errors"}`);
         return errorMessage;
     }
     

@@ -1,5 +1,5 @@
 // debugging.js
-let DEBUG = true;
+let DEBUG = false;
 
 function debuglog(message) {
     if (DEBUG) {

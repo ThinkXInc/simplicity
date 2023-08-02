@@ -9,6 +9,7 @@
  * @param {number} max_text_count - The maximum character count for the text field. Default is 140.
  * @param {number} init_rows - The initial number of rows in the text field. Default is 1.
  * @param {Array} validators - An array of Validator objects that should be used to validate the TextField. Default is an empty array.
+ * @param {bool} hasBackButon - if the BackButton is shown.
  * 
  * @example
  * let myLocale = new Locale({
@@ -25,7 +26,9 @@
 class SingleTextInputPage extends Page {
     constructor(parent_id, page_id, locale, lang = 'en', 
                 field_name = 'single_text_input_field', 
-                max_text_count = 140, init_rows = 1, validators = []) {
+                max_text_count = 140, init_rows = 1, validators = [],
+                hasBackButton = true,
+                ) {
         debuglog(`SingleTextInputPage initialize parent_id: ${parent_id}, page_id: ${page_id}`);
         // define default ids and locale keys
         let field_component_id = Page.createComponentId(parent_id, page_id, 'TextField', field_name);
@@ -56,11 +59,18 @@ class SingleTextInputPage extends Page {
             false
         );
 
+
         let title = new Title(parent_id, title_component_id, locale.get(locale_key_title, lang));
-        let backButton = new BackButton(parent_id, back_button_component_id, locale.get(locale_key_back_button, lang));
         let nextButton = new NextButton(parent_id, next_button_component_id, locale.get(locale_key_next_button, lang));
 
-        let components = [title, textField, backButton, nextButton];
+        let components = [title, textField]; // backButton removed from here
+
+        // if the showBackButton is true, add the backButton component
+        if (hasBackButton) {
+            let backButton = new BackButton(parent_id, back_button_component_id, locale.get(locale_key_back_button, lang));
+            components.push(backButton); // add backButton to the components array
+        }
+        components.push(nextButton);
 
         super(parent_id, page_id, components);
     }

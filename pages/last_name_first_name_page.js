@@ -14,6 +14,7 @@
  * @param {string} locale_key_next_button - The key for the next button text in the locale dictionary.
  * @param {number} max_text_count - The maximum character count for the text fields. Default is 140.
  * @param {number} init_rows - The initial number of rows in the text fields. Default is 1.
+ * @param {bool} hasBackButon - if the BackButton is shown.
  * 
  * @example
  * let myLocale = {
@@ -38,6 +39,7 @@ class LastNameFirstNamePage extends Page {
         first_name_field_name = 'first_name',
         last_name_field_name = 'last_name',
         validators = [],
+        hasBackButton = true,
     ) {
         debuglog(`LastNameFirstNamePage initialize parent_id: ${parent_id}, page_id: ${page_id}`);
 
@@ -94,10 +96,18 @@ class LastNameFirstNamePage extends Page {
         let title = new Title(parent_id, title_component_id, locale.get(locale_key_title, lang));
 
         // Initialize the Buttons
-        let backButton = new BackButton(parent_id, back_button_component_id, locale.get(locale_key_back_button, lang));
         let nextButton = new NextButton(parent_id, next_button_component_id, locale.get(locale_key_next_button, lang));
 
-        // Call the constructor of the base class
-        super(parent_id, page_id, [title, firstNameField, lastNameField, backButton, nextButton]);
+        let components = [title, firstNameField, lastNameField];
+
+        // if the showBackButton is true, add the backButton component
+        if (hasBackButton) {
+            let backButton = new BackButton(parent_id, back_button_component_id, locale.get(locale_key_back_button, lang));
+            components.push(backButton); // add backButton to the components array
+        }
+        components.push(nextButton);
+
+        // Call the constructor of the base class with possibly added backButton
+        super(parent_id, page_id, components); 
     }
 }

@@ -142,13 +142,13 @@ class TextField extends FormComponentBase {
     }
 
     set value(value) {
-        if (typeof value === 'string') {
+        if (typeof value === 'string' || value == null) {
             this._text = value;
-            super.value(value)
         } else {
-            console.error(`TextField value must be a string, but got ${typeof value}`);
+            console.error(`TextField value must be a string or null, but got ${typeof value} : ${value}`);
         }
     }
+
 
     /**
      * text setter /getter.
@@ -156,7 +156,6 @@ class TextField extends FormComponentBase {
     set text(text) {
         this._text = text;
         this.$textArea.value = text;
-        console.log(`text updated: ${text}`);
         // count
         if (text) {
             this.count = text.length;
@@ -217,15 +216,15 @@ class TextField extends FormComponentBase {
         this._validationState = state;
         switch (state) {
             case TextFieldValidationState.none:
-                console.log(`TextField ${this.__id__} validationState changed -> none`);
+                debuglog(`TextField ${this.__id__} validationState changed -> none`);
                 this.$textField.classList.remove('alert');
                 break
             case TextFieldValidationState.onalert:
-                console.log(`TextField ${this.__id__} validationState changed -> onalert`);
+                debuglog(`TextField ${this.__id__} validationState changed -> onalert`);
                 this.$textField.classList.add('alert');
                 break
             case TextFieldValidationState.onverified:
-                console.log(`TextField ${this.__id__} validationState changed -> onverified`);
+                debuglog(`TextField ${this.__id__} validationState changed -> onverified`);
                 this.$textField.classList.remove('alert');
                 break
         }
@@ -238,15 +237,15 @@ class TextField extends FormComponentBase {
         this._inputState = state;
         switch (state) {
             case TextFieldInputState.empty:
-                console.log(`TextField ${this.__id__} inputState changed -> empty`);
+                debuglog(`TextField ${this.__id__} inputState changed -> empty`);
                 this.$textField.classList.remove('overMaximumTextCount');
                 break
             case TextFieldInputState.filled:
-                console.log(`TextField ${this.__id__} inputState changed -> filled`);
+                debuglog(`TextField ${this.__id__} inputState changed -> filled`);
                 this.$textField.classList.remove('overMaximumTextCount');
                 break
             case TextFieldInputState.overmaximum:
-                console.log(`TextField ${this.__id__} inputState changed -> overmaximum`);
+                debuglog(`TextField ${this.__id__} inputState changed -> overmaximum`);
                 this.$textField.classList.add('overMaximumTextCount');
                 break
         }
@@ -309,7 +308,6 @@ class TextField extends FormComponentBase {
         const _this = this;
         debuglog(`Set the input event handler for ${this.__id__}.`);
         this.$textArea.addEventListener('input', (e) => {
-            console.log(`[event] text in textarea changed. -> ${_this.$textArea.value}`)
             _this.text = _this.$textArea.value;
             _this.count = _this.$textArea.value.length;
 
@@ -442,7 +440,7 @@ class TextField extends FormComponentBase {
             $alertMessage.id = id;
             $alertMessage.innerText = message;
             $footer.appendChild($alertMessage);
-            console.log(`Created new alert message for ${this.__id__} with message: ${message}`);
+            debuglog(`Created new alert message for ${this.__id__} with message: ${message}`);
         } else if ($alertMessage) { // Only run if $alertMessage exists
             console.log(`Alert turned off for ${this.__id__}`);
             $parent.classList.remove('alert');
