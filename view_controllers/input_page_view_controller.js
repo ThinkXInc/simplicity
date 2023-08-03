@@ -206,20 +206,24 @@ class InputPageViewController {
             parent_id,
             id,
             pages,
-            dataModelClass,
             locale,
             lang,
+            dataModelClass,
+            url,
             loading,
+            alertMesage = new AlertMessage(id, 'AlertMessage'),
             defaultPageIndex = 0,
             isEnterButtonToNext = true
             ) {
         this.__parent_id__ = parent_id;
         this.__id__ = id;
+        this.__submit_url__ = url;
         this._locale = locale;
         this._lang = lang;
 
         this.pages = pages;
         this.loading = loading;
+        this.alertMessage = alertMesage;
         this.isEnterButtonToNext = isEnterButtonToNext;
 
         // Potentially check protocol adherence here
@@ -401,6 +405,9 @@ class InputPageViewController {
             $pagesContainer.appendChild($page);
         });
         $container.appendChild($pagesContainer);
+
+        // alert message
+        this.alertMessage.addToParent($container);
     }
 
     /**
@@ -459,43 +466,12 @@ class InputPageViewController {
             window.addEventListener('keydown', (event) => {
                 if (event.key === 'Enter') {
                     // "Enter" was pressed, call nextButtonTapped()
-                    _this._navigateToNextPageOrSubmitData();
+                    this._nextButtonAction();
                     event.preventDefault(); // to prevent form submission or other default behavior
                 }
             });
         }
     }
-
-    /*
-    [WILL DEPRECATED]
-    _setValueForKey(key, value) {
-        let component = this.components.find(component => component.__field_name__ === key);
-        if (component) {
-            component.value = value;
-        } else {
-            console.error(`no component found with __field_name__ = ${key}`);
-        }
-    }
-    */
-
-    /**
-    [WILL DEPRECATED]
-     * update multiple properties of _values
-     * 
-     * @param {dict} newValues
-     */
-    /*
-    _setValuesForKeys(newValues) {
-        Object.keys(newValues).forEach((key) => {
-            let component = this.components.find(component => component.__field_name__ === key);
-            if (component) {
-                component.value = newValues[key];
-            } else {
-                console.error(`No component found with __field_name__ = ${key}`);
-            }
-        });
-    }
-    */
 
     /**
      * Update url ?page= in browser's addressbar.
@@ -546,83 +522,17 @@ class InputPageViewController {
     }
 
     /**
-     * [WILL DEPRECATE]
-     * Set field values to components from dataModel.
-     * 
-     * @param {DataModel} dataModel 
-     */
-    /*
-    _setValuesToFields(dataModel) {
-        // set values to compoents
-        this._components.forEach((component) => {
-            if (component instanceof TextField || component instanceof DropdownButton) {
-                if (!component.__field_name__ in dataModel) {
-                    console.warn(`no ${component.__field_name__} field in cookie.`);
-                    return
-                }
-                if (dataModel[component.__field_name__] == null) {
-                    console.log(`value of ${component.__field_name__} in cookie is null.`);
-                    return
-                }
-                // set value to fields by the class type
-                if (component instanceof TextField) {
-                    component.text = dataModel[component.__field_name__];
-                }
-                if (component instanceof DropdownButton) {
-                   component.selectedValue = dataModel[component.__field_name__];
-                }
-            }
-            if (component instanceof PositionMap) {
-                if (!component.__field_name_lat__ in dataModel) {
-                    console.warn(`no ${component.__field_name_lat__} field in cookie.`);
-                    return
-                }
-                if (!component.__field_name_lng__ in dataModel) {
-                    console.warn(`no ${component.__field_name_lng__} field in cookie.`);
-                    return
-                }
-                if (dataModel[component.__field_name_lat__] == null) {
-                    console.log(`value of ${component.__field_name_lat__} in cookie is null.`);
-                    return
-                }
-                if (dataModel[component.__field_name_lng__] == null) {
-                    console.log(`value of ${component.__field_name_lng__} in cookie is null.`);
-                    return
-                }
-                // set value to fields by the class type
-                component.mapCoordinate = new Coordinate(
-                    dataModel[component.__field_name_lat__],
-                    dataModel[component.__field_name_lng__])
-                component.pointerCoordinate = new Coordinate(
-                    dataModel[component.__field_name_lat__],
-                    dataModel[component.__field_name_lng__])
-            }
-        })
-    }
-    */
-
-
-    /**
-     * Initialize Cookie strage.
+     * Initialize Cookie storage.
      * *For debug purpose.
      */
     _resetValuesInCookie() {
-        const prefix = this.__id__;
         this._components.forEach((component) => {
-            if (component instanceof TextField || component instanceof DropdownButton) {
-                const name = `${prefix}__${component.__field_name__}`;
-                Cookies.remove(name);
-                console.log(`${name} removed from cookie.`);
+            if (Utils.isInheritedFrom(component, FormComponentBase)) {
+                component._removeValueInCookies();
+                console.log(`${component.__field_name__} removed from cookie.`);
             }
-            if (component instanceof PositionMap) {
-                const nameLat = `${prefix}__${component.__field_name_lat__}`;
-                const nameLng = `${prefix}__${component.__field_name_lng__}`;
-                Cookies.remove(nameLat);
-                Cookies.remove(nameLng);
-                console.log(`${nameLat} removed from cookie.`);
-                console.log(`${nameLng} removed from cookie.`);
-            }
-        })
+        });
+        console.log(`Reset all cookies for ${this.__id__}.`);
     }
 
     /**
@@ -658,51 +568,145 @@ class InputPageViewController {
         console.log(this.values);
         console.log(this._getValuesFromCookies());
         
-        this._navigateToNextPageOrSubmitData();
+        this._nextButtonAction();
     }
 
-    _navigateToNextPageOrSubmitData() {
-        // If not the last page
-        if (this.pageIndex < this.pages.length - 1) {
-            this.startLoading();
-        
-            // Validate current page
-            const errors = this._validatePage(this.pageIndex);
-            if (errors.length > 0) {
-                this.stopLoading();
-                return; // Return early if there are validation errors
-            }
-        
-            // If validation passes, move to the next page
-            this.pageIndex += 1;
-            this.stopLoading();
-
-        // If this is the last page
-        } else { 
-            this.startLoading();
-        
-            // Validate all pages
-            const hasError = this.pages.some((page, i) => {
-                const errors = this._validatePage(i);
-                return errors.length > 0; // Return true on the first error encountered
-            });
-        
-            if (hasError) {
-                this.stopLoading();
-                return; // Return early if there are validation errors
-            }
-        
-            // Submit value
-            console.log('------> Request Payload');  // DEBUG:
-            console.table(this._values);
-            console.log(`[Request data] ${JSON.stringify(this._values)}`);
-            console.log('<------ Request Payload');  // DEBUG:
-            
-            this._submit();
-            this.stopLoading();
+    _nextButtonAction() {
+        // If not the last page, navigate to the next page. If it is the last page, submit the data.
+        const isLastPage = this.pageIndex == this.pages.length - 1;
+        if (isLastPage) {
+            this._submitData(this.__submit_url__);
+        } else {
+            this._navigateToNextPage();
         }
     }
-    
+
+    /**
+     * Validates the current page and if validation passes, navigates to the next page.
+     * Manages loading animation during these processes.
+     */
+    _navigateToNextPage() {
+        this.startLoading();
+
+        // Validate current page
+        const errors = this._validatePage(this.pageIndex);
+        if (errors.length > 0) {
+            this.stopLoading();
+            return; // Return early if there are validation errors
+        }
+
+        // If validation passes, move to the next page
+        this.pageIndex += 1;
+        this.stopLoading();
+    }
+
+    /**
+     * Validates all pages and if validation passes, submits the form.
+     * Manages loading animation during these processes.
+     */
+    _submitData(url) {
+        this.startLoading();
+
+        // Validate all pages and stop loading if there's an error.
+        if (this.pages.some((page, i) => this._validatePage(i).length > 0)) {
+            this.stopLoading();
+            return; // Return early if there are validation errors
+        }
+
+        // Submit value
+        console.log('------> Request Payload');  // DEBUG:
+        console.table(this.values);
+        console.log(`[Request data] ${JSON.stringify(this.values)}`);
+        console.log('<------ Request Payload');  // DEBUG:
+
+        this._submit(url);
+        this.stopLoading();
+    }
+
+    /**
+     * Handles successful form submission.
+     * 
+     * @param {Object} res The response from the server.
+     * 
+     * Example Success Response:
+     * {
+     *   'saved_data': user.response_json(),
+     *   'user_id': user_id,
+     *   'success': {
+     *       'code': 201,
+     *       'message': 'new user created.'
+     *   }
+     * }
+     * 
+     * Example Error Response:
+     * {
+     *   'saved_data': user.response_json(),
+     *   'error': {
+     *     'key': 'user_id',
+     *     'code': ErrorCode.BAD_REQUEST.value,
+     *     'reason': 'BAD_REQUEST',
+     *     'message': 'The user_id is invalid.'
+     *   }
+     * }
+     */
+    _onSubmitSuccess(res) {
+        // Success object returned.
+        if (!('error' in res)) {
+            console.log(`[success] ${res.success.code} ${res.success.message}`);
+            this.alertMessage.hide()
+
+            setTimeout(() => { this.stopLoading(); }, 1000);
+            // Reset cookie storage
+            this._resetValuesInCookie();
+
+        // Error object returned.
+        } else {
+            console.log(`[error] ${res.error.code} ${res.error.reason}`);
+
+            // Handle by error types
+            if ('errors' in res) {
+                // Validation error
+                console.log(`${res.errors.length} errors found.`);
+                this.alertMessage.hide();
+                res.errors.forEach((error) => {
+                    console.warn(`[key] ${error.key} [message] ${error.message}`);
+
+                    let component = this._componentByFieldName(error.key)
+                    component.alert(true, error.message);
+                })
+            } else {
+                // Request error
+                this.alertMessage.show(res.error.message)
+            }
+        }
+    }
+
+    /**
+     * Handles errors during form submission.
+     * 
+     * @param {Object} error The error object from the fetch promise.
+     * 
+     * Example Error Object:
+     * {
+     *   'type': 'fetch_error',
+     *   'message': 'Network request failed'
+     * }
+     */
+    _onSubmitError(error) {
+        console.warn('↑↑↑↑ API request error');
+        setTimeout(() => { this.stopLoading(); }, 1000);
+    }
+
+
+    _submit(url) {
+        // Send data
+        Http.post(
+            url, 
+            this._values, 
+            this._onSubmitSuccess.bind(this),
+            this._onSubmitError.bind(this)
+        );
+    }
 
     /**
      * Called when the back button is tapped. Classes extending InputPageViewController
@@ -825,25 +829,6 @@ class InputPageViewController {
      * @param {string} value
      */
     unfocused(component, value) {
-        // NOTE: override this function
-    }
-
-    /**
-     * @interface
-     * 
-     * Show page alert message.
-     * 
-     * @param {AlertMessage} alertMessage
-     * @param {string} message 
-     */
-    setAlertMessage(alertMessageId, message) {
-        let alertMessage = this._componentById(alertMessageId);
-        if (alertMessage == null) {
-            console.error(`AlertMessage component id:${alertMessageId} not found in PageViewController.components`);
-        } else {
-            console.log(`show alert message ${message} on ${alertMessage.__id__}`);
-            alertMessage.message = message;
-        }
         // NOTE: override this function
     }
 

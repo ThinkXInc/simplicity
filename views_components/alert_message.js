@@ -1,65 +1,27 @@
 /**
- * A class for AlertMessage components.
+ * A class for AlertMessage components that display or hide a message.
+ * This class implements the AlertMessageProtocol.
  * @constructor
  * @param {string} parent_id - The id of the parent element.
  * @param {string} id - The id for the new element.
- * @param {string} text - The text to display in the element.
- * @param {string} htmlTag - The type of HTML element to create (default is 'p').
  */
-class AlertMessage extends ViewComponentBase {
-    _message;
-
-    constructor(parent_id, id, text, htmlTag = 'div') {
-        super(parent_id, id, text, htmlTag);
+class AlertMessage extends AlertMessageComponentBase {
+    constructor(parent_id, id) {
+        super(parent_id, id);
     }
 
     /**
-     * Overrides the _setElements method in the base class.
-     * @param {string} text - The text to display in the element.
-     * @param {string} htmlTag - The type of HTML element to create.
+     * Overrides the show method in the base class.
+     * @param {string} text - The message to display.
      */
-    _setElements(text, htmlTag) {
-        super._setElements(text, htmlTag);
-    
-        // Additional setup specific to AlertMessage
-        this.$view.classList.add('AlertMessage');
-        this.message = text;
+    show(text) {
+        super.show(text);
     }
 
     /**
-     * DOM nodes as variables.
+     * Overrides the hide method in the base class.
      */
-    _setElements() {
-        // set class and message
-        this.$view.classList.add('AlertMessage');
-        this.message = text;
-        
-        // create message element
-        this.$message = document.createElement('p');
-        this.$message.id = this.__id__ + '_message';
-        this.$message.classList.add('AlertMessage__message');
-        this.$view.appendChild(this.$message);
+    hide() {
+        super.hide();
     }
-
-    /**
-     * Set the event handler for the button. If the view controller is set and the method 
-     * backButtonTapped exists in the view controller, this method will be called when the button is clicked.
-     */
-    _setEventHandlers() {
-    }
-
-    /**
-     * message setter.
-     */
-    set message(message) {
-        this._message = message;
-        console.log(`${this.__id__} message set: ${message}`);
-        // set message
-        this.$message.innerText = message;
-    }
-
-    /**
-     * message getter.
-     */
-    get message() {return this._message;}
 }

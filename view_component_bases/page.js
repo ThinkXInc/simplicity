@@ -34,7 +34,7 @@ class Page {
         }
 
         components.forEach(component => {
-            if (!this.isInheritedFrom(component, ViewComponentBase) && !this.isInheritedFrom(component, Wrapper)) {
+            if (!Utils.isInheritedFrom(component, ViewComponentBase) && !Utils.isInheritedFrom(component, Wrapper)) {
                 throw new Error(`All components must be a subclass of ViewComponentBase or Wrapper, but got ${component.constructor.name}.`);
             }
         });
@@ -98,24 +98,4 @@ class Page {
 
         return parts.join("__");
     }
-
-    /**
-     * Checks whether a given object is inherited from a specified superclass.
-     * 
-     * @param {Object} object - The object to check.
-     * @param {Function} superClass - The superclass to compare against.
-     * @returns {boolean} - True if the object is a subclass of the superclass, false otherwise.
-     */
-    isInheritedFrom(object, superClass) {
-        let currentProto = Object.getPrototypeOf(object.constructor);
-
-        while (currentProto) {
-            if (currentProto.name === superClass.name) {
-                return true;
-            }
-            currentProto = Object.getPrototypeOf(currentProto);
-        }
-        return false;
-    }
-    
 }
