@@ -613,13 +613,8 @@ class InputPageViewController {
             return; // Return early if there are validation errors
         }
 
-        // Submit value
-        console.log('------> Request Payload');  // DEBUG:
-        console.table(this.values);
-        console.log(`[Request data] ${JSON.stringify(this.values)}`);
-        console.log('<------ Request Payload');  // DEBUG:
-
-        this._submit(url);
+        console.log(`[Field values] ${JSON.stringify(this.values)}`);
+        this._submit(url, this.values);
         this.stopLoading();
     }
 
@@ -698,11 +693,11 @@ class InputPageViewController {
     }
 
 
-    _submit(url) {
+    _submit(url, values) {
         // Send data
         Http.post(
             url, 
-            this._values, 
+            values, 
             this._onSubmitSuccess.bind(this),
             this._onSubmitError.bind(this)
         );

@@ -66,12 +66,12 @@ class GradientLoadingBar extends LoadingComponentBase {
  * Toggles the gradient loading effect for a specified element.
  * 
  * @function toggleGradientLoader
- * @param {HTMLElement} $elem - The element for which the gradient loading effect should be toggled.
- * @param {boolean} [isLoading=true] - Whether the gradient loading effect should be on.
+ * @param {HTMLElement} $loader - The element for which the gradient loading effect should be toggled.
+ * @param {boolean} [enable=true] - Whether the gradient loading effect should be on.
  * @param {string} [pattern=GradientPattern.smilan] - The gradient pattern to be used.
  */
-function toggleGradientLoader($elem, isLoading = true, pattern = GradientPattern.smilan) {
-  var isLoading = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+function toggleGradientLoader($loader, enable = true, pattern = GradientPattern.smilan) {
+  var enable = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
   var pattern = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : GradientPattern.smilan;
   // define and add @keyframe animation
   var style = document.createElement('style');
@@ -89,16 +89,19 @@ function toggleGradientLoader($elem, isLoading = true, pattern = GradientPattern
   document.head.appendChild(style); // create bar element
 
   var $bar = document.createElement('span');
-  $bar.id = $elem.id + '_bar';
+  $bar.id = $loader.id + '_bar';
   $bar.style.display = 'block';
   $bar.style.height = '100%';
   $bar.style.background = pattern;
   $bar.style.backgroundSize = '300% 100%';
   $bar.style.animation = 'gradientLoadingBar 2s linear infinite';
 
-  if (isLoading) {
-    $elem.appendChild($bar);
+  if (enable) {
+    $loader.appendChild($bar);
   } else {
-    document.getElementById($bar.id).remove();
+      let $barElement = document.getElementById($bar.id);
+      if ($barElement) {
+          $barElement.remove();
+      }
   }
 }

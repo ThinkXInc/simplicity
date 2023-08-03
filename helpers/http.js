@@ -30,6 +30,11 @@ class Http {
      * 
      */
     static post(url, data, onsuccess, onfailed) {
+
+        debuglog('------> Request Payload');  // DEBUG:
+        console.log(`[Request data] ${JSON.stringify(data)}`);
+        console.log('<------ Request Payload');  // DEBUG:
+
         fetch(
             url,
             {
