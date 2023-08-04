@@ -213,7 +213,8 @@ class InputPageViewController {
             loading,
             alertMesage = new AlertMessage(id, 'AlertMessage'),
             defaultPageIndex = 0,
-            isEnterButtonToNext = true
+            isEnterButtonToNext = true,
+            isPageIndexInHash = false
             ) {
         this.__parent_id__ = parent_id;
         this.__id__ = id;
@@ -225,6 +226,7 @@ class InputPageViewController {
         this.loading = loading;
         this.alertMessage = alertMesage;
         this.isEnterButtonToNext = isEnterButtonToNext;
+        this.isPageIndexInHash = isPageIndexInHash;
 
         // Potentially check protocol adherence here
         this._checkProtocolAdherence();
@@ -321,7 +323,9 @@ class InputPageViewController {
             // call interface
             this.pageIndexChanged(this._pageIndex);
             // update browser's url
-            this._updatePageNumberInBrowswerURL(this._pageIndex);
+            if (this.isPageIndexInHash) {
+                this._updatePageIndexInBrowswerURL(this._pageIndex);
+            }
         }
     }
 
@@ -478,7 +482,7 @@ class InputPageViewController {
      * 
      * @param {number} page new page number
      */
-    _updatePageNumberInBrowswerURL(page) {
+    _updatePageIndexInBrowswerURL(page) {
         //browser.updateValueInSearchParams('page', String(page), true);
         if (isNaN(page)) {
             console.error(`invalid page number ${page} of type ${typeof page}`);
