@@ -430,6 +430,7 @@ class InputPageViewController {
             component.components.forEach((componentInWrapper, k) => {
                 this._setPageComponent(componentInWrapper, $wrapper, pageIndex, k);
                 componentInWrapper.addToParent($wrapper);
+                componentInWrapper.setPageIndex(pageIndex);
             });
         } else {
             let _id = component.__id__;
@@ -440,6 +441,7 @@ class InputPageViewController {
             // Set the viewController for the component
             component.setViewController(this);
             component.addToParent($parent);
+            component.setPageIndex(pageIndex);
     
             // keep components in the ViewController instance
             this._components.push(component);
@@ -605,6 +607,22 @@ class InputPageViewController {
     }
 
     /**
+     * Navigate to the page that contains the specified component.
+     * 
+     * If the component has a pageIndex, it updates the current pageIndex. 
+     * Otherwise, it logs an error.
+     *
+     * @param {Object} component - The component object that the method will navigate to its page.
+     */
+    _navigateToPageOf(component) {
+        if ('pageIndex' in component) {
+            this.pageIndex = component.pageIndex;
+        } else {
+            console.error(`The component doesn't have a pageIndex. Unable to navigate.`);
+        }
+    }
+
+    /**
      * Validates all pages and if validation passes, submits the form.
      * Manages loading animation during these processes.
      */
@@ -663,20 +681,18 @@ class InputPageViewController {
             console.log(`[error] ${res.error.code} ${res.error.reason}`);
 
             // Handle by error types
-            if ('errors' in res) {
-                // Validation error
-                console.log(`${res.errors.length} errors found.`);
-                this.alertMessage.hide();
-                res.errors.forEach((error) => {
-                    console.warn(`[key] ${error.field_name} [message] ${error.message}`);
-
-                    let component = this.componentByFieldName(error.field_name)
-                    component.alert(true, error.message);
-                })
-            } else {
-                // Request error
-                this.alertMessage.show(res.error.message)
-            }
+            let isFirstErrorHandled = false;
+            res.errors.forEach((error) => {
+                console.warn(`[field_name] ${error.field_name} [message] ${error.message}`);
+            
+                let component = this.componentByFieldName(error.field_name);
+                component.alert(true, error.message);
+            
+                if (!isFirstErrorHandled) {
+                    this._navigateToPageOf(component);
+                    isFirstErrorHandled = true;
+                }
+            });
         }
     }
 

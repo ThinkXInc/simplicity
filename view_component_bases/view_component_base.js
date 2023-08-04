@@ -72,6 +72,16 @@ class ViewComponentBase {
         }
     }
 
+    /**
+     * Set page index. 
+     * 
+     * This is necessary for searching in which page this component belongs to.
+     * @param {int} pageIndex 
+     */
+    setPageIndex(pageIndex) {
+        this.pageIndex = pageIndex;
+    }
+
 
     /**
      * @interface
