@@ -46,8 +46,8 @@ class LastNameFirstNamePage extends Page {
         // define default ids and locale keys
         let first_name_component_id = Page.createComponentId(parent_id, page_id, 'TextField', first_name_field_name);
         let last_name_component_id = Page.createComponentId(parent_id, page_id, 'TextField', last_name_field_name);
-        let next_button_component_id = Page.createComponentId(parent_id, page_id, 'NextButton', 'next_button');
-        let back_button_component_id = Page.createComponentId(parent_id, page_id, 'BackButton', 'back_button');
+        let next_button_component_id = Page.createComponentId(parent_id, page_id, 'NextButton');
+        let back_button_component_id = Page.createComponentId(parent_id, page_id, 'BackButton');
         let title_component_id = Page.createComponentId(parent_id, page_id, 'Title');
 
         // Locale keys are generated as {page_id}__{component class name}__{field name}__{role}

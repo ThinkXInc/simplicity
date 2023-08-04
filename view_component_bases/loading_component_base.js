@@ -15,6 +15,7 @@ class LoadingComponentBase extends ViewComponentBase {
     constructor(parent_id, id) {
 		super(parent_id, id, '', 'div');
         this.isLoading = false;
+        this.$view.style.display = 'none';
 	}
 
     /**

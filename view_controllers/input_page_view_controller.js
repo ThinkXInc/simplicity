@@ -204,20 +204,20 @@ class InputPageViewController {
 
     constructor(
             parent_id,
-            id,
+            view_controller_id,
             pages,
             locale,
             lang,
             dataModelClass,
             url,
             loading,
-            alertMesage = new AlertMessage(id, 'AlertMessage'),
+            alertMesage = new AlertMessage(view_controller_id, `${view_controller_id}__AlertMessage`),
             defaultPageIndex = 0,
             isEnterButtonToNext = true,
             isPageIndexInHash = false
             ) {
         this.__parent_id__ = parent_id;
-        this.__id__ = id;
+        this.__id__ = view_controller_id;
         this.__submit_url__ = url;
         this._locale = locale;
         this._lang = lang;
@@ -373,8 +373,8 @@ class InputPageViewController {
 
         // create view
         let $inputPageView = document.createElement('div');
-        $inputPageView.id = self.__id__;
-        $inputPageView.classList.add()
+        $inputPageView.id = this.__id__;
+        $inputPageView.classList.add('inputPageView')
         this.$inputPageView = $inputPageView;
         this.$parentView.prepend($inputPageView)
 
@@ -394,19 +394,14 @@ class InputPageViewController {
 
         pages.forEach((page, i) => {
             console.log(`${this.__id__} page ${i} has ${page.components.length} components.`);
-    
-            // create page DOM element
-            let $page = document.createElement('div');
-            $page.id = page.__id__;
-            $page.classList.add('inputPageViewPage');
-            $page.dataset.pageIndex = i;
-    
-            // set components
+   
+            page.setElements(i);
+
             page.components.forEach((component, j) => {
-                this._setPageComponent(component, $page, i, j);
+                this._setPageComponent(component, page, i, j);
             });
     
-            $pagesContainer.appendChild($page);
+            $pagesContainer.appendChild(page.$view);
         });
         $container.appendChild($pagesContainer);
 
@@ -418,11 +413,11 @@ class InputPageViewController {
      * Set page component.
      * 
      * @param {object} component 
-     * @param {DOM} $parent 
+     * @param {DOM} $page 
      * @param {number} pageIndex 
      * @param {number} componentIndex 
      */
-    _setPageComponent(component, $parent, pageIndex, componentIndex) {
+    _setPageComponent(component, page, pageIndex, componentIndex) {
         if (component.constructor.name == "Wrapper") {
             let $wrapper = document.createElement('div');
             $wrapper.id = component.__id__;
@@ -440,8 +435,7 @@ class InputPageViewController {
     
             // Set the viewController for the component
             component.setViewController(this);
-            component.addToParent($parent);
-            component.setPageIndex(pageIndex);
+            component.addToPage(page);
     
             // keep components in the ViewController instance
             this._components.push(component);

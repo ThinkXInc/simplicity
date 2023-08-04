@@ -42,6 +42,27 @@ class Page {
         this.components = components;
     }
 
+    setElements(pageIndex) {
+        // create page DOM element
+        this.$view = document.createElement('div');
+        this.$view.id = this.__id__;
+        this.$view.classList.add('inputPageViewPage');
+        this.$view.dataset.pageIndex = pageIndex;
+    
+        // set page index
+        this.setPageIndex(pageIndex);
+    }
+
+    /**
+     * Set page index. 
+     * 
+     * This method is called before page components are set in the view controller.
+     * @param {int} pageIndex 
+     */
+    setPageIndex(pageIndex) {
+        this.pageIndex = pageIndex;
+    }
+
     /**
      * Create a component ID with a consistent format.
      * 

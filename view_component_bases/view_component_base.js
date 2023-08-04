@@ -46,7 +46,19 @@ class ViewComponentBase {
         this.$view = document.createElement(htmlTag);
         this.$view.id = this.__id__;
         this.$view.innerText = text;
-        this.$view.classList.add(`${this.__parent_id__}_${this.__id__}`);
+        this.$view.classList.add(`${this.__id__}`);
+        this.$view.classList.add(`${this.constructor.name}`);
+    }
+
+    /**
+     * Add this component to the given page.
+     * 
+     * @param {Page} page 
+     */
+    addToPage(page) {
+        this.addToParent(page.$view);
+        this.setPageIndex(page.pageIndex);
+        this.$view.classList.add(`${page.__id__}__${this.constructor.name}`);
     }
 
     /**
