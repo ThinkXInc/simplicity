@@ -13,8 +13,9 @@ class Browser {
    * 
    * @param {String} relativePath 
    */
-    static goTo(relativePath) {
-      window.location = relativePath;
+  static goTo(relativePath) {
+    let baseURL = window.location.origin;
+    window.location = baseURL + '/' + relativePath;
   }
 
   /**

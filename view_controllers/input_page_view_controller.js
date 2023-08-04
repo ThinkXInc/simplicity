@@ -118,6 +118,18 @@ class InputPageViewDataModel {
 }
 
 /**
+ * Defines the methods to be overridden by subclasses of InputPageViewController.
+ * 
+ * Methods:
+ * - completeSubmission: A method that should be overridden to define what to do after values have been submitted to server.
+ */
+class InputPageViewControllerProtocol {
+    completeSubmission() {
+        throw new Error('Subclasses must override this method');
+    }
+}
+
+/**
  * InputPageViewController - This class is responsible for managing the user interactions on the input page, 
  * ensuring protocol adherence of its various components, and managing the state of the page.
  *
@@ -219,8 +231,8 @@ class InputPageViewController {
         this.__parent_id__ = parent_id;
         this.__id__ = view_controller_id;
         this.__submit_url__ = url;
-        this._locale = locale;
-        this._lang = lang;
+        this.locale = locale;
+        this.lang = lang;
 
         this.pages = pages;
         this.loading = loading;
@@ -230,6 +242,7 @@ class InputPageViewController {
 
         // Potentially check protocol adherence here
         this._checkProtocolAdherence();
+        this._checkProtocolAdherenceForSubClass();
 
         // setup page components
         this._setElements(pages);
@@ -248,12 +261,12 @@ class InputPageViewController {
         // locale
         console.log(locale);
         console.log(lang);
-        if (this._locale == null) {
+        if (this.locale == null) {
             console.warn(`no locale json data found.`);
         } else {
             console.log('locale json data found');
         }
-        if (this._lang == null) {
+        if (this.lang == null) {
             console.warn(`no language information is given.`);
         } else {
             console.log(`initial language is set as ${lang}`);
@@ -296,7 +309,17 @@ class InputPageViewController {
             }
         });
     }
-    
+
+    /**
+     * Checks if all methods from InputPageViewControllerProtocol are implemented.
+     */
+    _checkProtocolAdherenceForSubClass() {
+        Object.getOwnPropertyNames(InputPageViewControllerProtocol.prototype).forEach(methodName => {
+            if (methodName !== "constructor" && typeof this[methodName] !== "function") {
+                throw new Error(`Subclasses must implement ${methodName} method of InputPageViewControllerProtocol`);
+            }
+        });
+    }
 
     /**
      * pageIndex setter / getter
@@ -669,6 +692,7 @@ class InputPageViewController {
             setTimeout(() => { this.stopLoading(); }, 1000);
             // Reset cookie storage
             //this._resetValuesInCookie();
+            this.completeSubmission();
 
         // Error object returned.
         } else {
@@ -715,6 +739,27 @@ class InputPageViewController {
             this._onSubmitSuccess.bind(this),
             this._onSubmitError.bind(this)
         );
+    }
+
+    /**
+     * Method to be overridden in subclass, defining what to do after a successful form submission.
+     * 
+     * For example, to redirect to another page:
+     * 
+     * completeSubmission() {
+     *     // URL to redirect to after successful form submission
+     *     const url = 'https://example.com/success_page';
+     *     Browser.goTo(url);
+     * }
+     */
+    completeSubmission() {
+        // Uncomment and modify the following lines in the subclass
+        /*
+        // URL to redirect to after successful form submission
+        const url = '/success_page';
+        Browser.goTo(url);
+        */
+        throw new Error('You have to implement the method completeSubmission()!');
     }
 
     /**
@@ -965,3 +1010,4 @@ class InputPageViewController {
     }
 
 }
+
