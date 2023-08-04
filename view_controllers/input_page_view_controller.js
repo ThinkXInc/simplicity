@@ -652,7 +652,7 @@ class InputPageViewController {
 
             setTimeout(() => { this.stopLoading(); }, 1000);
             // Reset cookie storage
-            this._resetValuesInCookie();
+            //this._resetValuesInCookie();
 
         // Error object returned.
         } else {
@@ -664,9 +664,9 @@ class InputPageViewController {
                 console.log(`${res.errors.length} errors found.`);
                 this.alertMessage.hide();
                 res.errors.forEach((error) => {
-                    console.warn(`[key] ${error.key} [message] ${error.message}`);
+                    console.warn(`[key] ${error.field_name} [message] ${error.message}`);
 
-                    let component = this._componentByFieldName(error.key)
+                    let component = this.componentByFieldName(error.field_name)
                     component.alert(true, error.message);
                 })
             } else {
@@ -924,36 +924,30 @@ class InputPageViewController {
      * @param {string} fieldName 
      */
     componentByFieldName(fieldName) {
-        let result;
-        this._components.forEach((component) => {
-            console.log(component.__field_name__)
-            if (component.__field_name__ == fieldName) {
-                return component
+        for (let component of this._components) {
+            if (component.__field_name__ === fieldName) {
+                debuglog(`componentByFieldName found component by ${fieldName}`);
+                return component;
             }
-        })
-        if (result == null) {
-            console.warn(`input component ${fieldName} not found in component list.`)
-        } else {
-            return result;
         }
+        console.warn(`input component ${fieldName} not found in component list.`);
+        return null;  // Return null when the component is not found
     }
 
     /**
-     * Returns an component by id.
+     * Returns a component by id.
      * 
      * @param {string} __id__
      */
     componentById(__id__) {
-        let result;
-        this._components.forEach((component) => {
-            if (component.__id__ == __id__) {
-                result = component
+        for (let component of this._components) {
+            if (component.__id__ === __id__) {
+                debuglog(`componentByFieldName found component by ${__id__}`);
+                return component;
             }
-        })
-        if (result == null) {
-            console.warn(`component ${__id__} not found in component list.`)
-        } else {
-            return result;
         }
+        console.warn(`component ${__id__} not found in component list.`);
+        return null;  // Return null when the component is not found
     }
+
 }
