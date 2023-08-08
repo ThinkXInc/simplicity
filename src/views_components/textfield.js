@@ -7,13 +7,13 @@
  */
 
 
-const TextFieldState = Object.freeze({ onhide: 0, onshow: 1, });
+ const TextFieldState = Object.freeze({ onhide: 0, onshow: 1, });
 //onfocus: 3,  // TODO:
 //onlock: 4,  // TODO:
-const TextFieldLoadingState = Object.freeze({ none: 0, onloading: 1, done: 2, });
-const TextFieldValidationState = Object.freeze({ none: 0, onalert: 1, onverified: 1, });
-const TextFieldInputState = Object.freeze({ empty: 0, filled: 1, overmaximum: 2, });
-const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
+ const TextFieldLoadingState = Object.freeze({ none: 0, onloading: 1, done: 2, });
+ const TextFieldValidationState = Object.freeze({ none: 0, onalert: 1, onverified: 1, });
+ const TextFieldInputState = Object.freeze({ empty: 0, filled: 1, overmaximum: 2, });
+ const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
 
 
  /**
@@ -72,7 +72,7 @@ const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
  * @param {boolean} has_title - Whether the TextField has a title. Defaults to true.
  * @param {boolean} password_mode - Whether the TextField is in password mode. Defaults to false.
  */
-class TextField extends FormComponentBase {
+ class TextField extends FormComponentBase {
 
     __counter_format__ = `$count/$maxcount`;
 
@@ -473,7 +473,7 @@ class TextField extends FormComponentBase {
 }
 
 
-class TextFieldProtocol {
+ class TextFieldProtocol {
     /**
      * To be overridden in the ViewController. 
      * Called when the input value of a TextField changes.

@@ -11,15 +11,15 @@
  */
 
 
-const FileUploadViewShowingState = Object.freeze({ onhide: 0, onshow: 1, });
-const FileUploadViewUploadState = Object.freeze({
+ const FileUploadViewShowingState = Object.freeze({ onhide: 0, onshow: 1, });
+ const FileUploadViewUploadState = Object.freeze({
     onready: 0,
     onuploading: 1,
     onuploadcompleted: 2,
     onuploadfailed: 2,
 });
 
-const FileType = Object.freeze({
+ const FileType = Object.freeze({
     pdf: '/img/icons/file_types/pdf_file.png',
     jpg: '/img/icons/file_types/jpg_file.png',
     png: '/img/icons/file_types/png_file.png',
@@ -60,7 +60,7 @@ const FileType = Object.freeze({
  * `</code>`
  * @param {string} id - The DOM id where this view is inserted.
  */
-class FileUploadTableViewCell {
+ class FileUploadTableViewCell {
     __id__ = null;
     __table_view_id__ = null;
     __index__ = null;
@@ -219,7 +219,7 @@ class FileUploadTableViewCell {
  * @param {string} dropTitle - drag & drop area title text
  * @param {string} uploadedFilesTableTitle - uploadFilesTable title
  */
-class FileUploadView extends ViewComponentBase {
+ class FileUploadView extends ViewComponentBase {
     //__upload_file_table_title__ = `<h3 class=uploadedFilesTableTitle>$uploadedFilesTableTitle</h3>` 
     __acceptable_file_extensions__ = ['jpg', 'png', 'pdf', 'wav', 'aiff', 'mp3']
 
@@ -550,7 +550,7 @@ class FileUploadView extends ViewComponentBase {
     }
 }
 
-class FileUploadViewProtocol {
+ class FileUploadViewProtocol {
     /**
      * To be overridden in the ViewController. 
      * Called when the state of the FileUploadView changes.

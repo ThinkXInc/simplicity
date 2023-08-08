@@ -1,4 +1,4 @@
-// debugging.js
+// etc/debugg_log.js
 let DEBUG = false;
 
 function debuglog(message) {

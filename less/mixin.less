@@ -1,0 +1,9 @@
+// simplicity/mixin.less
+
+@cubic-bezier1: cubic-bezier(.65,0,.34,1);
+
+.box-shadow (@left: 1px, @top: 1px, @size: 2px, @spread: 1px, @color: rgba(0, 0, 0, 0.3)) {
+  -webkit-box-shadow: @left @top @size @spread @color;
+  -moz-box-shadow: @left @top @size @spread @color;
+  box-shadow: @left @top @size @spread @color;
+}

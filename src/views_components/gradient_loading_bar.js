@@ -1,4 +1,4 @@
-var GradientPattern = Object.freeze({
+ var GradientPattern = Object.freeze({
     // generate => https://cssgradient.io/
     rainbow: 'linear-gradient(90deg,#ffd33d,#ea4aaa 17%,#b34bff 34%,#01feff 51%,#ffd33d 68%,#ea4aaa 85%,#b34bff)',
     anslim: 'linear-gradient(90deg, rgba(60,128,167,1) 0%, rgba(158,188,200,1) 14%, rgba(255,255,255,1) 30%, rgba(167,47,178,1) 51%, rgba(158,188,200,1) 78%, rgba(60,128,167,1) 100%)',
@@ -22,7 +22,7 @@ var GradientPattern = Object.freeze({
  * @class GradientLoadingBar
  * @extends {LoadingComponentBase}
  */
-class GradientLoadingBar extends LoadingComponentBase {
+ class GradientLoadingBar extends LoadingComponentBase {
   /**
    * Constructs an instance of GradientLoadingBar.
    * 

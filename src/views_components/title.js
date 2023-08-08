@@ -6,7 +6,7 @@
  * @param {string} text - The text to display in the element.
  * @param {string} htmlTag - The type of HTML element to create (default is 'h2').
  */
-class Title extends ViewComponentBase {
+ class Title extends ViewComponentBase {
 
     constructor(parent_id, id, text, htmlTag = 'h2') {
         super(parent_id, id, text, htmlTag);

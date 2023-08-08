@@ -16,7 +16,7 @@
 /**
  * EditContentView State Enum.
  */
-const EditContentViewState = Object.freeze({
+ const EditContentViewState = Object.freeze({
     onhide: 0,
     onshow: 1,
     ondone: 2,
@@ -28,7 +28,7 @@ const EditContentViewState = Object.freeze({
 /**
  * EditingContent Data Model
  */
-class EditingContent extends Content {
+ class EditingContent extends Content {
 
 }
 
@@ -44,7 +44,7 @@ class EditingContent extends Content {
  * `</code>`
  * @param {string} id - The DOM id where this view is replaced.
  */
-class EditContentView {
+ class EditContentView {
     __id__ = null;
     _state = EditContentViewState.onhide;
 

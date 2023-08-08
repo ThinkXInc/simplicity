@@ -6,7 +6,7 @@
  * @param {string} id - The id for the new element.
  * @param {string} htmlTag - The type of HTML element to create (default is 'div').
  */
-class AlertMessageComponentBase extends ViewComponentBase {
+ class AlertMessageComponentBase extends ViewComponentBase {
 
     constructor(parent_id, id, htmlTag = 'div') {
         super(parent_id, id, '', htmlTag);
@@ -56,7 +56,7 @@ class AlertMessageComponentBase extends ViewComponentBase {
  * A protocol class for AlertMessage components.
  * This class defines the interface that AlertMessage components should implement.
  */
-class AlertMessageProtocol {
+ class AlertMessageProtocol {
     /**
      * Protocol method to show a message. This method should be implemented in the classes 
      * that conform to this protocol.
