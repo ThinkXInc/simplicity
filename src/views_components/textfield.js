@@ -300,6 +300,7 @@
         if ($inputElem instanceof HTMLInputElement) {
             $inputElem.type = 'text';
         }
+        $inputElem.placeholder = this.__placeholder__;
         $inputElem.autocomplete = 'off';
         if (this.__type__ !== TextFieldType.singleline) {
             $inputElem.rows = this.__init_rows__;
