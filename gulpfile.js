@@ -27,7 +27,7 @@ const paths = {
         './src/view_components/gradient_loading_bar.js',
         './src/view_components/position_map.js',
         './src/view_component_bases/alert_message_component_base.js',
-        './src/views_components/alert_message.js',
+        './src/view_components/alert_message.js',
         './src/view_component_bases/page.js',
         './src/pages/last_name_first_name_page.js',
         './src/pages/single_text_input_page.js',

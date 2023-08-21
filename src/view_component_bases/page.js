@@ -47,6 +47,7 @@ class Page {
         this.$view = document.createElement('div');
         this.$view.id = this.__id__;
         this.$view.classList.add('inputPageViewPage');
+        this.$view.classList.add(this.__id__);
         this.$view.dataset.pageIndex = pageIndex;
     
         // set page index

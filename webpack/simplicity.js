@@ -24,14 +24,14 @@ import { FormComponentBase } from '../src/view_component_bases/form_component_ba
 import { LoadingComponentBase, LoadingProtocol } from '../src/view_component_bases/loading_component_base.js';
 import { Wrapper } from '../src/view_component_bases/wrapper.js';
 
-import { Title } from '../src/views_components/title.js';
-import { NextButton } from '../src/views_components/next_button.js';
-import { BackButton } from '../src/views_components/back_button.js';
-import { TextFieldType, TextFieldState, TextFieldLoadingState, TextFieldValidationState, TextField, TextFieldProtocol } from '../src/views_components/textfield.js';
-import { ListMenu, DropdownMenuType, DropdownMenuDisplayPositionType, DropdownButtonState, DropdownButton, DropdownButtonProtocol } from '../src/views_components/dropdown_button.js';
-import { FileUploadViewShowingState, FileUploadViewUploadState, FileType, FileUploadTableViewCell, FileUploadView, FileUploadViewProtocol } from '../src/views_components/file_upload_view';
+import { Title } from '../src/view_components/title.js';
+import { NextButton } from '../src/view_components/next_button.js';
+import { BackButton } from '../src/view_components/back_button.js';
+import { TextFieldType, TextFieldState, TextFieldLoadingState, TextFieldValidationState, TextField, TextFieldProtocol } from '../src/view_components/textfield.js';
+import { ListMenu, DropdownMenuType, DropdownMenuDisplayPositionType, DropdownButtonState, DropdownButton, DropdownButtonProtocol } from '../src/view_components/dropdown_button.js';
+import { FileUploadViewShowingState, FileUploadViewUploadState, FileType, FileUploadTableViewCell, FileUploadView, FileUploadViewProtocol } from '../src/view_components/file_upload_view';
 import { AlertMessageComponentBase, AlertMessageProtocol } from '../src/view_component_bases/alert_message_component_base';
-import { AlertMessage } from '../src/views_components/alert_message.js';
+import { AlertMessage } from '../src/view_components/alert_message.js';
 
 import { Page } from '../src/view_component_bases/page.js';
 import { LastNameFirstNamePage } from '../src/pages/last_name_first_name_page.js';
