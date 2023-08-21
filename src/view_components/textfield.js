@@ -318,6 +318,7 @@
             this[`$${elem}`] = $span;
         });
         $nameInputOuter.appendChild($footer);
+        this.$footer = $footer;
     
         this.$textField.appendChild($nameInputOuter);
     }

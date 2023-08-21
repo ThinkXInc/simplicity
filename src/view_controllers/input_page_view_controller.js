@@ -388,18 +388,28 @@ class InputPageViewController {
             console.error(`${this.__id__} requires a list of pages with components.`)
         }
 
-        this.$parentView = document.getElementById(this.__parent_id__);
-        if (this.$parentView == null) {
-            console.error(
-                `The parent element id=${this.__parent_id__} is necessary in HTML.`);
-        }
-
         // create view
-        let $inputPageView = document.createElement('div');
-        $inputPageView.id = this.__id__;
-        $inputPageView.classList.add('inputPageView')
-        this.$inputPageView = $inputPageView;
-        this.$parentView.prepend($inputPageView)
+        if (this.__parent_id__) {
+            this.$parentView = document.getElementById(this.__parent_id__);
+            if (this.$parentView == null) {
+                console.error(
+                    `The parent element id=${this.__parent_id__} is necessary in HTML.`);
+            }
+            let $inputPageView = document.createElement('div');
+            $inputPageView.id = this.__id__;
+            $inputPageView.classList.add('inputPageView')
+            this.$inputPageView = $inputPageView;
+            this.$parentView.prepend($inputPageView)
+        } else {
+            let $inputPageView = document.getElementById(this.__id__);
+            if ($inputPageView == null) {
+                console.error(
+                    `The id=${this.__id__} is necessary in HTML.`);
+            }
+            $inputPageView.id = this.__id__;
+            $inputPageView.classList.add('inputPageView')
+            this.$inputPageView = $inputPageView;
+        }
 
         // create container
         let $container = document.createElement('div');
