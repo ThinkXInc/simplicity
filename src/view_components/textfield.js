@@ -26,7 +26,7 @@
  *      <div class="name inputouter">
  *          <h6 class="title">{this.__title__}</h6>
  *          <input class="{this.__field_name__}form" name="{this.__field_name__}" type="text" autocomplete="off">
- *          <div class="footer cf">
+ *          <div class="footer">
  *              <span class="indicator"></span>
  *              <span class="message"></span>
  *              <span class="counter"></span>
@@ -283,6 +283,7 @@
         // textField
         this.$textField = this.$view;
         this.$textField ?? console.warn(`<section id=${this.__id__} class=textField></section> is necessary in HTML.`);
+        this.$textField.className = 'TextField';
     
         // create new elements
         const $nameInputOuter = document.createElement('div');
@@ -310,7 +311,7 @@
         this.$textArea = $inputElem;
     
         const $footer = document.createElement('div');
-        $footer.className = 'footer cf';
+        $footer.className = 'footer';
         ['indicator', 'message', 'counter'].forEach(elem => {
             const $span = document.createElement('span');
             $span.className = elem;
