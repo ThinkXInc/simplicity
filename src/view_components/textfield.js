@@ -111,7 +111,8 @@
         defaultValue = null, 
         cookieExclude = false, 
         hasCookiePrefix = false, 
-        isDefaultValueRestoredFromCookie = true
+        isDefaultValueRestoredFromCookie = true,
+        scrollControlElementId = null
     ) {
 
         super(parent_id, id, field_name, '', htmlTag, validators, defaultValue, cookieExclude, hasCookiePrefix, isDefaultValueRestoredFromCookie);
@@ -149,6 +150,11 @@
         this._togglePasswordMode(this.__password_mode__);
         // restore from cookie
         this._restoreValueFromCookie();
+        // Resize textarea. Ensure the browser gets a chance to recalculate layout before resizing
+        this.__scroll_control_element_id__ = scrollControlElementId;
+        requestAnimationFrame(() => {
+            this._resizeTextArea(this.$textArea);
+        });
     }
 
     /**
@@ -182,7 +188,11 @@
         const event = new CustomEvent('textupdated', {detail: {new: text,}});
         this.$textField.dispatchEvent(event);
         // save cookie
-        this._setValueToCookies(text);
+        if (this.validate() == null) {
+            this._setValueToCookies(text);
+        } else {
+            console.warn(`Cookie is not set for key ${this.__field_name__} since the value is not valid.`)
+        }
     }
 
     get text() {return this._text}
@@ -349,18 +359,12 @@
             } else {
                 this._setState(TextFieldValidationState.none, TextFieldInputState.filled);
             }
-        })
 
-        // auto resize vertically
-        if (_this.__vertical_flex__) {
-            debuglog(`Set the keydown event handler for ${this.__id__}.`);
-            _this.$textArea.addEventListener('keydown', ()=> {
-                console.log(`[event] keydown -> ${_this.$textArea.value}`)
-                setTimeout(()=> {
-                    this.$textArea.style.cssText = `height:auto; height:${this.$textArea.scrollHeight}px;`;
-                }, 0);
-            });
-        }
+            // Auto resize textarea
+            if (_this.__vertical_flex__) {
+                _this._resizeTextArea(_this.$textArea);
+            }
+        })
 
         debuglog(`Set the blur event handler for ${this.__id__}.`);
         this.$textArea.addEventListener('blur', () => {
@@ -373,6 +377,90 @@
         });
     }
 
+    _resizeTextArea($textArea) {
+        console.error('resize');
+    
+        let createViewElem = document.getElementById(this.__scroll_control_element_id__);
+        let originalScrollTop = createViewElem.scrollTop;
+        let footerTopPositionBefore = this.$footer.getBoundingClientRect().top;
+        let viewportHeight = window.innerHeight;
+    
+        // 1. Check if the footer top is visible before resizing
+        let isFooterTopVisible = footerTopPositionBefore < viewportHeight;
+    
+        // 2. Reset the height to default to get the actual scrollHeight
+        $textArea.style.height = 'auto';
+    
+        // 3. Set the height based on scroll height
+        $textArea.style.height = `${$textArea.scrollHeight}px`; 
+        debuglog(`$textArea height in TextField is set to the scroll height: ${$textArea.scrollHeight}px`);
+    
+        // 4. Check if the footer bottom is hidden after resizing
+        let footerBottomPositionAfter = this.$footer.getBoundingClientRect().bottom;
+        let isFooterBottomHidden = footerBottomPositionAfter > viewportHeight;
+    
+        // 5. If footer top was visible before resizing and footer bottom is hidden after resizing, adjust scroll.
+        if (isFooterTopVisible && isFooterBottomHidden) {
+            console.error('XXX');
+            let scrollAmountNeeded = footerBottomPositionAfter - viewportHeight;
+            createViewElem.scrollTop = originalScrollTop + scrollAmountNeeded;
+        }
+    }
+
+    _resizeTextArea($textArea) {
+        console.error('resize');
+        
+        // Initialize necessary variables
+        let scrollViewElem = this._getScrollViewElement();
+        let originalScrollTop = scrollViewElem ? scrollViewElem.scrollTop : 0;
+        
+        let footerTopPositionBefore = this.$footer.getBoundingClientRect().top;
+        let viewportHeight = window.innerHeight;
+        
+        // Determine if the top of the footer is visible before resizing
+        let isFooterTopVisible = footerTopPositionBefore < viewportHeight;
+    
+        // Adjust the textarea height
+        this._adjustTextAreaHeight($textArea);
+        
+        // Restore original scroll position, if scrollViewElem exists
+        if (scrollViewElem) {
+            scrollViewElem.scrollTop = originalScrollTop;
+        }
+    
+        // Adjust scroll to ensure footer visibility, if necessary
+        this._ensureFooterVisibility(scrollViewElem, originalScrollTop, isFooterTopVisible, viewportHeight);
+    }
+    
+    _getScrollViewElement() {
+        return this.__scroll_control_element_id__ 
+            ? document.getElementById(this.__scroll_control_element_id__) 
+            : null;
+    }
+    
+    _adjustTextAreaHeight($textArea) {
+        // Reset height to auto for accurate scrollHeight measurement
+        $textArea.style.height = 'auto';
+        
+        // Update height based on content's scrollHeight
+        $textArea.style.height = `${$textArea.scrollHeight}px`; 
+        debuglog(`$textArea height in TextField is set to the scroll height: ${$textArea.scrollHeight}px`);
+    }
+    
+    _ensureFooterVisibility(scrollViewElem, originalScrollTop, isFooterTopVisible, viewportHeight) {
+        if (this.__scroll_control_element_id__ && scrollViewElem) {
+            requestAnimationFrame(() => {
+                let footerBottomPositionAfter = this.$footer.getBoundingClientRect().bottom;
+                let isFooterBottomHidden = footerBottomPositionAfter > viewportHeight;
+                
+                if (isFooterTopVisible && isFooterBottomHidden) {
+                    console.error('XXX');
+                    let scrollAmountNeeded = footerBottomPositionAfter - viewportHeight;
+                    scrollViewElem.scrollTop = originalScrollTop + scrollAmountNeeded;
+                }
+            });
+        }
+    }
 
     /**
      * Sets the validation state and input state of the TextField.
@@ -437,19 +525,16 @@
      * @param {string} message
      */
     alert(onAlert, message) {
-        const id = this.__id__ + '__alert';
-        const $parent = this.$textField;
-        const $footer = $parent.querySelector('.footer');
-        let $alertMessage = $footer.querySelector('#' + id);
-    
+        const alertMessageId = this.__id__ + '__alert';
+   
         if (onAlert) {
             console.log(`Alert turned on for ${this.__id__} with message: ${message}`);
-            $parent.classList.add('alert');
+            this.$textField.classList.add('alert');
     
             // If the alertMessage already exists, update it or return if it's the same.
-            if ($alertMessage) {
-                if (message !== $alertMessage.innerText) {
-                    $alertMessage.innerText = message;
+            if (this._isAlerted(alertMessageId)) {
+                if (!this._isAlertMessageEqualTo(alertMessageId, message)) {
+                    this._setAlertMessage(message);
                     console.log(`Updated alert message for ${this.__id__} to: ${message}`);
                 } else {
                     console.log(`Alert message for ${this.__id__} is already set to: ${message}`);
@@ -458,21 +543,73 @@
             }
     
             // Create new alert message if it does not exist.
-            $alertMessage = document.createElement('p');
-            $alertMessage.classList.add('alertMessage');
-            $alertMessage.id = id;
-            $alertMessage.innerText = message;
-            $footer.appendChild($alertMessage);
+            this._appendAlertMessage(alertMessageId, message);
             debuglog(`Created new alert message for ${this.__id__} with message: ${message}`);
-        } else if ($alertMessage) { // Only run if $alertMessage exists
+
+        } else if (this._isAlerted(alertMessageId)) { // Only run if $alertMessage exists
             console.log(`Alert turned off for ${this.__id__}`);
-            $parent.classList.remove('alert');
-            $footer.removeChild($alertMessage);
+            // Remove alert message
+            this._removeAlertMessage(alertMessageId);
+
         } else {
             //DEBUG: console.log(`Alert method called for ${this.__id__} to remove the message but not found.`);
         }
     }
-    
+
+    /**
+     * Determines if an alert message with the given ID is present in the footer of the text field.
+     * 
+     * @param {string} alertMessageId - The ID of the alert message to check for.
+     * @returns {boolean} - Returns `true` if the alert message is present, otherwise returns `false`.
+     */
+    _isAlerted(alertMessageId) {
+        const $footer = this.$textField.querySelector('.footer');
+        let $alertMessage = $footer.querySelector('#'+alertMessageId);
+        return $alertMessage ? true : false;
+    }
+
+    _isAlertMessageEqualTo(alertMessageId, message) {
+        const $footer = this.$textField.querySelector('.footer');
+        let $alertMessage = $footer.querySelector('#'+alertMessageId);
+        return $alertMessage.innerText == message ? true : false;
+    }
+
+    _setAlertMessage(message) {
+        const $footer = this.$textField.querySelector('.footer');
+        let $alertMessage = $footer.querySelector('#'+alertMessageId);
+        $alertMessage.innerText = message;
+    }
+
+    /**
+     * Appends an alert message with the specified ID and content to the footer of the text field.
+     * If an alert message with the given ID already exists, it's content is updated with the new message.
+     * 
+     * @param {string} alertMessageId - The ID to assign to the alert message.
+     * @param {string} message - The content/message to set for the alert.
+     */
+    _appendAlertMessage(alertMessageId, message) {
+        const $footer = this.$textField.querySelector('.footer');
+
+        // Create new alert message if it does not exist.
+        $alertMessage = document.createElement('p');
+        $alertMessage.classList.add('alertMessage');
+        $alertMessage.id = alertMessageId;
+        $alertMessage.innerText = message;
+        $footer.appendChild($alertMessage);
+    }
+
+    /**
+     * Removes the alert message with the specified ID from the footer of the text field.
+     * If no such alert message exists, no action is taken.
+     * 
+     * @param {string} alertMessageId - The ID of the alert message to be removed.
+     */
+    _removeAlertMessage(alertMessageId) {
+        const $footer = this.$textField.querySelector('.footer');
+        let $alertMessage = $footer.querySelector('#'+alertMessageId);
+        this.$textField.classList.remove('alert');
+        $footer.removeChild($alertMessage);
+    }
 }
 
 
