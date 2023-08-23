@@ -226,7 +226,8 @@ class InputPageViewController {
             alertMesage = new AlertMessage(view_controller_id, `${view_controller_id}__AlertMessage`),
             defaultPageIndex = 0,
             isEnterButtonToNext = true,
-            isPageIndexInHash = false
+            isPageIndexInHash = false,
+            preventDefaultPageControl = false
             ) {
         this.__parent_id__ = parent_id;
         this.__id__ = view_controller_id;
@@ -239,6 +240,7 @@ class InputPageViewController {
         this.alertMessage = alertMesage;
         this.isEnterButtonToNext = isEnterButtonToNext;
         this.isPageIndexInHash = isPageIndexInHash;
+        this.preventDefaultPageControl = preventDefaultPageControl;
 
         // Potentially check protocol adherence here
         this._checkProtocolAdherence();
@@ -334,10 +336,10 @@ class InputPageViewController {
         let $pages = this.$inputPageView.querySelectorAll('.inputPageViewPage')
         $pages.forEach(($page, i) => {
             if (parseInt($page.dataset.pageIndex) == this._pageIndex) {
-                $page.classList.add('show');
+                if (!this.preventDefaultPageControl) {$page.classList.add('show')};
                 $page.style.display = "flex";
                 $page.style.flexDirection = "column";
-            } else {
+            } else if (!this.preventDefaultPageControl) {
                 $page.classList.remove('show');
                 $page.style.display = "none";
             }

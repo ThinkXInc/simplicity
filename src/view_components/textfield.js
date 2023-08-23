@@ -23,7 +23,7 @@
  * `<code>`
  * html:
  *    <div id="{this.__id__}" class="textField">
- *      <div class="name inputouter">
+ *      <div class="inputOuter">
  *          <h6 class="title">{this.__title__}</h6>
  *          <input class="{this.__field_name__}form" name="{this.__field_name__}" type="text" autocomplete="off">
  *          <div class="footer">
@@ -112,7 +112,8 @@
         cookieExclude = false, 
         hasCookiePrefix = false, 
         isDefaultValueRestoredFromCookie = true,
-        scrollControlElementId = null
+        scrollControlElementId = null,
+        isCounterDisplayed = true,
     ) {
 
         super(parent_id, id, field_name, '', htmlTag, validators, defaultValue, cookieExclude, hasCookiePrefix, isDefaultValueRestoredFromCookie);
@@ -155,6 +156,8 @@
         requestAnimationFrame(() => {
             this._resizeTextArea(this.$textArea);
         });
+        // Set if counter is displayed
+        this.isCounterDisplayed = isCounterDisplayed;
     }
 
     /**
@@ -203,8 +206,10 @@
     set count(count) {
         this._count = count;
         // update counter text
-        this.$counter.innerHTML = this.__counter_format__
-            .replace('$count', count).replace('$maxcount', this.__max_text_count__);
+        if (this.isCounterDisplayed) {
+            this.$counter.innerHTML = this.__counter_format__
+                .replace('$count', count).replace('$maxcount', this.__max_text_count__);
+        }
     }
 
     get count() {return this._count}
@@ -296,13 +301,14 @@
         this.$textField.className = 'TextField';
     
         // create new elements
-        const $nameInputOuter = document.createElement('div');
-        $nameInputOuter.className = 'name inputouter';
+        const $inputOuter = document.createElement('div');
+        $inputOuter.className = 'inputOuter';
+        this.$inputOuter = $inputOuter;
     
         const $title = document.createElement('h6');
         $title.className = 'title';
         $title.textContent = this.__title__;
-        $nameInputOuter.appendChild($title);
+        $inputOuter.appendChild($title);
         if (!this.__has_title__) $title.remove();
     
         const $inputElem = document.createElement(this.__type__ == TextFieldType.singleline ? 'input' : 'textarea');
@@ -317,7 +323,7 @@
             $inputElem.rows = this.__init_rows__;
             $inputElem.contentEditable = true;
         }
-        $nameInputOuter.appendChild($inputElem);
+        $inputOuter.appendChild($inputElem);
         this.$textArea = $inputElem;
     
         const $footer = document.createElement('div');
@@ -328,10 +334,10 @@
             $footer.appendChild($span);
             this[`$${elem}`] = $span;
         });
-        $nameInputOuter.appendChild($footer);
+        $inputOuter.appendChild($footer);
         this.$footer = $footer;
     
-        this.$textField.appendChild($nameInputOuter);
+        this.$textField.appendChild($inputOuter);
     }
 
     /**
@@ -509,7 +515,7 @@
      * and add a paragraph tag within the footer, resulting in:
      * 
      * <div id="{this.__id__}" class="textField alert">
-     *    <div class="name inputouter">
+     *    <div class="inputOuter">
      *        <h6 class="title">{this.__title__}</h6>
      *        <input class="{this.__field_name__}form" name="{this.__field_name__}" type="text" autocomplete="off">
      *        <div class="footer cf">
