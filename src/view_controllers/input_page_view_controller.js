@@ -967,6 +967,10 @@ class InputPageViewController {
      * Start loading. Implement this in subclass.
      */
     startLoading() {
+        debuglog('start loading..')
+        if (this.loading == null) {
+            console.warn(`no loading is set in ${this.__id__}`);
+        }
         this.loading.startLoading();
     }
 
@@ -975,6 +979,10 @@ class InputPageViewController {
      * Stop loading. Implement this in subclass.
      */
     stopLoading() {
+        debuglog('stop loading.')
+        if (this.loading == null) {
+            console.warn(`no loading is set in ${this.__id__}`);
+        }
         this.loading.stopLoading();
     }
 
