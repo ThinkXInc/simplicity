@@ -6,6 +6,8 @@
  * @author kaz@thinkxinc.com (Kazuki Otsuka)
  */
 
+const textFieldOnDisableClassName = 'onDisable';
+
 const TextFieldState = Object.freeze({ onhide: 0, onshow: 1, });
 //onfocus: 3,  // TODO:
 //onlock: 4,  // TODO:
@@ -296,10 +298,10 @@ const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
 
     disableInteractions(disable) {
         if (disable) {
-            this.$textField.classList.add('disable');
+            this.$textField.classList.add(textFieldOnDisableClassName);
             this.$textArea.setAttribute('disabled', true);
        } else {
-            this.$textField.classList.remove('disable');
+            this.$textField.classList.remove(textFieldOnDisableClassName);
             this.$textArea.removeAttribute('disabled');
        }
     }
