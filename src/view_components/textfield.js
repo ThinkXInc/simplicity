@@ -6,15 +6,13 @@
  * @author kaz@thinkxinc.com (Kazuki Otsuka)
  */
 
-
- const TextFieldState = Object.freeze({ onhide: 0, onshow: 1, });
+const TextFieldState = Object.freeze({ onhide: 0, onshow: 1, });
 //onfocus: 3,  // TODO:
 //onlock: 4,  // TODO:
- const TextFieldLoadingState = Object.freeze({ none: 0, onloading: 1, done: 2, });
- const TextFieldValidationState = Object.freeze({ none: 0, onalert: 1, onverified: 1, });
- const TextFieldInputState = Object.freeze({ empty: 0, filled: 1, overmaximum: 2, });
- const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
-
+const TextFieldLoadingState = Object.freeze({ none: 0, onloading: 1, done: 2, });
+const TextFieldValidationState = Object.freeze({ none: 0, onalert: 1, onverified: 1, });
+const TextFieldInputState = Object.freeze({ empty: 0, filled: 1, overmaximum: 2, });
+const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
 
  /**
  * A class for TextField components.
@@ -284,6 +282,26 @@
                 this.$textField.classList.add('overMaximumTextCount');
                 break
         }
+    }
+
+    set onDisable (onDisable) {
+        if (onDisable == this._onDisable) { return }
+    
+        this._onDisable = onDisable;
+        debuglog(`${this.__id__} disable ${onDisable}`);
+        this.disableInteractions(onDisable);
+    }
+
+    get onDisable () { return this._onDisable; }
+
+    disableInteractions(disable) {
+        if (disable) {
+            this.$textField.classList.add('disable');
+            this.$textArea.setAttribute('disabled', true);
+       } else {
+            this.$textField.classList.remove('disable');
+            this.$textArea.removeAttribute('disabled');
+       }
     }
 
     /**
