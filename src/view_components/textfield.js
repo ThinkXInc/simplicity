@@ -617,7 +617,7 @@ const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
         const $footer = this.$textField.querySelector('.footer');
 
         // Create new alert message if it does not exist.
-        $alertMessage = document.createElement('p');
+        let $alertMessage = document.createElement('p');
         $alertMessage.classList.add('alertMessage');
         $alertMessage.id = alertMessageId;
         $alertMessage.innerText = message;
