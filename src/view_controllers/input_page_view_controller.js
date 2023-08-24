@@ -523,12 +523,13 @@ class InputPageViewController {
     }
 
     /**
-     * [WILL DEPRECATE]
+     * TODO: needs refactoring
+     * 
      * Get values from Cookie.
      * 
      * @returns {dict} field values {field_name1: value1, ..}
      */
-    _getValuesFromCookies() {
+    getValuesFromCookies() {
         let valuesInCookie = {};
         this._components.forEach((component) => {
             if (component instanceof TextField || component instanceof DropdownButton) {
@@ -601,7 +602,7 @@ class InputPageViewController {
     nextButtonTapped(nextButton) {
         console.debug(`Button ${nextButton.__id__} tapped.`);
         console.log(this.values);
-        console.log(this._getValuesFromCookies());
+        console.log(this.getValuesFromCookies());
         
         this._nextButtonAction();
     }
