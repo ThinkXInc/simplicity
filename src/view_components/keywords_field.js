@@ -78,7 +78,7 @@ class KeywordsField extends TextField {
         enterText = 'Enter ↵',
         cookieExclude = true,
         isDefaultValueRestoredFromCookie = false,
-        shouldMapTextToDeleteButtonBGColor = true,
+        shouldMapTextToDeleteButtonBGColor = false,
         constantDeleteButtonBGColorSaturation = 31, // constant saturation
         constantDeleteButtonBGColorLightness = 38,  // constant lightness
         ) {
@@ -279,7 +279,13 @@ class KeywordsField extends TextField {
             });
         });
 
-
+        // Focus any area is clicked
+        this.$textField.addEventListener('click', (event) => {
+            if (document.activeElement !== this.$textArea) {
+                this.$textArea.focus();
+                event.stopPropagation(); // Prevent event from propagating to child elements
+            }
+        });
     }
 
     /**
