@@ -4,6 +4,9 @@
 @input-border: #7a7a7a;
 @input-border-hover: #202020;
 
+@keyword-scope-bg: #878787;
+@keyword-scope-border: #909090;
+
 // TextField
 div.TextField {
     div.inputOuter {
@@ -150,4 +153,90 @@ div.DropdownButton.alert {
             color: @alert-red;
         }
     }
+}
+
+// KeywordsField
+
+div.KeywordsField.focus {
+    div.inputOuter {
+        div.footer {
+        }
+        p.press.show {
+            opacity: 1;
+        }
+    }
+}
+div.KeywordsField {
+
+    div.inputOuter {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        border: none;
+        overflow: visible;
+
+        ul.keywords {
+            display: flex;
+            flex-direction: row;
+            justify-content: left;
+            align-items: center;
+            li.keyword {
+                display: flex;
+                flex-direction: row;
+                justify-content: left;
+                align-items: center;
+                border-radius: 1px;
+                margin-right: 9px;
+                p.label {
+                    padding: 0 8px 0 0;
+                }
+                button.delete {
+                    svg.cancelIconSVG {
+                        cursor: pointer;
+                        width: 11px;
+                        height: 11px;
+                        padding: 1px;
+                    }
+
+                }
+            }
+            li.keyword.scope {
+                border: 1px solid @keyword-scope-border;
+                background: @keyword-scope-bg;
+            }
+        }
+
+        input.keywordsform {
+            flex: 1 0 70%;
+            margin: 0;
+            font-size: 1rem;
+            max-width: 140px;
+            min-width: 100px;
+        }
+
+        input.keywordsform:focus {
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+            margin-right: 8px;
+        }
+
+        div.footer {
+            p.alertMessage {
+                position: absolute;
+                top: 38px;
+                left: 14px;
+                color: @alert-red;
+                font-size: 0.8rem;
+            }
+        }
+        p.press {
+            .transitionAll(0.3s);
+            opacity: 0;
+            font-size: 0.8em;
+        }
+        p.press strong {
+            margin-left: 5px;
+        }
+    }
+
 }

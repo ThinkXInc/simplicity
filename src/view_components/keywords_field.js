@@ -78,6 +78,9 @@ class KeywordsField extends TextField {
         enterText = 'Enter ↵',
         cookieExclude = true,
         isDefaultValueRestoredFromCookie = false,
+        shouldMapTextToDeleteButtonBGColor = true,
+        constantDeleteButtonBGColorSaturation = 31, // constant saturation
+        constantDeleteButtonBGColorLightness = 38,  // constant lightness
         ) {
 
         super(
@@ -108,12 +111,17 @@ class KeywordsField extends TextField {
         this.__press_text__ = pressText;
         this.__enter_text__ = enterText;
 
+        this.__should_map_text_to_delete_button_bg_color__ = shouldMapTextToDeleteButtonBGColor;
+        this.__constant_delete_button_bg_color_saturation__ = constantDeleteButtonBGColorSaturation;
+        this.__constant_delete_button_bg_color_lightness__ = constantDeleteButtonBGColorLightness;
+
         this._addElements();
         this._addEventHandlers();
 
         this.keywords = [];
         this.onEdit = false;
         this.materialId = null;
+        this.scopeIndex = null;
     }
 
     /**
@@ -171,16 +179,29 @@ class KeywordsField extends TextField {
      * 
      */
     _addElements() {
+        // Add class name
+        this.$textField.classList.add('KeywordsField');
+
+        // Create the $keywords element
         const $keywords = document.createElement('ul');
         $keywords.className = keywordsFieldKeywordsClassName;
-        this.$inputOuter.appendChild($keywords);
+        this.$inputOuter.prepend($keywords);  // Using prepend to add $keywords as the first child
         this.$keywords = $keywords;
 
+        // Create the $press element
         const $press = document.createElement('p');
         $press.className = keywordsFieldPressClassName;
         $press.innerHTML = `${this.__press_text__}<strong>${this.__enter_text__}</strong>`;
-        this.$inputOuter.appendChild($press);
+        this.$inputOuter.appendChild($press);  // This will add $press to the end of the container
         this.$press = $press;
+    }
+
+    _updatePressVisibility() {
+        if (this.$textArea.value.length > 0 && document.activeElement === this.$textArea) {
+            this.$press.classList.add('show');
+        } else {
+            this.$press.classList.remove('show');
+        }
     }
 
     /**
@@ -188,16 +209,27 @@ class KeywordsField extends TextField {
      * This method listens for delete button clicks and Enter key press events.
      */
     _addEventHandlers() {
-        // Handle delete button click
-        const $deleteButtons = document.querySelectorAll('.delete');
-        $deleteButtons.forEach(($button, index) => {
-            $button.addEventListener('click', () => {
-                this.removeKeyword(index);
-            });
+        // Text area focus
+        this.$textArea.addEventListener('focus', () => {
+            this._updatePressVisibility();
+            this.$textField.classList.add('focus');
+        });
+
+        // Text area blur
+        this.$textArea.addEventListener('blur', () => {
+            this._updatePressVisibility();
+            this.$textField.classList.remove('focus');
+            
+            // Remove scope class when focus is out
+            if (this.scopeIndex !== null) {
+                this.$keywords.childNodes[this.scopeIndex].classList.remove('scope');
+                this.scopeIndex = null;
+            }
         });
 
         // Handle Enter key press in the $textArea
         this.$textArea.addEventListener('keyup', (event) => {
+            this._updatePressVisibility();
             if (event.key === 'Enter') { // 13 is the keyCode for Enter
                 const keyword = this.$textArea.value.trim(); // get the input value and trim any whitespace
                 if (keyword) { // only if there's a non-empty keyword
@@ -206,6 +238,48 @@ class KeywordsField extends TextField {
                 }
             }
         });
+
+        this.$textArea.addEventListener('keydown', (event) => {
+            this._updatePressVisibility();
+            if (event.key === 'Backspace') {
+                if (this.$textArea.value === '') {
+                    // Add 'scope' class to the last keyword
+                    if (this.scopeIndex === null) {
+                        this.scopeIndex = this.keywords.length - 1;
+                        if (this.scopeIndex >= 0) {
+                            this.$keywords.childNodes[this.scopeIndex].classList.add('scope');
+                        }
+                    } 
+                    // Remove the scoped keyword
+                    else {
+                        this.removeKeyword(this.scopeIndex);
+                        this.scopeIndex = null;
+                    }
+                } else {
+                    // Remove scope class when other keys are pushed
+                    if (this.scopeIndex !== null) {
+                        this.$keywords.childNodes[this.scopeIndex].classList.remove('scope');
+                        this.scopeIndex = null;
+                    }
+                }
+            } else {
+                // Remove scope class when other keys are pushed
+                if (this.scopeIndex !== null) {
+                    this.$keywords.childNodes[this.scopeIndex].classList.remove('scope');
+                    this.scopeIndex = null;
+                }
+            }
+        });
+
+        // Handle delete button click
+        const $deleteButtons = document.querySelectorAll('.delete');
+        $deleteButtons.forEach(($button, index) => {
+            $button.addEventListener('click', () => {
+                this.removeKeyword(index);
+            });
+        });
+
+
     }
 
     /**
@@ -230,6 +304,9 @@ class KeywordsField extends TextField {
         $deleteButton.className = keywordsFieldDeleteClassName;
         $deleteButton.type = 'button'; // Indicate it's a button for user-interaction (not a submit button)
         $deleteButton.innerHTML = SVGIcons.cancelIconSVG;
+        if(this.__should_map_text_to_delete_button_bg_color__) {
+            $deleteButton.style.backgroundColor = this.textToHSL(this.$textArea.value);
+        }
         $keywordItem.appendChild($deleteButton);
 
         this.$keywords.appendChild($keywordItem);
@@ -313,4 +390,23 @@ class KeywordsField extends TextField {
         });
     }
 
+    textToHSL(text) {
+        // Compute a hash from the text
+        let hash = 0;
+        for (let i = 0; i < text.length; i++) {
+            hash = text.charCodeAt(i) + ((hash << 5) - hash);
+        }
+    
+        // Convert the hash into an integer between 0 and 360
+        const range = 360
+        let hue = hash % (range + 1);
+        if (hue < 0) {
+            hue += range;
+        }
+    
+        const saturation = this.__constant_delete_button_bg_color_saturation__;
+        const lightness = this.__constant_delete_button_bg_color_lightness__; 
+    
+        return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+    }
 }
