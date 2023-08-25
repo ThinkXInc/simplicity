@@ -34,7 +34,7 @@ const keywordsFieldPressClassName = 'press';
  *              <span class="message"></span>
  *              <span class="counter"></span>
  *          </div>
- *          <span class="press">press<strong>Enter ↵</strong></span>
+ *          <p class="press">press<strong>Enter ↵</strong></p>
  *      </div>
  *   </div>
  * 
@@ -165,7 +165,7 @@ class KeywordsField extends TextField {
      *              <span class="message"></span>
      *              <span class="counter"></span>
      *          </div>
-     *          <span class="press">press<strong>Enter ↵</strong></span>
+     *          <p class="press">press<strong>Enter ↵</strong></p>
      *      </div>
      *   </div>
      * 
@@ -176,11 +176,11 @@ class KeywordsField extends TextField {
         this.$inputOuter.appendChild($keywords);
         this.$keywords = $keywords;
 
-        const $pressSpan = document.createElement('span');
-        $pressSpan.className = keywordsFieldPressClassName;
-        $pressSpan.innerHTML = `${this.__press_text__}<strong>${this.__enter_text__}</strong>`;
-        this.$inputOuter.appendChild($pressSpan);
-        this.$pressSpan = $pressSpan;
+        const $press = document.createElement('p');
+        $press.className = keywordsFieldPressClassName;
+        $press.innerHTML = `${this.__press_text__}<strong>${this.__enter_text__}</strong>`;
+        this.$inputOuter.appendChild($press);
+        this.$press = $press;
     }
 
     /**
