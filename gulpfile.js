@@ -7,6 +7,7 @@ const paths = {
     jsFiles: [
         './src/data/countries.js',
         './src/etc/debug_log.js',
+        './src/etc/svg_icons.js',
         './src/helpers/http.js',
         './src/helpers/browser.js',
         './src/helpers/locale.js',
@@ -22,6 +23,7 @@ const paths = {
         './src/view_components/next_button.js',
         './src/view_components/back_button.js',
         './src/view_components/textfield.js',
+        './src/view_components/keywords_field.js',
         './src/view_components/dropdown_button.js',
         './src/view_components/file_upload_view.js',
         './src/view_components/gradient_loading_bar.js',
