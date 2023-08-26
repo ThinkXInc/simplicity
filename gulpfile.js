@@ -27,6 +27,7 @@ const paths = {
         './src/view_components/dropdown_button.js',
         './src/view_components/file_upload_view.js',
         './src/view_components/gradient_loading_bar.js',
+        './src/view_components/gradient_view_loader.js',
         './src/view_components/position_map.js',
         './src/view_component_bases/alert_message_component_base.js',
         './src/view_components/alert_message.js',

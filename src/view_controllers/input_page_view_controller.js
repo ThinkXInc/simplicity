@@ -420,7 +420,9 @@ class InputPageViewController {
         this.$inputPageView.appendChild($container);
 
         // loading
-        this.loading.addToParent($container);
+        if(this.loading != null) {
+            this.loading.addToParent($container);
+        }
 
         // create pages
         console.log(`${pages.length} pages detected.`)
@@ -973,6 +975,7 @@ class InputPageViewController {
         debuglog('start loading..')
         if (this.loading == null) {
             console.warn(`no loading is set in ${this.__id__}`);
+            return
         }
         this.loading.startLoading();
     }
@@ -985,6 +988,7 @@ class InputPageViewController {
         debuglog('stop loading.')
         if (this.loading == null) {
             console.warn(`no loading is set in ${this.__id__}`);
+            return
         }
         this.loading.stopLoading();
     }
