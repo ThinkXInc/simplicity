@@ -1,5 +1,10 @@
+// Define the IndicatorAlignment as a frozen object so it cannot be modified.
 const IndicatorAlignment = Object.freeze({ "top": "top", "center": "center" });
 
+/**
+ * GradientViewLoaderConfig class.
+ * Configuration options for the gradient view loader.
+ */
 class GradientViewLoaderConfig {
     constructor({
         numIndicator = 4,
@@ -30,14 +35,14 @@ class GradientViewLoaderConfig {
 
 /**
  * // Usage
- * const config = new GradientViewLoaderConfig(
- *   2, // numIndicator
- *   20, // animationDelay
- *   'top', // alignment
- *   -50, // initialX1
- *   -10, // shiftAmount
- *   [124, 124, 124] // initialBaseColor
- * );
+ * const config = new GradientViewLoaderConfig({
+ *   numIndicator: 2,
+ *   animationDelay: 20,
+ *   alignment: 'top',
+ *   initialX1: -50,
+ *   shiftAmount: -10,
+ *   initialBaseColor: [124, 124, 124]
+ * });
  * 
  * const loader = new GradientViewLoader('my-container', 'my-loader', config);
  * loader.startLoading();
@@ -45,7 +50,14 @@ class GradientViewLoaderConfig {
  * 
  */
 class GradientViewLoader {
+    /**
+     * @constructor
+     * @param {string} parent_id - Parent container ID
+     * @param {string} id - ID for the loader element
+     * @param {GradientViewLoaderConfig} config - Configuration object
+     */
     constructor(parent_id, id, config) {
+        // Initialize instance variables
         this.__parent_id__ = parent_id;
         this.__id__ = id;
         this.config = config;
@@ -59,6 +71,10 @@ class GradientViewLoader {
         this._setElements();
     }
 
+    /**
+     * Validates the configuration object.
+     * @throws {Error} if the configuration object is invalid
+     */
     _checkConfig() {
         // Basic validation checks for config object
         if (!this.config || typeof this.config !== 'object') {
@@ -86,7 +102,11 @@ class GradientViewLoader {
         }
     }
 
+    /**
+     * Sets up the initial elements required for the loader.
+     */
     _setElements() {
+        // Create and set the elements
         const $parentView = document.getElementById(this.parent_id);
 
         // Create main wrapper div
@@ -124,6 +144,10 @@ class GradientViewLoader {
         this._startAnimation();
     }
 
+    /**
+     * Returns the indicatorSVG HTML template as a string.
+     * @returns {string} The SVG HTML string
+     */
     get indicatorSVG() {
         return `
         <svg class="indicatorSVG" viewBox="0 0 100 10">
@@ -142,6 +166,10 @@ class GradientViewLoader {
         `
     }
 
+    /**
+     * Sets up the indicators for the loader.
+     * @param {Object} config - Configuration settings for indicators
+     */
     _setupIndicators(config) {
         // Calculate total height required
         const { numIndicator, individualHeight, spaceBetween, alignment, initialX1, shiftAmount, initialBaseColor, rx, ry } = this.config;
@@ -201,6 +229,10 @@ class GradientViewLoader {
         }
     }
 
+    /**
+     * Starts the animation for the indicators.
+     * @param {Object} config - Configuration settings for animation
+     */
     _startAnimation(config) {
         // Function to animate x1 and x2
         const { numIndicator, animationDelay, initialX1 } = this.config;
@@ -210,6 +242,13 @@ class GradientViewLoader {
         }
     }
 
+    /**
+     * Animates an individual gradient.
+     * @param {number} delay - Delay time for animation
+     * @param {number} index - Index of the gradient
+     * @param {number} initialX1 - Initial x1 value for the gradient
+     * @param {number} initialX2 - Initial x2 value for the gradient
+     */
     _animateGradient(delay, index, initialX1, initialX2) {
         const { shiftAmount } = this.config;
         let x1 = initialX1 + index * shiftAmount;
@@ -237,11 +276,17 @@ class GradientViewLoader {
         animate();
     }
   
+    /**
+     * Initiates the loading process by displaying the loader.
+     */
     startLoading() {
         this.$view.style.display = 'block';
         this.isLoading = true;
     }
 
+    /**
+     * Stops the loading process by hiding the loader.
+     */
     stopLoading() {
         this.$view.style.display = 'none';
         this.isLoading = false;
