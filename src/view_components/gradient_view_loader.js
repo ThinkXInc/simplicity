@@ -11,6 +11,7 @@ class GradientViewLoaderConfig {
         animationDelay = 30,
         alignment = IndicatorAlignment.center,
         initialX1 = -50,
+        defalutShift = 0,
         shiftAmount = -20,
         initialBaseColor = [80, 80, 80],
         indicatorWidth = 100,
@@ -23,6 +24,7 @@ class GradientViewLoaderConfig {
         this.animationDelay = animationDelay;
         this.alignment = alignment;
         this.initialX1 = initialX1;
+        this.defalutShift = defalutShift;
         this.shiftAmount = shiftAmount;
         this.initialBaseColor = initialBaseColor;
         this.indicatorWidth = indicatorWidth;
@@ -235,10 +237,10 @@ class GradientViewLoader {
      */
     _startAnimation(config) {
         // Function to animate x1 and x2
-        const { numIndicator, animationDelay, initialX1 } = this.config;
+        const { numIndicator, animationDelay, initialX1, defalutShift } = this.config;
         // Start the animation for each indicator
         for (let i = 0; i < numIndicator; i++) {
-           this._animateGradient(animationDelay, i, initialX1, 0);
+           this._animateGradient(animationDelay, i, initialX1, 0, defalutShift);
         }
     }
 
@@ -249,10 +251,10 @@ class GradientViewLoader {
      * @param {number} initialX1 - Initial x1 value for the gradient
      * @param {number} initialX2 - Initial x2 value for the gradient
      */
-    _animateGradient(delay, index, initialX1, initialX2) {
+    _animateGradient(delay, index, initialX1, initialX2, defalutShift) {
         const { shiftAmount } = this.config;
-        let x1 = initialX1 + index * shiftAmount;
-        let x2 = initialX2 + index * shiftAmount;
+        let x1 = defalutShift + initialX1 + index * shiftAmount;
+        let x2 = defalutShift + initialX2 + index * shiftAmount;
         let increment = 1;
 
         const animate = () => {
@@ -263,7 +265,6 @@ class GradientViewLoader {
               x1 = initialX1 + index;
               x2 = initialX2 + index;
             }
-
             if (this.$gradients[index] == null) {
                 console.error(`${this.__id__} must have $gradient ${index}".`)
             }

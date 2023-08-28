@@ -141,7 +141,6 @@ class KeywordsField extends TextField {
      */
     set keywords(keywords) {
         this._keywords = keywords;
-        this.submitKeywords();
     }
 
     /**
@@ -233,7 +232,7 @@ class KeywordsField extends TextField {
             if (event.key === 'Enter') { // 13 is the keyCode for Enter
                 const keyword = this.$textArea.value.trim(); // get the input value and trim any whitespace
                 if (keyword) { // only if there's a non-empty keyword
-                    this.addKeyword(keyword);
+                    this.addKeyword(keyword, true);
                     this.$textArea.value = ''; // Clear the input for the next keyword
                 }
             }
@@ -252,7 +251,7 @@ class KeywordsField extends TextField {
                     } 
                     // Remove the scoped keyword
                     else {
-                        this.removeKeyword(this.scopeIndex);
+                        this.removeKeyword(this.scopeIndex, true);
                         this.scopeIndex = null;
                     }
                 } else {
@@ -275,7 +274,7 @@ class KeywordsField extends TextField {
         const $deleteButtons = document.querySelectorAll('.delete');
         $deleteButtons.forEach(($button, index) => {
             $button.addEventListener('click', () => {
-                this.removeKeyword(index);
+                this.removeKeyword(index, true);
             });
         });
 
@@ -293,7 +292,7 @@ class KeywordsField extends TextField {
      * 
      * @param {*} keyword 
      */
-    addKeyword(keyword) {
+    addKeyword(keyword, submit=false) {
         // Update the internal list
         this.keywords.push(keyword);
 
@@ -311,11 +310,15 @@ class KeywordsField extends TextField {
         $deleteButton.type = 'button'; // Indicate it's a button for user-interaction (not a submit button)
         $deleteButton.innerHTML = SVGIcons.cancelIconSVG;
         if(this.__should_map_text_to_delete_button_bg_color__) {
-            $deleteButton.style.backgroundColor = this.textToHSL(this.$textArea.value);
+            $deleteButton.style.backgroundColor = this.textToHSL(keyword);
         }
         $keywordItem.appendChild($deleteButton);
 
         this.$keywords.appendChild($keywordItem);
+
+        if(submit) {
+            this.submitKeywords();
+        }
     }
 
     /**
@@ -336,7 +339,7 @@ class KeywordsField extends TextField {
      * 
      * @param {number} index - The index of the keyword to be removed.
      */
-    removeKeyword(index) {
+    removeKeyword(index, submit=false) {
         if (index >= 0 && index < this.keywords.length) {
             // Update the internal list
             this.keywords.splice(index, 1);
@@ -347,18 +350,26 @@ class KeywordsField extends TextField {
         } else {
             console.error(`Invalid index ${index} provided to removeKeyword.`);
         }
+
+        if(submit) {
+            this.submitKeywords();
+        }
     }
 
     /**
      * Clears all keywords from the list.
      */
-    clearKeywords() {
+    clearKeywords(submit=false) {
         // Update the internal list
         this.keywords = [];
 
         // Clear all children of the keywords ul
         while (this.$keywords.firstChild) {
             this.$keywords.removeChild(this.$keywords.firstChild);
+        }
+
+        if(submit) {
+            this.submitKeywords();
         }
     }
 
