@@ -23,6 +23,8 @@ class TextFieldConfig {
         initRows = 6,
         verticalFlex = false,
         hasTitle = true,
+        title = "",
+        placeholder = "",
         passwordMode = false,
         defaultValue = null,
         cookieExclude = false,
@@ -36,6 +38,8 @@ class TextFieldConfig {
         this.initRows = initRows;
         this.verticalFlex = verticalFlex;
         this.hasTitle = hasTitle;
+        this.title = title;
+        this.placeholder = placeholder;
         this.passwordMode = passwordMode;
         this.defaultValue = defaultValue;
         this.cookieExclude = cookieExclude;
@@ -101,8 +105,6 @@ class TextFieldConfig {
  * @param {string} id - The id for the TextField element.
  * @param {string} field_name - The name attribute for the TextField.
  * @param {string} type - The type of TextField (e.g., singleline, multiplelines).
- * @param {string} title - The title displayed within the TextField.
- * @param {string} placeholder - The placeholder text for the TextField.
  * @param {Validator[]} validators - Array of Validator objects for the TextField.
  * @param {TextFieldConfig} [config] - Configuration object for more granular customization. Defaults to a new TextFieldConfig object.
  */
@@ -114,8 +116,8 @@ class TextField extends FormComponentBase {
         id, 
         field_name, 
         type, 
-        title, 
-        placeholder,
+        locale,
+        lang,
         validators,
         config = new TextFieldConfig()
     ) {
@@ -123,9 +125,10 @@ class TextField extends FormComponentBase {
 
         const options = [
             {name: '__type__', value: type, type: 'number'},
-            {name: '__title__', value: title, type: 'string'},
+            {name: '__title__', value: config.title, type: 'string'},
+            {name: '__lang__', value: lang, type: 'string'},
             {name: '__field_name__', value: field_name, type: 'string'},
-            {name: '__placeholder__', value: placeholder, type: 'string'},
+            {name: '__placeholder__', value: config.placeholder, type: 'string'},
             {name: '__max_text_length__', value: config.maxTextLength, type: 'number'},
             {name: '__init_rows__', value: config.initRows, type: 'number'},
             {name: '__vertical_flex__', value: config.verticalFlex, type: 'boolean'},
@@ -154,6 +157,8 @@ class TextField extends FormComponentBase {
  
         // set config
         this.config = config;
+        // set locale
+        this.locale = locale;
         // initialize view elements
         this._setElements();
         // set counter 

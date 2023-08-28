@@ -7,20 +7,34 @@ const keywordsFieldLabelClassName = 'label';
 const keywordsFieldDeleteClassName = 'delete';
 const keywordsFieldPressClassName = 'press';
 
-class KeywordsFieldConfig {
+class KeywordsFieldConfig extends TextFieldConfig {
     constructor({
         maxTextLength,
         pressText = 'press',
         enterText = 'Enter ↵',
+        title = "",
+        placeholder = "",
         cookieExclude = true,
         isDefaultValueRestoredFromCookie = false,
         shouldMapTextToDeleteButtonBGColor = false,
         constantDeleteButtonBGColorSaturation = 31, // constant saturation
         constantDeleteButtonBGColorLightness = 38,  // constant lightness
+        initRows = 1,
+        verticalFlex = false,
+        hasTitle = true,
+        passwordMode = false,
+        defaultValue = null,
+        hasCookiePrefix = false,
+        scrollControlElementId = null,
+        isCounterDisplayed = false,
+        ...otherOptions
     } = {}) {
+        super(otherOptions);
         this.maxTextLength = maxTextLength;
         this.pressText = pressText;
         this.enterText = enterText;
+        this.title = title;
+        this.placeholder = placeholder;
         this.cookieExclude = cookieExclude;
         this.isDefaultValueRestoredFromCookie = isDefaultValueRestoredFromCookie;
         this.shouldMapTextToDeleteButtonBGColor = shouldMapTextToDeleteButtonBGColor;
@@ -74,9 +88,7 @@ class KeywordsField extends TextField {
      * @param {string} parent_id - Parent container ID
      * @param {string} id - ID for the keyword field
      * @param {string} field_name - The name attribute for the input field
-     * @param {string} title - The title of the keyword field
      * @param {string} locale - The locale for the field (e.g., 'en', 'fr')
-     * @param {string} placeholder - The placeholder text for the input
      * @param {string} lang - The language of the content
      * @param {function[]} validators - Array of validation functions
      * @param {KeywordsFieldConfig} config - Configuration object
@@ -85,47 +97,44 @@ class KeywordsField extends TextField {
         parent_id,
         id,
         field_name,
-        title,
         locale,
-        placeholder,
         lang,
         validators,
         config = new KeywordsFieldConfig()
     ) {        
         
-        let textFieldConfig = new TextFieldConfig();
-        textFieldConfig.maxTextLength = config.maxTextLength;
-        textFieldConfig.initRows = 1;
-        textFieldConfig.verticalFlex = false;
-        textFieldConfig.hasTitle = true;
-        textFieldConfig.passwordMode = false;
-        textFieldConfig.defaultValue = null;
-        textFieldConfig.cookieExclude = config.cookieExclude;
-        textFieldConfig.hasCookiePrefix = false;
-        textFieldConfig.isDefaultValueRestoredFromCookie = config.isDefaultValueRestoredFromCookie;
-        textFieldConfig.scrollControlElementId = null;
-        textFieldConfig.isCounterDisplayed = false;
-
         super(
             parent_id, 
             id, 
             field_name, 
             TextFieldType.singleline,
-            title, 
-            placeholder,
-            validators, 
-            textFieldConfig
-        )
+            locale,
+            lang,
+            validators,
+            config
+        );
 
-        this.__lang__ = lang;
+        const options = [
+            { name: '__lang__', value: lang, type: 'string' },
+            { name: '__press_text__', value: config.pressText, type: 'string' },
+            { name: '__enter_text__', value: config.enterText, type: 'string' },
+            { name: '__max_text_length__', value: config.maxTextLength, type: 'number' },
+            { name: '__should_map_text_to_delete_button_bg_color__', value: config.shouldMapTextToDeleteButtonBGColor, type: 'boolean' },
+            { name: '__constant_delete_button_bg_color_saturation__', value: config.constantDeleteButtonBGColorSaturation, type: 'number' },
+            { name: '__constant_delete_button_bg_color_lightness__', value: config.constantDeleteButtonBGColorLightness, type: 'number' },
+        ];
+
+        options.forEach(option => {
+            // set the value
+            this[option.name] = option.value;
+
+            // check the type
+            if (typeof this[option.name] !== option.type) {
+                console.error(`${option.name.replace('__', '')} must be of type ${option.type}, but got ${typeof option.value}`);
+            }
+        });
+
         this.locale = locale;
-        this.__max_text_length__ = config.maxTextLength;
-        this.__press_text__ = config.pressText;
-        this.__enter_text__ = config.enterText;
-
-        this.__should_map_text_to_delete_button_bg_color__ = config.shouldMapTextToDeleteButtonBGColor;
-        this.__constant_delete_button_bg_color_saturation__ = config.constantDeleteButtonBGColorSaturation;
-        this.__constant_delete_button_bg_color_lightness__ = config.constantDeleteButtonBGColorLightness;
 
         this._addElements();
         this._addEventHandlers();
