@@ -73,7 +73,7 @@ class KeywordsField extends TextField {
         placeholder,
         lang,
         validators,
-        max_text_length,
+        maxTextLength,
         pressText = 'press',
         enterText = 'Enter ↵',
         cookieExclude = true,
@@ -83,6 +83,19 @@ class KeywordsField extends TextField {
         constantDeleteButtonBGColorLightness = 38,  // constant lightness
         ) {
 
+        let config = new TextFieldConfig(); 
+        config.maxTextLength = maxTextLength;
+        config.initRows = 1;
+        config.verticalFlex = false;
+        config.hasTitle = false;
+        config.passwordMode = false;
+        config.defaultValue = null;
+        config.cookieExclude = cookieExclude;
+        config.hasCookiePrefix = false;
+        config.isDefaultValueRestoredFromCookie = isDefaultValueRestoredFromCookie;
+        config.scrollControlElementId = null;
+        config.isCounterDisplayed = false;
+
         super(
             parent_id, 
             id, 
@@ -90,24 +103,13 @@ class KeywordsField extends TextField {
             TextFieldType.singleline,
             title, 
             placeholder,
-            'div', 
             validators, 
-            max_text_length, 
-            1,
-            false, // vertical_flex
-            false,  // has_title
-            false,  // password_mode
-            null,  // defaultValue
-            cookieExclude,   // cookieExclude
-            false,  // hasCookiePrefix
-            isDefaultValueRestoredFromCookie,  // isDefaultValueRestoredFromCookie
-            null, //scrollControlElementId
-            false // isCounterDisplayed
+            config
         )
 
         this.__lang__ = lang;
         this.locale = locale;
-        this.__max_text_length__ = max_text_length;
+        this.__max_text_length__ = maxTextLength;
         this.__press_text__ = pressText;
         this.__enter_text__ = enterText;
 

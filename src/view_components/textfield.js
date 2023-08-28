@@ -16,13 +16,45 @@ const TextFieldValidationState = Object.freeze({ none: 0, onalert: 1, onverified
 const TextFieldInputState = Object.freeze({ empty: 0, filled: 1, overmaximum: 2, });
 const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
 
- /**
- * A class for TextField components.
- * @constructor
- * @classdesc 
- * `<code>`
- * html:
- *    <div id="{this.__id__}" class="textField">
+class TextFieldConfig {
+    constructor({
+        htmlTag = 'div',
+        maxTextLength = 999,
+        initRows = 6,
+        verticalFlex = false,
+        hasTitle = true,
+        passwordMode = false,
+        defaultValue = null,
+        cookieExclude = false,
+        hasCookiePrefix = false,
+        isDefaultValueRestoredFromCookie = true,
+        scrollControlElementId = null,
+        isCounterDisplayed = true,
+    } = {}) {
+        this.htmlTag = htmlTag;
+        this.maxTextLength = maxTextLength;
+        this.initRows = initRows;
+        this.verticalFlex = verticalFlex;
+        this.hasTitle = hasTitle;
+        this.passwordMode = passwordMode;
+        this.defaultValue = defaultValue;
+        this.cookieExclude = cookieExclude;
+        this.hasCookiePrefix = hasCookiePrefix;
+        this.isDefaultValueRestoredFromCookie = isDefaultValueRestoredFromCookie;
+        this.scrollControlElementId = scrollControlElementId;
+        this.isCounterDisplayed = isCounterDisplayed;
+    }
+}
+
+/**
+ * A class for creating TextField components. 
+ *
+ * This class relies on a configuration object of type TextFieldConfig 
+ * for more granular control over its properties.
+ * 
+ * HTML Structure:
+ * ```
+ *  <div id="{this.__id__}" class="textField">
  *      <div class="inputOuter">
  *          <h6 class="title">{this.__title__}</h6>
  *          <input class="{this.__field_name__}form" name="{this.__field_name__}" type="text" autocomplete="off">
@@ -32,67 +64,50 @@ const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
  *              <span class="counter"></span>
  *          </div>
  *      </div>
- *   </div>
- * 
- * usage:
- * 
+ *  </div>
+ * ```
+ *
+ * Example usage:
+ * ```javascript
  *  // Initialize the validators
  *  let requiredValidator = new Validator(titleField, ValidationErrorType.required, 'This field is required');
  *  let lengthValidator = new Validator(titleField, ValidationErrorType.length, 'The length of the text exceeds the limit', [140]);  // assuming max length of 140
  * 
  *  let validators = [requiredValidator, lengthValidator];
+ *
+ *  // Configuration for TextField
+ *  let config = new TextFieldConfig({
+ *      maxTextLength: 140,
+ *      initRows: 4,
+ *      verticalFlex: false,
+ *      hasTitle: true,
+ *      passwordMode: false
+ *  });
  * 
  *  // Initialize the TextField
  *  let titleField = new TextField(
- *      'parentView',  // parent_id
- *      'titleField',  // id
- *      'title',  // field name
- *      TextFieldType.multiplelines,  // single or multi
- *      'title(reqired)',  // title
- *      'Mona Lisa Title and subject',  // placeholder
- *      'div',  // the HTML tag
- *      validators,  // Pass in the validators
- *      140,  // max text count
- *      4,  // init rows
- *      false,  // vertical flex
- *      true,  // assuming the title is visible
- *      false  // assuming password mode is off
+ *      'parentView',
+ *      'titleField',
+ *      'title',
+ *      TextFieldType.multiplelines,
+ *      'title(reqired)',
+ *      'Mona Lisa Title and subject',
+ *      validators,
+ *      config
  *  );
+ * ```
+ *
  * @param {string} parent_id - The id of the parent element.
  * @param {string} id - The id for the TextField element.
- * @param {string} field_name - The name of the TextField.
- * @param {string} type - The type of TextField.
- * @param {string} title - The title to display in the TextField.
+ * @param {string} field_name - The name attribute for the TextField.
+ * @param {string} type - The type of TextField (e.g., singleline, multiplelines).
+ * @param {string} title - The title displayed within the TextField.
  * @param {string} placeholder - The placeholder text for the TextField.
- * @param {string} htmlTag - The HTML tag to use for the TextField. Defaults to 'div'.
- * @param {Validator[]} validators - The validators for the TextField.
- * @param {number} max_text_count - The maximum character count for the TextField. Defaults to 999.
- * @param {number} init_rows - The initial number of rows in the TextField. Defaults to 6.
- * @param {boolean} vertical_flex - Whether the TextField has vertical flexibility. Defaults to true.
- * @param {boolean} has_title - Whether the TextField has a title. Defaults to true.
- * @param {boolean} password_mode - Whether the TextField is in password mode. Defaults to false.
+ * @param {Validator[]} validators - Array of Validator objects for the TextField.
+ * @param {TextFieldConfig} [config] - Configuration object for more granular customization. Defaults to a new TextFieldConfig object.
  */
- class TextField extends FormComponentBase {
-
+class TextField extends FormComponentBase {
     __counter_format__ = `$count/$maxcount`;
-
-    __title__ = null;
-    __field_name__ = null;
-    __placeholder__ = null;
-    __max_text_count__ = null;
-
-    __init_rows__ = null;
-    __vertical_flex__ = null;
-
-    // states
-    _state = null;
-    _loadingState = null;
-    _validationState = null;
-    _inputState = null;
-
-    // data
-    _text = '';
-    _count = null;
 
     constructor(
         parent_id, 
@@ -101,46 +116,44 @@ const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
         type, 
         title, 
         placeholder,
-        htmlTag = 'div', 
-        validators = [], 
-        max_text_count = 999, 
-        init_rows = 6, 
-        vertical_flex = false, 
-        has_title = true,
-        password_mode = false,
-        defaultValue = null, 
-        cookieExclude = false, 
-        hasCookiePrefix = false, 
-        isDefaultValueRestoredFromCookie = true,
-        scrollControlElementId = null,
-        isCounterDisplayed = true,
+        validators,
+        config = new TextFieldConfig()
     ) {
+        super(parent_id, id, field_name, '', config.htmlTag, validators, config.defaultValue, config.cookieExclude, config.hasCookiePrefix, config.isDefaultValueRestoredFromCookie);
 
-        super(parent_id, id, field_name, '', htmlTag, validators, defaultValue, cookieExclude, hasCookiePrefix, isDefaultValueRestoredFromCookie);
-
-        // set options
         const options = [
             {name: '__type__', value: type, type: 'number'},
             {name: '__title__', value: title, type: 'string'},
             {name: '__field_name__', value: field_name, type: 'string'},
             {name: '__placeholder__', value: placeholder, type: 'string'},
-            {name: '__max_text_count__', value: max_text_count, type: 'number'},
-            {name: '__init_rows__', value: init_rows, type: 'number'},
-            {name: '__vertical_flex__', value: vertical_flex, type: 'boolean'},
-            {name: '__has_title__', value: has_title, type: 'boolean'},
-            {name: '__password_mode__', value: password_mode, type: 'boolean'},
+            {name: '__max_text_length__', value: config.maxTextLength, type: 'number'},
+            {name: '__init_rows__', value: config.initRows, type: 'number'},
+            {name: '__vertical_flex__', value: config.verticalFlex, type: 'boolean'},
+            {name: '__has_title__', value: config.hasTitle, type: 'boolean'},
+            {name: '__password_mode__', value: config.passwordMode, type: 'boolean'},
+            {name: '__scroll_control_element_id__', value: config.scrollControlElementId, type: 'string|null'},
+            {name: '__is_counter_displayed__', value: config.isCounterDisplayed, type: 'boolean'},
         ];
 
         options.forEach(option => {
             // set the value
             this[option.name] = option.value;
         
-            // check the type
-            if (typeof this[option.name] !== option.type) {
-                console.error(`${option.name.replace('__', '')} must be of type ${option.type}, but got ${typeof option.value}`);
+            // Special case for 'string|null'
+            if (option.type === 'string|null') {
+                if (typeof this[option.name] !== 'string' && this[option.name] !== null) {
+                    console.error(`${option.name.replace('__', '')} must be of type 'string' or 'null', but got ${typeof option.value}`);
+                }
+            } else {
+                // check the type
+                if (typeof this[option.name] !== option.type) {
+                    console.error(`${option.name.replace('__', '')} must be of type ${option.type}, but got ${typeof option.value}`);
+                }
             }
         });
  
+        // set config
+        this.config = config;
         // initialize view elements
         this._setElements();
         // set counter 
@@ -152,14 +165,11 @@ const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
         // restore from cookie
         this._restoreValueFromCookie();
         // Resize textarea. Ensure the browser gets a chance to recalculate layout before resizing
-        this.__scroll_control_element_id__ = scrollControlElementId;
         if(this.__vertical_flex__) {
             requestAnimationFrame(() => {
                 this._resizeTextArea(this.$textArea);
             });
         }
-        // Set if counter is displayed
-        this.isCounterDisplayed = isCounterDisplayed;
     }
 
     /**
@@ -210,7 +220,7 @@ const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
         // update counter text
         if (this.isCounterDisplayed) {
             this.$counter.innerHTML = this.__counter_format__
-                .replace('$count', count).replace('$maxcount', this.__max_text_count__);
+                .replace('$count', count).replace('$maxcount', this.__max_text_length__);
         }
     }
 
@@ -379,8 +389,8 @@ const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
             }
 
             // set state as the text count 
-            console.log(`max text count: ${_this.__max_text_count__} count: ${_this.count}`);
-            if (this.count > this.__max_text_count__) {
+            console.log(`max text count: ${_this.__max_text_length__} count: ${_this.count}`);
+            if (this.count > this.__max_text_length__) {
                 this._setState(TextFieldValidationState.onalert, TextFieldInputState.overmaximum);
             } else if (this.count === 0) {
                 this._setState(TextFieldValidationState.none, TextFieldInputState.empty);

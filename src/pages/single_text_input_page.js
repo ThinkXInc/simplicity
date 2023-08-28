@@ -6,7 +6,7 @@
  * @param {object} locale - The dictionary containing localized strings.
  * @param {string} lang - The current language. Default is 'en'.
  * @param {string} field_name - The name of the field, used to create component id and locale keys. Default is 'single_text_input_field'.
- * @param {number} max_text_count - The maximum character count for the text field. Default is 140.
+ * @param {number} max_text_length - The maximum character count for the text field. Default is 140.
  * @param {number} init_rows - The initial number of rows in the text field. Default is 1.
  * @param {Array} validators - An array of Validator objects that should be used to validate the TextField. Default is an empty array.
  * @param {bool} hasBackButon - if the BackButton is shown.
@@ -26,7 +26,7 @@
 class SingleTextInputPage extends Page {
     constructor(parent_id, page_id, locale, lang = 'en', 
                 field_name = 'single_text_input_field', 
-                max_text_count = 140, init_rows = 1, validators = [],
+                max_text_length = 140, init_rows = 1, validators = [],
                 hasBackButton = true,
                 ) {
         debuglog(`SingleTextInputPage initialize parent_id: ${parent_id}, page_id: ${page_id}`);
@@ -52,7 +52,7 @@ class SingleTextInputPage extends Page {
             locale.get(locale_key_field_placeholder, lang),
             'div',
             validators,
-            max_text_count,
+            max_text_length,
             init_rows,
             false,
             true,

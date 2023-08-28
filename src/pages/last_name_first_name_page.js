@@ -12,7 +12,7 @@
  * @param {string} locale_key_title - The key for the page title in the locale dictionary.
  * @param {string} locale_key_back_button - The key for the back button text in the locale dictionary.
  * @param {string} locale_key_next_button - The key for the next button text in the locale dictionary.
- * @param {number} max_text_count - The maximum character count for the text fields. Default is 140.
+ * @param {number} max_text_length - The maximum character count for the text fields. Default is 140.
  * @param {number} init_rows - The initial number of rows in the text fields. Default is 1.
  * @param {bool} hasBackButon - if the BackButton is shown.
  * 
@@ -34,7 +34,7 @@ class LastNameFirstNamePage extends Page {
         page_id, 
         locale, 
         lang = 'en',
-        max_text_count = 140, 
+        max_text_length = 140, 
         init_rows = 1,
         first_name_field_name = 'first_name',
         last_name_field_name = 'last_name',
@@ -69,7 +69,7 @@ class LastNameFirstNamePage extends Page {
             locale.get(locale_key_first_name_placeholder, lang),  // Placeholder for TextField
             'div',  // HTML Tag for TextField
             validators,  // Validators for TextField
-            max_text_count,  // Maximum number of characters allowed
+            max_text_length,  // Maximum number of characters allowed
             init_rows,  // Initial number of rows in the TextField
             false,  // vertical_flex: if the TextField should vertically flex to fill space
             true,  // has_title: if the TextField should have a title
@@ -85,7 +85,7 @@ class LastNameFirstNamePage extends Page {
             locale.get(locale_key_last_name_placeholder, lang),
             'div',
             validators,
-            max_text_count,
+            max_text_length,
             init_rows,
             false,
             true,

@@ -332,15 +332,15 @@
             
             this._editingContent.label &&
             this._editingContent.label.length > 0 &&
-            this._editingContent.label.length <= this.$labelField.__max_text_count__ &&
+            this._editingContent.label.length <= this.$labelField.__max_text_length__ &&
 
             this._editingContent.title &&
             this._editingContent.title.length > 0 &&
-            this._editingContent.title.length <= this.$titleField.__max_text_count__ &&
+            this._editingContent.title.length <= this.$titleField.__max_text_length__ &&
 
             this._editingContent.text &&
             this._editingContent.text.length > 0 &&
-            this._editingContent.text.length <= this.$textField.__max_text_count__){
+            this._editingContent.text.length <= this.$textField.__max_text_length__){
 
             return true;
         };

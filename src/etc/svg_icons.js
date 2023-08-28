@@ -6,6 +6,24 @@
  *     console.log(editSVG);
  */
 class SVGIcons {
+    static get enterButtonSVG() {
+        return `
+        <svg id="EnterButtonSVG" class="enterButtonSVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 111.14 111.14">
+            <defs>
+                <style>
+                    .arrow {fill: none; stroke: #333; stroke-linecap: round; stroke-width: 6px;} 
+                    .arrow, .bg {stroke-miterlimit: 10;} 
+                    .bg {fill: #eee; stroke: #ccc; stroke-width: 2px;}
+                </style>
+            </defs>
+            <circle class="bg" cx="55.57" cy="55.57" r="55.07"/>
+            <line class="arrow" x1="30.41" y1="55.65" x2="80.73" y2="55.65"/>
+            <line class="arrow" x1="80.73" y1="55.49" x2="63.02" y2="37.78"/>
+            <line class="arrow" x1="80.73" y1="55.64" x2="63.02" y2="73.36"/>
+        </svg>
+        `;
+    }
+
     static get editIconSVG() {
         return `
             <svg id="EditIconSVG" class="editIconSVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 82.98 70.3">
