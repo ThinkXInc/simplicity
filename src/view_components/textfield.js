@@ -153,9 +153,11 @@ const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
         this._restoreValueFromCookie();
         // Resize textarea. Ensure the browser gets a chance to recalculate layout before resizing
         this.__scroll_control_element_id__ = scrollControlElementId;
-        requestAnimationFrame(() => {
-            this._resizeTextArea(this.$textArea);
-        });
+        if(this.__vertical_flex__) {
+            requestAnimationFrame(() => {
+                this._resizeTextArea(this.$textArea);
+            });
+        }
         // Set if counter is displayed
         this.isCounterDisplayed = isCounterDisplayed;
     }
