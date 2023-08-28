@@ -7,6 +7,28 @@ const keywordsFieldLabelClassName = 'label';
 const keywordsFieldDeleteClassName = 'delete';
 const keywordsFieldPressClassName = 'press';
 
+class KeywordsFieldConfig {
+    constructor({
+        maxTextLength,
+        pressText = 'press',
+        enterText = 'Enter ↵',
+        cookieExclude = true,
+        isDefaultValueRestoredFromCookie = false,
+        shouldMapTextToDeleteButtonBGColor = false,
+        constantDeleteButtonBGColorSaturation = 31, // constant saturation
+        constantDeleteButtonBGColorLightness = 38,  // constant lightness
+    } = {}) {
+        this.maxTextLength = maxTextLength;
+        this.pressText = pressText;
+        this.enterText = enterText;
+        this.cookieExclude = cookieExclude;
+        this.isDefaultValueRestoredFromCookie = isDefaultValueRestoredFromCookie;
+        this.shouldMapTextToDeleteButtonBGColor = shouldMapTextToDeleteButtonBGColor;
+        this.constantDeleteButtonBGColorSaturation = constantDeleteButtonBGColorSaturation;
+        this.constantDeleteButtonBGColorLightness = constantDeleteButtonBGColorLightness;
+    }
+}
+
 /**
  * `KeywordsField` is an extension of the `TextField` class to handle keywords.
  * It allows adding, removing, and managing keywords in an interactive manner.
@@ -47,24 +69,19 @@ const keywordsFieldPressClassName = 'press';
  *  });
  */
 class KeywordsField extends TextField {
-    /**
-     * Constructs a new KeywordsField.
-     *
-     * @param {string} parent_id - The ID of the parent DOM element.
-     * @param {string} id - The ID for the keyword field.
-     * @param {string} field_name - The name attribute for the input field.
-     * @param {string} title - The title of the keyword field.
-     * @param {string} locale - The locale for the field (e.g., 'en', 'fr').
-     * @param {string} placeholder - The placeholder text for the input.
-     * @param {string} lang - The language of the content.
-     * @param {function[]} validators - Array of validation functions.
-     * @param {number} max_text_length - The maximum length of text allowed in the input.
-     * @param {string} pressText - Text indicating the key press action, default is 'press'.
-     * @param {string} enterText - Text for the Enter key, default is 'Enter ↵'.
-     * @param {boolean} cookieExclude - If true, exclude from cookie storage.
-     * @param {boolean} isDefaultValueRestoredFromCookie - If true, restore default value from cookie.
+     /**
+     * @constructor
+     * @param {string} parent_id - Parent container ID
+     * @param {string} id - ID for the keyword field
+     * @param {string} field_name - The name attribute for the input field
+     * @param {string} title - The title of the keyword field
+     * @param {string} locale - The locale for the field (e.g., 'en', 'fr')
+     * @param {string} placeholder - The placeholder text for the input
+     * @param {string} lang - The language of the content
+     * @param {function[]} validators - Array of validation functions
+     * @param {KeywordsFieldConfig} config - Configuration object
      */
-    constructor(
+     constructor(
         parent_id,
         id,
         field_name,
@@ -73,28 +90,21 @@ class KeywordsField extends TextField {
         placeholder,
         lang,
         validators,
-        maxTextLength,
-        pressText = 'press',
-        enterText = 'Enter ↵',
-        cookieExclude = true,
-        isDefaultValueRestoredFromCookie = false,
-        shouldMapTextToDeleteButtonBGColor = false,
-        constantDeleteButtonBGColorSaturation = 31, // constant saturation
-        constantDeleteButtonBGColorLightness = 38,  // constant lightness
-        ) {
-
-        let config = new TextFieldConfig(); 
-        config.maxTextLength = maxTextLength;
-        config.initRows = 1;
-        config.verticalFlex = false;
-        config.hasTitle = false;
-        config.passwordMode = false;
-        config.defaultValue = null;
-        config.cookieExclude = cookieExclude;
-        config.hasCookiePrefix = false;
-        config.isDefaultValueRestoredFromCookie = isDefaultValueRestoredFromCookie;
-        config.scrollControlElementId = null;
-        config.isCounterDisplayed = false;
+        config = new KeywordsFieldConfig()
+    ) {        
+        
+        let textFieldConfig = new TextFieldConfig();
+        textFieldConfig.maxTextLength = config.maxTextLength;
+        textFieldConfig.initRows = 1;
+        textFieldConfig.verticalFlex = false;
+        textFieldConfig.hasTitle = true;
+        textFieldConfig.passwordMode = false;
+        textFieldConfig.defaultValue = null;
+        textFieldConfig.cookieExclude = config.cookieExclude;
+        textFieldConfig.hasCookiePrefix = false;
+        textFieldConfig.isDefaultValueRestoredFromCookie = config.isDefaultValueRestoredFromCookie;
+        textFieldConfig.scrollControlElementId = null;
+        textFieldConfig.isCounterDisplayed = false;
 
         super(
             parent_id, 
@@ -104,18 +114,18 @@ class KeywordsField extends TextField {
             title, 
             placeholder,
             validators, 
-            config
+            textFieldConfig
         )
 
         this.__lang__ = lang;
         this.locale = locale;
-        this.__max_text_length__ = maxTextLength;
-        this.__press_text__ = pressText;
-        this.__enter_text__ = enterText;
+        this.__max_text_length__ = config.maxTextLength;
+        this.__press_text__ = config.pressText;
+        this.__enter_text__ = config.enterText;
 
-        this.__should_map_text_to_delete_button_bg_color__ = shouldMapTextToDeleteButtonBGColor;
-        this.__constant_delete_button_bg_color_saturation__ = constantDeleteButtonBGColorSaturation;
-        this.__constant_delete_button_bg_color_lightness__ = constantDeleteButtonBGColorLightness;
+        this.__should_map_text_to_delete_button_bg_color__ = config.shouldMapTextToDeleteButtonBGColor;
+        this.__constant_delete_button_bg_color_saturation__ = config.constantDeleteButtonBGColorSaturation;
+        this.__constant_delete_button_bg_color_lightness__ = config.constantDeleteButtonBGColorLightness;
 
         this._addElements();
         this._addEventHandlers();
