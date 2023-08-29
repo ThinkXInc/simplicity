@@ -35,31 +35,41 @@ div.TextField {
             margin: 2px 0px 0px 3px;
             position: relative;
         }
-        input, textarea {
-            resize: none;
-            border: none;
-            margin: 14px 0 0 0;
-            background: transparent;
-            outline: none;
-            font-weight: 400;
-            font-size: 1.1rem;
-            color: @text-darkgray;
-            line-height: 24px;
-            //flex: 1;  // TODO: remove if not necessary
-            display: inline-block;
-            white-space: pre-wrap;
-            vertical-align: top;
+        div.inputWrapper {
             width: 100%;
-            height: 100%;
-            overflow-x: hidden;
-            overflow-y: auto;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            h6.title{
+                width: 120px;
+            }
+            input, textarea {
+                resize: none;
+                border: none;
+                margin: 14px 0 0 0;
+                background: transparent;
+                outline: none;
+                font-weight: 400;
+                font-size: 1.1rem;
+                color: @text-darkgray;
+                line-height: 24px;
+                //flex: 1;  // TODO: remove if not necessary
+                display: inline-block;
+                white-space: pre-wrap;
+                vertical-align: top;
+                width: 100%;
+                height: 100%;
+                overflow-x: hidden;
+                overflow-y: auto;
+            }
+            ::placeholder {
+                font-weight: 100;
+                color: @text-placeholder;
+            }
+            div.inputAfter {
+            }
         }
-        ::placeholder {
-            font-weight: 100;
-            color: @text-placeholder;
-        }
-        div.inputAfter {
-        }
+
         div.footer {
             div.left {
             }

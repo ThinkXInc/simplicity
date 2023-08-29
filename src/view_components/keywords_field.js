@@ -193,14 +193,16 @@ class KeywordsField extends TextField {
         const $press = document.createElement('p');
         $press.className = keywordsFieldPressClassName;
         $press.innerHTML = `${this.config.pressText}<strong>${this.config.enterText}</strong>`;
-        this.$inputOuter.appendChild($press);  // This will add $press to the end of the container
+        this.$inputWrapper.appendChild($press);  // This will add $press to the end of the container
         this.$press = $press;
     }
 
     _updatePressVisibility() {
         if (this.$textArea.value.length > 0 && document.activeElement === this.$textArea) {
+            debuglog('show press');
             this.$press.classList.add('show');
         } else {
+            debuglog('remove press');
             this.$press.classList.remove('show');
         }
     }

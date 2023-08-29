@@ -189,7 +189,7 @@ class GradientViewLoader {
         }
 
         for(let i = 0; i < numIndicator; i++) {
-            const gradientId = `animatedGradient${i}`;
+            const gradientId = `${this.__id__}__animatedGradient${i}`;
 
             // Create gradient
             const $gradient = document.createElementNS("http://www.w3.org/2000/svg", 'linearGradient');
