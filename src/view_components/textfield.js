@@ -35,8 +35,9 @@ class TextFieldConfig extends FormComponentBaseConfig {
         isDefaultValueRestoredFromCookie = true,
         scrollControlElementId = null,
         isCounter = true,
-        isEnterButton = false,
-        enterButtonPlacedInFooterColumn = FooterColumn.right,
+        isDoneButton = false,
+        isCancelButton = false,
+        doneButtonPlacedInFooterColumn = FooterColumn.right,
         messagePlacedInFooterColumn = FooterColumn.middle,
         counterPlacedInFooterColumn = FooterColumn.right,
         indicatorPlacedInFooterColumn = FooterColumn.left,
@@ -58,8 +59,8 @@ class TextFieldConfig extends FormComponentBaseConfig {
         this.isDefaultValueRestoredFromCookie = isDefaultValueRestoredFromCookie;
         this.scrollControlElementId = scrollControlElementId;
         this.isCounter = isCounter;
-        this.isEnterButton = isEnterButton;
-        this.enterButtonPlacedInFooterColumn = enterButtonPlacedInFooterColumn;
+        this.isDoneButton = isDoneButton;
+        this.doneButtonPlacedInFooterColumn = doneButtonPlacedInFooterColumn;
         this.messagePlacedInFooterColumn = messagePlacedInFooterColumn;
         this.counterPlacedInFooterColumn = counterPlacedInFooterColumn;
         this.indicatorPlacedInFooterColumn = indicatorPlacedInFooterColumn;
@@ -363,12 +364,6 @@ class TextField extends FormComponentBase {
     
         const $footer = document.createElement('div');
         $footer.className = 'footer';
-        ['indicator', 'message', 'counter'].forEach(elem => {
-            const $span = document.createElement('span');
-            $span.className = elem;
-            $footer.appendChild($span);
-            this[`$${elem}`] = $span;
-        });
         $inputOuter.appendChild($footer);
         this.$footer = $footer;
 
@@ -387,6 +382,18 @@ class TextField extends FormComponentBase {
         };
         
         // Append elements to appropriate columns based on config
+        ['indicator', 'message', 'counter'].forEach(elem => {
+            const $span = document.createElement('span');
+            $span.className = elem;
+            this[`$${elem}`] = $span;
+        });
+
+        ['doneButton', 'cancelButton'].forEach(elem => {
+            const $button = document.createElement('button');
+            $button.className = elem;
+            this[`$${elem}`] = $button;
+        })
+
         if (this.$indicator) {
             columns[this.config.indicatorPlacedInFooterColumn].appendChild(this.$indicator);
         }
@@ -396,14 +403,11 @@ class TextField extends FormComponentBase {
         if (this.$counter && this.config.isCounter) {
             columns[this.config.counterPlacedInFooterColumn].appendChild(this.$counter);
         }
-        
-        if (this.config.isEnterButton) {
-            const $enterButton = document.createElement('button');
-            $enterButton.id = 'EnterButton';
-            $enterButton.className = 'enterButton';
-            $enterButton.innerHTML = SVGIcons.enterButtonSVG;
-            columns[this.config.enterButtonPlacedInFooterColumn].appendChild($enterButton);
-            this.$enterButton = $enterButton;
+        if (this.$doneButton && this.config.isDoneButton) {
+            columns[this.config.doneButtonPlacedInFooterColumn].appendChile(this.$doneButton);
+        }
+        if (this.$cancelButton && this.config.isCancelButton) {
+            columns[this.config.cancelButtonPlacedInFooterColumn].appendChile(this.$cancelButton);
         }
         
         // Append columns to footer
