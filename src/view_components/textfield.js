@@ -6,7 +6,6 @@
  * @author kaz@thinkxinc.com (Kazuki Otsuka)
  */
 
-const textFieldOnDisableClassName = 'onDisable';
 
 const TextFieldState = Object.freeze({ onhide: 0, onshow: 1, });
 //onfocus: 3,  // TODO:
@@ -16,7 +15,14 @@ const TextFieldValidationState = Object.freeze({ none: 0, onalert: 1, onverified
 const TextFieldInputState = Object.freeze({ empty: 0, filled: 1, overmaximum: 2, });
 const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
 
-const FooterColumn = Object.freeze({ left: 'left', middle: 'middle', right: 'right' });
+
+const TextFieldPlaceTo = Object.freeze({ 
+    inputOuter: '.inputOuter', 
+    inputAfter: '.inputOuter .inputAfter', 
+    footerLeft: '.footer .left', 
+    footerMiddle: '.inputOuter .footer .middle', 
+    footerRight: '.inputOuter .footer .right' 
+});
 
 class TextFieldConfig extends FormComponentBaseConfig {
     constructor({
@@ -30,6 +36,8 @@ class TextFieldConfig extends FormComponentBaseConfig {
         counterFormat = `$count/$maxcount`,
         passwordMode = false,
         defaultValue = null,
+        onDisableClassName = 'onDisable',
+        shouldTrackLocalChangeInCookie = true,
         cookieExclude = false,
         hasCookiePrefix = false,
         isDefaultValueRestoredFromCookie = true,
@@ -37,10 +45,13 @@ class TextFieldConfig extends FormComponentBaseConfig {
         isCounter = true,
         isDoneButton = false,
         isCancelButton = false,
-        doneButtonPlacedInFooterColumn = FooterColumn.right,
-        messagePlacedInFooterColumn = FooterColumn.middle,
-        counterPlacedInFooterColumn = FooterColumn.right,
-        indicatorPlacedInFooterColumn = FooterColumn.left,
+        isTitlePlacedAtInputLeft = false,
+        eventNameDoneButtonClick = 'doneButtonClick',
+        eventNameCancelButtonClick = 'cancelButtonClick',
+        doneButtonPlace = TextFieldPlaceTo.inputAfter,
+        messagePlace = TextFieldPlaceTo.footerMiddle,
+        counterPlace = TextFieldPlaceTo.footerRight,
+        indicatorPlace = TextFieldPlaceTo.footerLeft,
         ...otherOptions
     } = {}) {
         super(otherOptions);
@@ -54,16 +65,22 @@ class TextFieldConfig extends FormComponentBaseConfig {
         this.counterFormat = counterFormat;
         this.passwordMode = passwordMode;
         this.defaultValue = defaultValue;
+        this.onDisableClassName = onDisableClassName;
+        this.shouldTrackLocalChangeInCookie = shouldTrackLocalChangeInCookie;
         this.cookieExclude = cookieExclude;
         this.hasCookiePrefix = hasCookiePrefix;
         this.isDefaultValueRestoredFromCookie = isDefaultValueRestoredFromCookie;
         this.scrollControlElementId = scrollControlElementId;
         this.isCounter = isCounter;
         this.isDoneButton = isDoneButton;
-        this.doneButtonPlacedInFooterColumn = doneButtonPlacedInFooterColumn;
-        this.messagePlacedInFooterColumn = messagePlacedInFooterColumn;
-        this.counterPlacedInFooterColumn = counterPlacedInFooterColumn;
-        this.indicatorPlacedInFooterColumn = indicatorPlacedInFooterColumn;
+        this.isCancelButton = isCancelButton;
+        this.isTitlePlacedAtInputLeft = isTitlePlacedAtInputLeft;
+        this.eventNameDoneButtonClick = eventNameDoneButtonClick;
+        this.eventNameCancelButtonClick = eventNameCancelButtonClick;
+        this.doneButtonPlace = doneButtonPlace;
+        this.messagePlace = messagePlace;
+        this.counterPlace = counterPlace;
+        this.indicatorPlace = indicatorPlace;
     }
 }
 
@@ -168,6 +185,10 @@ class TextField extends FormComponentBase {
         this._togglePasswordMode(this.config.passwordMode);
         // restore from cookie
         this._restoreValueFromCookie();
+        // Keep value which hasn't been edited (saved value)
+        if (!this.config.shouldTrackLocalChangeInCookie) {
+            this.savedValue = this.value;
+        }
         // Resize textarea. Ensure the browser gets a chance to recalculate layout before resizing
         if(this.config.verticalFlex) {
             requestAnimationFrame(() => {
@@ -208,7 +229,15 @@ class TextField extends FormComponentBase {
         this.$textField.dispatchEvent(event);
         // save cookie
         if (this.validate() == null) {
-            this._setValueToCookies(text);
+            if (this.config.shouldTrackLocalChangeInCookie) {
+                this._setValueToCookies(text);
+            } else {
+                if (text != this.savedValue) {
+                    this.$textField.classList.add('edited');
+                } else {
+                    this.$textField.classList.remove('edited');
+                }
+            }
         } else {
             console.warn(`Cookie is not set for key ${this.__field_name__} since the value is not valid.`)
         }
@@ -314,12 +343,24 @@ class TextField extends FormComponentBase {
 
     disableInteractions(disable) {
         if (disable) {
-            this.$textField.classList.add(textFieldOnDisableClassName);
+            this.$textField.classList.add(this.config.onDisableClassName);
             this.$textArea.setAttribute('disabled', true);
        } else {
-            this.$textField.classList.remove(textFieldOnDisableClassName);
+            this.$textField.classList.remove(this.config.onDisableClassName);
             this.$textArea.removeAttribute('disabled');
        }
+    }
+
+    /**
+     * Explicitly update value in cookie.
+     * 
+     * [NOTE]: If shouldTrackLocalChangeInCookie is false,
+     *   cookie is not update unless calling this method.
+     * 
+     * @param {string} text 
+     */
+    updateValueInCookie(text) {
+        this._setValueToCookies(text);
     }
 
     /**
@@ -335,17 +376,28 @@ class TextField extends FormComponentBase {
         this.$textField = this.$view;
         this.$textField ?? console.warn(`<section id=${this.__id__} class=textField></section> is necessary in HTML.`);
         this.$textField.className = 'TextField';
+        this.$textField.classList.add(this.__id__);
     
         // create new elements
         const $inputOuter = document.createElement('div');
         $inputOuter.className = 'inputOuter';
         this.$inputOuter = $inputOuter;
+
+        const $inputWrapper = document.createElement('div');
+        $inputWrapper.className = 'inputWrapper';
+        this.$inputWrapper = $inputWrapper;
     
         const $title = document.createElement('h6');
         $title.className = 'title';
         $title.textContent = this.__title__;
-        $inputOuter.appendChild($title);
+        if (this.config.isTitlePlacedAtInputLeft) {
+            $inputWrapper.appendChild($title);
+        } else {
+            $inputOuter.appendChild($title);
+        }
         if (!this.config.hasTitle) $title.remove();
+
+        $inputOuter.appendChild($inputWrapper);
     
         const $inputElem = document.createElement(this.__type__ == TextFieldType.singleline ? 'input' : 'textarea');
         $inputElem.className = this.__field_name__ + 'form';
@@ -359,9 +411,16 @@ class TextField extends FormComponentBase {
             $inputElem.rows = this.config.initRows;
             $inputElem.contentEditable = true;
         }
-        $inputOuter.appendChild($inputElem);
+        $inputWrapper.appendChild($inputElem);
         this.$textArea = $inputElem;
-    
+
+        // tail box
+        const $inputAfter = document.createElement('div');
+        $inputAfter.className = 'inputAfter';
+        $inputWrapper.appendChild($inputAfter);
+        this.$inputAfter = $inputAfter;
+
+        // footer
         const $footer = document.createElement('div');
         $footer.className = 'footer';
         $inputOuter.appendChild($footer);
@@ -375,44 +434,46 @@ class TextField extends FormComponentBase {
         const $rightColumn = document.createElement('div');
         $rightColumn.className = 'right';
 
-        const columns = {
-            [FooterColumn.left]: $leftColumn,
-            [FooterColumn.middle]: $middleColumn,
-            [FooterColumn.right]: $rightColumn
+        const places = {
+            [TextFieldPlaceTo.inputOuter]: $inputOuter,
+            [TextFieldPlaceTo.inputAfter]: $inputAfter,
+            [TextFieldPlaceTo.footerLeft]: $leftColumn,
+            [TextFieldPlaceTo.footerMiddle]: $middleColumn,
+            [TextFieldPlaceTo.footerRight]: $rightColumn
         };
         
         // Append elements to appropriate columns based on config
         ['indicator', 'message', 'counter'].forEach(elem => {
-            const $span = document.createElement('span');
-            $span.className = elem;
-            this[`$${elem}`] = $span;
+            const $elem = document.createElement('span');
+            $elem.className = elem;
+            this[`$${elem}`] = $elem;
         });
 
         ['doneButton', 'cancelButton'].forEach(elem => {
-            const $button = document.createElement('button');
-            $button.className = elem;
-            this[`$${elem}`] = $button;
+            const $elem = document.createElement('button');
+            $elem.className = elem;
+            this[`$${elem}`] = $elem;
         })
 
+
         if (this.$indicator) {
-            columns[this.config.indicatorPlacedInFooterColumn].appendChild(this.$indicator);
+            places[this.config.indicatorPlace].appendChild(this.$indicator);
         }
         if (this.$message) {
-            columns[this.config.messagePlacedInFooterColumn].appendChild(this.$message);
+            places[this.config.messagePlace].appendChild(this.$message);
         }
         if (this.$counter && this.config.isCounter) {
-            columns[this.config.counterPlacedInFooterColumn].appendChild(this.$counter);
+            places[this.config.counterPlace].appendChild(this.$counter);
         }
         if (this.$doneButton && this.config.isDoneButton) {
-            columns[this.config.doneButtonPlacedInFooterColumn].appendChile(this.$doneButton);
+            places[this.config.doneButtonPlace].appendChild(this.$doneButton);
         }
         if (this.$cancelButton && this.config.isCancelButton) {
-            columns[this.config.cancelButtonPlacedInFooterColumn].appendChile(this.$cancelButton);
+            places[this.config.cancelButtonPlace].appendChild(this.$cancelButton);
         }
-        
+      
         // Append columns to footer
         this.$footer.append($leftColumn, $middleColumn, $rightColumn);
-    
         this.$textField.appendChild($inputOuter);
     }
 
@@ -440,6 +501,24 @@ class TextField extends FormComponentBase {
                 this._setState(TextFieldValidationState.none, TextFieldInputState.empty);
             } else {
                 this._setState(TextFieldValidationState.none, TextFieldInputState.filled);
+            }
+
+            // Add doneButton click handler
+            if (this.config.isDoneButton) {
+                this.$doneButton.addEventListener('click', () => {
+                    this.$textField.dispatchEvent(new CustomEvent('doneButtonClick', {
+                        detail: { id: this.__id__, value: this.value }
+                    }));
+                });
+            }
+
+            // Add cancelButton click handler
+            if (this.config.isCancelButton) {
+                this.$cancelButton.addEventListener('click', () => {
+                    this.$textField.dispatchEvent(new CustomEvent('cancelButtonClick', {
+                        detail: { id: this.__id__,  value: this.value }
+                    }));
+                });
             }
 
             // Auto resize textarea
@@ -690,8 +769,7 @@ class TextField extends FormComponentBase {
             newAlertMessage.classList.add('alertMessage');
             newAlertMessage.id = alertMessageId;
             newAlertMessage.innerText = message;
-            const targetColumn = this.config.messagePlacedInFooterColumn;
-            $footer.querySelector(`.${targetColumn}`).appendChild(newAlertMessage);
+            $footer.querySelector(this.config.messagePlace).appendChild(newAlertMessage);
         } else {
             $alertMessage.innerText = message;
         }

@@ -24,6 +24,21 @@ class SVGIcons {
         `;
     }
 
+    static get sendButtonSVG() {
+        return `
+        <svg version="1.1" id="send" xmlns="http://www.w3.org/2000/svg" 
+             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+             viewBox="0 0 60 60" style="enable-background:new 0 0 60 60;" xml:space="preserve">
+            <style type="text/css">
+                .plane { fill: #FFFFFF; }
+            </style>
+            <path id="path" class="plane" d="M2.1,8.6v12.6c0,0,0,4.4,4.1,5c4.1,0.6,16.2,2.4,16.2,2.4s2,0.3,2,1.4s-1.9,1.7-1.9,1.7
+                L6.2,34.8c0,0-4.1,0.6-4.1,4.1s0,14.5,0,14.5s0.6,3.1,3.6,3.1s50.7-26.1,50.7-26.1s1.5-0.7,1.5-1.2c0-0.5-1.7-1.4-1.7-1.4
+                L6,3.6C6,3.6,2.1,2.2,2.1,8.6z"/>
+        </svg>
+        `;
+    }
+
     static get editIconSVG() {
         return `
             <svg id="EditIconSVG" class="editIconSVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 82.98 70.3">

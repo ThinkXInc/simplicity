@@ -7,6 +7,9 @@
 @keyword-scope-bg: #878787;
 @keyword-scope-border: #909090;
 
+@icon: #d9d9d9;
+@icon-hover: #fff;
+ 
 // TextField
 div.TextField {
     div.inputOuter {
@@ -55,22 +58,45 @@ div.TextField {
             font-weight: 100;
             color: @text-placeholder;
         }
+        div.inputAfter {
+        }
         div.footer {
-            span.indicator {
+            div.left {
+            }
+            div.middle {
+            }
+            div.right {
+            }
+        }
+        span.indicator {
 
-            }
-            span.message {
+        }
+        span.message {
 
+        }
+        span.counter {
+            float: right;
+            font-size: 0.7rem;
+            color: @text-gray-light;
+        }
+        p.alertMessage {
+            color: @alert-red;
+            font-size: 0.9rem;
+            padding-left: 0px;
+        }
+        button {
+            svg {
+                .cls-1, .cls-2 {
+                    .transitionAll();
+                    stroke: @icon;
+                }
+                width: 30px;
+                height: 30px;
             }
-            span.counter {
-                float: right;
-                font-size: 0.7rem;
-                color: @text-gray-light;
-            }
-            p.alertMessage {
-                color: @alert-red;
-                font-size: 0.9rem;
-                padding-left: 0px;
+            svg:hover {
+                .cls-1, .cls-2 {
+                    stroke: @icon-hover;
+                }
             }
         }
     }
