@@ -16,7 +16,9 @@ const TextFieldValidationState = Object.freeze({ none: 0, onalert: 1, onverified
 const TextFieldInputState = Object.freeze({ empty: 0, filled: 1, overmaximum: 2, });
 const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
 
-class TextFieldConfig {
+const FooterColumn = Object.freeze({ left: 'left', middle: 'middle', right: 'right' });
+
+class TextFieldConfig extends FormComponentBaseConfig {
     constructor({
         htmlTag = 'div',
         maxTextLength = 999,
@@ -25,14 +27,22 @@ class TextFieldConfig {
         hasTitle = true,
         title = "",
         placeholder = "",
+        counterFormat = `$count/$maxcount`,
         passwordMode = false,
         defaultValue = null,
         cookieExclude = false,
         hasCookiePrefix = false,
         isDefaultValueRestoredFromCookie = true,
         scrollControlElementId = null,
-        isCounterDisplayed = true,
+        isCounter = true,
+        isEnterButton = false,
+        enterButtonPlacedInFooterColumn = FooterColumn.right,
+        messagePlacedInFooterColumn = FooterColumn.middle,
+        counterPlacedInFooterColumn = FooterColumn.right,
+        indicatorPlacedInFooterColumn = FooterColumn.left,
+        ...otherOptions
     } = {}) {
+        super(otherOptions);
         this.htmlTag = htmlTag;
         this.maxTextLength = maxTextLength;
         this.initRows = initRows;
@@ -40,13 +50,19 @@ class TextFieldConfig {
         this.hasTitle = hasTitle;
         this.title = title;
         this.placeholder = placeholder;
+        this.counterFormat = counterFormat;
         this.passwordMode = passwordMode;
         this.defaultValue = defaultValue;
         this.cookieExclude = cookieExclude;
         this.hasCookiePrefix = hasCookiePrefix;
         this.isDefaultValueRestoredFromCookie = isDefaultValueRestoredFromCookie;
         this.scrollControlElementId = scrollControlElementId;
-        this.isCounterDisplayed = isCounterDisplayed;
+        this.isCounter = isCounter;
+        this.isEnterButton = isEnterButton;
+        this.enterButtonPlacedInFooterColumn = enterButtonPlacedInFooterColumn;
+        this.messagePlacedInFooterColumn = messagePlacedInFooterColumn;
+        this.counterPlacedInFooterColumn = counterPlacedInFooterColumn;
+        this.indicatorPlacedInFooterColumn = indicatorPlacedInFooterColumn;
     }
 }
 
@@ -109,33 +125,17 @@ class TextFieldConfig {
  * @param {TextFieldConfig} [config] - Configuration object for more granular customization. Defaults to a new TextFieldConfig object.
  */
 class TextField extends FormComponentBase {
-    __counter_format__ = `$count/$maxcount`;
+    constructor(parent_id, id, field_name, type, locale, lang, validators, config = new TextFieldConfig()) {
+        super(parent_id, id, field_name, '', config.htmlTag, validators, config);
 
-    constructor(
-        parent_id, 
-        id, 
-        field_name, 
-        type, 
-        locale,
-        lang,
-        validators,
-        config = new TextFieldConfig()
-    ) {
-        super(parent_id, id, field_name, '', config.htmlTag, validators, config.defaultValue, config.cookieExclude, config.hasCookiePrefix, config.isDefaultValueRestoredFromCookie);
+        // set config
+        this.config = config;
 
         const options = [
             {name: '__type__', value: type, type: 'number'},
             {name: '__title__', value: config.title, type: 'string'},
             {name: '__lang__', value: lang, type: 'string'},
             {name: '__field_name__', value: field_name, type: 'string'},
-            {name: '__placeholder__', value: config.placeholder, type: 'string'},
-            {name: '__max_text_length__', value: config.maxTextLength, type: 'number'},
-            {name: '__init_rows__', value: config.initRows, type: 'number'},
-            {name: '__vertical_flex__', value: config.verticalFlex, type: 'boolean'},
-            {name: '__has_title__', value: config.hasTitle, type: 'boolean'},
-            {name: '__password_mode__', value: config.passwordMode, type: 'boolean'},
-            {name: '__scroll_control_element_id__', value: config.scrollControlElementId, type: 'string|null'},
-            {name: '__is_counter_displayed__', value: config.isCounterDisplayed, type: 'boolean'},
         ];
 
         options.forEach(option => {
@@ -155,8 +155,6 @@ class TextField extends FormComponentBase {
             }
         });
  
-        // set config
-        this.config = config;
         // set locale
         this.locale = locale;
         // initialize view elements
@@ -166,11 +164,11 @@ class TextField extends FormComponentBase {
         // validators
         this.validators = validators;
         // password mode
-        this._togglePasswordMode(this.__password_mode__);
+        this._togglePasswordMode(this.config.passwordMode);
         // restore from cookie
         this._restoreValueFromCookie();
         // Resize textarea. Ensure the browser gets a chance to recalculate layout before resizing
-        if(this.__vertical_flex__) {
+        if(this.config.verticalFlex) {
             requestAnimationFrame(() => {
                 this._resizeTextArea(this.$textArea);
             });
@@ -223,9 +221,9 @@ class TextField extends FormComponentBase {
     set count(count) {
         this._count = count;
         // update counter text
-        if (this.isCounterDisplayed) {
-            this.$counter.innerHTML = this.__counter_format__
-                .replace('$count', count).replace('$maxcount', this.__max_text_length__);
+        if (this.isCounter) {
+            this.$counter.innerHTML = this.config.counterFormat
+                .replace('$count', count).replace('$maxcount', this.config.maxTextLength);
         }
     }
 
@@ -346,7 +344,7 @@ class TextField extends FormComponentBase {
         $title.className = 'title';
         $title.textContent = this.__title__;
         $inputOuter.appendChild($title);
-        if (!this.__has_title__) $title.remove();
+        if (!this.config.hasTitle) $title.remove();
     
         const $inputElem = document.createElement(this.__type__ == TextFieldType.singleline ? 'input' : 'textarea');
         $inputElem.className = this.__field_name__ + 'form';
@@ -354,10 +352,10 @@ class TextField extends FormComponentBase {
         if ($inputElem instanceof HTMLInputElement) {
             $inputElem.type = 'text';
         }
-        $inputElem.placeholder = this.__placeholder__;
+        $inputElem.placeholder = this.config.placeholder;
         $inputElem.autocomplete = 'off';
         if (this.__type__ !== TextFieldType.singleline) {
-            $inputElem.rows = this.__init_rows__;
+            $inputElem.rows = this.config.initRows;
             $inputElem.contentEditable = true;
         }
         $inputOuter.appendChild($inputElem);
@@ -373,6 +371,43 @@ class TextField extends FormComponentBase {
         });
         $inputOuter.appendChild($footer);
         this.$footer = $footer;
+
+        // Create the footer columns
+        const $leftColumn = document.createElement('div');
+        $leftColumn.className = 'left';
+        const $middleColumn = document.createElement('div');
+        $middleColumn.className = 'middle';
+        const $rightColumn = document.createElement('div');
+        $rightColumn.className = 'right';
+
+        const columns = {
+            [FooterColumn.left]: $leftColumn,
+            [FooterColumn.middle]: $middleColumn,
+            [FooterColumn.right]: $rightColumn
+        };
+        
+        // Append elements to appropriate columns based on config
+        if (this.$indicator) {
+            columns[this.config.indicatorPlacedInFooterColumn].appendChild(this.$indicator);
+        }
+        if (this.$message) {
+            columns[this.config.messagePlacedInFooterColumn].appendChild(this.$message);
+        }
+        if (this.$counter && this.config.isCounter) {
+            columns[this.config.counterPlacedInFooterColumn].appendChild(this.$counter);
+        }
+        
+        if (this.config.isEnterButton) {
+            const $enterButton = document.createElement('button');
+            $enterButton.id = 'EnterButton';
+            $enterButton.className = 'enterButton';
+            $enterButton.innerHTML = SVGIcons.enterButtonSVG;
+            columns[this.config.enterButtonPlacedInFooterColumn].appendChild($enterButton);
+            this.$enterButton = $enterButton;
+        }
+        
+        // Append columns to footer
+        this.$footer.append($leftColumn, $middleColumn, $rightColumn);
     
         this.$textField.appendChild($inputOuter);
     }
@@ -394,8 +429,8 @@ class TextField extends FormComponentBase {
             }
 
             // set state as the text count 
-            console.log(`max text count: ${_this.__max_text_length__} count: ${_this.count}`);
-            if (this.count > this.__max_text_length__) {
+            console.log(`max text count: ${_this.config.maxTextLength} count: ${_this.count}`);
+            if (this.count > this.config.maxTextLength) {
                 this._setState(TextFieldValidationState.onalert, TextFieldInputState.overmaximum);
             } else if (this.count === 0) {
                 this._setState(TextFieldValidationState.none, TextFieldInputState.empty);
@@ -404,7 +439,7 @@ class TextField extends FormComponentBase {
             }
 
             // Auto resize textarea
-            if (_this.__vertical_flex__) {
+            if (_this.config.verticalFlex) {
                 _this._resizeTextArea(_this.$textArea);
             }
         })
@@ -423,7 +458,7 @@ class TextField extends FormComponentBase {
     _resizeTextArea($textArea) {
         console.error('resize');
     
-        let createViewElem = document.getElementById(this.__scroll_control_element_id__);
+        let createViewElem = document.getElementById(this.config.scrollControlElementId);
         let originalScrollTop = createViewElem.scrollTop;
         let footerTopPositionBefore = this.$footer.getBoundingClientRect().top;
         let viewportHeight = window.innerHeight;
@@ -476,8 +511,8 @@ class TextField extends FormComponentBase {
     }
     
     _getScrollViewElement() {
-        return this.__scroll_control_element_id__ 
-            ? document.getElementById(this.__scroll_control_element_id__) 
+        return this.config.scrollControlElementId
+            ? document.getElementById(this.config.scrollControlElementId) 
             : null;
     }
     
@@ -491,7 +526,7 @@ class TextField extends FormComponentBase {
     }
     
     _ensureFooterVisibility(scrollViewElem, originalScrollTop, isFooterTopVisible, viewportHeight) {
-        if (this.__scroll_control_element_id__ && scrollViewElem) {
+        if (this.config.scrollControlElementId && scrollViewElem) {
             requestAnimationFrame(() => {
                 let footerBottomPositionAfter = this.$footer.getBoundingClientRect().bottom;
                 let isFooterBottomHidden = footerBottomPositionAfter > viewportHeight;
@@ -525,7 +560,7 @@ class TextField extends FormComponentBase {
     /**
      * Toggle Password mode.
      *
-     * @param {boolean} passwordMode this.__password_mode__
+     * @param {boolean} passwordMode this.config.passwordMode
      */
     _togglePasswordMode(passwordMode) {
         if (this.__type__ == TextFieldType.multiplelines) {
@@ -600,63 +635,90 @@ class TextField extends FormComponentBase {
     }
 
     /**
-     * Determines if an alert message with the given ID is present in the footer of the text field.
-     * 
+     * Checks if an alert message with a given ID is present in the text field's footer.
+     *
      * @param {string} alertMessageId - The ID of the alert message to check for.
-     * @returns {boolean} - Returns `true` if the alert message is present, otherwise returns `false`.
+     * @returns {boolean} - True if the alert message is present; otherwise, false.
      */
     _isAlerted(alertMessageId) {
-        const $footer = this.$textField.querySelector('.footer');
-        let $alertMessage = $footer.querySelector('#'+alertMessageId);
+        const $alertMessage = this._getAlertMessage(alertMessageId);
         return $alertMessage ? true : false;
     }
-
-    _isAlertMessageEqualTo(alertMessageId, message) {
-        const $footer = this.$textField.querySelector('.footer');
-        let $alertMessage = $footer.querySelector('#'+alertMessageId);
-        return $alertMessage.innerText == message ? true : false;
-    }
-
-    _setAlertMessage(message) {
-        const $footer = this.$textField.querySelector('.footer');
-        let $alertMessage = $footer.querySelector('#'+alertMessageId);
-        $alertMessage.innerText = message;
-    }
-
+  
     /**
-     * Appends an alert message with the specified ID and content to the footer of the text field.
-     * If an alert message with the given ID already exists, it's content is updated with the new message.
-     * 
+     * Checks if an alert message with a given ID has content equal to the specified message.
+     *
+     * @param {string} alertMessageId - The ID of the alert message to check.
+     * @param {string} message - The message to compare to the alert message's content.
+     * @returns {boolean} - True if the content is equal; otherwise, false.
+     */
+    _isAlertMessageEqualTo(alertMessageId, message) {
+        const $alertMessage = this._getAlertMessage(alertMessageId);
+        return $alertMessage && $alertMessage.innerText === message;
+    }
+  
+    /**
+     * Sets the content of an alert message with a given ID.
+     *
+     * @param {string} alertMessageId - The ID of the alert message to update.
+     * @param {string} message - The new message content.
+     */
+    _setAlertMessage(alertMessageId, message) {
+        const $alertMessage = this._getAlertMessage(alertMessageId);
+        if ($alertMessage) {
+            $alertMessage.innerText = message;
+        }
+    }
+  
+    /**
+     * Appends an alert message with a specified ID and content to the text field's footer.
+     * If an alert message with the given ID already exists, its content is updated.
+     *
      * @param {string} alertMessageId - The ID to assign to the alert message.
      * @param {string} message - The content/message to set for the alert.
      */
     _appendAlertMessage(alertMessageId, message) {
-        const $footer = this.$textField.querySelector('.footer');
-
-        // Create new alert message if it does not exist.
-        let $alertMessage = document.createElement('p');
-        $alertMessage.classList.add('alertMessage');
-        $alertMessage.id = alertMessageId;
-        $alertMessage.innerText = message;
-        $footer.appendChild($alertMessage);
+        const $alertMessage = this._getAlertMessage(alertMessageId);
+        const $footer = this.$footer;
+  
+        if (!$alertMessage) {
+            const newAlertMessage = document.createElement('p');
+            newAlertMessage.classList.add('alertMessage');
+            newAlertMessage.id = alertMessageId;
+            newAlertMessage.innerText = message;
+            const targetColumn = this.config.messagePlacedInFooterColumn;
+            $footer.querySelector(`.${targetColumn}`).appendChild(newAlertMessage);
+        } else {
+            $alertMessage.innerText = message;
+        }
     }
-
+  
     /**
-     * Removes the alert message with the specified ID from the footer of the text field.
-     * If no such alert message exists, no action is taken.
-     * 
+     * Removes an alert message with a given ID from the text field's footer.
+     *
      * @param {string} alertMessageId - The ID of the alert message to be removed.
      */
     _removeAlertMessage(alertMessageId) {
-        const $footer = this.$textField.querySelector('.footer');
-        let $alertMessage = $footer.querySelector('#'+alertMessageId);
-        this.$textField.classList.remove('alert');
-        $footer.removeChild($alertMessage);
+        const $alertMessage = this._getAlertMessage(alertMessageId);
+        if ($alertMessage) {
+            this.$textField.classList.remove('alert');
+            $alertMessage.remove();
+        }
+    }
+  
+    /**
+     * Helper function to get a reference to an alert message by its ID.
+     *
+     * @param {string} alertMessageId - The ID of the alert message to find.
+     * @returns {HTMLElement|null} - The found alert message element, or null if not found.
+     * @private
+     */
+    _getAlertMessage(alertMessageId) {
+        return this.$footer.querySelector(`#` + alertMessageId);
     }
 }
 
-
- class TextFieldProtocol {
+class TextFieldProtocol {
     /**
      * To be overridden in the ViewController. 
      * Called when the input value of a TextField changes.

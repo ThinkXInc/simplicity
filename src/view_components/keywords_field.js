@@ -26,7 +26,7 @@ class KeywordsFieldConfig extends TextFieldConfig {
         defaultValue = null,
         hasCookiePrefix = false,
         scrollControlElementId = null,
-        isCounterDisplayed = false,
+        isCounter = false,
         ...otherOptions
     } = {}) {
         super(otherOptions);
@@ -114,27 +114,8 @@ class KeywordsField extends TextField {
             config
         );
 
-        const options = [
-            { name: '__lang__', value: lang, type: 'string' },
-            { name: '__press_text__', value: config.pressText, type: 'string' },
-            { name: '__enter_text__', value: config.enterText, type: 'string' },
-            { name: '__max_text_length__', value: config.maxTextLength, type: 'number' },
-            { name: '__should_map_text_to_delete_button_bg_color__', value: config.shouldMapTextToDeleteButtonBGColor, type: 'boolean' },
-            { name: '__constant_delete_button_bg_color_saturation__', value: config.constantDeleteButtonBGColorSaturation, type: 'number' },
-            { name: '__constant_delete_button_bg_color_lightness__', value: config.constantDeleteButtonBGColorLightness, type: 'number' },
-        ];
-
-        options.forEach(option => {
-            // set the value
-            this[option.name] = option.value;
-
-            // check the type
-            if (typeof this[option.name] !== option.type) {
-                console.error(`${option.name.replace('__', '')} must be of type ${option.type}, but got ${typeof option.value}`);
-            }
-        });
-
         this.locale = locale;
+        this.__lang__ = lang;
 
         this._addElements();
         this._addEventHandlers();
@@ -211,7 +192,7 @@ class KeywordsField extends TextField {
         // Create the $press element
         const $press = document.createElement('p');
         $press.className = keywordsFieldPressClassName;
-        $press.innerHTML = `${this.__press_text__}<strong>${this.__enter_text__}</strong>`;
+        $press.innerHTML = `${this.config.pressText}<strong>${this.config.enterText}</strong>`;
         this.$inputOuter.appendChild($press);  // This will add $press to the end of the container
         this.$press = $press;
     }
@@ -330,7 +311,7 @@ class KeywordsField extends TextField {
         $deleteButton.className = keywordsFieldDeleteClassName;
         $deleteButton.type = 'button'; // Indicate it's a button for user-interaction (not a submit button)
         $deleteButton.innerHTML = SVGIcons.cancelIconSVG;
-        if(this.__should_map_text_to_delete_button_bg_color__) {
+        if(this.config.shouldMapTextToDeleteButtonBGColor) {
             $deleteButton.style.backgroundColor = this.textToHSL(keyword);
         }
         $keywordItem.appendChild($deleteButton);
@@ -442,8 +423,8 @@ class KeywordsField extends TextField {
             hue += range;
         }
     
-        const saturation = this.__constant_delete_button_bg_color_saturation__;
-        const lightness = this.__constant_delete_button_bg_color_lightness__; 
+        const saturation = this.config.constantDeleteButtonBGColorSaturation;
+        const lightness = this.config.constantDeleteButtonBGColorLightness; 
     
         return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
     }

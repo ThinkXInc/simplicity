@@ -148,7 +148,7 @@ class PositionMap extends ViewComponentBase{
         const cookieNameLat = `${prefix}__${component.__field_name_lat__}`;
         const cookieNameLng = `${prefix}__${component.__field_name_lng__}`;
      
-        if (!this.__cookie_exclude__) {
+        if (!this.config.cookieExclude) {
             Cookies.set(cookieNameLat, mapCoordinate.lat, { expires: 3, secure: true, sameSite: 'strict' });
             Cookies.set(cookieNameLng, mapCoordinate.lng, { expires: 3, secure: true, sameSite: 'strict' });
         } else {

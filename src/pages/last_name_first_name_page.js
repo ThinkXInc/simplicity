@@ -72,8 +72,8 @@ class LastNameFirstNamePage extends Page {
             max_text_length,  // Maximum number of characters allowed
             init_rows,  // Initial number of rows in the TextField
             false,  // vertical_flex: if the TextField should vertically flex to fill space
-            true,  // has_title: if the TextField should have a title
-            false  // password_mode: if the TextField is for password input
+            true,  // config.hasTitle: if the TextField should have a title
+            false  // config.passwordMode: if the TextField is for password input
         );
 
         let lastNameField = new TextField(

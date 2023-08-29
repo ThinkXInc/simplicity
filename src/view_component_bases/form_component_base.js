@@ -1,3 +1,14 @@
+class FormComponentBaseConfig {
+    constructor({
+        defaultValue = null,
+        cookieExclude = false,
+        hasCookiePrefix = false
+    } = {}) {
+        this.defaultValue = defaultValue;
+        this.cookieExclude = cookieExclude;
+        this.hasCookiePrefix = hasCookiePrefix;
+    }
+}
 /**
  * FormComponentBase is a base class for form components, providing functionalities to handle
  * form field values and their interactions with cookies. 
@@ -9,28 +20,17 @@
  * _restoreValueFromCookie() provide utilities for interacting with the cookies.
  */
 class FormComponentBase extends ViewComponentBase {
-    constructor(
-        parent_id, 
-        id, 
-        field_name, 
-        text, 
-        htmlTag, 
-        validators = [], 
-        defaultValue = null, 
-        cookieExclude = false, 
-        hasCookiePrefix = false, 
-    ) {
-        super(parent_id, id, text, htmlTag, validators);
+    constructor(parent_id, id, field_name, text, htmlTag, validators = [], config = new FormComponentBaseConfig()) {
+        super(parent_id, id, text, htmlTag, validators, config);
 
         this.__field_name__ = field_name;
-        this.__cookie_exclude__ = cookieExclude; //fields you don't want to be saved in cookies.
-        this.__cookie_prefix__ = hasCookiePrefix ? `${parent_id}__` : '';
+        this.__cookie_prefix__ = this.config.hasCookiePrefix ? `${parent_id}__` : '';
         this.__cookie_name__ = `${this.__cookie_prefix__}${field_name}`;
 
         // Set the default value.
         // This will trigger the setter and save the value to cookies.
-        if (defaultValue !== null) {
-            this.value = defaultValue; // If defaultValue is set, use it.
+        if (this.config.defaultValue !== null) {
+            this.value = this.config.defaultValue; // If defaultValue is set, use it.
         }
     }
 
@@ -52,7 +52,7 @@ class FormComponentBase extends ViewComponentBase {
      */
     _setValueToCookies(value) {
         if (value !== null) {
-            if (!this.__cookie_exclude__) {
+            if (!this.config.cookieExclude) {
                 Cookies.set(this.__cookie_name__, value, { expires: 3, secure: true, sameSite: 'strict' });
                 console.log(`Save cookie => key: ${this.__cookie_name__} value: ${value}`);
             } else {

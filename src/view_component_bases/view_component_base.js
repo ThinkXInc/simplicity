@@ -8,10 +8,15 @@
  * @param {Array<Validator>} validators - An array of validators to apply to this component.
  */
 class ViewComponentBase {
-    constructor(parent_id, id, text, htmlTag, validators = []) {
+    constructor(parent_id, id, text, htmlTag, validators = [], config = null) {
         debuglog(`Initializing ${this.constructor.name} with id=${id}`)
         this.__parent_id__ = parent_id;
         this.__id__ = id;
+
+        if (config !== null) {
+            this.config = config;
+        }
+
         this._setElements(text, htmlTag);
 
         // Apply validators to the component
