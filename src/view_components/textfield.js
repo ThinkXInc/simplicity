@@ -6,7 +6,6 @@
  * @author kaz@thinkxinc.com (Kazuki Otsuka)
  */
 
-
 const TextFieldState = Object.freeze({ onhide: 0, onshow: 1, });
 //onfocus: 3,  // TODO:
 //onlock: 4,  // TODO:
@@ -27,6 +26,8 @@ const TextFieldPlaceTo = Object.freeze({
 class TextFieldConfig extends FormComponentBaseConfig {
     constructor({
         htmlTag = 'div',
+        type = TextFieldType.singleline,
+        validators = [],
         maxTextLength = 999,
         initRows = 6,
         verticalFlex = false,
@@ -56,6 +57,8 @@ class TextFieldConfig extends FormComponentBaseConfig {
     } = {}) {
         super(otherOptions);
         this.htmlTag = htmlTag;
+        this.type = type;
+        this.validators = validators;
         this.maxTextLength = maxTextLength;
         this.initRows = initRows;
         this.verticalFlex = verticalFlex;
@@ -138,20 +141,18 @@ class TextFieldConfig extends FormComponentBaseConfig {
  * @param {string} parent_id - The id of the parent element.
  * @param {string} id - The id for the TextField element.
  * @param {string} field_name - The name attribute for the TextField.
- * @param {string} type - The type of TextField (e.g., singleline, multiplelines).
- * @param {Validator[]} validators - Array of Validator objects for the TextField.
+ * @param {Locale} locale - locale object.
+ * @param {string} lang - locale string.
  * @param {TextFieldConfig} [config] - Configuration object for more granular customization. Defaults to a new TextFieldConfig object.
  */
 class TextField extends FormComponentBase {
-    constructor(parent_id, id, field_name, type, locale, lang, validators, config = new TextFieldConfig()) {
-        super(parent_id, id, field_name, '', config.htmlTag, validators, config);
+    constructor(parent_id, id, field_name, locale, lang, config = new TextFieldConfig()) {
+        super(parent_id, id, field_name, config);
 
         // set config
         this.config = config;
 
         const options = [
-            {name: '__type__', value: type, type: 'number'},
-            {name: '__title__', value: config.title, type: 'string'},
             {name: '__lang__', value: lang, type: 'string'},
             {name: '__field_name__', value: field_name, type: 'string'},
         ];
@@ -161,15 +162,8 @@ class TextField extends FormComponentBase {
             this[option.name] = option.value;
         
             // Special case for 'string|null'
-            if (option.type === 'string|null') {
-                if (typeof this[option.name] !== 'string' && this[option.name] !== null) {
-                    console.error(`${option.name.replace('__', '')} must be of type 'string' or 'null', but got ${typeof option.value}`);
-                }
-            } else {
-                // check the type
-                if (typeof this[option.name] !== option.type) {
-                    console.error(`${option.name.replace('__', '')} must be of type ${option.type}, but got ${typeof option.value}`);
-                }
+            if (typeof this[option.name] !== option.type) {
+                console.error(`${option.name.replace('__', '')} must be of type ${option.type}, but got ${typeof option.value}`);
             }
         });
  
@@ -182,7 +176,7 @@ class TextField extends FormComponentBase {
         // set counter 
         this.count = 0;
         // validators
-        this.validators = validators;
+        this.validators = this.config.validators;
         // password mode
         this._togglePasswordMode(this.config.passwordMode);
         // restore from cookie
@@ -366,11 +360,9 @@ class TextField extends FormComponentBase {
     /**
      * DOM nodes as variables.
      * Note: This method overrides the _setElements method in the base class.
-     * @param {string} text - The text to display in the TextField. Not used in this class.
-     * @param {string} htmlTag - The type of HTML element to create ('div').
      */
-    _setElements(text, htmlTag) {
-        super._setElements('', 'div'); // call super method to create the div element
+    _setElements() {
+        super._setElements('div'); // call super method to create the div element
     
         // textField
         this.$textField = this.$view;
@@ -389,7 +381,7 @@ class TextField extends FormComponentBase {
     
         const $title = document.createElement('h6');
         $title.className = 'title';
-        $title.textContent = this.__title__;
+        $title.textContent = this.config.title;
         if (this.config.isTitlePlacedAtInputLeft) {
             $inputWrapper.appendChild($title);
         } else {
@@ -399,7 +391,7 @@ class TextField extends FormComponentBase {
 
         $inputOuter.appendChild($inputWrapper);
     
-        const $inputElem = document.createElement(this.__type__ == TextFieldType.singleline ? 'input' : 'textarea');
+        const $inputElem = document.createElement(this.config.type == TextFieldType.singleline ? 'input' : 'textarea');
         $inputElem.className = this.__field_name__ + 'form';
         $inputElem.name = this.__field_name__;
         if ($inputElem instanceof HTMLInputElement) {
@@ -407,7 +399,7 @@ class TextField extends FormComponentBase {
         }
         $inputElem.placeholder = this.config.placeholder;
         $inputElem.autocomplete = 'off';
-        if (this.__type__ !== TextFieldType.singleline) {
+        if (this.config.type !== TextFieldType.singleline) {
             $inputElem.rows = this.config.initRows;
             $inputElem.contentEditable = true;
         }
@@ -512,7 +504,7 @@ class TextField extends FormComponentBase {
         debuglog(`Set button event handler for ${this.__id__}.`);
         if (this.config.isDoneButton) {
             this.$doneButton.addEventListener('click', () => {
-                _this.$textField.dispatchEvent(new CustomEvent('doneButtonClick', {
+                _this.$textField.dispatchEvent(new CustomEvent(_this.config.eventNameDoneButtonClick, {
                     detail: { id: this.__id__, value: this.value }
                 }));
             });
@@ -531,7 +523,7 @@ class TextField extends FormComponentBase {
         // Add cancelButton click handler
         if (this.config.isCancelButton) {
             this.$cancelButton.addEventListener('click', () => {
-                _this.$textField.dispatchEvent(new CustomEvent('cancelButtonClick', {
+                _this.$textField.dispatchEvent(new CustomEvent(_this.config.eventNameCancelButtonClick, {
                     detail: { id: this.__id__,  value: this.value }
                 }));
             });
@@ -666,7 +658,7 @@ class TextField extends FormComponentBase {
      * @param {boolean} passwordMode this.config.passwordMode
      */
     _togglePasswordMode(passwordMode) {
-        if (this.__type__ == TextFieldType.multiplelines) {
+        if (this.config.type == TextFieldType.multiplelines) {
             console.warn(`<textarea> doesn't allow password type.`);
             return;
         }

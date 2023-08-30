@@ -1,3 +1,15 @@
+class TitleConfig extends ViewComponentConfig {
+    constructor({
+        htmlTag = 'h2',
+        text = '',
+        ...otherOptions
+    } = {}) {
+        super(otherOptions);
+        this.htmlTag = htmlTag;
+        this.text = text;
+    }
+}
+
 /**
  * A class for title components.
  * @constructor
@@ -8,18 +20,18 @@
  */
  class Title extends ViewComponentBase {
 
-    constructor(parent_id, id, text, htmlTag = 'h2') {
-        super(parent_id, id, text, htmlTag);
+    constructor(parent_id, id, config = new TitleConfig()) {
+        super(parent_id, id, config);
+        this.config = config;
     }
 
     /**
      * DOM nodes as variables.
      * Note: This method overrides the _setElements method in the base class.
-     * @param {string} text - The text to display in the element.
-     * @param {string} htmlTag - The type of HTML element to create.
      */
-    _setElements(text, htmlTag) {
-        super._setElements(text, htmlTag);
+    _setElements() {
+        super._setElements(this.config.htmlTag);
+        this.$view.innerText = this.config.text;
     }
 
     /**

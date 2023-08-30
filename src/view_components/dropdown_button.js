@@ -10,6 +10,26 @@
  * @author kaz@thinkxinc.com (Kazuki Otsuka)
  */
 
+class DropdownButtonConfig extends ViewComponentConfig {
+    constructor({
+        htmlTag = 'div',
+        title = '',
+        description = '',
+        type = DropdownMenuType.list,
+        position = DropdownMenuDisplayPositionType.upper,
+        validators = [],
+        ...otherOptions
+    } = {}) {
+        super(otherOptions);
+        this.htmlTag = htmlTag;
+        this.title = title;
+        this.description = description;
+        this.type = type;
+        this.position = position;
+        this.validators = validators;
+    }
+}
+
 const DropdownButtonState = Object.freeze({ onclose: 1, onopen: 2, onselected: 3 });
 const DropdownMenuType = Object.freeze({ list: 1, widelist: 2, calendar: 3 });
 const DropdownMenuDisplayPositionType = Object.freeze({ bottom: 1, bottomover: 2, upper: 3, upperover: 4 });
@@ -86,35 +106,21 @@ class ListMenu {
  * `</code>`
  * @param {string} id - The DOM id where this view is inserted.
  * @param {string} title - displayed title.
- * @param {string} desctiption - displayed description.
- * @param {DropdownMenuType} type - {list|widelist|calender}. (list: 100% width options list, widelist: list of any width, calendar: calendar)
- * @param {DropdownMenuDisplayPositionType} position - {bottom|bottomover|upper|upperover} 
  * @param {[ListMenu]} listMenuItems - list of ListMenu with title, value.
  */
 class DropdownButton extends ViewComponentBase{
 
-    __description__ = null;
-    __field_name__ = null;
-    __items__ = null;
-    __menu_position__ = DropdownMenuDisplayPositionType.upper;
-    __width__ = null;  // TODO: widelist
+    constructor(parent_id, id, field_name, listMenuItems, config = new DropdownButtonConfig()) {
+        super(parent_id, id, config);
+        this.config = config;
 
-    _state = DropdownButtonState.onclose;
-    _selectedValue = null;
-    _title = null;
+        this.items = listMenuItems;
 
-    constructor(parent_id, id, field_name, title, description, type, position, listMenuItems, htmlTag='div', validators=[]) {
-        super(parent_id, id, '', htmlTag, validators);
-
-        this.__description__ = description;
         this.__field_name__ = field_name;
-        this.__type__ = type;
-        this.__items__ = listMenuItems;
-        this.__menu_position__ = position;
-
-        this._title = title;
+        this.__width__ = null;  // TODO: widelist
+        this._state = DropdownButtonState.onclose;
+        this._selectedValue = null;
     }
-
 
     /* setters */
 
@@ -134,17 +140,17 @@ class DropdownButton extends ViewComponentBase{
                 console.log(`DropdownButton state changed -> onopen`);
                 console.log(this.$toggleItem);
                 this.$toggleItem.style.display = 'block';
-                console.log(this.__menu_position__);
-                if (this.__menu_position__ == DropdownMenuDisplayPositionType.bottom) {
+                console.log(this.config.position);
+                if (this.position == DropdownMenuDisplayPositionType.bottom) {
                     this.$toggleItem.style.top = `${this.$view.offsetTop + this.$view.offsetHeight}px`;
-                } else if (this.__menu_position__ == DropdownMenuDisplayPositionType.bottomover) {
+                } else if (this.position == DropdownMenuDisplayPositionType.bottomover) {
                     this.$toggleItem.style.top = `${this.$view.offsetTop}px`;
-                } else if (this.__menu_position__ == DropdownMenuDisplayPositionType.upper) {
+                } else if (this.position == DropdownMenuDisplayPositionType.upper) {
                     this.$toggleItem.style.top = `${this.$view.offsetTop - this.$listMenu.offsetHeight}px`;
-                } else if (this.__menu_position__ == DropdownMenuDisplayPositionType.upperover) {
+                } else if (this.position == DropdownMenuDisplayPositionType.upperover) {
                     this.$toggleItem.style.top = `${this.$view.offsetTop - this.$listMenu.offsetHeight - this.$view.offsetHeight}px`;
                 } else {
-                    console.error(`${this.__menu_position__} is unknown position.`);
+                    console.error(`${this.position} is unknown position.`);
                 }
                 // add click outside -> close event
                 this._addClosingUnderSheet(this, this.$listMenu);
@@ -163,10 +169,10 @@ class DropdownButton extends ViewComponentBase{
         const previousState = this._selectedValue;
         this._selectedValue = selectedValue;
         if (selectedValue != null) {
-            const item = this.__items__.find((item) => item.value == selectedValue);
+            const item = this.items.find((item) => item.value == selectedValue);
             if (item == null) {
                 console.error(`${selectedValue} is not in items. see below.`);
-                console.table(this.__items__);}
+                console.table(this.items);}
             else {
                 this._setTitle(item.title);
             }
@@ -196,9 +202,9 @@ class DropdownButton extends ViewComponentBase{
     /**
      * DOM nodes as variables.
      */
-    _setElements(title, htmlTag) {
+    _setElements(htmlTag) {
         // Set up basic elements via parent class.
-        super._setElements(title, htmlTag);
+        super._setElements(htmlTag);
         this.$view.classList.add('dropdownButton');
 
         // Create and configure dropdown button clickable container.
@@ -209,13 +215,13 @@ class DropdownButton extends ViewComponentBase{
         // Create and configure description.
         let $description = document.createElement('h6');
         $description.className = "description";
-        $description.textContent = this.__description__;
+        $description.textContent = this.config.description;
         $dropdownButtonClickable.appendChild($description);
 
         // Create and configure title.
         let $title = document.createElement('span');
         $title.className = "title";
-        $title.textContent = this._title;
+        $title.textContent = this.config.title;
         $dropdownButtonClickable.appendChild($title);
 
         // Create and configure down arrow image.
@@ -241,7 +247,7 @@ class DropdownButton extends ViewComponentBase{
         // Assign class properties to corresponding HTML elements for easy access.
         this.$title = this.$view.querySelector('.title');
         this.$dropdownButtonClickable = this.$view.querySelector('.dropdownButtonClickable');
-        if (this.__type__ == DropdownMenuType.list || this.__type__ == DropdownMenuType.widelist) {
+        if (this.config.type == DropdownMenuType.list || this.config.type == DropdownMenuType.widelist) {
             this.$listMenu = this.$view.querySelector('.listmenu');
             this.$toggleItem = this.$listMenu;
         }
@@ -249,7 +255,7 @@ class DropdownButton extends ViewComponentBase{
         // Log warnings for missing HTML elements.
         if (!this.$title) console.warn(`<span class=title></span> is necessary in HTML.`);
         if (!this.$dropdownButtonClickable) console.warn(`<div class=dropdownButtonClickable></div> is necessary in HTML.`);
-        if (this.__type__ == DropdownMenuType.list || this.__type__ == DropdownMenuType.widelist) {
+        if (this.config.type == DropdownMenuType.list || this.config.type == DropdownMenuType.widelist) {
             if (!this.$listMenu) console.warn(`<ul class=listmenu></ul> is necessary in HTML.`);
         }
     }

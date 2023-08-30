@@ -1,25 +1,32 @@
+class AlertMessageConfig extends ViewComponentConfig {
+    constructor({
+        htmlTag = 'div',
+        ...otherOptions
+    } = {}) {
+        super(otherOptions);
+        this.htmlTag = htmlTag;
+    }
+}
 /**
  * A base class for AlertMessage components that display or hide a message.
  * Initially, the message is hidden.
  * @constructor
  * @param {string} parent_id - The id of the parent element.
  * @param {string} id - The id for the new element.
- * @param {string} htmlTag - The type of HTML element to create (default is 'div').
  */
  class AlertMessageComponentBase extends ViewComponentBase {
 
-    constructor(parent_id, id, htmlTag = 'div') {
-        super(parent_id, id, '', htmlTag);
+    constructor(parent_id, id, config = new AlertMessageConfig()) {
+        super(parent_id, id, config);
+        this.config = config;
     }
 
     /**
      * Overrides the _setElements method in the base class.
      * The message element is hidden by default.
-     * @param {string} text - The text to display in the element.
-     * @param {string} htmlTag - The type of HTML element to create.
      */
-    _setElements(text, htmlTag) {
-        super._setElements(text, htmlTag);
+    _setElements() {
+        super._setElements(this.config.htmlTag);
     
         // Additional setup specific to AlertMessage
         this.$view.classList.add('AlertMessage');

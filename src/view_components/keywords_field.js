@@ -10,6 +10,7 @@ const keywordsFieldPressClassName = 'press';
 class KeywordsFieldConfig extends TextFieldConfig {
     constructor({
         maxTextLength,
+        type = TextFieldType.singleline,
         pressText = 'press',
         enterText = 'Enter ↵',
         title = "",
@@ -31,6 +32,7 @@ class KeywordsFieldConfig extends TextFieldConfig {
     } = {}) {
         super(otherOptions);
         this.maxTextLength = maxTextLength;
+        this.type = type;
         this.pressText = pressText;
         this.enterText = enterText;
         this.title = title;
@@ -99,7 +101,6 @@ class KeywordsField extends TextField {
         field_name,
         locale,
         lang,
-        validators,
         config = new KeywordsFieldConfig()
     ) {        
         
@@ -107,10 +108,8 @@ class KeywordsField extends TextField {
             parent_id, 
             id, 
             field_name, 
-            TextFieldType.singleline,
             locale,
             lang,
-            validators,
             config
         );
 

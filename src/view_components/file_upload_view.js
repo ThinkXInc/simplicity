@@ -248,7 +248,7 @@
         title, subtitle, orTitle, browseButtonTitle, dropTitle,
         uploadedFilesTableTitle
     ) {
-        super(parent_id, id, title, 'div');
+        super(parent_id, id, 'div');
 
         // set 
         this.__id__ = id;

@@ -1,3 +1,15 @@
+class NextButtonConfig extends ViewComponentConfig {
+    constructor({
+        htmlTag = 'div',
+        text = 'Back',
+        ...otherOptions
+    } = {}) {
+        super(otherOptions);
+        this.htmlTag = htmlTag;
+        this.text = text;
+    }
+}
+
 /**
  * A class for Next Button components.
  * @constructor
@@ -7,18 +19,18 @@
  */
 class NextButton extends ViewComponentBase {
 
-    constructor(parent_id, id, text, htmlTag = 'button') {
-        super(parent_id, id, text, htmlTag);
+    constructor(parent_id, id, config = new NextButtonConfig()) {
+        super(parent_id, id, config);
+        this.config = config;
     }
 
     /**
      * DOM nodes as variables.
      * Note: This method overrides the _setElements method in the base class.
-     * @param {string} text - The text to display in the button.
      * @param {string} htmlTag - The type of HTML element to create ('button').
      */
-    _setElements(text, htmlTag) {
-        super._setElements(text, htmlTag);
+    _setElements(htmlTag) {
+        super._setElements(htmlTag);
     }
 
     /**

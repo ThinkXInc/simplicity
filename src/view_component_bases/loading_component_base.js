@@ -1,4 +1,14 @@
 'use strict';
+class LoadingConfig extends ViewComponentConfig {
+    constructor({
+        htmlTag = 'div',
+        ...otherOptions
+    } = {}) {
+        super(otherOptions);
+        this.htmlTag = htmlTag;
+    }
+}
+
 /**
  * Base class for loading components. Manages loading state and display style.
  * 
@@ -12,8 +22,9 @@ class LoadingComponentBase extends ViewComponentBase {
      * @param {string} parent_id - The id of the parent element.
      * @param {string} id - The id of the loading component.
      */
-    constructor(parent_id, id) {
-		super(parent_id, id, '', 'div');
+    constructor(parent_id, id, config = new LoadingConfig()) {
+		super(parent_id, id, config);
+        this.config = config;
         this.isLoading = false;
         this.$view.style.display = 'none';
 	}
@@ -21,8 +32,8 @@ class LoadingComponentBase extends ViewComponentBase {
     /**
      * Inherited from ViewComponentBase, does not add additional functionality.
      */
-    _setElements(_, htmlTag) {
-        super._setElements(_, htmlTag);
+    _setElements() {
+        super._setElements(this.config.htmlTag);
     }
 
     /**

@@ -1,26 +1,31 @@
+class ViewComponentConfig {
+    constructor({
+        htmlTag = 'div',
+        validators = []
+    } = {}) {
+        this.htmlTag = htmlTag;
+        this.validators = validators;
+    } 
+}
+
 /**
  * A base class for view components.
  * @constructor
  * @param {string} parent_id - The id of the parent element.
  * @param {string} id - The id for the new element.
  * @param {string} text - The text to display in the element.
- * @param {string} htmlTag - The type of HTML element to create (e.g., 'div', 'h2', etc.).
- * @param {Array<Validator>} validators - An array of validators to apply to this component.
  */
 class ViewComponentBase {
-    constructor(parent_id, id, text, htmlTag, validators = [], config = null) {
+    constructor(parent_id, id, config = new ViewComponentConfig()) {
         debuglog(`Initializing ${this.constructor.name} with id=${id}`)
         this.__parent_id__ = parent_id;
         this.__id__ = id;
+        this.config = config;
 
-        if (config !== null) {
-            this.config = config;
-        }
-
-        this._setElements(text, htmlTag);
+        this._setElements();
 
         // Apply validators to the component
-        this.validators = validators;
+        this.validators = this.config.validators;
 
         // Set this component as the target for each validator
         this.validators.forEach(validator => {
@@ -43,14 +48,15 @@ class ViewComponentBase {
 
     /**
      * Create and set the DOM elements.
-     * @param {string} text - The text to display in the element.
      * @param {string} htmlTag - The type of HTML element to create (e.g., 'div', 'h2', etc.).
      */
-    _setElements(text, htmlTag) {
+    _setElements() {
+        if (this.config.htmlTag == '' || this.config.htmlTag == null) {
+            throw new Error(`htmlTag in config must be valid html tag but ${this.config.htmlTag}`);
+        }
         // create view
-        this.$view = document.createElement(htmlTag);
+        this.$view = document.createElement(this.config.htmlTag);
         this.$view.id = this.__id__;
-        this.$view.innerText = text;
         this.$view.classList.add(`${this.__id__}`);
         this.$view.classList.add(`${this.constructor.name}`);
     }

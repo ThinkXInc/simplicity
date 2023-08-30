@@ -8,6 +8,25 @@
  * @author kaz@thinkxinc.com (Kazuki Otsuka)
  **/
 
+class PositionMapConfig extends ViewComponentConfig {
+    constructor({
+        htmlTag = 'div',
+        text = 'Back',
+        fieldNameLat = 'lat',
+        fieldNameLng = 'lng',
+        defaultMapCoordinate = null,
+        defaultPointerCoordinate = null,
+        label = '',
+        mapTypeControl = false,
+        streetViewControl = false,
+        fullScreenControl = false,
+        ...otherOptions
+    } = {}) {
+        super(otherOptions);
+        this.htmlTag = htmlTag;
+        this.text = text;
+    }
+}
 
 /**
  * Global Google map object.
@@ -77,25 +96,23 @@ class PositionMap extends ViewComponentBase{
     _pointerCoordinate;
     _label;
 
-    constructor(
-            parent_id, id, fieldNameLat, fieldNameLng,
-            defaultMapCoordinate, defaultPointerCoordinate, label,
-            mapTypeControl = false, streetViewControl = false,
-            fullScreenControl = false, htmlTag = 'div') {
+    constructor(parent_id, id, config = new PositionMapConfig()) {
 
-        super(parent_id, id, '', htmlTag);
+        super(parent_id, id, config);
 
-        this.__field_name_lat__ = fieldNameLat;
-        this.__field_name_lng__ = fieldNameLng;
-        this._label = label;
+        this.config = config;
+
+        this.__field_name_lat__ = this.config.fieldNameLat;
+        this.__field_name_lng__ = this.config.fieldNameLng;
+        this._label = this.config.label;
 
         // set map center coordinate
-        this._mapCoordinate = defaultMapCoordinate;
+        this._mapCoordinate = this.config.defaultMapCoordinate;
         if (typeof this._mapCoordinate !== "object") {
             console.error(`mapCoordinate of ${this.__id__} must be type of Coordinate. but ${typeof latLng}`);
         }
         // set default pin coordinate
-        this._pointerCoordinate = defaultPointerCoordinate;
+        this._pointerCoordinate = this.config.defaultPointerCoordinate;
         if (typeof this._pointerCoordinate !== "object") {
             console.error(`pointerCoordinate of ${this.__id__} must be type of Coordinate. but ${typeof latLng}`);
         }
@@ -113,12 +130,12 @@ class PositionMap extends ViewComponentBase{
             ]
         )
         */
-        settings.defaultMapCoordinate = defaultMapCoordinate;
-        settings.defaultPointerCoordinate = defaultPointerCoordinate;
-        settings.pointerLabel = label;
-        settings.mapTypeControl = mapTypeControl;
-        settings.streetViewControl = streetViewControl;
-        settings.fullScreenControl = fullScreenControl;
+        settings.defaultMapCoordinate = this.config.defaultMapCoordinate;
+        settings.defaultPointerCoordinate = this.config.defaultPointerCoordinate;
+        settings.pointerLabel = this.config.label;
+        settings.mapTypeControl = this.config.mapTypeControl;
+        settings.streetViewControl = this.config.streetViewControl;
+        settings.fullScreenControl = this.config.fullScreenControl;
 
         // set elements
         this._setElements();

@@ -1,12 +1,16 @@
-class FormComponentBaseConfig {
+class FormComponentBaseConfig extends ViewComponentConfig {
     constructor({
         defaultValue = null,
         cookieExclude = false,
-        hasCookiePrefix = false
+        hasCookiePrefix = false,
+        validators = [],
+        ...otherOptions
     } = {}) {
+        super(otherOptions);
         this.defaultValue = defaultValue;
         this.cookieExclude = cookieExclude;
         this.hasCookiePrefix = hasCookiePrefix;
+        this.validators = validators;
     }
 }
 /**
@@ -20,8 +24,10 @@ class FormComponentBaseConfig {
  * _restoreValueFromCookie() provide utilities for interacting with the cookies.
  */
 class FormComponentBase extends ViewComponentBase {
-    constructor(parent_id, id, field_name, text, htmlTag, validators = [], config = new FormComponentBaseConfig()) {
-        super(parent_id, id, text, htmlTag, validators, config);
+    constructor(parent_id, id, field_name, config = new FormComponentBaseConfig()) {
+        super(parent_id, id, config);
+        this.config = config;
+        this.validators = config.validators;
 
         this.__field_name__ = field_name;
         this.__cookie_prefix__ = this.config.hasCookiePrefix ? `${parent_id}__` : '';

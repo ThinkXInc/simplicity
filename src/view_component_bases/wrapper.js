@@ -1,3 +1,12 @@
+class WrapperConfig extends ViewComponentConfig {
+    constructor({
+        htmlTag = 'div',
+        ...otherOptions
+    } = {}) {
+        super(otherOptions);
+        this.htmlTag = htmlTag;
+    }
+}
 /**
  * A class for Wrapper components.
  * 
@@ -23,8 +32,9 @@
 class Wrapper extends ViewComponentBase {
     components;
 
-    constructor(parent_id, id, components, htmlTag='div') {
-        super(parent_id, id, '', htmlTag);
+    constructor(parent_id, id, components, config = new WrapperConfig()) {
+        super(parent_id, id, config);
+        this.config = config;
 
         if (!Array.isArray(components)) {
             throw new Error(`Components must be an array, but got ${typeof components}.`);
@@ -42,8 +52,8 @@ class Wrapper extends ViewComponentBase {
     /**
      * Overrides the _setElements method in the base class.
      */
-    _setElements(text, htmlTag) {
-        super._setElements(text, htmlTag);
+    _setElements() {
+        super._setElements(this.config.htmlTag);
 
         this.$view.classList.add('wrapper');
     }
