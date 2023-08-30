@@ -44,7 +44,13 @@ class Http {
                 },
                 body: JSON.stringify(data)
             })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                // HTTP 404 or other non-ok status
+                return response.json().then(err => { throw err; });
+            }
+            return response.json();
+        })
         .then(data => {
             console.info(`${url} response received:`, data);
             onsuccess(data);

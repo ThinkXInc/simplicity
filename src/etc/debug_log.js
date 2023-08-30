@@ -1,5 +1,5 @@
 // etc/debugg_log.js
-let DEBUG = false;
+let DEBUG = true;
 
 function debuglog(message) {
     if (DEBUG) {

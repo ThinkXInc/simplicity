@@ -114,7 +114,8 @@ class GradientViewLoader {
         // Create main wrapper div
         const $view = document.createElement('div');
         $view.id = this.__id__;
-        $view.className = 'gradientViewIndicator';
+        $view.classList.add('gradientViewIndicator');
+        $view.classList.add(this.__id__);
         this.$view = $view;
     
         // Create container div
