@@ -185,10 +185,6 @@ class TextField extends FormComponentBase {
         this._togglePasswordMode(this.config.passwordMode);
         // restore from cookie
         this._restoreValueFromCookie();
-        // Keep value which hasn't been edited (saved value)
-        if (!this.config.shouldTrackLocalChangeInCookie) {
-            this.savedValue = this.value;
-        }
         // Resize textarea. Ensure the browser gets a chance to recalculate layout before resizing
         if(this.config.verticalFlex) {
             requestAnimationFrame(() => {
@@ -233,8 +229,10 @@ class TextField extends FormComponentBase {
                 this._setValueToCookies(text);
             } else {
                 if (text != this.savedValue) {
+                    debuglog(`value:${text} != savedValue:${this.savedValue} -> edited`)
                     this.$textField.classList.add('edited');
                 } else {
+                    debuglog(`value:${text} == savedValue:${this.savedValue} -> remove edited`)
                     this.$textField.classList.remove('edited');
                 }
             }

@@ -74,6 +74,9 @@ class FormComponentBase extends ViewComponentBase {
      * @param {boolean} ignoreNull - if true, the function will not overwrite the current value with null if the cookie value is null.
      */
     _restoreValueFromCookie(ignoreNull = true) {
+        debuglog("Cookie Name:", this.__cookie_name__);
+        debuglog("Value from Cookie:", this._getValueFromCookies());
+ 
         const cookieValue = this._getValueFromCookies();
 
         if (ignoreNull && cookieValue === null) {
@@ -81,8 +84,10 @@ class FormComponentBase extends ViewComponentBase {
             return;
         }
 
-        console.log(`Restoring value from cookie ${this.__cookie_name__}: ${cookieValue}`);
+        console.log(`Restoring value from cookie [${this.__cookie_name__}]: ${cookieValue}`);
+        this.savedValue = cookieValue;
         this.value = cookieValue;
+        debuglog("Value after restoring from cookie:", this.value);
     }
 
     /**
