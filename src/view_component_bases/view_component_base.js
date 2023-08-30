@@ -105,6 +105,26 @@ class ViewComponentBase {
         this.pageIndex = pageIndex;
     }
 
+    /**
+     * Scrolls the viewport to the element referenced by `this.$view`.
+     *
+     * @method
+     * @param {number} [delay=0] - The delay in milliseconds before the scroll action starts.
+     * @description
+     * The method uses the `scrollIntoView` function provided by the browser's DOM API.
+     * It performs a smooth scroll to the top edge of the target element (`this.$view`).
+     * If the target element is horizontally scrollable, it scrolls to the nearest viewport.
+     * The function waits for a specified `delay` time (in milliseconds) before performing the scroll.
+     */
+    scrollTo(delay = 0) {
+        setTimeout(() => {
+            this.$view.scrollIntoView({
+                behavior: 'smooth', // Enable smooth scrolling
+                block: 'start', // Scroll to the start (top) of this.$view
+                inline: 'nearest' // In case of horizontal scrolling, scroll in the nearest viewport
+            });
+        }, delay);
+    }
 
     /**
      * @interface
@@ -123,7 +143,7 @@ class ViewComponentBase {
     // Set the viewController instance
     setViewController(viewController) {
         this.viewController = viewController;
-        this._setEventHandlers();
+        //this._setEventHandlers(); <- this causes double event registration [WILL REMOVE THIS LINE]
     }
 
 }
