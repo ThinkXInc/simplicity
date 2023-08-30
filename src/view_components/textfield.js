@@ -177,6 +177,8 @@ class TextField extends FormComponentBase {
         this.locale = locale;
         // initialize view elements
         this._setElements();
+        // set event handlers
+        this._setEventHandlers();
         // set counter 
         this.count = 0;
         // validators
@@ -480,7 +482,7 @@ class TextField extends FormComponentBase {
      */
     _setEventHandlers() {
         const _this = this;
-        debuglog(`Set the input event handler for ${this.__id__}.`);
+        debuglog(`Set input event handler for ${this.__id__}.`);
         this.$textArea.addEventListener('input', (e) => {
             _this.text = _this.$textArea.value;
             _this.count = _this.$textArea.value.length;
@@ -500,30 +502,50 @@ class TextField extends FormComponentBase {
             } else {
                 this._setState(TextFieldValidationState.none, TextFieldInputState.filled);
             }
-
-            // Add doneButton click handler
-            if (this.config.isDoneButton) {
-                this.$doneButton.addEventListener('click', () => {
-                    this.$textField.dispatchEvent(new CustomEvent('doneButtonClick', {
-                        detail: { id: this.__id__, value: this.value }
-                    }));
-                });
-            }
-
-            // Add cancelButton click handler
-            if (this.config.isCancelButton) {
-                this.$cancelButton.addEventListener('click', () => {
-                    this.$textField.dispatchEvent(new CustomEvent('cancelButtonClick', {
-                        detail: { id: this.__id__,  value: this.value }
-                    }));
-                });
-            }
-
             // Auto resize textarea
             if (_this.config.verticalFlex) {
                 _this._resizeTextArea(_this.$textArea);
             }
         })
+
+        // Add doneButton click handler
+        debuglog(`Set button event handler for ${this.__id__}.`);
+        if (this.config.isDoneButton) {
+            this.$doneButton.addEventListener('click', () => {
+                _this.$textField.dispatchEvent(new CustomEvent('doneButtonClick', {
+                    detail: { id: this.__id__, value: this.value }
+                }));
+            });
+
+            // Add 'clicked' class on mousedown
+            this.$doneButton.addEventListener('mousedown', () => {
+                _this.$doneButton.classList.add('clicked');
+            });
+
+            // Remove 'clicked' class on mouseup
+            this.$doneButton.addEventListener('mouseup', () => {
+                _this.$doneButton.classList.remove('clicked');
+            });
+        }
+
+        // Add cancelButton click handler
+        if (this.config.isCancelButton) {
+            this.$cancelButton.addEventListener('click', () => {
+                _this.$textField.dispatchEvent(new CustomEvent('cancelButtonClick', {
+                    detail: { id: this.__id__,  value: this.value }
+                }));
+            });
+
+            // Add 'clicked' class on mousedown
+            this.$cancelButton.addEventListener('mousedown', () => {
+                _this.$cancelButton.classList.add('clicked');
+            });
+
+            // Remove 'clicked' class on mouseup
+            this.$cancelButton.addEventListener('mouseup', () => {
+                _this.$cancelButton.classList.remove('clicked');
+            });
+        }
 
         debuglog(`Set the blur event handler for ${this.__id__}.`);
         this.$textArea.addEventListener('blur', () => {
