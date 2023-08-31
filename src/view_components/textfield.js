@@ -224,7 +224,7 @@ class TextField extends FormComponentBase {
             if (this.config.shouldTrackLocalChangeInCookie) {
                 this._setValueToCookies(text);
             } else {
-                if (text != this.savedValue) {
+                if (this.savedValue != null && text != this.savedValue) {
                     debuglog(`value:${text} != savedValue:${this.savedValue} -> edited`)
                     this.$textField.classList.add('edited');
                 } else {
