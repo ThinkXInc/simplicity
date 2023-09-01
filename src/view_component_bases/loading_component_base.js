@@ -29,6 +29,31 @@ class LoadingComponentBase extends ViewComponentBase {
         this.$view.style.display = 'none';
 	}
 
+    addToParent() {
+        const parentId = this.__parent_id__;
+        let $parent = document.getElementById(parentId);
+    
+        // Check if $parent is null or not an instance of HTMLElement
+        if (!$parent || !($parent instanceof HTMLElement)) {
+            console.error(`[ERROR] Could not find a parent element with id=${parentId} or the element is not a valid HTML element.`);
+            return;
+        }
+    
+        // Check if this.$view is valid
+        if (!this.$view || !(this.$view instanceof HTMLElement)) {
+            console.error(`[ERROR] this.$view is not a valid HTMLElement.`);
+            return;
+        }
+    
+        // If parent has no children, append this.$view normally
+        if ($parent.childNodes.length === 0) {
+            $parent.appendChild(this.$view);
+        } else {
+            // Otherwise, insert this.$view as the first child
+            $parent.insertBefore(this.$view, $parent.firstChild);
+        }
+    }
+
     /**
      * Inherited from ViewComponentBase, does not add additional functionality.
      */

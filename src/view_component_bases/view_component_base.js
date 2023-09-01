@@ -87,10 +87,11 @@ class ViewComponentBase {
      * @returns {void}
      */
     addToParent($parent) {
-        if (!$parent) {
+        if (!$parent || $parent == undefined || !($parent instanceof HTMLElement)) {
             console.error(
-                `The parent element id=${this.__parent_id__} is necessary in HTML.`);
+                `[ERROR] Tried ${this.__parent_id__} appendChild ${this.__id__}. The parent element id=${this.__parent_id__} is necessary in HTML.`);
         } else {
+            debuglog(`[${$parent.className}] appendChild ${this.__id__}`)
             $parent.appendChild(this.$view);
         }
     }
