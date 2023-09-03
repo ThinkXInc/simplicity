@@ -47,6 +47,7 @@ class TextFieldConfig extends FormComponentBaseConfig {
         isDoneButton = false,
         isCancelButton = false,
         isTitlePlacedAtInputLeft = false,
+        shouldEnterKeySubmitDoneButton = false,
         eventNameDoneButtonClick = 'doneButtonClick',
         eventNameCancelButtonClick = 'cancelButtonClick',
         doneButtonPlace = TextFieldPlaceTo.inputAfter,
@@ -78,6 +79,7 @@ class TextFieldConfig extends FormComponentBaseConfig {
         this.isDoneButton = isDoneButton;
         this.isCancelButton = isCancelButton;
         this.isTitlePlacedAtInputLeft = isTitlePlacedAtInputLeft;
+        this.shouldEnterKeySubmitDoneButton = shouldEnterKeySubmitDoneButton;
         this.eventNameDoneButtonClick = eventNameDoneButtonClick;
         this.eventNameCancelButtonClick = eventNameCancelButtonClick;
         this.doneButtonPlace = doneButtonPlace;
@@ -244,10 +246,8 @@ class TextField extends FormComponentBase {
      */
     set count(count) {
         this._count = count;
-        console.error(`count ${count}`)
         // update counter text
         if (this.config.isCounter) {
-            console.error(`H`)
             this.$counter.innerHTML = this.config.counterFormat
                 .replace('$count', count).replace('$maxcount', this.config.maxTextLength);
         }
@@ -502,6 +502,15 @@ class TextField extends FormComponentBase {
             }
         })
 
+        // DoneButton is submit when EnterKey is pressed
+        if (this.config.shouldEnterKeySubmitDoneButton) {
+            this.$textArea.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {  // 13 is the keycode for Enter
+                    _this._handleEnterKeyPress(event);
+                }
+            });
+        }
+
         // Add doneButton click handler
         debuglog(`Set button event handler for ${this.__id__}.`);
         if (this.config.isDoneButton) {
@@ -550,6 +559,12 @@ class TextField extends FormComponentBase {
                 console.error('ViewController not set or textFieldOnBlur not a function');
             }
         });
+    }
+
+    _handleEnterKeyPress(event) {
+        debuglog(`${this.__id__} Press Enter`);
+        event.preventDefault(); // Prevent the default action (e.g., new line in a textarea)
+        this.$doneButton.click(); // Programmatically click the done button
     }
 
     _resizeTextArea($textArea) {
