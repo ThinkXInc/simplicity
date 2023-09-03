@@ -244,8 +244,10 @@ class TextField extends FormComponentBase {
      */
     set count(count) {
         this._count = count;
+        console.error(`count ${count}`)
         // update counter text
-        if (this.isCounter) {
+        if (this.config.isCounter) {
+            console.error(`H`)
             this.$counter.innerHTML = this.config.counterFormat
                 .replace('$count', count).replace('$maxcount', this.config.maxTextLength);
         }
