@@ -37,7 +37,7 @@ const paths = {
         './src/pages/single_text_input_page.js',
         './src/view_controllers/input_page_view_controller.js'
     ],
-    css: './dist/simplicity_default.css',
+    css: './css/simplicity_default.css',
     outputDir: './dist',
     jsOutputFile: 'simplicity.js',
     cssOutputFile: 'simplicity_default.css'
