@@ -9,6 +9,7 @@ const paths = {
         './src/etc/debug_log.js',
         './src/etc/svg_icons.js',
         './src/helpers/http.js',
+        './src/helpers/polling.js',
         './src/helpers/browser.js',
         './src/helpers/locale.js',
         './src/helpers/country.js',
