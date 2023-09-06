@@ -18,8 +18,8 @@ class KeywordsFieldConfig extends TextFieldConfig {
         cookieExclude = true,
         isDefaultValueRestoredFromCookie = false,
         shouldMapTextToDeleteButtonBGColor = false,
-        constantDeleteButtonBGColorSaturation = 31, // constant saturation
-        constantDeleteButtonBGColorLightness = 38,  // constant lightness
+        constantDeleteButtonBGColorSaturation = 31, 
+        constantDeleteButtonBGColorLightness = 38,  
         initRows = 1,
         verticalFlex = false,
         hasTitle = true,
@@ -42,6 +42,14 @@ class KeywordsFieldConfig extends TextFieldConfig {
         this.shouldMapTextToDeleteButtonBGColor = shouldMapTextToDeleteButtonBGColor;
         this.constantDeleteButtonBGColorSaturation = constantDeleteButtonBGColorSaturation;
         this.constantDeleteButtonBGColorLightness = constantDeleteButtonBGColorLightness;
+        this.initRows = initRows;
+        this.verticalFlex = verticalFlex;
+        this.hasTitle = hasTitle;
+        this.passwordMode = passwordMode;
+        this.defaultValue = defaultValue;
+        this.hasCookiePrefix = hasCookiePrefix;
+        this.scrollControlElementId = scrollControlElementId;
+        this.isCounter = isCounter;
     }
 }
 
