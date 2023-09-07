@@ -16,6 +16,9 @@ class TableViewConfig extends ViewComponentConfig {
         tableViewCellCloseAnimationType = TableViewCellCloseAnimationType.fadeOutLeft,
         tableViewCellCloseAnimationDelay = 10, // Fixed the typo here
         tableViewCellCloseAnimationDuration = 400,
+        tableViewInsertCellAnimationType = TableViewInsertCellAnimationType.moveFromLeft,
+        tableViewInsertCellAnimationDuration = 20,
+        tableViewInsertCellAnimationCurve = 'easeInSine',
         ...otherOptions
     } = {}) {
         super(otherOptions);
@@ -35,6 +38,9 @@ class TableViewConfig extends ViewComponentConfig {
         this.tableViewCellCloseAnimationType = tableViewCellCloseAnimationType;
         this.tableViewCellCloseAnimationDelay = tableViewCellCloseAnimationDelay;
         this.tableViewCellCloseAnimationDuration = tableViewCellCloseAnimationDuration;
+        this.tableViewInsertCellAnimationType = tableViewInsertCellAnimationType;
+        this.tableViewCellInsertAnimationDuration = tableViewCellCloseAnimationDuration;
+        this.tableViewCellCloseAnimationType = tableViewCellCloseAnimationType;
     }
 }
 
@@ -48,6 +54,12 @@ const TableViewCloseAnimationType = Object.freeze({
     noAnimation: 0,
     fadeOut: 1,
 });
+
+const TableViewInsertCellAnimationType = Object.freeze({
+    noAnimation: 0,
+    fadeIn: 1,
+    moveFromLeft: 2,
+})
 
 
 class TableViewCellContent {
@@ -103,19 +115,13 @@ class TableViewCell {
 
     get content() { return this._content; }
 
-    resetCell(content) {
+    setContent(content) {
         this.content = content;
 
         this.$title.innerText = content.title;
         this.$text.innerText = content.text;
     }
 
-    add() {
-        if (!this.tableView.$tableListView) {
-            console.error(`${this.__id__}.tableView.$tableListView must exist. but ${this.tableView.$tableListView}`);
-        } 
-        this.tableView.$tableListView.appendChild(this.$view);
-    }
 
     _setElements() {
         this.$view = document.createElement('li');
@@ -147,7 +153,47 @@ class TableViewCell {
         this.$footer = document.createElement('div');
         this.$footer.classList.add('footer');
         this.$view.appendChild(this.$footer);
-   }
+    }
+
+    add(index = null) {
+        if (typeof index !== 'undefined' && this.tableView.$tableListView.children[index]) {
+            this.tableView.$tableListView.insertBefore(this.$view, this.tableView.$tableListView.children[index]);
+        } else {
+            this.tableView.$tableListView.appendChild(this.$view);
+        }
+    }
+
+    insert(index, delay, onComplete) {
+        // TODO: smoothly add padding 
+        const computedStyle = getComputedStyle(this.$view);
+        const originalPadding = computedStyle.padding;
+
+        this.$view.style.opacity = 0;
+        this.$view.style.height = '0px';
+        this.$view.style.padding = '0';
+
+        // For 'moveFromLeft' type
+        if (this.config.tableViewInsertCellAnimationType === TableViewInsertCellAnimationType.moveFromLeft) {
+            this.$view.style.transform = 'translateX(-100%)';
+        }
+
+        // Insert the cell into the table view
+        this.add(index);
+
+        // Perform the animation
+        this.$view.animate([
+            { opacity: 1, height: 'auto', transform: 'translateX(0)' } // update with correct properties
+        ], {
+            duration: this.config.tableViewCellInsertAnimationDuration,
+            delay: delay,
+            easing: this.config.tableViewCellInsertAnimationCurve,
+            fill: 'forwards'
+        }).finished.then(() => {
+            this.$view.style.padding = originalPadding;
+            onComplete();
+        });
+    }
+
 
     fadeOut(delay, onComplete) {
         this.$view.animate([
@@ -256,7 +302,6 @@ class TableView {
         }
     }
 
-
     _setElements() {
         // Main container
         this.$view = document.createElement('div');
@@ -305,6 +350,39 @@ class TableView {
         document.getElementById(elementId).appendChild(this.$view)
     }
 
+    insertCell(content, index, delay = 0) {
+        // First, check if the provided index is valid, and within range.
+        if (index < 0 || (this.cells && index > this.cells.length)) {
+            throw new Error(`insertCell(): Invalid index: ${index}`);
+        }
+
+        // Add the content to this._contents at the specified index
+        this._contents.splice(index, 0, content);
+
+        // After adding content to _contents
+        let newCell = new this.config.tableViewCellClass(this, index, this.config);
+        newCell.setContent(content);
+        newCell.insert(index, delay, () => {
+            console.log('Insert animation finished!');
+        });
+
+        // Apply the cell insert animation (if needed).
+        switch(this.config.tableViewInsertCellAnimationType) {
+            case TableViewInsertCellAnimationType.noAnimation:
+                // No animation. Just added the cell.
+                break;
+            case TableViewInsertCellAnimationType.fadeIn:
+                // TODO: Implement fade in animation for the cell.
+                break;
+            case TableViewInsertCellAnimationType.moveFromLeft:
+                // TODO: Implement move from left animation for the cell.
+                break;
+            default:
+                throw new Error(`Invalid tableViewInsertCellAnimationType: ${this.config.tableViewInsertCellAnimationType}`);
+        }
+    
+    }
+
     _resetCells() {
         console.log(`${this.__id__} resetCells:`);
 
@@ -321,7 +399,7 @@ class TableView {
         // Re initialize cells
         this.cells = this._contents.map((content, i) => {
             let cell = new this.config.tableViewCellClass(this, i, this.config);
-            cell.resetCell(content);
+            cell.setContent(content);
             cell.add();
             return cell;
         });
