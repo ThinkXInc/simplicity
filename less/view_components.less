@@ -301,3 +301,92 @@ div.gradientViewIndicator {
         }
     }
 }
+
+// TableView
+div.TableView {
+    @cell-border-bottom: #ddd;
+    @header-border-bottom: #e5e5e5;
+    @cell-hader-label-bg: #007BFF; // Placeholder for blue color
+    @cell-header-label: #ffffff; // White color for text inside a blue label
+    @cell-header-title: #333333;
+    @cell-body-text: #555555;
+    @cell-footer-text: #777777;
+    @footer-border-top: #e5e5e5;
+
+    div.tableViewContainer {
+        // Styles for the overall container
+        display: flex;
+        flex-direction: column;
+
+        div.tableViewHeader {
+            // Styles for the table header
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 15px;
+            border-bottom: 1px solid @header-border-bottom; // Example styling
+        }
+
+        div.tableView {
+            // Styles for the main table content
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+
+            ul.tableListView {
+                // Styles for the list containing cells
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+
+                li.tableViewCell {
+                    // Base styles for each cell
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    padding: 10px 15px;
+                    border-bottom: 1px solid @cell-border-bottom; // Example styling
+                    flex-direction: column;
+                    align-items: start;
+
+                    div.header {
+                        span.label {
+                            float: right;
+                            background-color: @cell-hader-label-bg; //blue;
+                            color: @cell-header-label;
+                            padding: 2px 7px;
+                            border-radius: 2px;
+                            font-size: 0.78rem;
+                            font-weight: 200;
+                        }
+                        p.title {
+                            float: left;
+                            font-size: 1.2rem;
+                            font-weight: 300;
+                            color: @cell-header-title;
+                        }
+                    }
+                    div.body {
+                        p.text {
+                            color: @cell-body-text;
+                            font-weight: 100;
+                            font-size: 0.9rem;
+                        }
+                    }
+                    div.footer {
+                        margin: 6px 0 0 0;
+                        font-size: 0.7rem;
+                        color: @cell-footer-text;
+                    }
+                }
+            }
+        }
+
+        div.tableViewFooter {
+            // Styles for the table footer
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 15px;
+            border-top: 1px solid @footer-border-top; // Example styling
+        }
+    }
+}
