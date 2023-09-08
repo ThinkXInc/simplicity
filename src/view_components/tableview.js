@@ -4,21 +4,23 @@ class TableViewConfig extends ViewComponentConfig {
         isFooter = false,
         maxDefaultCellNumber = 20,
         addingCellNumber = 20,
-        tableViewCellClass = TableViewCell,
-        tableViewCellContentClass = TableViewCellContent,
-        tableViewCellHiddenClassName = 'hide',
-        tableViewCellFadeOutClassName = 'fadeOut',
-        tableViewCellFadeOutLeftClassName = 'fadeOutLeft',
-        tableViewHiddenClassName = 'hide',
-        tableViewCloseAnimationDelay = 0,
-        tableViewCloseAnimationType = TableViewCloseAnimationType.fadeOut,
-        tableViewCloseAnimationCurve = 'easeInSine', 
-        tableViewCellCloseAnimationType = TableViewCellCloseAnimationType.fadeOutLeft,
-        tableViewCellCloseAnimationDelay = 10, // Fixed the typo here
-        tableViewCellCloseAnimationDuration = 400,
-        tableViewInsertCellAnimationType = TableViewInsertCellAnimationType.moveFromLeft,
-        tableViewInsertCellAnimationDuration = 20,
-        tableViewInsertCellAnimationCurve = 'easeInSine',
+        cellClass = TableViewCell,
+        cellContentClass = TableViewCellContent,
+        cellHiddenClassName = 'hide',
+        cellFadeOutClassName = 'fadeOut',
+        cellFadeOutLeftClassName = 'fadeOutLeft',
+        hiddenClassName = 'hide',
+        closeAnimationDelay = 0,
+        closeAnimationType = TableViewCloseAnimationType.fadeOut,
+        closeAnimationCurve = 'easeInSine', 
+        cellCloseAnimationType = TableViewCellCloseAnimationType.fadeOutLeft,
+        cellCloseAnimationDelay = 10,
+        cellCloseAnimationDuration = 400,
+        insertCellAnimationType = TableViewInsertCellAnimationType.moveFromLeft,
+        insertCellAnimationDuration = 20,
+        insertCellAnimationCurve = 'easeInSine',
+        insertCellAnimationHiddenClassNameMoveFromLeft = 'hiddenForMoveFromLeft',
+        insertCellAnimationHiddenClassNameFadeIn = 'hiddenForFadeIn',
         ...otherOptions
     } = {}) {
         super(otherOptions);
@@ -26,21 +28,23 @@ class TableViewConfig extends ViewComponentConfig {
         this.isFooter = isFooter;
         this.maxDefaultCellNumber = maxDefaultCellNumber;
         this.addingCellNumber = addingCellNumber;
-        this.tableViewCellClass = tableViewCellClass;
-        this.tableViewCellContentClass = tableViewCellContentClass; // Added this property
-        this.tableViewCellHiddenClassName = tableViewCellHiddenClassName;
-        this.tableViewCellFadeOutClassName = tableViewCellFadeOutClassName;
-        this.tableViewCellFadeOutLeftClassName = tableViewCellFadeOutLeftClassName;
-        this.tableViewHiddenClassName = tableViewHiddenClassName;
-        this.tableViewCloseAnimationDelay = tableViewCloseAnimationDelay;
-        this.tableViewCloseAnimationType = tableViewCloseAnimationType;
-        this.tableViewCloseAnimationCurve = tableViewCloseAnimationCurve;
-        this.tableViewCellCloseAnimationType = tableViewCellCloseAnimationType;
-        this.tableViewCellCloseAnimationDelay = tableViewCellCloseAnimationDelay;
-        this.tableViewCellCloseAnimationDuration = tableViewCellCloseAnimationDuration;
-        this.tableViewInsertCellAnimationType = tableViewInsertCellAnimationType;
-        this.tableViewCellInsertAnimationDuration = tableViewCellCloseAnimationDuration;
-        this.tableViewCellCloseAnimationType = tableViewCellCloseAnimationType;
+        this.cellClass = cellClass;
+        this.cellContentClass = cellContentClass; // Corrected the variable name
+        this.cellHiddenClassName = cellHiddenClassName;
+        this.cellFadeOutClassName = cellFadeOutClassName;
+        this.cellFadeOutLeftClassName = cellFadeOutLeftClassName;
+        this.hiddenClassName = hiddenClassName;
+        this.closeAnimationDelay = closeAnimationDelay;
+        this.closeAnimationType = closeAnimationType;
+        this.closeAnimationCurve = closeAnimationCurve;
+        this.cellCloseAnimationType = cellCloseAnimationType;
+        this.cellCloseAnimationDelay = cellCloseAnimationDelay;
+        this.cellCloseAnimationDuration = cellCloseAnimationDuration;
+        this.insertCellAnimationType = insertCellAnimationType;
+        this.insertCellAnimationDuration = insertCellAnimationDuration;
+        this.insertCellAnimationCurve = insertCellAnimationCurve;
+        this.insertCellAnimationHiddenClassNameFadeIn = insertCellAnimationHiddenClassNameFadeIn;
+        this.insertCellAnimationHiddenClassNameMoveFromLeft = insertCellAnimationHiddenClassNameMoveFromLeft;
     }
 }
 
@@ -103,17 +107,29 @@ class TableViewCell {
     get className() { return `${this.tableView.__id__}Cell`; }
 
     set content(content) {
-        if (!TableViewCellContent.prototype.isPrototypeOf(this.config.tableViewCellContentClass.prototype)) {
-            throw new Error(`tableViewCellContent in ${this.__id__} config is not a subclass of ${TableViewCellContent.name} but ${this.config.tableViewCellContentClass.name}.`);
-        }
-        if (!this.config.tableViewCellContentClass.prototype.isPrototypeOf(content)) {
-            throw Error(`Provided content is not an instance of ${this.config.tableViewCellContentClass.name}.`);
+        //if (!TableViewCellContent.prototype.isPrototypeOf(this.config.cellContentClass.prototype)) {
+        //    throw new Error(`tableViewCellContent in ${this.__id__} config is not a subclass of ${TableViewCellContent.name} but ${this.config.cellContentClass.name}.`);
+        //}
+        if (!this.config.cellContentClass.prototype.isPrototypeOf(content)) {
+            throw Error(`Provided content is not an instance of ${this.config.cellContentClass.name}.`);
         }
 
         this._content = content;
     }
 
     get content() { return this._content; }
+
+    set title(value) {
+        this.$title.innerText = value;
+    }
+
+    get title() { this.$title.innerText; }
+
+    set text(value) {
+        this.$text.innerText = value;
+    }
+
+    get text() { this.$text.innerText; }
 
     setContent(content) {
         this.content = content;
@@ -164,34 +180,36 @@ class TableViewCell {
     }
 
     insert(index, delay, onComplete) {
-        // TODO: smoothly add padding 
-        const computedStyle = getComputedStyle(this.$view);
-        const originalPadding = computedStyle.padding;
-
-        this.$view.style.opacity = 0;
-        this.$view.style.height = '0px';
-        this.$view.style.padding = '0';
-
-        // For 'moveFromLeft' type
-        if (this.config.tableViewInsertCellAnimationType === TableViewInsertCellAnimationType.moveFromLeft) {
-            this.$view.style.transform = 'translateX(-100%)';
-        }
 
         // Insert the cell into the table view
         this.add(index);
 
-        // Perform the animation
-        this.$view.animate([
-            { opacity: 1, height: 'auto', transform: 'translateX(0)' } // update with correct properties
-        ], {
-            duration: this.config.tableViewCellInsertAnimationDuration,
-            delay: delay,
-            easing: this.config.tableViewCellInsertAnimationCurve,
-            fill: 'forwards'
-        }).finished.then(() => {
-            this.$view.style.padding = originalPadding;
-            onComplete();
-        });
+        // Function to handle the end of the transition
+        const handleTransitionEnd = (event) => {
+            if (onComplete && typeof onComplete === 'function') {
+                onComplete();
+            }
+            // Removing the event listener to avoid it being called multiple times
+            this.$view.removeEventListener('transitionend', handleTransitionEnd);
+        };
+    
+        this.$view.addEventListener('transitionend', handleTransitionEnd);
+    
+        // Insert animation
+        switch (this.config.insertCellAnimationType) {
+            case TableViewInsertCellAnimationType.fadeIn:
+                this.classListst.add(this.config.insertCellAnimationHiddenClassNameFadeIn)
+                setTimeout(() => {
+                    this.$view.classList.remove(this.config.insertCellAnimationHiddenClassNameFadeIn); // Smoothly slides the new item into view
+                }, delay); // Tiny delay to ensure it's added to the DOM before the transition starts
+                break;
+            case TableViewInsertCellAnimationType.moveFromLeft:
+                this.$view.classList.add(this.config.insertCellAnimationHiddenClassNameMoveFromLeft)
+                setTimeout(() => {
+                    this.$view.classList.remove(this.config.insertCellAnimationHiddenClassNameMoveFromLeft); // Smoothly slides the new item into view
+                }, delay); // Tiny delay to ensure it's added to the DOM before the transition starts
+                break;
+        }
     }
 
 
@@ -199,9 +217,9 @@ class TableViewCell {
         this.$view.animate([
             { opacity: 0 }
         ], {
-            duration: this.config.tableViewCellCloseAnimationDuration,
+            duration: this.config.cellCloseAnimationDuration,
             delay: delay,
-            easing: this.config.tableViewCellCloseAnimationCurve,
+            easing: this.config.cellCloseAnimationCurve,
             fill: 'forwards'
         }).finished.then(()=> {
             onComplete();
@@ -219,9 +237,9 @@ class TableViewCell {
                 transform: 'translateX(-20px)'
             }
         ], {
-            duration: this.config.tableViewCellCloseAnimationDuration,
+            duration: this.config.cellCloseAnimationDuration,
             delay: delay,
-            easing: this.config.tableViewCellCloseAnimationCurve,
+            easing: this.config.cellCloseAnimationCurve,
             iterations: 1,
             fill: 'forwards'
         }).finished.then(()=> {
@@ -232,11 +250,11 @@ class TableViewCell {
     }
 
     hide() {
-        this.$view.classList.add(this.config.tableViewCellHiddenClassName);
+        this.$view.classList.add(this.config.cellHiddenClassName);
     }
 
     show() {
-        this.$view.classList.remove(this.config.tableViewCellHiddenClassName);
+        this.$view.classList.remove(this.config.cellHiddenClassName);
     }
 
 }
@@ -350,7 +368,7 @@ class TableView {
         document.getElementById(elementId).appendChild(this.$view)
     }
 
-    insertCell(content, index, delay = 0) {
+    insertCell(content, index, delay = 0, onComplete) {
         // First, check if the provided index is valid, and within range.
         if (index < 0 || (this.cells && index > this.cells.length)) {
             throw new Error(`insertCell(): Invalid index: ${index}`);
@@ -360,14 +378,15 @@ class TableView {
         this._contents.splice(index, 0, content);
 
         // After adding content to _contents
-        let newCell = new this.config.tableViewCellClass(this, index, this.config);
+        let newCell = new this.config.cellClass(this, index, this.config);
         newCell.setContent(content);
         newCell.insert(index, delay, () => {
             console.log('Insert animation finished!');
+            onComplete(newCell);
         });
 
         // Apply the cell insert animation (if needed).
-        switch(this.config.tableViewInsertCellAnimationType) {
+        switch(this.config.insertCellAnimationType) {
             case TableViewInsertCellAnimationType.noAnimation:
                 // No animation. Just added the cell.
                 break;
@@ -378,9 +397,8 @@ class TableView {
                 // TODO: Implement move from left animation for the cell.
                 break;
             default:
-                throw new Error(`Invalid tableViewInsertCellAnimationType: ${this.config.tableViewInsertCellAnimationType}`);
+                throw new Error(`Invalid tableViewInsertCellAnimationType: ${this.config.insertCellAnimationType}`);
         }
-    
     }
 
     _resetCells() {
@@ -392,13 +410,13 @@ class TableView {
         }
         this.$tableListView.innerHTML = '';
 
-        // Check if tableViewCellClass is a subclass of TableViewCellClass
-        if (!TableViewCell.prototype.isPrototypeOf(this.config.tableViewCellClass.prototype)) {
-            throw new Error(`this.config.tableViewCellClass does not inherit from TableViewCell. but ${this.config.tableViewCellClass}`);
-        }
+        //// Check if tableViewCellClass is a subclass of TableViewCellClass
+        //if (!TableViewCell.prototype.isPrototypeOf(this.config.cellClass.prototype)) {
+        //    throw new Error(`this.config.cellClass does not inherit from TableViewCell. but ${this.config.cellClass}`);
+        //}
         // Re initialize cells
         this.cells = this._contents.map((content, i) => {
-            let cell = new this.config.tableViewCellClass(this, i, this.config);
+            let cell = new this.config.cellClass(this, i, this.config);
             cell.setContent(content);
             cell.add();
             return cell;
@@ -466,7 +484,7 @@ class TableView {
                     });
                     break;
                 case TableViewCloseAnimationType.delayedFadeOut:
-                    cell.fadeOut(cell.__index__ * this.config.tableViewCellCloseAimationDelay, () => {
+                    cell.fadeOut(cell.__index__ * this.config.cellCloseAimationDelay, () => {
                         console.log(`Cell ${cell.__id__} faded out after delay`);
                     });
                     break;
@@ -476,7 +494,7 @@ class TableView {
         });
 
         // TableView Animation
-        switch (this.config.tableViewCloseAnimationType) {
+        switch (this.config.closeAnimationType) {
             case TableViewCloseAnimationType.noAnimation:
                 this.state = TableViewState.onCloseComplete;
                 this.dispatchOnCloseCompleteEvent(previousState);
@@ -484,7 +502,7 @@ class TableView {
 
             case TableViewCloseAnimationType.fadeOut:
                 // Fadeout TableView
-                this.fadeOut(this.config.tableViewCloseAnimationDelay, () => {
+                this.fadeOut(this.config.closeAnimationDelay, () => {
                     _this.state = TableViewState.onCloseComplete;
                     this.dispatchOnCloseCompleteEvent(previousState);
                 });
@@ -492,7 +510,7 @@ class TableView {
 
             case TableViewCloseAnimationType.delayedFadeOut:
                 const numWait = Math.min(this.cells.length, maxCellIndexToAnimate + 1); // +1 because index starts from 0
-                const delay = this.config.tableViewCellCloseAimationDelay * numWait;
+                const delay = this.config.cellCloseAimationDelay * numWait;
                 // Fadeout TableView
                 this.fadeOut(delay, () => {
                     _this.state = TableViewState.onCloseComplete;
@@ -510,7 +528,7 @@ class TableView {
         this.$view.animate(
             { opacity: 0 },
             delay,
-            this.config.tableViewCloseAnimationCurve
+            this.config.closeAnimationCurve
         ).finished.then(()=> {
             onComplete();
         })

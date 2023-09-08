@@ -313,6 +313,11 @@ div.TableView {
     @cell-footer-text: #777777;
     @footer-border-top: #e5e5e5;
 
+    @cell-insert-transition-duration: 0.4s; // Declare the variable here
+    @cubic-bezier1: cubic-bezier(.65, 0, .34, 1);
+    @easeInSine: cubic-bezier(0.47, 0, 0.745, 0.715);
+
+
     div.tableViewContainer {
         // Styles for the overall container
         display: flex;
@@ -348,6 +353,17 @@ div.TableView {
                     border-bottom: 1px solid @cell-border-bottom; // Example styling
                     flex-direction: column;
                     align-items: start;
+                    height: auto;
+
+                    // Insert animation
+                    opacity: 1;
+                    transform: translateX(0);
+                    transition: opacity @cell-insert-transition-duration @cubic-bezier1, 
+                    transform @cell-insert-transition-duration @cubic-bezier1, 
+                    height @cell-insert-transition-duration @cubic-bezier1, 
+                    max-height @cell-insert-transition-duration @cubic-bezier1, 
+                    padding @cell-insert-transition-duration @cubic-bezier1;
+                    overflow: hidden;
 
                     div.header {
                         span.label {
@@ -379,7 +395,24 @@ div.TableView {
                         color: @cell-footer-text;
                     }
                 }
+                li.tableViewCell.hiddenForMoveFromLeft {
+                    // Insert animation
+                    max-height: 0;
+                    height: 0;
+                    opacity: 0;
+                    padding: 0;
+                    transform: translateX(-20px);
+                }
+                li.tableViewCell.hiddenForFadeIn {
+                    // Insert animation
+                    max-height: 0;
+                    height: 0;
+                    opacity: 0;
+                    padding: 0;
+                }
             }
+
+
         }
 
         div.tableViewFooter {
