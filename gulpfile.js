@@ -16,6 +16,7 @@ const paths = {
         './src/helpers/user_preferences.js',
         './src/helpers/validator.js',
         './src/helpers/utils.js',
+        './src/helpers/effects.js',
         './src/models/userbase.js',
         './src/view_component_bases/view_component_base.js',
         './src/view_component_bases/form_component_base.js',
