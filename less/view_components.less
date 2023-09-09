@@ -337,6 +337,22 @@ div.TableView {
             flex-direction: column;
             overflow-y: scroll;
             height: 100vh;
+            position: relative;
+
+            @keyframes rotate {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            
+            img.loader {
+                animation: rotate 1s @easeInSine infinite;
+                width: 44px;
+                height: 44px;
+            }
+
+            div.gradientViewIndicator {
+                padding: 15px 23px;
+            }
 
             ul.tableListView {
                 // Styles for the list containing cells

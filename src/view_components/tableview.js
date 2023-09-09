@@ -2,6 +2,19 @@ class TableViewConfig extends ViewComponentConfig {
     constructor({
         isHeader = false,
         isFooter = false,
+        loadingType = TableViewLoadingType.gradientViewLoader,
+        loaderImage = '/img/load-of-the-ring@2x.png',  // TODO: use SvgIcon class
+        loaderSize = '24px',
+        gradientViewLoaderConfig = {
+            numIndicator: 3,
+            individualHeight: 7,
+            spaceBetween: 10,
+            animationDelay: 10,
+            defaultShift: 10,
+            shiftAmount: -20,
+            rx: 2,
+            ry: 2,
+        },
         maxDefaultCellNumber = 20,
         addingCellNumber = 20,
         cellClass = TableViewCell,
@@ -26,6 +39,9 @@ class TableViewConfig extends ViewComponentConfig {
         super(otherOptions);
         this.isHeader = isHeader;
         this.isFooter = isFooter;
+        this.loadingType = loadingType;
+        this.loaderImage = loaderImage;
+        this.gradientViewLoaderConfig = gradientViewLoaderConfig;
         this.maxDefaultCellNumber = maxDefaultCellNumber;
         this.addingCellNumber = addingCellNumber;
         this.cellClass = cellClass;
@@ -47,6 +63,11 @@ class TableViewConfig extends ViewComponentConfig {
         this.insertCellAnimationHiddenClassNameMoveFromLeft = insertCellAnimationHiddenClassNameMoveFromLeft;
     }
 }
+
+const TableViewLoadingType = Object.freeze({
+    gradientViewLoader: 'gradientViewLoader',
+    circleLoader: 'circleLoader',
+})
 
 const TableViewCellCloseAnimationType = Object.freeze({
     noAnimation: 0,
@@ -360,6 +381,39 @@ class TableView {
         }
         
         this.$view.appendChild(this.$tableViewContainer);
+
+        // Loader
+        switch (this.config.loadingType) {
+            // Circle Loader
+            case TableViewLoadingType.circleLoader:
+                this.$loader = document.createElement('img');
+                this.$loader.classList.add('loader');
+                this.$loader.src = this.config.loaderImage;
+                this.$loader.style.position = 'absolute';
+                this.$loader.style.top = '50%';
+                this.$loader.style.left = '50%';
+                this.$loader.style.width = this.config.loaderSize;
+                this.$loader.style.height = this.config.loaderSize;
+                this.$loader.style.transform = 'translate(-50%, -50%)'; // Center the loader
+                this.$loader.style.display = 'none';  // Initially hidden
+                this.$tableView.appendChild(this.$loader);
+                break;
+            // Gradient Loader
+            case TableViewLoadingType.gradientViewLoader:
+                const loaderConfig = this.config.gradientViewLoaderConfig;
+                const gradientLoaderConfig = new GradientViewLoaderConfig();
+                
+                // Assign the properties from the configuration to the gradient loader config.
+                for (const key in loaderConfig) {
+                    gradientLoaderConfig[key] = loaderConfig[key];
+                }
+
+                const loader = new GradientViewLoader(null, 'TableViewGradientLoader', gradientLoaderConfig);
+                this.loader = loader;
+                this.$loader = loader.$view;
+                this.$tableView.appendChild(loader.$view);
+                break;
+        }
     }
 
     appendToElementById(elementId) {
@@ -458,6 +512,36 @@ class TableView {
 
     hide() {
         this.$view.classList.add(this.config.tableViewHiddenClassName);
+    }
+
+    loading(isLoading) {
+        if(isLoading) {
+            switch (this.config.loadingType) {
+                // Circle Loader
+                case TableViewLoadingType.circleLoader:
+                    this.$tableListView.style.display = 'none';  // Hide the table
+                    this.$loader.style.display = 'block';       // Show the loader
+                    break;
+                // Gradient Loader
+                case TableViewLoadingType.gradientViewLoader:
+                    this.$tableListView.style.display = 'none';  // Hide the table
+                    this.$loader.style.display = 'block';
+                    break;
+            }
+        } else {
+            switch (this.config.loadingType) {
+                // Circle Loader
+                case TableViewLoadingType.circleLoader:
+                    this.$tableListView.style.display = 'block'; // Show the table
+                    this.$loader.style.display = 'none';        // Hide the loader
+                    break;
+                // Gradient Loader
+                case TableViewLoadingType.gradientViewLoader:
+                    this.$tableListView.style.display = 'block'; // Show the table
+                    this.$loader.style.display = 'none';
+                    break;
+            }
+        }
     }
 
     close(maxCellIndexToAnimate=999) {
