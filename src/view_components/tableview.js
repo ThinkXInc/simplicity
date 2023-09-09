@@ -308,7 +308,6 @@ class TableView {
     constructor(id, config = new TableViewConfig()) {
         this.__id__ = id;
         this.config = config;
-        console.error('B')
 
         this._setElements();
 
@@ -417,8 +416,6 @@ class TableView {
     }
 
     appendToElementById(elementId) {
-        console.warn(`${this.__id__} is appended to ${elementId}`)
-        console.log(this.$view)
         document.getElementById(elementId).appendChild(this.$view)
     }
 

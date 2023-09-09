@@ -215,7 +215,6 @@ class GradientViewLoader {
 
             this.$svg.appendChild($gradient);
             this.$gradients.push($gradient);
-            console.error(this.$gradients);
 
             // Create indicator
             const $indicator = document.createElementNS("http://www.w3.org/2000/svg", 'rect');

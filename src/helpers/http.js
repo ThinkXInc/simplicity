@@ -2,13 +2,65 @@
  * Class Http.
  */
 class Http {
+
+    /**
+     * HTTP GET to fetch data.
+     * 
+     * @param {string} url - The URL from which data should be fetched.
+     * @param {function} onSuccess - The callback function to be invoked when the request is successful.
+     * @param {function} onFailed - The callback function to be invoked when the request fails.
+     * 
+     * Example usage:
+     * 
+     * const url = 'https://example.com/api/data';
+     * 
+     * const onSuccess = (response) => {
+     *     console.log(`Success! Response: ${response}`);
+     * };
+     * 
+     * const onFailed = (error) => {
+     *     console.error(`Failed! Error: ${error}`);
+     * };
+     * 
+     * Http.get(url, onSuccess, onFailed);
+     * 
+     */
+    static get(url, onSuccess, onFailed) {
+
+        debuglog('------> GET Request Initiated');  // DEBUG:
+        console.log(`[Requesting data from] ${url}`);
+        console.log('<------ GET Request Initiated');  // DEBUG:
+
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                // HTTP 404 or other non-ok status
+                return response.json().then(err => { throw err; });
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.info(`${url} response received:`, data);
+            onSuccess(data);
+        })
+        .catch((error) => {
+            console.info(`${url} request failed:`, error);
+            onFailed(error);
+        })
+    }
+
     /**
      * HTTP POST to submit data.
      * 
      * @param {string} url - The URL to which the POST request should be sent.
      * @param {object} data - The data to be sent with the POST request.
-     * @param {function} onsuccess - The callback function to be invoked when the request is successful.
-     * @param {function} onfailed - The callback function to be invoked when the request fails.
+     * @param {function} onSuccess - The callback function to be invoked when the request is successful.
+     * @param {function} onFailed - The callback function to be invoked when the request fails.
      * 
      * Example usage:
      * 
@@ -18,18 +70,18 @@ class Http {
      *     key2: 'value2'
      * };
      * 
-     * const onsuccess = (response) => {
+     * const onSuccess = (response) => {
      *     console.log(`Success! Response: ${response}`);
      * };
      * 
-     * const onfailed = (error) => {
+     * const onFailed = (error) => {
      *     console.error(`Failed! Error: ${error}`);
      * };
      * 
-     * Http.post(url, data, onsuccess, onfailed);
+     * Http.post(url, data, onSuccess, onFailed);
      * 
      */
-    static post(url, data, onsuccess, onfailed) {
+    static post(url, data, onSuccess, onFailed) {
 
         debuglog('------> Request Payload');  // DEBUG:
         console.log(`[Request data] ${JSON.stringify(data)}`);
@@ -53,11 +105,11 @@ class Http {
         })
         .then(data => {
             console.info(`${url} response received:`, data);
-            onsuccess(data);
+            onSuccess(data);
         })
         .catch((error) => {
             console.info(`${url} request failed:`, error);
-            onfailed(error);
+            onFailed(error);
         })
     }
 }
