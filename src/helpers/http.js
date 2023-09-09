@@ -44,9 +44,9 @@ class Http {
             }
             return response.json();
         })
-        .then(data => {
-            console.info(`${url} response received:`, data);
-            onSuccess(data);
+        .then(res => {
+            console.info(`${url} response received:`, res);
+            onSuccess(res);
         })
         .catch((error) => {
             console.info(`${url} request failed:`, error);
@@ -103,9 +103,9 @@ class Http {
             }
             return response.json();
         })
-        .then(data => {
-            console.info(`${url} response received:`, data);
-            onSuccess(data);
+        .then(res => {
+            console.info(`${url} response received:`, res);
+            onSuccess(res);
         })
         .catch((error) => {
             console.info(`${url} request failed:`, error);
