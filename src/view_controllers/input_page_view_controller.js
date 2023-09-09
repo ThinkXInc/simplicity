@@ -411,6 +411,7 @@ class InputPageViewController {
             $inputPageView.id = this.__id__;
             $inputPageView.classList.add('inputPageView')
             this.$inputPageView = $inputPageView;
+            this.$view = $inputPageView;
         }
 
         // create container
