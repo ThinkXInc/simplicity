@@ -140,23 +140,25 @@ class TableViewCell {
 
     get content() { return this._content; }
 
-    set title(value) {
-        this.$title.innerText = value;
+    set title(title) {
+        this._title = title;
+        this.$title.textContent = title;
     }
 
-    get title() { this.$title.innerText; }
+    get title() { this._title; }
 
     set text(value) {
-        this.$text.innerText = value;
+        this._text = value;
+        this.$text.textContent = value;
     }
 
-    get text() { this.$text.innerText; }
+    get text() { this._text; }
 
     setContent(content) {
         this.content = content;
 
-        this.$title.innerText = content.title;
-        this.$text.innerText = content.text;
+        this.title = content.title;
+        this.text = content.text;
     }
 
 
@@ -207,6 +209,8 @@ class TableViewCell {
 
         // Function to handle the end of the transition
         const handleTransitionEnd = (event) => {
+            // NOTE: when delay is 0, this line is sometimes not called
+            debuglog('>>>>>>>>>>>>>> Transition COMPLETE');
             if (onComplete && typeof onComplete === 'function') {
                 onComplete();
             }
@@ -219,13 +223,15 @@ class TableViewCell {
         // Insert animation
         switch (this.config.insertCellAnimationType) {
             case TableViewInsertCellAnimationType.fadeIn:
-                this.classListst.add(this.config.insertCellAnimationHiddenClassNameFadeIn)
+                this.$view.classListst.add(this.config.insertCellAnimationHiddenClassNameFadeIn)
+                console.log("Starting fadeIn transition");
                 setTimeout(() => {
                     this.$view.classList.remove(this.config.insertCellAnimationHiddenClassNameFadeIn); // Smoothly slides the new item into view
                 }, delay); // Tiny delay to ensure it's added to the DOM before the transition starts
                 break;
             case TableViewInsertCellAnimationType.moveFromLeft:
                 this.$view.classList.add(this.config.insertCellAnimationHiddenClassNameMoveFromLeft)
+                console.log("Starting moveFromLeft transition");
                 setTimeout(() => {
                     this.$view.classList.remove(this.config.insertCellAnimationHiddenClassNameMoveFromLeft); // Smoothly slides the new item into view
                 }, delay); // Tiny delay to ensure it's added to the DOM before the transition starts
