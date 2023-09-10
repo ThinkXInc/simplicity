@@ -299,6 +299,17 @@ class KeywordsField extends TextField {
     }
 
     /**
+     * Set keywords
+     * 
+     * @param {[String]} keywords 
+     */
+    setKeywords(keywords) {
+        keywords.forEach((keyword) => {
+            this.addKeyword(keyword);
+        })
+    }
+
+    /**
      * Add keyword to list.
      * 
      * @param {*} keyword 
