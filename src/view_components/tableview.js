@@ -1,5 +1,6 @@
 class TableViewConfig extends ViewComponentConfig {
     constructor({
+        protocols = [TableViewProtocol],
         isHeader = false,
         isFooter = false,
         loadingType = TableViewLoadingType.gradientViewLoader,
@@ -37,6 +38,7 @@ class TableViewConfig extends ViewComponentConfig {
         ...otherOptions
     } = {}) {
         super(otherOptions);
+        this.protocols = protocols;
         this.isHeader = isHeader;
         this.isFooter = isFooter;
         this.loadingType = loadingType;
@@ -293,6 +295,16 @@ const TableViewState = Object.freeze({
     onCloseComplete: 'onCloseComplete'
 });
 
+/**
+ * A protocol class for TableView components.
+ * This class defines the interface that AlertMessage components should implement.
+ */
+class TableViewProtocol {
+    tableViewCellSelectedAtIndex(selectedIndex, cell) {
+        console.log(`${this.__id__}: cell ID:${cell.id} Index:${selectedIndex} clicked`)
+        throw new Error('You have to implement this tableViewCellSeletedAtIndex method to the child class!!');
+    }
+}
 
 /**
  * <div id={id} class="TableView {this.id}">
@@ -310,8 +322,10 @@ const TableViewState = Object.freeze({
  * </div>
  * 
  */
-class TableView {
+class TableView extends ViewComponentBase {
     constructor(id, config = new TableViewConfig()) {
+        super('', id, config);
+
         this.__id__ = id;
         this.config = config;
 
@@ -480,19 +494,16 @@ class TableView {
         });
 
         console.table(this.cells);
-
-        // Reset event handlers for all cells
-        this._setEventHandlers();
     }
 
     _setEventHandlers() {
         const _this = this;
         this.cells.forEach((cell, index) => {
-            console.log(`set event for ${cell.id}`);
+            debuglog(`set event for ${cell.id}`);
             document.getElementById(cell.id).addEventListener('click', e => {
-                console.log(`cell ${cell.id} clicked`)
                 _this.selectedIndex = cell.index;
                 _this.state = TableViewState.onSelected;
+                _this.tableViewCellSelectedAtIndex(cell.index, cell);
             });
             document.getElementById(cell.id).addEventListener('mouseover', e => {
                 _this.$view.dispatchEvent(
@@ -631,4 +642,5 @@ class TableView {
         }}));
 
     }
+
 }

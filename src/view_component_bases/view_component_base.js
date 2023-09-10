@@ -1,10 +1,12 @@
 class ViewComponentConfig {
     constructor({
         htmlTag = 'div',
+        protocols = [],
         validators = []
     } = {}) {
         this.htmlTag = htmlTag;
         this.validators = validators;
+        this.protocols = protocols;
     } 
 }
 
@@ -31,6 +33,10 @@ class ViewComponentBase {
         this.validators.forEach(validator => {
             validator.setComponent(this);
         });
+
+        this.config.protocols.forEach((protocol) => {
+            this._checkProtocolAdherenceForClass(protocol);
+        })
     }
 
     init() {
@@ -44,6 +50,22 @@ class ViewComponentBase {
         if (typeof this._setEventHandlers !== "function") {
             throw new TypeError("Subclass must implement '_setEventHandlers' method");
         }
+    }
+
+    /**
+     * This method checks the adherence of the inherited class to a given protocol class.
+     * It creates an instance of the protocol class, iterates over its methods, and checks that each is implemented in the InputPageViewController.
+     * If a required method is not implemented, it will throw an error.
+     * 
+     * @param {Object} protocolClass - The protocol class to check adherence to.
+     * @throws {Error} If a required method from the protocol class is not implemented.
+     */
+    _checkProtocolAdherenceForClass(protocolClass) {
+        Object.getOwnPropertyNames(protocolClass.prototype).forEach(methodName => {
+            if (methodName !== "constructor" && typeof this[methodName] !== "function") {
+                throw new Error(`${this.__id__} must implement ${methodName} method of ${protocolClass.name}`);
+            }
+        });
     }
 
     /**
