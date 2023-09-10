@@ -218,28 +218,43 @@ class TextField extends FormComponentBase {
         if (text) {
             this.count = text.length;
         }
-        // dispatch event
-        const event = new CustomEvent('textupdated', {detail: {new: text,}});
-        this.$textField.dispatchEvent(event);
-        // save cookie
-        if (this.validate() == null) {
-            if (this.config.shouldTrackLocalChangeInCookie) {
-                this._setValueToCookies(text);
-            } else {
-                if (this.savedValue != null && text != this.savedValue) {
-                    debuglog(`value:${text} != savedValue:${this.savedValue} -> edited`)
-                    this.$textField.classList.add('edited');
+
+        // Run only when updated not reset
+        if (!this.onReset) {
+            // dispatch event
+            const event = new CustomEvent('textupdated', {detail: {new: text,}});
+            this.$textField.dispatchEvent(event);
+            // save cookie
+            if (this.validate() == null) {
+                if (this.config.shouldTrackLocalChangeInCookie) {
+                    this._setValueToCookies(text);
                 } else {
-                    debuglog(`value:${text} == savedValue:${this.savedValue} -> remove edited`)
-                    this.$textField.classList.remove('edited');
+                    if (this.savedValue != null && text != this.savedValue) {
+                        debuglog(`value:${text} != savedValue:${this.savedValue} -> edited`)
+                        this.$textField.classList.add('edited');
+                    } else {
+                        debuglog(`value:${text} == savedValue:${this.savedValue} -> remove edited`)
+                        this.$textField.classList.remove('edited');
+                    }
                 }
+            } else {
+                console.warn(`Cookie is not set for key ${this.__field_name__} since the value is not valid.`)
             }
-        } else {
-            console.warn(`Cookie is not set for key ${this.__field_name__} since the value is not valid.`)
         }
     }
 
     get text() {return this._text}
+
+    /**
+     * Reset textField
+     * 
+     * This update prevents validation or update event.
+     */
+    reset() {
+        this.onReset = true;
+        this.text = '';
+        this.onReset = false;
+    }
 
     /**
      * count setter / getter.
