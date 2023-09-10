@@ -91,6 +91,7 @@ const TableViewInsertCellAnimationType = Object.freeze({
 
 class TableViewCellContent {
     constructor({
+        //id = '',  NOTE: this overrides id. not permitted.
         title = '',
         text = '',
         icon = '' 
@@ -500,18 +501,18 @@ class TableView extends ViewComponentBase {
         const _this = this;
         this.cells.forEach((cell, index) => {
             debuglog(`set event for ${cell.id}`);
-            document.getElementById(cell.id).addEventListener('click', e => {
+            cell.$view.addEventListener('click', e => {
                 _this.selectedIndex = cell.index;
                 _this.state = TableViewState.onSelected;
                 _this.tableViewCellSelectedAtIndex(cell.index, cell);
             });
-            document.getElementById(cell.id).addEventListener('mouseover', e => {
+            cell.$view.addEventListener('mouseover', e => {
                 _this.$view.dispatchEvent(
                     new CustomEvent(
                         'onmouseover', {detail: {cellId: cell.id, index: cell.index}}
                     ));
             });
-            document.getElementById(cell.id).addEventListener('mouseout', e => {
+            cell.$view.addEventListener('mouseout', e => {
                 _this.$view.dispatchEvent(
                     new CustomEvent(
                         'onmouseout', {detail: {cellId: cell.id, index: cell.index}}
