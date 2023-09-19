@@ -44,6 +44,7 @@ class ModalView extends ViewComponentBase {
         super._setElements();
 
         this.$view.classList.add('ModalView');
+        this.$view.style.display = 'none';
 
         // Background
         this.$bg = document.createElement('div');
@@ -91,6 +92,12 @@ class ModalView extends ViewComponentBase {
         this.$doneButton.textContent = this.config.doneButtonText;
         this.$doneButton.addEventListener('click', () => this.done());
         this.$footer.appendChild(this.$doneButton);
+
+        // Alert for displaying error messages
+        this.$alert = document.createElement('div');
+        this.$alert.classList.add('alert');
+        this.$alert.style.display = 'none'; // Initially hidden
+        this.$contentWrapper.appendChild(this.$alert);
     }
 
     _initializeCloseOnBackgroundTap() {
@@ -112,5 +119,20 @@ class ModalView extends ViewComponentBase {
     cancel() {
         // Close the modal view (e.g., hide it, remove it from the DOM, etc.)
         this.$view.style.display = 'none';
+    }
+
+    close() {
+        this.cancel();
+    }
+
+    alert(isShown, message = null) {
+        if (isShown) {
+            this.$alert.style.display = 'block';
+            if (message) {
+                this.$alert.textContent = message;
+            }
+        } else {
+            this.$alert.style.display = 'none';
+        }
     }
 }
