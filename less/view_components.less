@@ -427,6 +427,7 @@ div.TableView {
                         flex: 1;
                         display: flex;
                         flex-direction: column;
+                        align-items: end;
                         gap: 3px;
 
                         button {
@@ -470,6 +471,17 @@ div.TableView {
                     height: 0;
                     opacity: 0;
                     padding: 0;
+                }
+                li.tableViewCell.deleteByFadeOut {
+                    //max-height: 0;
+                    //height: 0;
+                    opacity: 0;
+                }
+                li.tableViewCell.deleteByMoveToLeft {
+                    //max-height: 0;
+                    //height: 0;
+                    opacity: 0;
+                    transform: translateX(-20px);
                 }
             }
 

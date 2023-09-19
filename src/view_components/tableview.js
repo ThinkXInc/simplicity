@@ -40,6 +40,11 @@ class TableViewConfig extends ViewComponentConfig {
         deleteCellActionType = TableViewDeleteCellActionType.dispatchDeleteCellEvent,
         deleteCellAnimationType = TableViewDeleteCellAnimationType.fadeOut,
         deleteCellEventName = 'deleteCell',
+        deleteCellAnimationDuration = 10,
+        deleteCellAnimationDelay = 0,
+        deleteCellAnimationCurve = 'easeInSine',
+        deleteCellAnimationClassNameMoveToLeft = 'deleteByMoveToLeft',
+        deleteCellAnimationClassNameFadeOut = 'deleteByFadeOut',
         ...otherOptions
     } = {}) {
         super(otherOptions);
@@ -73,6 +78,10 @@ class TableViewConfig extends ViewComponentConfig {
         this.deleteCellActionType = deleteCellActionType;
         this.deleteCellAnimationType = deleteCellAnimationType;
         this.deleteCellEventName = deleteCellEventName;
+        this.deleteCellAnimationDuration = deleteCellAnimationDuration;
+        this.deleteCellAnimationCurve = deleteCellAnimationCurve;
+        this.deleteCellAnimationClassNameMoveToLeft = deleteCellAnimationClassNameMoveToLeft;
+        this.deleteCellAnimationClassNameFadeOut = deleteCellAnimationClassNameFadeOut;
     }
 }
 
@@ -272,7 +281,7 @@ class TableViewCell {
     // Method to toggle button interaction mode
     toggleButtonInteractionMode(enable) {
         if (enable) {
-            this.$buttonContainer.style.display = 'block';
+            this.$buttonContainer.style.display = 'flex';
         } else {
             this.$buttonContainer.style.display = 'none';
         }
@@ -307,7 +316,7 @@ class TableViewCell {
         // Insert animation
         switch (this.config.insertCellAnimationType) {
             case TableViewInsertCellAnimationType.fadeIn:
-                this.$view.classListst.add(this.config.insertCellAnimationHiddenClassNameFadeIn)
+                this.$view.classLists.add(this.config.insertCellAnimationHiddenClassNameFadeIn)
                 console.log("Starting fadeIn transition");
                 setTimeout(() => {
                     this.$view.classList.remove(this.config.insertCellAnimationHiddenClassNameFadeIn); // Smoothly slides the new item into view
@@ -323,10 +332,48 @@ class TableViewCell {
         }
     }
 
-    delete(index, delay, onComplete) {
-
+    delete(animationType, delay, onComplete) {
+        const handleTransitionEnd = (event) => {
+            // Removing the cell after the transition
+            this.$view.remove();
+    
+            // Callback once the transition is complete
+            if (onComplete && typeof onComplete === 'function') {
+                onComplete();
+            }
+    
+            // Removing the event listener to avoid it being called multiple times
+            this.$view.removeEventListener('transitionend', handleTransitionEnd);
+        };
+    
+        this.$view.addEventListener('transitionend', handleTransitionEnd);
+    
+        switch(animationType) {
+            case TableViewDeleteCellAnimationType.noAnimation:
+                // No animation. Just remove the cell.
+                this.$view.remove();
+                this.$view.removeEventListener('transitionend', handleTransitionEnd); // No transition, so remove the listener.
+                if (onComplete && typeof onComplete === 'function') {
+                    onComplete();
+                }
+                break;
+                
+            case TableViewDeleteCellAnimationType.fadeOut:
+                setTimeout(() => {
+                    this.$view.classList.add(this.config.deleteCellAnimationClassNameFadeOut);
+                }, delay); // Tiny delay to ensure it's added to the DOM before the transition starts
+                break;
+    
+            case TableViewDeleteCellAnimationType.moveToLeft:
+                setTimeout(() => {
+                    this.$view.classList.add(this.config.deleteCellAnimationClassNameMoveToLeft);
+                }, delay); // Tiny delay to ensure it's added to the DOM before the transition starts
+                break;
+    
+            default:
+                throw new Error(`Invalid tableViewDeleteCellAnimationType: ${animationType}`);
+        }
     }
-
 
     fadeOut(delay, onComplete) {
         this.$view.animate([
@@ -541,39 +588,21 @@ class TableView extends ViewComponentBase {
             console.log('Insert animation finished!');
             onComplete(newCell);
         });
-
-        // Apply the cell insert animation (if needed).
-        switch(this.config.insertCellAnimationType) {
-            case TableViewInsertCellAnimationType.noAnimation:
-                // No animation. Just added the cell.
-                break;
-            case TableViewInsertCellAnimationType.fadeIn:
-                // TODO: Implement fade in animation for the cell.
-                break;
-            case TableViewInsertCellAnimationType.moveFromLeft:
-                // TODO: Implement move from left animation for the cell.
-                break;
-            default:
-                throw new Error(`Invalid tableViewInsertCellAnimationType: ${this.config.insertCellAnimationType}`);
-        }
     }
 
-    deleteRowAtIndex(index) {
+    deleteRowAtIndex(index, onComplete = null) {
         if (index < 0 || index >= this.cells.length) {
             console.error(`Invalid index: ${index}. Cannot delete cell.`);
             return;
         }
     
-        // Remove the cell from the DOM
-        this.$tableListView.removeChild(this.cells[index].$view);
-
-        /*
-        TODO:
-            cell.delete(index, delay, () => {
-                console.log('Delete animation finished!');
-                onComplete(cell);
-            });
-        */
+        const cell = this.cells[index];
+        const delay = this.config.deleteCellAnimationDelay;
+    
+        cell.delete(this.config.deleteCellAnimationType, delay, () => {
+            console.log('Delete animation finished!');
+            onComplete && onComplete(cell);
+        });
     
         // Remove the cell from the cells array and from the contents array
         this.cells.splice(index, 1);
@@ -584,24 +613,7 @@ class TableView extends ViewComponentBase {
             this.cells[i].index = i;
         }
     
-   
         console.log(`Cell at index ${index} has been removed.`);
-
-
-        // TODO: Apply the cell delete animation (if needed).
-        switch(this.config.deleteCellAnimationType) {
-            case TableViewDeleteCellAnimationType.noAnimation:
-                // No animation. Just added the cell.
-                break;
-            case TableViewDeleteCellAnimationType.fadeOut:
-                // TODO: Implement fade in animation for the cell.
-                break;
-            case TableViewInsertCellAnimationType.moveToLeft:
-                // TODO: Implement move from left animation for the cell.
-                break;
-            default:
-                throw new Error(`Invalid tableViewDeleteCellAnimationType: ${this.config.deleteCellAnimationType}`);
-        }
     }
 
     toggleButtonInteractionModeAtIndex(index, enable) {
