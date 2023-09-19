@@ -20,6 +20,7 @@ class TableViewConfig extends ViewComponentConfig {
         addingCellNumber = 20,
         cellClass = TableViewCell,
         cellContentClass = TableViewCellContent,
+        cellSelectedClassName = 'selected',
         cellHiddenClassName = 'hide',
         cellFadeOutClassName = 'fadeOut',
         cellFadeOutLeftClassName = 'fadeOutLeft',
@@ -52,6 +53,7 @@ class TableViewConfig extends ViewComponentConfig {
         this.addingCellNumber = addingCellNumber;
         this.cellClass = cellClass;
         this.cellContentClass = cellContentClass; // Corrected the variable name
+        this.cellSelectedClassName = cellSelectedClassName;
         this.cellHiddenClassName = cellHiddenClassName;
         this.cellFadeOutClassName = cellFadeOutClassName;
         this.cellFadeOutLeftClassName = cellFadeOutLeftClassName;
@@ -602,6 +604,13 @@ class TableView extends ViewComponentBase {
         }
     }
 
+    toggleButtonInteractionModeAtIndex(index, enable) {
+        this.cells.forEach((cell) => {
+            cell.toggleButtonInteractionMode(!enable);
+        });
+        this.cells[index].toggleButtonInteractionMode(enable);
+    }
+
     _resetCells() {
         console.log(`${this.__id__} resetCells:`);
 
@@ -634,6 +643,10 @@ class TableView extends ViewComponentBase {
                 _this.selectedIndex = cell.index;
                 _this.state = TableViewState.onSelected;
                 _this.tableViewCellSelectedAtIndex(cell.index, cell);
+                this.cells.forEach((cell) => {
+                    cell.$view.classList.remove(this.config.cellSelectedClassName);
+                })
+                cell.$view.classList.add(this.config.cellSelectedClassName)
             });
             cell.$view.addEventListener('mouseover', e => {
                 _this.$view.dispatchEvent(

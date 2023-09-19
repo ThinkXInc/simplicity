@@ -305,6 +305,8 @@ div.gradientViewIndicator {
 
 // TableView
 div.TableView {
+    @cell-bg: #282828;
+    @cell-bg-selected: #2c2c2c;
     @cell-border-bottom: #ddd;
     @header-border-bottom: #e5e5e5;
     @cell-hader-label-bg: #007BFF; // Placeholder for blue color
@@ -448,6 +450,10 @@ div.TableView {
                             }
                         }
                     }
+                }
+
+                li.tableViewCell.selected {
+                    background-color: @cell-bg-selected;
                 }
 
                 li.tableViewCell.hiddenForMoveFromLeft {
