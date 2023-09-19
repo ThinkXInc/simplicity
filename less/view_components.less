@@ -313,6 +313,8 @@ div.TableView {
     @cell-body-text: #555555;
     @cell-footer-text: #777777;
     @footer-border-top: #e5e5e5;
+    @button: #d5d5d5;
+    @button-hover: #fff;
 
     @cell-insert-transition-duration: 0.4s; // Declare the variable here
     @cubic-bezier1: cubic-bezier(.65, 0, .34, 1);
@@ -368,7 +370,7 @@ div.TableView {
                     align-items: center;
                     padding: 10px 15px;
                     border-bottom: 1px solid @cell-border-bottom; // Example styling
-                    flex-direction: column;
+                    flex-direction: row;
                     align-items: start;
                     height: auto;
 
@@ -382,36 +384,72 @@ div.TableView {
                     padding @cell-insert-transition-duration @cubic-bezier1;
                     overflow: hidden;
 
-                    div.header {
-                        span.label {
-                            float: right;
-                            background-color: @cell-hader-label-bg; //blue;
-                            color: @cell-header-label;
-                            padding: 2px 7px;
-                            border-radius: 2px;
-                            font-size: 0.78rem;
-                            font-weight: 200;
+                    div.contentWrapper {
+                        display: flex;
+                        flex-direction: column;
+                        flex-grow: 1; /* to ensure that it takes the remaining space after buttonContainer */
+
+                        div.header {
+                            span.label {
+                                float: right;
+                                background-color: @cell-hader-label-bg; //blue;
+                                color: @cell-header-label;
+                                padding: 2px 7px;
+                                border-radius: 2px;
+                                font-size: 0.78rem;
+                                font-weight: 200;
+                            }
+                            p.title {
+                                float: left;
+                                font-size: 1.2rem;
+                                font-weight: 300;
+                                color: @cell-header-title;
+                            }
                         }
-                        p.title {
-                            float: left;
-                            font-size: 1.2rem;
-                            font-weight: 300;
-                            color: @cell-header-title;
+                        div.body {
+                            p.text {
+                                color: @cell-body-text;
+                                font-weight: 100;
+                                font-size: 0.9rem;
+                            }
+                        }
+                        div.footer {
+                            margin: 6px 0 0 0;
+                            font-size: 0.7rem;
+                            color: @cell-footer-text;
                         }
                     }
-                    div.body {
-                        p.text {
-                            color: @cell-body-text;
-                            font-weight: 100;
-                            font-size: 0.9rem;
+
+                    div.buttonContainer {
+                        order: 0; /* default position to the left */
+                        flex: 1;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 3px;
+
+                        button {
+                            svg {
+                                cursor: pointer;
+                                width: 20px;
+                                height: 20px;
+                                padding: 1px;
+                                background-color: transparent;
+                                .path {
+                                    .transitionAll();
+                                    fill: @button;
+                                }
+                            }
+                            svg:hover {
+                                .path {
+                                    fill: @button-hover;
+                                }
+                            }
+                            svg.deleteIconSVG {
+                            }
                         }
-                    }
-                    div.footer {
-                        margin: 6px 0 0 0;
-                        font-size: 0.7rem;
-                        color: @cell-footer-text;
                     }
                 }
+
                 li.tableViewCell.hiddenForMoveFromLeft {
                     // Insert animation
                     max-height: 0;

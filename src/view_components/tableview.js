@@ -35,6 +35,10 @@ class TableViewConfig extends ViewComponentConfig {
         insertCellAnimationCurve = 'easeInSine',
         insertCellAnimationHiddenClassNameMoveFromLeft = 'hiddenForMoveFromLeft',
         insertCellAnimationHiddenClassNameFadeIn = 'hiddenForFadeIn',
+        buttonContainerPosition = TableViewCellButtonContainerPosition.Right,
+        deleteCellActionType = TableViewDeleteCellActionType.dispatchDeleteCellEvent,
+        deleteCellAnimationType = TableViewDeleteCellAnimationType.fadeOut,
+        deleteCellEventName = 'deleteCell',
         ...otherOptions
     } = {}) {
         super(otherOptions);
@@ -63,6 +67,10 @@ class TableViewConfig extends ViewComponentConfig {
         this.insertCellAnimationCurve = insertCellAnimationCurve;
         this.insertCellAnimationHiddenClassNameFadeIn = insertCellAnimationHiddenClassNameFadeIn;
         this.insertCellAnimationHiddenClassNameMoveFromLeft = insertCellAnimationHiddenClassNameMoveFromLeft;
+        this.buttonContainerPosition = buttonContainerPosition;
+        this.deleteCellActionType = deleteCellActionType;
+        this.deleteCellAnimationType = deleteCellAnimationType;
+        this.deleteCellEventName = deleteCellEventName;
     }
 }
 
@@ -70,6 +78,11 @@ const TableViewLoadingType = Object.freeze({
     gradientViewLoader: 'gradientViewLoader',
     circleLoader: 'circleLoader',
 })
+
+const TableViewCellButtonContainerPosition = Object.freeze({
+    Left: 'Left',
+    Right: 'Right'
+});
 
 const TableViewCellCloseAnimationType = Object.freeze({
     noAnimation: 0,
@@ -88,6 +101,16 @@ const TableViewInsertCellAnimationType = Object.freeze({
     moveFromLeft: 2,
 })
 
+const TableViewDeleteCellActionType = Object.freeze({
+    deleteImmidiately: 1,
+    dispatchDeleteCellEvent: 2,
+})
+
+const TableViewDeleteCellAnimationType = Object.freeze({
+    noAnimation: 0,
+    fadeOut: 1,
+    moveToLeft: 2,
+})
 
 class TableViewCellContent {
     constructor({
@@ -164,14 +187,14 @@ class TableViewCell {
         this.text = content.text;
     }
 
-
     _setElements() {
         this.$view = document.createElement('li');
         this.$view.id = this.id;
-        this.$view.classList.add('TableViewCell');
-        this.$view.classList.add('tableViewCell');
-        this.$view.classList.add(this.className);
-
+        this.$view.classList.add('TableViewCell', 'tableViewCell', this.className);
+    
+        this.$contentWrapper = document.createElement('div');
+        this.$contentWrapper.classList.add('contentWrapper');
+    
         // Creating the header element for the cell
         this.$header = document.createElement('div');
         this.$header.classList.add('header');
@@ -181,20 +204,76 @@ class TableViewCell {
         this.$title.classList.add('title');
         this.$header.appendChild(this.$label);
         this.$header.appendChild(this.$title);
-        this.$view.appendChild(this.$header);
-
+        this.$contentWrapper.appendChild(this.$header);
+    
         // Creating the body element for the cell
         this.$body = document.createElement('div');
         this.$body.classList.add('body');
         this.$text = document.createElement('p');
         this.$text.classList.add('text');
         this.$body.appendChild(this.$text);
-        this.$view.appendChild(this.$body);
-
+        this.$contentWrapper.appendChild(this.$body);
+    
         // Creating the footer element for the cell
         this.$footer = document.createElement('div');
         this.$footer.classList.add('footer');
-        this.$view.appendChild(this.$footer);
+        this.$contentWrapper.appendChild(this.$footer);
+    
+        // Adding interaction buttons container
+        this.$buttonContainer = document.createElement('div');
+        this.$buttonContainer.classList.add('buttonContainer');
+        // Add the delete button
+        this.$deleteButton = document.createElement('button');
+        this.$deleteButton.innerHTML = SVGIcons.deleteIconSVG; 
+        this.$deleteButton.addEventListener('click', this._onDeleteClick.bind(this));
+        this.$buttonContainer.appendChild(this.$deleteButton);
+
+        this.$view.appendChild(this.$contentWrapper);
+        this.$view.appendChild(this.$buttonContainer);
+
+        this._setButtonContainerPosition();
+        this.toggleButtonInteractionMode(false);
+    }
+
+    _setButtonContainerPosition() {
+        if (this.config.buttonContainerPosition === TableViewCellButtonContainerPosition.Left) {
+          this.$buttonContainer.style.order = "1";
+        } else {
+          this.$buttonContainer.style.order = "0";
+        }
+    }
+
+    /**
+     * Handler for delete button click
+     */
+    _onDeleteClick(e) {
+        // Stop event propagation
+        e.stopPropagation();
+
+        // Trigger deletion logic here
+        debuglog(`Delete button clicked for cell with ID: ${this.__id__}, index: ${this.index}`);
+
+        // switch action by config.deleteCellAtionType
+        switch (this.config.deleteCellActionType) {
+            case TableViewDeleteCellActionType.dispatchDeleteCellEvent:
+                // Dispatch event
+                this.tableView.$view.dispatchEvent(new CustomEvent(this.config.deleteCellEventName, { detail: { index: this.index } }));
+                break;
+            case TableViewDeleteCellActionType.deleteImmediately:
+                // Delete immediately
+                this.tableView.deleteRowAtIndex(this.index);
+                break;
+        }
+ 
+    }
+    
+    // Method to toggle button interaction mode
+    toggleButtonInteractionMode(enable) {
+        if (enable) {
+            this.$buttonContainer.style.display = 'block';
+        } else {
+            this.$buttonContainer.style.display = 'none';
+        }
     }
 
     add(index = null) {
@@ -240,6 +319,10 @@ class TableViewCell {
                 }, delay); // Tiny delay to ensure it's added to the DOM before the transition starts
                 break;
         }
+    }
+
+    delete(index, delay, onComplete) {
+
     }
 
 
@@ -470,6 +553,52 @@ class TableView extends ViewComponentBase {
                 break;
             default:
                 throw new Error(`Invalid tableViewInsertCellAnimationType: ${this.config.insertCellAnimationType}`);
+        }
+    }
+
+    deleteRowAtIndex(index) {
+        if (index < 0 || index >= this.cells.length) {
+            console.error(`Invalid index: ${index}. Cannot delete cell.`);
+            return;
+        }
+    
+        // Remove the cell from the DOM
+        this.$tableListView.removeChild(this.cells[index].$view);
+
+        /*
+        TODO:
+            cell.delete(index, delay, () => {
+                console.log('Delete animation finished!');
+                onComplete(cell);
+            });
+        */
+    
+        // Remove the cell from the cells array and from the contents array
+        this.cells.splice(index, 1);
+        this._contents.splice(index, 1);
+    
+        // Update the index of each cell that follows the removed cell
+        for (let i = index; i < this.cells.length; i++) {
+            this.cells[i].index = i;
+        }
+    
+   
+        console.log(`Cell at index ${index} has been removed.`);
+
+
+        // TODO: Apply the cell delete animation (if needed).
+        switch(this.config.deleteCellAnimationType) {
+            case TableViewDeleteCellAnimationType.noAnimation:
+                // No animation. Just added the cell.
+                break;
+            case TableViewDeleteCellAnimationType.fadeOut:
+                // TODO: Implement fade in animation for the cell.
+                break;
+            case TableViewInsertCellAnimationType.moveToLeft:
+                // TODO: Implement move from left animation for the cell.
+                break;
+            default:
+                throw new Error(`Invalid tableViewDeleteCellAnimationType: ${this.config.deleteCellAnimationType}`);
         }
     }
 
