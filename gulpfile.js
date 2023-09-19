@@ -27,6 +27,7 @@ const paths = {
         './src/view_components/back_button.js',
         './src/view_components/textfield.js',
         './src/view_components/tableview.js',
+        './src/view_components/modalview.js',
         './src/view_components/keywords_field.js',
         './src/view_components/dropdown_button.js',
         './src/view_components/file_upload_view.js',

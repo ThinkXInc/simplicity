@@ -259,7 +259,7 @@ class TableViewCell {
         switch (this.config.deleteCellActionType) {
             case TableViewDeleteCellActionType.dispatchDeleteCellEvent:
                 // Dispatch event
-                this.tableView.$view.dispatchEvent(new CustomEvent(this.config.deleteCellEventName, { detail: { index: this.index } }));
+                this.tableView.$view.dispatchEvent(new CustomEvent(this.config.deleteCellEventName, { detail: { index: this.index, cell: this } }));
                 break;
             case TableViewDeleteCellActionType.deleteImmediately:
                 // Delete immediately

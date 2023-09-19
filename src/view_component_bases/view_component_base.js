@@ -118,6 +118,11 @@ class ViewComponentBase {
         }
     }
 
+    addTo(parentDOMID) {
+        const $parent = document.getElementById(parentDOMID);
+        this.addToParent($parent);
+    }
+
     /**
      * Set page index. 
      * 
