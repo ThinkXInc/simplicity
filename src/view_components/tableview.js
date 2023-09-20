@@ -248,9 +248,9 @@ class TableViewCell {
 
     _setButtonContainerPosition() {
         if (this.config.buttonContainerPosition === TableViewCellButtonContainerPosition.Left) {
-          this.$buttonContainer.style.order = "1";
+            this.$buttonContainer.classList.add('left');
         } else {
-          this.$buttonContainer.style.order = "0";
+            this.$buttonContainer.classList.add('right');
         }
     }
 

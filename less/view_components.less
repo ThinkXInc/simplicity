@@ -423,8 +423,10 @@ div.TableView {
                     }
 
                     div.buttonContainer {
-                        order: 0; /* default position to the left */
-                        flex: 1;
+                        position: absolute;
+                        top: 0;
+                        bottom: 0;
+                        padding: 10px;
                         display: flex;
                         flex-direction: column;
                         align-items: end;
@@ -455,6 +457,15 @@ div.TableView {
 
                 li.tableViewCell.selected {
                     background-color: @cell-bg-selected;
+
+                    div.buttonContainer.right {
+                        right: 0;
+                        background: linear-gradient(to left, @cell-bg-selected, @cell-bg-selected 77%, transparent);
+                    }
+                    div.buttonContainer.left {
+                        left: 0;
+                        background: linear-gradient(to right, @cell-bg-selected, @cell-bg-selected 77%, transparent);
+                    }
                 }
 
                 li.tableViewCell.hiddenForMoveFromLeft {
