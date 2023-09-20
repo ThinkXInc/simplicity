@@ -25,9 +25,8 @@ class PollingManager {
             }
     
             const onSuccessHandler = (res) => {
-                const responseData = res.response_data;
 
-                if (!this._pollingResponseHandler(responseData, expectedKey, onComplete, onFailure)) {
+                if (!this._pollingResponseHandler(res, expectedKey, onComplete, onFailure)) {
                     const nextPollingInterval = Math.min(pollingInterval * params.backOffFactor, params.maxInterval);
                     setTimeout(() => performPolling(++retryCount, nextPollingInterval, params), nextPollingInterval);
                 }
