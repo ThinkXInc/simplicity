@@ -121,6 +121,7 @@ class KeywordsField extends TextField {
             config
         );
 
+        this.__id__ = id,
         this.locale = locale;
         this.__lang__ = lang;
 
@@ -281,14 +282,6 @@ class KeywordsField extends TextField {
             }
         });
 
-        // Handle delete button click
-        const $deleteButtons = document.querySelectorAll('.delete');
-        $deleteButtons.forEach(($button, index) => {
-            $button.addEventListener('click', () => {
-                this.removeKeyword(index, true);
-            });
-        });
-
         // Focus any area is clicked
         this.$textField.addEventListener('click', (event) => {
             if (document.activeElement !== this.$textArea) {
@@ -317,6 +310,7 @@ class KeywordsField extends TextField {
      */
     addKeyword(keyword, submit=false) {
         // Update the internal list
+        const index = this.keywords.length;
         this.keywords.push(keyword);
 
         // Create new DOM element and add to keywords ul
@@ -335,6 +329,11 @@ class KeywordsField extends TextField {
         if(this.config.shouldMapTextToDeleteButtonBGColor) {
             $deleteButton.style.backgroundColor = this.textToHSL(keyword);
         }
+        $deleteButton.addEventListener('click', () => {
+            debuglog(`keyword ${index} delete button clicked.`)
+            this.removeKeyword(index, true);
+        });
+
         $keywordItem.appendChild($deleteButton);
 
         this.$keywords.appendChild($keywordItem);
