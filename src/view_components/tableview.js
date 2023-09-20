@@ -587,7 +587,15 @@ class TableView extends ViewComponentBase {
         newCell.insert(index, delay, () => {
             console.log('Insert animation finished!');
             onComplete(newCell);
+
+            // Adjust the indices of the cells after the newly inserted cell
+            this.cells.splice(index, 0, newCell);
+            for (let i = index + 1; i < this.cells.length; i++) {
+                this.cells[i].index = i;
+            }
+            this._setEventHandlers();
         });
+
     }
 
     deleteRowAtIndex(index, onComplete = null) {
