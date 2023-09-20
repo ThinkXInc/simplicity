@@ -655,18 +655,22 @@ class TableView extends ViewComponentBase {
         console.table(this.cells);
     }
 
+    selectCellAtIndex(index, cell) {
+        this.selectedIndex = index;
+        this.state = TableViewState.onSelected;
+        this.tableViewCellSelectedAtIndex(cell.index, cell);
+        this.cells.forEach((cell) => {
+            cell.$view.classList.remove(this.config.cellSelectedClassName);
+        })
+        cell.$view.classList.add(this.config.cellSelectedClassName)
+    }
+
     _setEventHandlers() {
         const _this = this;
         this.cells.forEach((cell, index) => {
             debuglog(`set event for ${cell.id}`);
             cell.$view.addEventListener('click', e => {
-                _this.selectedIndex = cell.index;
-                _this.state = TableViewState.onSelected;
-                _this.tableViewCellSelectedAtIndex(cell.index, cell);
-                this.cells.forEach((cell) => {
-                    cell.$view.classList.remove(this.config.cellSelectedClassName);
-                })
-                cell.$view.classList.add(this.config.cellSelectedClassName)
+                this.selectCellAtIndex(cell.index, cell);
             });
             cell.$view.addEventListener('mouseover', e => {
                 _this.$view.dispatchEvent(
