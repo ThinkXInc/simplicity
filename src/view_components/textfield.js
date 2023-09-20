@@ -185,9 +185,7 @@ class TextField extends FormComponentBase {
         this._restoreValueFromCookie();
         // Resize textarea. Ensure the browser gets a chance to recalculate layout before resizing
         if(this.config.verticalFlex) {
-            requestAnimationFrame(() => {
-                this._resizeTextArea(this.$textArea);
-            });
+            this._resizeTextArea();
         }
     }
 
@@ -213,6 +211,9 @@ class TextField extends FormComponentBase {
     set text(text) {
         this._text = text;
         this.$textArea.value = text;
+        if(this.config.verticalFlex) {
+            this._resizeTextArea();
+        }
         console.log(this.$textArea.value)
         // count
         if (text) {
@@ -513,7 +514,7 @@ class TextField extends FormComponentBase {
             }
             // Auto resize textarea
             if (_this.config.verticalFlex) {
-                _this._resizeTextArea(_this.$textArea);
+                _this._resizeTextArea();
             }
         })
 
@@ -582,59 +583,31 @@ class TextField extends FormComponentBase {
         this.$doneButton.click(); // Programmatically click the done button
     }
 
-    _resizeTextArea($textArea) {
-        console.error('resize');
-    
-        let createViewElem = document.getElementById(this.config.scrollControlElementId);
-        let originalScrollTop = createViewElem.scrollTop;
-        let footerTopPositionBefore = this.$footer.getBoundingClientRect().top;
-        let viewportHeight = window.innerHeight;
-    
-        // 1. Check if the footer top is visible before resizing
-        let isFooterTopVisible = footerTopPositionBefore < viewportHeight;
-    
-        // 2. Reset the height to default to get the actual scrollHeight
-        $textArea.style.height = 'auto';
-    
-        // 3. Set the height based on scroll height
-        $textArea.style.height = `${$textArea.scrollHeight}px`; 
-        debuglog(`$textArea height in TextField is set to the scroll height: ${$textArea.scrollHeight}px`);
-    
-        // 4. Check if the footer bottom is hidden after resizing
-        let footerBottomPositionAfter = this.$footer.getBoundingClientRect().bottom;
-        let isFooterBottomHidden = footerBottomPositionAfter > viewportHeight;
-    
-        // 5. If footer top was visible before resizing and footer bottom is hidden after resizing, adjust scroll.
-        if (isFooterTopVisible && isFooterBottomHidden) {
-            console.error('XXX');
-            let scrollAmountNeeded = footerBottomPositionAfter - viewportHeight;
-            createViewElem.scrollTop = originalScrollTop + scrollAmountNeeded;
-        }
-    }
-
-    _resizeTextArea($textArea) {
-        console.error('resize');
+    _resizeTextArea() {
+        requestAnimationFrame(() => {
+            console.warn('resize');
         
-        // Initialize necessary variables
-        let scrollViewElem = this._getScrollViewElement();
-        let originalScrollTop = scrollViewElem ? scrollViewElem.scrollTop : 0;
+            // Initialize necessary variables
+            let scrollViewElem = this._getScrollViewElement();
+            let originalScrollTop = scrollViewElem ? scrollViewElem.scrollTop : 0;
         
-        let footerTopPositionBefore = this.$footer.getBoundingClientRect().top;
-        let viewportHeight = window.innerHeight;
+            let footerTopPositionBefore = this.$footer.getBoundingClientRect().top;
+            let viewportHeight = window.innerHeight;
         
-        // Determine if the top of the footer is visible before resizing
-        let isFooterTopVisible = footerTopPositionBefore < viewportHeight;
+            // Determine if the top of the footer is visible before resizing
+            let isFooterTopVisible = footerTopPositionBefore < viewportHeight;
     
-        // Adjust the textarea height
-        this._adjustTextAreaHeight($textArea);
+            // Adjust the textarea height
+            this._adjustTextAreaHeight(this.$textArea);
         
-        // Restore original scroll position, if scrollViewElem exists
-        if (scrollViewElem) {
-            scrollViewElem.scrollTop = originalScrollTop;
-        }
+            // Restore original scroll position, if scrollViewElem exists
+            if (scrollViewElem) {
+                scrollViewElem.scrollTop = originalScrollTop;
+            }
     
-        // Adjust scroll to ensure footer visibility, if necessary
-        this._ensureFooterVisibility(scrollViewElem, originalScrollTop, isFooterTopVisible, viewportHeight);
+            // Adjust scroll to ensure footer visibility, if necessary
+            this._ensureFooterVisibility(scrollViewElem, originalScrollTop, isFooterTopVisible, viewportHeight);
+        });
     }
     
     _getScrollViewElement() {
