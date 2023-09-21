@@ -322,11 +322,14 @@ div.TableView {
     @cubic-bezier1: cubic-bezier(.65, 0, .34, 1);
     @easeInSine: cubic-bezier(0.47, 0, 0.745, 0.715);
 
-
+    display: flex;
+    flex-direction: column;
+ 
     div.tableViewContainer {
         // Styles for the overall container
         display: flex;
         flex-direction: column;
+        height: 100%;
 
         div.tableViewHeader {
             // Styles for the table header
@@ -340,8 +343,8 @@ div.TableView {
             // Styles for the main table content
             display: flex;
             flex-direction: column;
-            overflow-y: scroll;
-            height: 100vh;
+            flex: 1;  // This will make it take up all available space left
+            overflow-y: auto;  // To ensure scrollability when the content overflows
             position: relative;
 
             @keyframes rotate {
