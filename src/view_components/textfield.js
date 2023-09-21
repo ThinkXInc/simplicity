@@ -38,6 +38,7 @@ class TextFieldConfig extends FormComponentBaseConfig {
         passwordMode = false,
         defaultValue = null,
         onDisableClassName = 'onDisable',
+        onFocusClassName = 'focus',
         shouldTrackLocalChangeInCookie = true,
         cookieExclude = false,
         hasCookiePrefix = false,
@@ -70,6 +71,7 @@ class TextFieldConfig extends FormComponentBaseConfig {
         this.passwordMode = passwordMode;
         this.defaultValue = defaultValue;
         this.onDisableClassName = onDisableClassName;
+        this.onFocusClassName = onFocusClassName;
         this.shouldTrackLocalChangeInCookie = shouldTrackLocalChangeInCookie;
         this.cookieExclude = cookieExclude;
         this.hasCookiePrefix = hasCookiePrefix;
@@ -569,10 +571,20 @@ class TextField extends FormComponentBase {
         debuglog(`Set the blur event handler for ${this.__id__}.`);
         this.$textArea.addEventListener('blur', () => {
             console.log(`[event] blur -> ${_this.$textArea.value}`)
+            if (_this.config.onFocusClassName) {
+                _this.$view.classList.remove(_this.config.onFocusClassName);
+            }
             if (this.viewController && typeof this.viewController.textFieldOnBlur === "function") {
                 this.viewController.textFieldOnBlur(this, _this.$textArea.value);
             } else {
                 console.error('ViewController not set or textFieldOnBlur not a function');
+            }
+        });
+
+        debuglog(`Set the focus event handler for ${this.__id__}.`);
+        this.$textArea.addEventListener('focus', () => {
+            if (_this.config.onFocusClassName) {
+                _this.$view.classList.add(_this.config.onFocusClassName);
             }
         });
     }
