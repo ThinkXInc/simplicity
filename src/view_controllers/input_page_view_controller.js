@@ -702,7 +702,7 @@ class InputPageViewController {
     _onSubmitSuccess(res) {
         // Success object returned.
         if (!('error' in res)) {
-            console.log(`[success] ${res.success.code} ${res.success.message}`);
+            console.log(`[success] ${res.code} ${res.message}`);
             this.alertMessage.hide()
 
             setTimeout(() => { this.stopLoading(); }, 1000);
