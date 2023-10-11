@@ -58,7 +58,7 @@ class PollingManager {
         const expectedValue = responseData[expectedKey];
 
         if (!expectedValue) { // check if it exists or is non-empty
-            if (responseData.success && responseData.success.message) {
+            if (responseData.success && responseData.success.message || responseData.code == 202) {
                 console.log("Still waiting for processing...");
                 return false;
             } else {
