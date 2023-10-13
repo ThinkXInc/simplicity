@@ -57,6 +57,10 @@ class PollingManager {
 
         const expectedValue = responseData[expectedKey];
 
+        // NOTE: This doesn't allow even the empty string.
+        // If the empty string is allowed, change to `expectedValue == null` 
+        // and we need to disable the "reqired" option in title.
+        // The 7B model sometimes miss title.
         if (!expectedValue) { // check if it exists or is non-empty
             if (responseData.success && responseData.success.message || responseData.code == 202) {
                 console.log("Still waiting for processing...");
