@@ -680,7 +680,7 @@ class InputPageViewController {
      * 
      * Example Success Response:
      * {
-     *   'saved_data': user.response_json(),
+     *   'data': user.response_json(),
      *   'user_id': user_id,
      *   'success': {
      *       'code': 201,
@@ -690,7 +690,7 @@ class InputPageViewController {
      * 
      * Example Error Response:
      * {
-     *   'saved_data': user.response_json(),
+     *   'data': user.response_json(),
      *   'error': {
      *     'key': 'user_id',
      *     'code': ErrorCode.BAD_REQUEST.value,
