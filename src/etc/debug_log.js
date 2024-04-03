@@ -3,6 +3,8 @@ let DEBUG = true;
 
 function debuglog(message) {
     if (DEBUG) {
-        console.log(message);
+        const e = new Error();
+        const stack = e.stack.toString().split(/\r\n|\n/);
+        console.log(`${message} (${stack[2].trim()})`);
     }
 }
