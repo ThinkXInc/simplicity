@@ -54,7 +54,7 @@
  * 
  * // Initialize the TextField
  * let titleField = new TextField(
- *     'parentView',  // parent_id
+ *     'parentView',  // parentId
  *     'titleField',  // id
  *     TextFieldType.multiplelines,  // single or multi
  *     'title(reqired)',  // title
@@ -133,7 +133,7 @@ class InputPageViewControllerProtocol {
  * InputPageViewController - This class is responsible for managing the user interactions on the input page, 
  * ensuring protocol adherence of its various components, and managing the state of the page.
  *
- * @param {string} parent_id - The id of the parent element where this controller's view will be appended.
+ * @param {string} parentId - The id of the parent element where this controller's view will be appended.
  * @param {string} id - The id for this page view controller instance.
  * @param {Array} pages - An array containing the components to be displayed on each page. Each element of the array should be an array of components.
  * @param {Object} dataModelClass - The class of the data model that this controller will use to store its state.
@@ -215,23 +215,23 @@ class InputPageViewController {
     _lang = null;  // Language of the user
 
     constructor(
-            parent_id,
-            view_controller_id,
+            parentId,
+            viewControllerId,
             pages,
             locale,
             lang,
             dataModelClass,
             url,
             loading,
-            alertMesage = new AlertMessage(view_controller_id, `${view_controller_id}__AlertMessage`),
+            alertMesage = new AlertMessage(viewControllerId, `${viewControllerId}__AlertMessage`),
             defaultPageIndex = 0,
             isEnterButtonToNext = true,
             isPageIndexInHash = false,
             preventDefaultPageControl = false
             ) {
-        this.__parent_id__ = parent_id;
-        this.__id__ = view_controller_id;
-        this.__submit_url__ = url;
+        this.parentId = parentId;
+        this.id = viewControllerId;
+        this.submitUrl = url;
         this.locale = locale;
         this.lang = lang;
 
@@ -253,12 +253,12 @@ class InputPageViewController {
         this._setEventHandlers();
 
         // data model
-        this.__data_model__ = dataModelClass;
+        this.dataModel = dataModelClass;
         //this._resetValuesInCookie(); // DEBUG:
 
         // defalut values are set to each component
         console.table(this._values);
-        console.log(`data model for ${this.__id__} initialized`);
+        console.log(`data model for ${this.id} initialized`);
 
         // locale
         console.log(locale);
@@ -366,7 +366,7 @@ class InputPageViewController {
                 _values[component.__field_name__] = component.value;
             }
         });
-        return new this.__data_model__(_values);
+        return new this.dataModel(_values);
     }
 
     /**
@@ -387,28 +387,28 @@ class InputPageViewController {
      */
     _setElements(pages) {
         if (pages.length == 0) {
-            console.error(`${this.__id__} requires a list of pages with components.`)
+            console.error(`${this.id} requires a list of pages with components.`)
         }
 
         // create view
-        if (this.__parent_id__) {
-            this.$parentView = document.getElementById(this.__parent_id__);
+        if (this.parentId) {
+            this.$parentView = document.getElementById(this.parentId);
             if (this.$parentView == null) {
                 console.error(
-                    `The parent element id=${this.__parent_id__} is necessary in HTML.`);
+                    `The parent element id=${this.parentId} is necessary in HTML.`);
             }
             let $inputPageView = document.createElement('div');
-            $inputPageView.id = this.__id__;
+            $inputPageView.id = this.id;
             $inputPageView.classList.add('inputPageView')
             this.$inputPageView = $inputPageView;
             this.$parentView.prepend($inputPageView)
         } else {
-            let $inputPageView = document.getElementById(this.__id__);
+            let $inputPageView = document.getElementById(this.id);
             if ($inputPageView == null) {
                 console.error(
-                    `The id=${this.__id__} is necessary in HTML.`);
+                    `The id=${this.id} is necessary in HTML.`);
             }
-            $inputPageView.id = this.__id__;
+            $inputPageView.id = this.id;
             $inputPageView.classList.add('inputPageView')
             this.$inputPageView = $inputPageView;
             this.$view = $inputPageView;
@@ -431,7 +431,7 @@ class InputPageViewController {
         $pagesContainer.classList.add('inputPageViewPages');
 
         pages.forEach((page, i) => {
-            console.log(`${this.__id__} page ${i} has ${page.components.length} components.`);
+            console.log(`${this.id} page ${i} has ${page.components.length} components.`);
    
             page.setElements(i);
 
@@ -458,7 +458,7 @@ class InputPageViewController {
     _setPageComponent(component, page, pageIndex, componentIndex) {
         if (component.constructor.name == "Wrapper") {
             let $wrapper = document.createElement('div');
-            $wrapper.id = component.__id__;
+            $wrapper.id = component.id;
             $wrapper.classList.add('wrapper');
             component.components.forEach((componentInWrapper, k) => {
                 this._setPageComponent(componentInWrapper, $wrapper, pageIndex, k);
@@ -466,9 +466,9 @@ class InputPageViewController {
                 componentInWrapper.setPageIndex(pageIndex);
             });
         } else {
-            let _id = component.__id__;
+            let _id = component.id;
             if (_id == null) {
-                console.error(`page ${pageIndex} component ${componentIndex}: no __id__ is set in the instance.`);
+                console.error(`page ${pageIndex} component ${componentIndex}: no id is set in the instance.`);
             }
     
             // Set the viewController for the component
@@ -571,7 +571,7 @@ class InputPageViewController {
                 console.log(`${component.__field_name__} removed from cookie.`);
             }
         });
-        console.log(`Reset all cookies for ${this.__id__}.`);
+        console.log(`Reset all cookies for ${this.id}.`);
     }
 
     /**
@@ -603,7 +603,7 @@ class InputPageViewController {
      * @param {NextButton} nextButton - The next button instance that was tapped.
      */
     nextButtonTapped(nextButton) {
-        console.debug(`Button ${nextButton.__id__} tapped.`);
+        console.debug(`Button ${nextButton.id} tapped.`);
         console.log(this.values);
         console.log(this.getValuesFromCookies());
         
@@ -614,7 +614,7 @@ class InputPageViewController {
         // If not the last page, navigate to the next page. If it is the last page, submit the data.
         const isLastPage = this.pageIndex == this.pages.length - 1;
         if (isLastPage) {
-            this._submitData(this.__submit_url__);
+            this._submitData(this.submitUrl);
         } else {
             this._navigateToNextPage();
         }
@@ -788,7 +788,7 @@ class InputPageViewController {
      * @throws {Error} Will throw an error if the method is not overridden in a child class.
      */
     backButtonTapped(backButton) {
-        debuglog(`button ${backButton.__id__} tapped.`);
+        debuglog(`button ${backButton.id} tapped.`);
         if (this.pageIndex > 0) {
             this.pageIndex = this.pageIndex - 1;
         }
@@ -802,13 +802,13 @@ class InputPageViewController {
      */
     textFieldInputValueChanged(textField, value) {
         if(typeof this.valueChanged !== 'function'){
-            throw new Error(`Instance ${this.__id__} must implement the method valueChanged in subclass!`);
+            throw new Error(`Instance ${this.id} must implement the method valueChanged in subclass!`);
         }
-        console.log(`textField ${textField.__id__} input with value ${value}.`);
+        console.log(`textField ${textField.id} input with value ${value}.`);
         this.valueChanged(textField, value);
         //this._setValueForKey(textField.__field_name__, value)
         //if(typeof this._setValueForKey !== 'function'){
-        //    throw new Error(`Instance ${this.__id__} must implement the method _setValueForKey in subclass!`);
+        //    throw new Error(`Instance ${this.id} must implement the method _setValueForKey in subclass!`);
         //}
     }
 
@@ -820,9 +820,9 @@ class InputPageViewController {
      */
     textFieldOnBlur(textField, value) {
         if(typeof this.unfocused !== 'function'){
-            throw new Error(`Instance ${this.__id__} must implement the method unfocused in subclass!`);
+            throw new Error(`Instance ${this.id} must implement the method unfocused in subclass!`);
         }
-        console.log(`textField ${textField.__id__} onblur with value ${value}.`);
+        console.log(`textField ${textField.id} onblur with value ${value}.`);
         this.unfocused(textField, value);
     }
 
@@ -835,7 +835,7 @@ class InputPageViewController {
      * @param {string} value
      */
     dropdownButtonSelected(dropdownButton, value) {
-        console.log(`dropdownButton ${dropdownButton.__id__} selected with value ${value}.`);
+        console.log(`dropdownButton ${dropdownButton.id} selected with value ${value}.`);
         this.unfocused(dropdownButton, value);
         this.valueChanged(dropdownButton, value);
         // NOTE: override this function
@@ -850,7 +850,7 @@ class InputPageViewController {
      * @param {Coordinate} newCoordinate 
      */
     positionMapPointerCoordinateUpdated(positionMap, newCoordinate) {
-        console.log(`positionMap ${positionMap.__id__}.pointerCoordinate updated with value ${newCoordinate.lat} ${newCoordinate.lng}`);
+        console.log(`positionMap ${positionMap.id}.pointerCoordinate updated with value ${newCoordinate.lat} ${newCoordinate.lng}`);
         const keyLat = `${positionMap.__field_name_lat__}`;
         const keyLng = `${positionMap.__field_name_lng__}`;
         this.valueChanged(positionMap, newCoordinate);
@@ -911,7 +911,7 @@ class InputPageViewController {
      * @return {string|null} - The error message if validation fails, or null if it passes.
      */
     _validateComponent(component) {
-        debuglog(`Validating component: ${component.__id__}`)
+        debuglog(`Validating component: ${component.id}`)
         return component.validate()
     }
 
@@ -973,9 +973,9 @@ class InputPageViewController {
      * Start loading. Implement this in subclass.
      */
     startLoading() {
-        debuglog(`start loading.. ${this.loading.__id__}`)
+        debuglog(`start loading.. ${this.loading.id}`)
         if (this.loading == null) {
-            console.warn(`no loading is set in ${this.__id__}`);
+            console.warn(`no loading is set in ${this.id}`);
             return
         }
         this.loading.startLoading();
@@ -986,9 +986,9 @@ class InputPageViewController {
      * Stop loading. Implement this in subclass.
      */
     stopLoading() {
-        debuglog(`stop loading. ${this.loading.__id__}`)
+        debuglog(`stop loading. ${this.loading.id}`)
         if (this.loading == null) {
-            console.warn(`no loading is set in ${this.__id__}`);
+            console.warn(`no loading is set in ${this.id}`);
             return
         }
         this.loading.stopLoading();
@@ -1022,16 +1022,16 @@ class InputPageViewController {
     /**
      * Returns a component by id.
      * 
-     * @param {string} __id__
+     * @param {string} id
      */
-    componentById(__id__) {
+    componentById(id) {
         for (let component of this._components) {
-            if (component.__id__ === __id__) {
-                debuglog(`componentByFieldName found component by ${__id__}`);
+            if (component.id === id) {
+                debuglog(`componentByFieldName found component by ${id}`);
                 return component;
             }
         }
-        console.warn(`component ${__id__} not found in component list.`);
+        console.warn(`component ${id} not found in component list.`);
         return null;  // Return null when the component is not found
     }
 

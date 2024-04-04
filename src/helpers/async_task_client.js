@@ -1,6 +1,6 @@
 /***
 [Usage example]
-const HOST = 'quantz.thinkxai.com:8001'
+const HOST = 'quantz.sixths.ai:8001'
 const RequestTokenURL = `https://${HOST}/api/request-token`
 const taskHandlers = {
     'title_keywords': (messageObject) => {
