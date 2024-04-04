@@ -121,17 +121,15 @@ class InputPageViewController {
         console.log(`data model for ${this.id} initialized`);
 
         // locale
-        console.log(locale);
-        console.log(lang);
         if (this.locale == null) {
-            console.warn(`no locale json data found.`);
+            console.error(`${id} no locale json data found.`);
         } else {
-            console.log('locale json data found');
+            console.log(`${id} locale json data found`);
         }
         if (this.lang == null) {
-            console.warn(`no language information is given.`);
+            console.error(`${id} no language information is given.`);
         } else {
-            console.log(`initial language is set as ${lang}`);
+            console.log(`${id} initial language is set as ${lang}`);
         }
 
         // loading
@@ -222,8 +220,8 @@ class InputPageViewController {
     get values() {
         let _values = {};
         this._components.forEach((component, i) => {
-            if (component.__field_name__) {
-                _values[component.__field_name__] = component.value;
+            if (component.fieldName) {
+                _values[component.fieldName] = component.value;
             }
         });
         return new this.dataModel(_values);
@@ -377,28 +375,28 @@ class InputPageViewController {
      * 
      * Get values from Cookie.
      * 
-     * @returns {dict} field values {field_name1: value1, ..}
+     * @returns {dict} field values {fieldName1: value1, ..}
      */
     getValuesFromCookies() {
         let valuesInCookie = {};
         this._components.forEach((component) => {
             if (component instanceof TextField || component instanceof DropdownButton) {
-                const name = `${component.__field_name__}`;
+                const name = `${component.fieldName}`;
                 const value = Cookies.get(name);
                 if (value != null) {
-                    valuesInCookie[component.__field_name__] = Cookies.get(name);
+                    valuesInCookie[component.fieldName] = Cookies.get(name);
                 }
             }
             if (component instanceof PositionMap) {
-                const name_lat = `${component.__field_name_lat__}`;
-                const name_lng = `${component.__field_name_lng__}`;
+                const name_lat = `${component.fieldNameLat}`;
+                const name_lng = `${component.fieldNameLng}`;
                 const value_lat = Cookies.get(name_lat);
                 const value_lng = Cookies.get(name_lng);
                 if (value_lat != null) {
-                    valuesInCookie[component.__field_name_lat__] = Cookies.get(name_lat);
+                    valuesInCookie[component.fieldNameLat] = Cookies.get(name_lat);
                 }
                 if (value_lng != null) {
-                    valuesInCookie[component.__field_name_lng__] = Cookies.get(name_lng);
+                    valuesInCookie[component.fieldNameLng] = Cookies.get(name_lng);
                 }
             }
         })
@@ -415,7 +413,7 @@ class InputPageViewController {
         this._components.forEach((component) => {
             if (Utils.isInheritedFrom(component, FormComponentBase)) {
                 component._removeValueInCookies();
-                console.log(`${component.__field_name__} removed from cookie.`);
+                console.log(`${component.fieldName} removed from cookie.`);
             }
         });
         console.log(`Reset all cookies for ${this.id}.`);
@@ -564,9 +562,9 @@ class InputPageViewController {
             // Handle by error types
             let isFirstErrorHandled = false;
             res.errors.forEach((error) => {
-                console.warn(`[field_name] ${error.field_name} [message] ${error.message}`);
+                console.warn(`[fieldName] ${error.fieldName} [message] ${error.message}`);
             
-                let component = this.componentByFieldName(error.field_name);
+                let component = this.componentByFieldName(error.fieldName);
                 component.alert(true, error.message);
             
                 if (!isFirstErrorHandled) {
@@ -653,7 +651,7 @@ class InputPageViewController {
         }
         console.log(`textField ${textField.id} input with value ${value}.`);
         this.valueChanged(textField, value);
-        //this._setValueForKey(textField.__field_name__, value)
+        //this._setValueForKey(textField.fieldName, value)
         //if(typeof this._setValueForKey !== 'function'){
         //    throw new Error(`Instance ${this.id} must implement the method _setValueForKey in subclass!`);
         //}
@@ -686,7 +684,7 @@ class InputPageViewController {
         this.unfocused(dropdownButton, value);
         this.valueChanged(dropdownButton, value);
         // NOTE: override this function
-        //this._setValueForKey(dropdownButton.__field_name__, value)
+        //this._setValueForKey(dropdownButton.fieldName, value)
     }
 
     /**
@@ -698,8 +696,8 @@ class InputPageViewController {
      */
     positionMapPointerCoordinateUpdated(positionMap, newCoordinate) {
         console.log(`positionMap ${positionMap.id}.pointerCoordinate updated with value ${newCoordinate.lat} ${newCoordinate.lng}`);
-        const keyLat = `${positionMap.__field_name_lat__}`;
-        const keyLng = `${positionMap.__field_name_lng__}`;
+        const keyLat = `${positionMap.fieldNameLat}`;
+        const keyLng = `${positionMap.fieldNameLng}`;
         this.valueChanged(positionMap, newCoordinate);
         //this._setValuesForKeys(
         //    {
@@ -857,7 +855,7 @@ class InputPageViewController {
      */
     componentByFieldName(fieldName) {
         for (let component of this._components) {
-            if (component.__field_name__ === fieldName) {
+            if (component.fieldName === fieldName) {
                 debuglog(`componentByFieldName found component by ${fieldName}`);
                 return component;
             }

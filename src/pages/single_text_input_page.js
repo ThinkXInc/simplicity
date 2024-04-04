@@ -4,7 +4,7 @@
  * @param {string} pageId - The id of this page.
  * @param {object} locale - The dictionary containing localized strings.
  * @param {string} lang - The current language. Default is 'en'.
- * @param {string} field_name - The name of the field, used to create component id and locale keys. Default is 'single_text_input_field'.
+ * @param {string} fieldName - The name of the field, used to create component id and locale keys. Default is 'single_text_input_field'.
  * @param {number} max_text_length - The maximum character count for the text field. Default is 140.
  * @param {number} init_rows - The initial number of rows in the text field. Default is 1.
  * @param {Array} validators - An array of Validator objects that should be used to validate the TextField. Default is an empty array.
@@ -24,27 +24,27 @@
  */
 class SingleTextInputPage extends Page {
     constructor(pageId, locale, lang = 'en', 
-                field_name = 'single_text_input_field', 
+                fieldName = 'single_text_input_field', 
                 max_text_length = 140, init_rows = 1, validators = [],
                 hasBackButton = true,
                 ) {
         debuglog(`SingleTextInputPage initialize : pageId: ${pageId}`);
         // define default ids and locale keys
-        let field_component_id = Page.generateComponentId(pageId, 'TextField', field_name);
+        let field_component_id = Page.generateComponentId(pageId, 'TextField', fieldName);
         let next_button_component_id = Page.generateComponentId(pageId, 'NextButton', 'next_button');
         let back_button_component_id = Page.generateComponentId(pageId, 'BackButton', 'back_button');
         let title_component_id = Page.generateComponentId(pageId, 'Title');
         
         // Locale keys are generated as {pageId}__{component class name}__{field name}__{role}
-        let locale_key_field_title = Page.createLocaleKey(pageId, 'TextField', field_name, 'title');
-        let locale_key_field_placeholder = Page.createLocaleKey(pageId, 'TextField', field_name, 'placeholder');
+        let locale_key_field_title = Page.createLocaleKey(pageId, 'TextField', fieldName, 'title');
+        let locale_key_field_placeholder = Page.createLocaleKey(pageId, 'TextField', fieldName, 'placeholder');
         let locale_key_title = Page.createLocaleKey(pageId, 'Title', 'title');
         let locale_key_back_button = Page.createLocaleKey(pageId, 'BackButton', 'title');
         let locale_key_next_button = Page.createLocaleKey(pageId, 'NextButton', 'title');
 
         let textField = new TextField(
             field_component_id,
-            field_name,
+            fieldName,
             TextFieldType.singleline,
             locale.get(locale_key_field_title, lang),
             locale.get(locale_key_field_placeholder, lang),

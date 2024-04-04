@@ -87,8 +87,8 @@ let settings = {
  */
 class PositionMap extends ViewComponentBase{
     id;
-    __field_name_lat__;
-    __field_name_lng__;
+    fieldNameLat;
+    fieldNameLng;
 
     //_googlemapSource = `<script src='https://maps.googleapis.com/maps/api/js?key=${app.config.GOOGLEMAP_API_KEY}&callback=initMap' async defer></script>`
 
@@ -102,8 +102,8 @@ class PositionMap extends ViewComponentBase{
 
         this.config = config;
 
-        this.__field_name_lat__ = this.config.fieldNameLat;
-        this.__field_name_lng__ = this.config.fieldNameLng;
+        this.fieldNameLat = this.config.fieldNameLat;
+        this.fieldNameLng = this.config.fieldNameLng;
         this._label = this.config.label;
 
         // set map center coordinate
@@ -162,8 +162,8 @@ class PositionMap extends ViewComponentBase{
      * @param {*} value 
      */
     _setValueToCookies(mapCoordinate) {
-        const cookieNameLat = `${prefix}__${component.__field_name_lat__}`;
-        const cookieNameLng = `${prefix}__${component.__field_name_lng__}`;
+        const cookieNameLat = `${prefix}__${component.fieldNameLat}`;
+        const cookieNameLng = `${prefix}__${component.fieldNameLng}`;
      
         if (!this.config.cookieExclude) {
             Cookies.set(cookieNameLat, mapCoordinate.lat, { expires: 3, secure: true, sameSite: 'strict' });

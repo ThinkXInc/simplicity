@@ -91,7 +91,7 @@ class ListMenu {
  *         'countrySelectButton', // id
  *         'Your Country', // title
  *         'Please select your country.', // description
- *         'country', // field_name
+ *         'country', // fieldName
  *         DropdownMenuType.list, // type
  *         DropdownMenuDisplayPositionType.upper, // position
  *         listMenuItems, // listMenuItems
@@ -109,13 +109,13 @@ class ListMenu {
  */
 class DropdownButton extends ViewComponentBase{
 
-    constructor(id, field_name, listMenuItems, config = new DropdownButtonConfig()) {
+    constructor(id, fieldName, listMenuItems, config = new DropdownButtonConfig()) {
         super(id, config);
         this.config = config;
 
         this.items = listMenuItems;
 
-        this.__field_name__ = field_name;
+        this.fieldName = fieldName;
         this.__width__ = null;  // TODO: widelist
         this._state = DropdownButtonState.onclose;
         this._selectedValue = null;

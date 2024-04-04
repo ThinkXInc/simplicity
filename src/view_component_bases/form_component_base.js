@@ -19,21 +19,21 @@ class FormComponentBaseConfig extends ViewComponentConfig {
  * FormComponentBase is a base class for form components, providing functionalities to handle
  * form field values and their interactions with cookies. 
  * 
- * The constructor takes in several parameters, including field_name for identifying the form field,
+ * The constructor takes in several parameters, including fieldName for identifying the form field,
  * and other parameters for cookie handling (like cookieExclude, hasCookiePrefix and isDefaultValueRestoredFromCookie).
  * 
  * Other methods like _getValueFromCookies(), _setValueToCookies(value), _removeValueInCookies() and 
  * _restoreValueFromCookie() provide utilities for interacting with the cookies.
  */
 class FormComponentBase extends ViewComponentBase {
-    constructor(id, field_name, config = new FormComponentBaseConfig()) {
+    constructor(id, fieldName, config = new FormComponentBaseConfig()) {
         super(id, config);
         this.config = config;
         this.validators = config.validators;
 
-        this.__field_name__ = field_name;
+        this.fieldName = fieldName;
         this.__cookie_prefix__ = this.config.hasCookiePrefix ? `${this.config.cookiePrefix}__` : '';
-        this.__cookie_name__ = `${this.__cookie_prefix__}${field_name}`;
+        this.__cookie_name__ = `${this.__cookie_prefix__}${fieldName}`;
 
         // Set the default value.
         // This will trigger the setter and save the value to cookies.

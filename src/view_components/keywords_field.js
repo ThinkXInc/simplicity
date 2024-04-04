@@ -96,7 +96,7 @@ class KeywordsField extends TextField {
      /**
      * @constructor
      * @param {string} id - ID for the keyword field
-     * @param {string} field_name - The name attribute for the input field
+     * @param {string} fieldName - The name attribute for the input field
      * @param {string} locale - The locale for the field (e.g., 'en', 'fr')
      * @param {string} lang - The language of the content
      * @param {function[]} validators - Array of validation functions
@@ -104,7 +104,7 @@ class KeywordsField extends TextField {
      */
      constructor(
         id,
-        field_name,
+        fieldName,
         locale,
         lang,
         config = new KeywordsFieldConfig()
@@ -112,7 +112,7 @@ class KeywordsField extends TextField {
         
         super(
             id, 
-            field_name, 
+            fieldName, 
             locale,
             lang,
             config
@@ -120,7 +120,7 @@ class KeywordsField extends TextField {
 
         this.id = id,
         this.locale = locale;
-        this.__lang__ = lang;
+        this.lang = lang;
 
         this._addElements();
         this._addEventHandlers();
@@ -173,7 +173,7 @@ class KeywordsField extends TextField {
      *                  </span>
      *              </li>
      *          </ul>
-     *          <input class="{this.__field_name__}form" name="{this.__field_name__}" type="text" autocomplete="off">
+     *          <input class="{this.fieldName}form" name="{this.fieldName}" type="text" autocomplete="off">
      *          <div class="footer">
      *              <span class="indicator"></span>
      *              <span class="message"></span>

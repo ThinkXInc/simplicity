@@ -96,11 +96,10 @@ const TextFieldPlaceTo = Object.freeze({
  * for more granular control over its properties.
  * 
  * HTML Structure:
- * ```
  *  <div id="{this.id}" class="textField">
  *      <div class="inputOuter">
  *          <h6 class="title">{this.__title__}</h6>
- *          <input class="{this.__field_name__}form" name="{this.__field_name__}" type="text" autocomplete="off">
+ *          <input class="{this.fieldName}form" name="{this.fieldName}" type="text" autocomplete="off">
  *          <div class="footer">
  *              <span class="indicator"></span>
  *              <span class="message"></span>
@@ -108,54 +107,17 @@ const TextFieldPlaceTo = Object.freeze({
  *          </div>
  *      </div>
  *  </div>
- * ```
- *
- * Example usage:
- * ```javascript
- *  // Initialize the validators
- *  let requiredValidator = new Validator(titleField, ValidationErrorType.required, 'This field is required');
- *  let lengthValidator = new Validator(titleField, ValidationErrorType.length, 'The length of the text exceeds the limit', [140]);  // assuming max length of 140
- * 
- *  let validators = [requiredValidator, lengthValidator];
- *
- *  // Configuration for TextField
- *  let config = new TextFieldConfig({
- *      maxTextLength: 140,
- *      initRows: 4,
- *      verticalFlex: false,
- *      hasTitle: true,
- *      passwordMode: false
- *  });
- * 
- *  // Initialize the TextField
- *  let titleField = new TextField(
- *      'parentView',
- *      'titleField',
- *      'title',
- *      TextFieldType.multiplelines,
- *      'title(reqired)',
- *      'Mona Lisa Title and subject',
- *      validators,
- *      config
- *  );
- * ```
- *
- * @param {string} id - The id for the TextField element.
- * @param {string} field_name - The name attribute for the TextField.
- * @param {Locale} locale - locale object.
- * @param {string} lang - locale string.
- * @param {TextFieldConfig} [config] - Configuration object for more granular customization. Defaults to a new TextFieldConfig object.
- */
+  */
 class TextField extends FormComponentBase {
-    constructor(id, field_name, locale, lang, config = new TextFieldConfig()) {
-        super(id, field_name, config);
+    constructor(id, fieldName, locale, lang, config = new TextFieldConfig()) {
+        super(id, fieldName, config);
 
         // set config
         this.config = config;
 
         const options = [
-            {name: '__lang__', value: lang, type: 'string'},
-            {name: '__field_name__', value: field_name, type: 'string'},
+            {name: 'lang', value: lang, type: 'string'},
+            {name: 'fieldName', value: fieldName, type: 'string'},
         ];
 
         options.forEach(option => {
@@ -164,7 +126,7 @@ class TextField extends FormComponentBase {
         
             // Special case for 'string|null'
             if (typeof this[option.name] !== option.type) {
-                console.error(`${option.name.replace('__', '')} must be of type ${option.type}, but got ${typeof option.value}`);
+                console.error(`${option.name} must be of type ${option.type}, but got ${typeof option.value}`);
             }
         });
  
@@ -238,7 +200,7 @@ class TextField extends FormComponentBase {
                     }
                 }
             } else {
-                console.warn(`Cookie is not set for key ${this.__field_name__} since the value is not valid.`)
+                console.warn(`Cookie is not set for key ${this.fieldName} since the value is not valid.`)
             }
         }
     }
@@ -409,8 +371,8 @@ class TextField extends FormComponentBase {
         $inputOuter.appendChild($inputWrapper);
     
         const $inputElem = document.createElement(this.config.type == TextFieldType.singleline ? 'input' : 'textarea');
-        $inputElem.className = this.__field_name__ + 'form';
-        $inputElem.name = this.__field_name__;
+        $inputElem.className = this.fieldName + 'form';
+        $inputElem.name = this.fieldName;
         if ($inputElem instanceof HTMLInputElement) {
             $inputElem.type = 'text';
         }
@@ -698,7 +660,7 @@ class TextField extends FormComponentBase {
      * <div id="{this.id}" class="textField alert">
      *    <div class="inputOuter">
      *        <h6 class="title">{this.__title__}</h6>
-     *        <input class="{this.__field_name__}form" name="{this.__field_name__}" type="text" autocomplete="off">
+     *        <input class="{this.fieldName}form" name="{this.fieldName}" type="text" autocomplete="off">
      *        <div class="footer cf">
      *            <span class="indicator"></span>
      *            <span class="message"></span>

@@ -12,22 +12,14 @@
  */
 class Page {
     components;
-
-    /**
-     * Create a Page instance.
-     *
-     * @param {string} id
-     * @param {Array} components - The array of components to initialize the page with.
-     * Each component should be an instance of ViewComponentBase or Wrapper.
-     * @throws {Error} Throws an error if the components parameter is not an array or
-     * if any element in the components array is not an instance of ViewComponentBase or Wrapper.
-     */
     constructor(id, components = []) {
         debuglog(`Construct ${id}`)
         this.id = id;
 
+        console.log(id);
         console.log(components);
         if (!Array.isArray(components)) {
+            console.log(components)
             throw new Error(`Components must be an array, but got ${typeof components}.`);
         }
 
@@ -68,7 +60,7 @@ class Page {
      * 
      * @param {string} pageId - The ID of the current page.
      * @param {string} component_class_name - The class name of the component.
-     * @param {string} [field_name=""] - Optional. The name of the field, if the component is a form.
+     * @param {string} [fieldName=""] - Optional. The name of the field, if the component is a form.
      * @param {string} [role=""] - Optional. The role of the component.
      * 
      * @returns {string} The created component ID.
@@ -77,11 +69,11 @@ class Page {
      * generateComponentId('lastNameFirstNamePage', 'TextField', 'first_name')
      * returns 'lastNameFirstNamePage__TextField__first_name'
      */
-    static generateComponentId(pageId, component_class_name, field_name = "", role = "") {
+    static generateComponentId(pageId, component_class_name, fieldName = "", role = "") {
         let parts = [pageId, component_class_name];
     
-        if (field_name) {
-            parts.push(field_name);
+        if (fieldName) {
+            parts.push(fieldName);
         }
     
         if (role) {
@@ -96,7 +88,7 @@ class Page {
      * 
      * @param {string} id - The page id 
      * @param {string} component_class_name - The class name of the component.
-     * @param {string} [field_name=""] - Optional. The name of the field, if the component is a form.
+     * @param {string} [fieldName=""] - Optional. The name of the field, if the component is a form.
      * @param {string} [role=""] - Optional. The role of the component.
      * 
      * @returns {string} The created locale key.
@@ -105,11 +97,11 @@ class Page {
      * createLocaleKey('LastNameFirstNamePage', 'TextField', 'first_name', 'title')
      * returns 'LastNameFirstNamePage__TextField__first_name__title'
      */
-    static createLocaleKey(id, component_class_name, field_name = "", role = "") {
+    static createLocaleKey(id, component_class_name, fieldName = "", role = "") {
         let parts = [id, component_class_name];
 
-        if (field_name) {
-            parts.push(field_name);
+        if (fieldName) {
+            parts.push(fieldName);
         }
 
         if (role) {
