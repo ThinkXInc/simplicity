@@ -1,7 +1,6 @@
 /**
  * SelectOptionsPage is a subclass of Page that specifically represents a page with a set of options, title, and back/next buttons.
  *
- * @param {string} parent_id - The id of the parent element in which this page is placed.
  * @param {string} id - The id for the page.
  * @param {array} options - The array of Option objects to present in the page.
  * @param {object} locale - The dictionary containing localized strings.
@@ -29,17 +28,16 @@ class SelectOptionsPage extends Page {
     __back_button_component_id__ = 'selectOptionsPageBackButton';
     __title_component_id__ = 'selectOptionsPageTitle';
 
-    constructor(parent_id, id, options, locale, lang = 'en',
+    constructor(id, options, locale, lang = 'en',
                 locale_key_title = 'select_options_title',
                 locale_key_back_button = 'select_options_back_button_text',
                 locale_key_next_button = 'select_options_next_button_text') {
         
-        let title = new Title(parent_id, this.__title_component_id__, locale[locale_key_title][lang]);
-        let backButton = new BackButton(parent_id, this.__back_button_component_id__, locale[locale_key_back_button][lang]);
-        let nextButton = new NextButton(parent_id, this.__next_button_component_id__, locale[locale_key_next_button][lang]);
+        let title = new Title(this.__title_component_id__, locale[locale_key_title][lang]);
+        let backButton = new BackButton(this.__back_button_component_id__, locale[locale_key_back_button][lang]);
+        let nextButton = new NextButton(this.__next_button_component_id__, locale[locale_key_next_button][lang]);
 
         let optionField = new OptionField(
-            parent_id,
             this.__options_component_id__,
             options, 
             // assuming other required parameters here like HTML tag, validators, etc.
@@ -47,6 +45,6 @@ class SelectOptionsPage extends Page {
 
         let components = [title, optionField, backButton, nextButton];
 
-        super(parent_id, id, components);
+        super(id, components);
     }
 }

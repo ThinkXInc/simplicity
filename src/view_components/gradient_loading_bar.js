@@ -27,13 +27,11 @@ class GradientLoadingBar extends LoadingComponentBase {
     /**
      * Constructs an instance of GradientLoadingBar.
      * 
-     * @param {string} parent_id - The id of the parent element.
      * @param {string} id - The id of the loading component.
      * @param {string} [gradient_pattern=GradientPattern.smilan] - The gradient pattern to be used.
      */
-    constructor(parent_id, id, gradient_pattern = GradientPattern.smilan) {
-        super(parent_id, id);
-        this.__parent_id__ = parent_id;
+    constructor(id, config, gradient_pattern = GradientPattern.smilan) {
+        super(id, config);
         this.__gradient_pattern__ = gradient_pattern;
     }
 

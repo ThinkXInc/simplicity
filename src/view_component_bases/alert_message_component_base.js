@@ -11,13 +11,12 @@ class AlertMessageConfig extends ViewComponentConfig {
  * A base class for AlertMessage components that display or hide a message.
  * Initially, the message is hidden.
  * @constructor
- * @param {string} parent_id - The id of the parent element.
  * @param {string} id - The id for the new element.
  */
  class AlertMessageComponentBase extends ViewComponentBase {
 
-    constructor(parent_id, id, config = new AlertMessageConfig()) {
-        super(parent_id, id, config);
+    constructor(id, config = new AlertMessageConfig()) {
+        super(id, config);
         this.config = config;
     }
 
@@ -33,7 +32,7 @@ class AlertMessageConfig extends ViewComponentConfig {
 
         // create message element and hide it by default
         this.$message = document.createElement('p');
-        this.$message.id = this.__id__ + '__message';
+        this.$message.id = this.id + '__message';
         this.$message.classList.add('AlertMessage__message');
         this.$message.style.display = 'none';  // Initially hidden
         this.$view.appendChild(this.$message);
@@ -44,7 +43,7 @@ class AlertMessageConfig extends ViewComponentConfig {
      * @param {string} text - The message to display.
      */
     show(text) {
-        console.log(`AlertMessage ${this.__id__} show: ${text}`);
+        console.log(`AlertMessage ${this.id} show: ${text}`);
         this.$message.innerText = text;
         this.$message.style.display = 'block';  // Show the message
     }
@@ -53,7 +52,7 @@ class AlertMessageConfig extends ViewComponentConfig {
      * Hides the message in the AlertMessage element.
      */
     hide() {
-        console.log(`AlertMessage ${this.__id__} hide message.`);
+        console.log(`AlertMessage ${this.id} hide message.`);
         this.$message.innerText = '';
         this.$message.style.display = 'none';  // Hide the message
     }

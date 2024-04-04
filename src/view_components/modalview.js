@@ -29,12 +29,10 @@ class ModalViewProtocol {
 // Define ModalView
 class ModalView extends ViewComponentBase {
     constructor(id, config = new ModalViewConfig()) {
-        super(undefined, id, config);
+        super(id, config);
         this.config = config;
         this._setElements();
 
-        console.warn(this.config)
-        console.warn(this.config.shouldCloseOnTapBG)
         if (this.config.shouldCloseOnTapBG) {
             this._initializeCloseOnBackgroundTap();
         }
@@ -102,7 +100,7 @@ class ModalView extends ViewComponentBase {
 
     _initializeCloseOnBackgroundTap() {
         this.$bg.addEventListener('click', (event) => {
-            debuglog(`${this.__id__} bg tapped.`)
+            debuglog(`${this.id} bg tapped.`)
             // Ensure the click event originated from the background itself
             // and not from any of its child elements.
             if (event.target === this.$bg) {

@@ -16,17 +16,15 @@ class Page {
     /**
      * Create a Page instance.
      *
-     * @param {string} parent_id
-     * @param {string} page_id
+     * @param {string} id
      * @param {Array} components - The array of components to initialize the page with.
      * Each component should be an instance of ViewComponentBase or Wrapper.
      * @throws {Error} Throws an error if the components parameter is not an array or
      * if any element in the components array is not an instance of ViewComponentBase or Wrapper.
      */
-    constructor(parent_id, page_id, components = []) {
-        debuglog(`Construct ${page_id}`)
-        this.__parent_id__ = parent_id;
-        this.__id__ = page_id;
+    constructor(id, components = []) {
+        debuglog(`Construct ${id}`)
+        this.id = id;
 
         console.log(components);
         if (!Array.isArray(components)) {
@@ -45,10 +43,11 @@ class Page {
     setElements(pageIndex) {
         // create page DOM element
         this.$view = document.createElement('div');
-        this.$view.id = this.__id__;
+        this.$view.id = this.id;
         this.$view.classList.add('inputPageViewPage');
-        this.$view.classList.add(this.__id__);
+        this.$view.classList.add(this.id);
         this.$view.dataset.pageIndex = pageIndex;
+        debuglog(`page elementId=${this.id} is created. (page index ${pageIndex})`)
     
         // set page index
         this.setPageIndex(pageIndex);
@@ -67,8 +66,7 @@ class Page {
     /**
      * Create a component ID with a consistent format.
      * 
-     * @param {string} parent_id - The ID of the parent component.
-     * @param {string} page_id - The ID of the current page.
+     * @param {string} pageId - The ID of the current page.
      * @param {string} component_class_name - The class name of the component.
      * @param {string} [field_name=""] - Optional. The name of the field, if the component is a form.
      * @param {string} [role=""] - Optional. The role of the component.
@@ -76,11 +74,11 @@ class Page {
      * @returns {string} The created component ID.
      * 
      * Example:
-     * createComponentId('signupView', 'lastNameFirstNamePage', 'TextField', 'first_name')
-     * returns 'signupView__lastNameFirstNamePage__TextField__first_name'
+     * generateComponentId('lastNameFirstNamePage', 'TextField', 'first_name')
+     * returns 'lastNameFirstNamePage__TextField__first_name'
      */
-    static createComponentId(parent_id, page_id, component_class_name, field_name = "", role = "") {
-        let parts = [parent_id, page_id, component_class_name];
+    static generateComponentId(pageId, component_class_name, field_name = "", role = "") {
+        let parts = [pageId, component_class_name];
     
         if (field_name) {
             parts.push(field_name);
@@ -96,7 +94,7 @@ class Page {
     /**
      * Create a locale key with a consistent format.
      * 
-     * @param {string} page_id - The page id 
+     * @param {string} id - The page id 
      * @param {string} component_class_name - The class name of the component.
      * @param {string} [field_name=""] - Optional. The name of the field, if the component is a form.
      * @param {string} [role=""] - Optional. The role of the component.
@@ -107,8 +105,8 @@ class Page {
      * createLocaleKey('LastNameFirstNamePage', 'TextField', 'first_name', 'title')
      * returns 'LastNameFirstNamePage__TextField__first_name__title'
      */
-    static createLocaleKey(page_id, component_class_name, field_name = "", role = "") {
-        let parts = [page_id, component_class_name];
+    static createLocaleKey(id, component_class_name, field_name = "", role = "") {
+        let parts = [id, component_class_name];
 
         if (field_name) {
             parts.push(field_name);

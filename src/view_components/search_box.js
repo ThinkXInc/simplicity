@@ -36,7 +36,7 @@ const SearchState = Object.freeze({
 class SearchBox {
     __template__ = `
     `
-    __id__ = null;
+    id = null;
 
     _state = null;
 
@@ -45,7 +45,7 @@ class SearchBox {
 
     constructor(id) {
         // set veiw id
-        this.__id__ = id;
+        this.id = id;
         // initialize view elements
         this._setElements();
         // initialize layout
@@ -70,7 +70,7 @@ class SearchBox {
         this._state = state;
         switch (state) {
             case SearchBoxState.onhide:
-                console.log(`SearchBox ${this.__id__} state changed -> onhide`);
+                console.log(`SearchBox ${this.id} state changed -> onhide`);
                 break
         }
     }
@@ -79,10 +79,10 @@ class SearchBox {
      * DOM nodes as variables.
      */
     _setElements() {
-        this.$searchBox = document.getElementById(this.__id__);
+        this.$searchBox = document.getElementById(this.id);
         if (this.$searchBox == null) {
             console.warn(
-                `< id=${this.__id__} class=searchBox></> is necessary in HTML.`);
+                `< id=${this.id} class=searchBox></> is necessary in HTML.`);
         }
         // TODO: other elements
  

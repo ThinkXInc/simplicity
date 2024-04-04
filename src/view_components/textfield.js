@@ -5,24 +5,6 @@
  * 
  * @author kaz@thinkxinc.com (Kazuki Otsuka)
  */
-
-const TextFieldState = Object.freeze({ onhide: 0, onshow: 1, });
-//onfocus: 3,  // TODO:
-//onlock: 4,  // TODO:
-const TextFieldLoadingState = Object.freeze({ none: 0, onloading: 1, done: 2, });
-const TextFieldValidationState = Object.freeze({ none: 0, onalert: 1, onverified: 1, });
-const TextFieldInputState = Object.freeze({ empty: 0, filled: 1, overmaximum: 2, });
-const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
-
-
-const TextFieldPlaceTo = Object.freeze({ 
-    inputOuter: '.inputOuter', 
-    inputAfter: '.inputOuter .inputAfter', 
-    footerLeft: '.footer .left', 
-    footerMiddle: '.inputOuter .footer .middle', 
-    footerRight: '.inputOuter .footer .right' 
-});
-
 class TextFieldConfig extends FormComponentBaseConfig {
     constructor({
         htmlTag = 'div',
@@ -37,7 +19,7 @@ class TextFieldConfig extends FormComponentBaseConfig {
         counterFormat = `$count/$maxcount`,
         passwordMode = false,
         defaultValue = null,
-        onDisableClassName = 'onDisable',
+        onDisableClassName = 'disable',
         onFocusClassName = 'focus',
         shouldTrackLocalChangeInCookie = true,
         cookieExclude = false,
@@ -91,6 +73,22 @@ class TextFieldConfig extends FormComponentBaseConfig {
     }
 }
 
+const TextFieldState = Object.freeze({ onhide: 0, onshow: 1, });
+//onfocus: 3,  // TODO:
+//onlock: 4,  // TODO:
+const TextFieldLoadingState = Object.freeze({ none: 0, onloading: 1, done: 2, });
+const TextFieldValidationState = Object.freeze({ none: 0, onalert: 1, onverified: 1, });
+const TextFieldInputState = Object.freeze({ empty: 0, filled: 1, overmaximum: 2, });
+const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
+
+const TextFieldPlaceTo = Object.freeze({ 
+    inputOuter: '.inputOuter', 
+    inputAfter: '.inputOuter .inputAfter', 
+    footerLeft: '.footer .left', 
+    footerMiddle: '.inputOuter .footer .middle', 
+    footerRight: '.inputOuter .footer .right' 
+});
+
 /**
  * A class for creating TextField components. 
  *
@@ -99,7 +97,7 @@ class TextFieldConfig extends FormComponentBaseConfig {
  * 
  * HTML Structure:
  * ```
- *  <div id="{this.__id__}" class="textField">
+ *  <div id="{this.id}" class="textField">
  *      <div class="inputOuter">
  *          <h6 class="title">{this.__title__}</h6>
  *          <input class="{this.__field_name__}form" name="{this.__field_name__}" type="text" autocomplete="off">
@@ -142,7 +140,6 @@ class TextFieldConfig extends FormComponentBaseConfig {
  *  );
  * ```
  *
- * @param {string} parent_id - The id of the parent element.
  * @param {string} id - The id for the TextField element.
  * @param {string} field_name - The name attribute for the TextField.
  * @param {Locale} locale - locale object.
@@ -150,8 +147,8 @@ class TextFieldConfig extends FormComponentBaseConfig {
  * @param {TextFieldConfig} [config] - Configuration object for more granular customization. Defaults to a new TextFieldConfig object.
  */
 class TextField extends FormComponentBase {
-    constructor(parent_id, id, field_name, locale, lang, config = new TextFieldConfig()) {
-        super(parent_id, id, field_name, config);
+    constructor(id, field_name, locale, lang, config = new TextFieldConfig()) {
+        super(id, field_name, config);
 
         // set config
         this.config = config;
@@ -280,10 +277,10 @@ class TextField extends FormComponentBase {
         this._state = state;
         switch (state) {
             case TextFieldState.onhide:
-                console.log(`TextField ${this.__id__} state changed -> onhide`);
+                console.log(`TextField ${this.id} state changed -> onhide`);
                 break
             case TextFieldState.onshow:
-                console.log(`TextField ${this.__id__} state changed -> onshow`);
+                console.log(`TextField ${this.id} state changed -> onshow`);
                 break
         }
     }
@@ -295,10 +292,10 @@ class TextField extends FormComponentBase {
         this._loadingState = state;
         switch (state) {
             case TextFieldLoadingState.none:
-                console.log(`TextField ${this.__id__} loadingState changed -> none`);
+                console.log(`TextField ${this.id} loadingState changed -> none`);
                 break
             case TextFieldLoadingState.onloading:
-                console.log(`TextField ${this.__id__} loadingState changed -> onloading`);
+                console.log(`TextField ${this.id} loadingState changed -> onloading`);
                 break
         }
     }
@@ -310,15 +307,15 @@ class TextField extends FormComponentBase {
         this._validationState = state;
         switch (state) {
             case TextFieldValidationState.none:
-                debuglog(`TextField ${this.__id__} validationState changed -> none`);
+                debuglog(`TextField ${this.id} validationState changed -> none`);
                 this.$textField.classList.remove('alert');
                 break
             case TextFieldValidationState.onalert:
-                debuglog(`TextField ${this.__id__} validationState changed -> onalert`);
+                debuglog(`TextField ${this.id} validationState changed -> onalert`);
                 this.$textField.classList.add('alert');
                 break
             case TextFieldValidationState.onverified:
-                debuglog(`TextField ${this.__id__} validationState changed -> onverified`);
+                debuglog(`TextField ${this.id} validationState changed -> onverified`);
                 this.$textField.classList.remove('alert');
                 break
         }
@@ -331,15 +328,15 @@ class TextField extends FormComponentBase {
         this._inputState = state;
         switch (state) {
             case TextFieldInputState.empty:
-                debuglog(`TextField ${this.__id__} inputState changed -> empty`);
+                debuglog(`TextField ${this.id} inputState changed -> empty`);
                 this.$textField.classList.remove('overMaximumTextCount');
                 break
             case TextFieldInputState.filled:
-                debuglog(`TextField ${this.__id__} inputState changed -> filled`);
+                debuglog(`TextField ${this.id} inputState changed -> filled`);
                 this.$textField.classList.remove('overMaximumTextCount');
                 break
             case TextFieldInputState.overmaximum:
-                debuglog(`TextField ${this.__id__} inputState changed -> overmaximum`);
+                debuglog(`TextField ${this.id} inputState changed -> overmaximum`);
                 this.$textField.classList.add('overMaximumTextCount');
                 break
         }
@@ -349,7 +346,7 @@ class TextField extends FormComponentBase {
         if (onDisable == this._onDisable) { return }
     
         this._onDisable = onDisable;
-        debuglog(`${this.__id__} disable ${onDisable}`);
+        debuglog(`${this.id} disable ${onDisable}`);
         this.disableInteractions(onDisable);
     }
 
@@ -386,9 +383,9 @@ class TextField extends FormComponentBase {
     
         // textField
         this.$textField = this.$view;
-        this.$textField ?? console.warn(`<section id=${this.__id__} class=textField></section> is necessary in HTML.`);
+        this.$textField ?? console.warn(`<section id=${this.id} class=textField></section> is necessary in HTML.`);
         this.$textField.className = 'TextField';
-        this.$textField.classList.add(this.__id__);
+        this.$textField.classList.add(this.id);
     
         // create new elements
         const $inputOuter = document.createElement('div');
@@ -494,7 +491,7 @@ class TextField extends FormComponentBase {
      */
     _setEventHandlers() {
         const _this = this;
-        debuglog(`Set input event handler for ${this.__id__}.`);
+        debuglog(`Set input event handler for ${this.id}.`);
         this.$textArea.addEventListener('input', (e) => {
             _this.text = _this.$textArea.value;
             _this.count = _this.$textArea.value.length;
@@ -530,11 +527,11 @@ class TextField extends FormComponentBase {
         }
 
         // Add doneButton click handler
-        debuglog(`Set button event handler for ${this.__id__}.`);
+        debuglog(`Set button event handler for ${this.id}.`);
         if (this.config.isDoneButton) {
             this.$doneButton.addEventListener('click', () => {
                 _this.$textField.dispatchEvent(new CustomEvent(_this.config.eventNameDoneButtonClick, {
-                    detail: { id: this.__id__, value: this.value }
+                    detail: { id: this.id, value: this.value }
                 }));
             });
 
@@ -553,7 +550,7 @@ class TextField extends FormComponentBase {
         if (this.config.isCancelButton) {
             this.$cancelButton.addEventListener('click', () => {
                 _this.$textField.dispatchEvent(new CustomEvent(_this.config.eventNameCancelButtonClick, {
-                    detail: { id: this.__id__,  value: this.value }
+                    detail: { id: this.id,  value: this.value }
                 }));
             });
 
@@ -568,7 +565,7 @@ class TextField extends FormComponentBase {
             });
         }
 
-        debuglog(`Set the blur event handler for ${this.__id__}.`);
+        debuglog(`Set the blur event handler for ${this.id}.`);
         this.$textArea.addEventListener('blur', () => {
             console.log(`[event] blur -> ${_this.$textArea.value}`)
             if (_this.config.onFocusClassName) {
@@ -581,7 +578,7 @@ class TextField extends FormComponentBase {
             }
         });
 
-        debuglog(`Set the focus event handler for ${this.__id__}.`);
+        debuglog(`Set the focus event handler for ${this.id}.`);
         this.$textArea.addEventListener('focus', () => {
             if (_this.config.onFocusClassName) {
                 _this.$view.classList.add(_this.config.onFocusClassName);
@@ -590,7 +587,7 @@ class TextField extends FormComponentBase {
     }
 
     _handleEnterKeyPress(event) {
-        debuglog(`${this.__id__} Press Enter`);
+        debuglog(`${this.id} Press Enter`);
         event.preventDefault(); // Prevent the default action (e.g., new line in a textarea)
         this.$doneButton.click(); // Programmatically click the done button
     }
@@ -698,7 +695,7 @@ class TextField extends FormComponentBase {
      * When an alert is triggered, the alert method will add a 'alert' class to the textField 
      * and add a paragraph tag within the footer, resulting in:
      * 
-     * <div id="{this.__id__}" class="textField alert">
+     * <div id="{this.id}" class="textField alert">
      *    <div class="inputOuter">
      *        <h6 class="title">{this.__title__}</h6>
      *        <input class="{this.__field_name__}form" name="{this.__field_name__}" type="text" autocomplete="off">
@@ -706,7 +703,7 @@ class TextField extends FormComponentBase {
      *            <span class="indicator"></span>
      *            <span class="message"></span>
      *            <span class="counter"></span>
-     *            <p class="alertMessage" id="{this.__id__}__alert">{message}</p>
+     *            <p class="alertMessage" id="{this.id}__alert">{message}</p>
      *        </div>
      *    </div>
      * </div>
@@ -715,34 +712,34 @@ class TextField extends FormComponentBase {
      * @param {string} message
      */
     alert(onAlert, message) {
-        const alertMessageId = this.__id__ + '__alert';
+        const alertMessageId = this.id + '__alert';
    
         if (onAlert) {
-            console.log(`Alert turned on for ${this.__id__} with message: ${message}`);
+            console.log(`Alert turned on for ${this.id} with message: ${message}`);
             this.$textField.classList.add('alert');
     
             // If the alertMessage already exists, update it or return if it's the same.
             if (this._isAlerted(alertMessageId)) {
                 if (!this._isAlertMessageEqualTo(alertMessageId, message)) {
                     this._setAlertMessage(message);
-                    console.log(`Updated alert message for ${this.__id__} to: ${message}`);
+                    console.log(`Updated alert message for ${this.id} to: ${message}`);
                 } else {
-                    console.log(`Alert message for ${this.__id__} is already set to: ${message}`);
+                    console.log(`Alert message for ${this.id} is already set to: ${message}`);
                 }
                 return;
             }
     
             // Create new alert message if it does not exist.
             this._appendAlertMessage(alertMessageId, message);
-            debuglog(`Created new alert message for ${this.__id__} with message: ${message}`);
+            debuglog(`Created new alert message for ${this.id} with message: ${message}`);
 
         } else if (this._isAlerted(alertMessageId)) { // Only run if $alertMessage exists
-            console.log(`Alert turned off for ${this.__id__}`);
+            console.log(`Alert turned off for ${this.id}`);
             // Remove alert message
             this._removeAlertMessage(alertMessageId);
 
         } else {
-            //DEBUG: console.log(`Alert method called for ${this.__id__} to remove the message but not found.`);
+            //DEBUG: console.log(`Alert method called for ${this.id} to remove the message but not found.`);
         }
     }
 
@@ -839,7 +836,7 @@ class TextFieldProtocol {
      * @throws {Error} If the method is not overridden in the ViewController.
      */
     textFieldInputValueChanged(textField, value) {
-        throw new Error(`ViewController of TextField ${textField.__id__} must implement textFieldInputValueChanged method!`);
+        throw new Error(`ViewController of TextField ${textField.id} must implement textFieldInputValueChanged method!`);
     }
 
     /**
@@ -851,6 +848,6 @@ class TextFieldProtocol {
      * @throws {Error} If the method is not overridden in the ViewController.
      */
     textFieldOnBlur(textField, value) {
-        throw new Error(`ViewController of TextField ${textField.__id__} must implement textFieldOnBlur method!`);
+        throw new Error(`ViewController of TextField ${textField.id} must implement textFieldOnBlur method!`);
     }
 }

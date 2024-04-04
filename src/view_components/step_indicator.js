@@ -46,16 +46,16 @@ class Step {
  * @param {Number} defaultIndex - The default index when loaded.
  */
 class StepIndicator {
-    __id__
+    id
     __steps__
 
     __stepIndex__
 
     constractor(id, steps, defaultIndex = 0) {
-        this.__id__ = id;
+        this.id = id;
         // setup page components
         if (steps.length == 0) {
-            console.error(`${this.__id__} requires a list of steps.`)
+            console.error(`${this.id} requires a list of steps.`)
         }
         // set elements
         this._setElements(steps);
@@ -69,20 +69,20 @@ class StepIndicator {
      * DOM nodes as variables.
      */
     _setElements(steps) {
-        this.$stepIndicator = document.getElementById(this.__id__);
+        this.$stepIndicator = document.getElementById(this.id);
         if (this.$stepIndicator == null) {
             console.warn(
-                `<div id=${this.__id__} class=stepIndicator></div> is necessary in HTML.`);
+                `<div id=${this.id} class=stepIndicator></div> is necessary in HTML.`);
         }
         // create pages
         let $steps = document.createElement('ul');
         $steps.classList.add('stepIndicatorSteps');
         steps.forEach((step, i) => {
-            console.log(`${this.__id__} step ${i} title ${step.title}`);
+            console.log(`${this.id} step ${i} title ${step.title}`);
 
             // create page DOM element
             let $step = document.createElement('li');
-            $step.id = `${this.__id__}Step${i}`;
+            $step.id = `${this.id}Step${i}`;
             $step.classList.add('stepIndicatorStep');
             $step.dataset.stepIndex = i;
 

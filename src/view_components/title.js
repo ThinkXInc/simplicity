@@ -13,15 +13,14 @@ class TitleConfig extends ViewComponentConfig {
 /**
  * A class for title components.
  * @constructor
- * @param {string} parent_id - The id of the parent element.
  * @param {string} id - The id for the new element.
  * @param {string} text - The text to display in the element.
  * @param {string} htmlTag - The type of HTML element to create (default is 'h2').
  */
  class Title extends ViewComponentBase {
 
-    constructor(parent_id, id, config = new TitleConfig()) {
-        super(parent_id, id, config);
+    constructor(id, config = new TitleConfig()) {
+        super(id, config);
         this.config = config;
     }
 

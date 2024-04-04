@@ -33,7 +33,7 @@ const MapBalloonState = Object.freeze({
  * @param {string} id - The DOM id where this view is set.
  */
 class MapBalloon extends google.maps.OverlayView {
-    __id__ = null;
+    id = null;
 
     __template_sample__ = `
     <div id=$id class=mapBalloon>
@@ -67,19 +67,19 @@ class MapBalloon extends google.maps.OverlayView {
             text: ${text}
             `)
         // set veiw id
-        this.__id__ = id;
+        this.id = id;
         // set data
         this._latLng = latLng;
         this._title = title;
         this._text = text;
         if (typeof latLng !== "object") {
-            console.error(`latLng of ${this.__id__} must be type of google.maps.LatLng . but ${typeof latLng}`);
+            console.error(`latLng of ${this.id} must be type of google.maps.LatLng . but ${typeof latLng}`);
         }
         if (typeof title !== "string") {
-            console.error(`title of ${this.__id__} must be type of string . but ${typeof title}`);
+            console.error(`title of ${this.id} must be type of string . but ${typeof title}`);
         }
         if (typeof text !== "string") {
-            console.error(`text of ${this.__id__} must be type of string . but ${typeof text}`);
+            console.error(`text of ${this.id} must be type of string . but ${typeof text}`);
         }
     }
 
@@ -92,7 +92,7 @@ class MapBalloon extends google.maps.OverlayView {
         // set text
         this.$text.innerText = text;
         // dispatch event
-        const event = new CustomEvent('textupdated', {detail: {new: text, id: this.__id__}});
+        const event = new CustomEvent('textupdated', {detail: {new: text, id: this.id}});
         this.$mapBalloon.dispatchEvent(event);
     }
 
@@ -110,7 +110,7 @@ class MapBalloon extends google.maps.OverlayView {
         // set title
         this.$title.innerText = title;
         // dispatch event
-        const event = new CustomEvent('titleupdated', {detail: {new: title, id: this.__id__}});
+        const event = new CustomEvent('titleupdated', {detail: {new: title, id: this.id}});
         this.$mapBalloon.dispatchEvent(event);
     }
 
@@ -132,13 +132,13 @@ class MapBalloon extends google.maps.OverlayView {
         this._state = state;
         switch (state) {
             case MapBalloonState.onhide:
-                console.log(`MapBalloon ${this.__id__} state changed -> onhide`);
+                console.log(`MapBalloon ${this.id} state changed -> onhide`);
                 break
             case MapBalloonState.onshow:
-                console.log(`MapBalloon ${this.__id__} state changed -> onshow`);
+                console.log(`MapBalloon ${this.id} state changed -> onshow`);
                 break
             case MapBalloonState.onfocus:
-                console.log(`MapBalloon ${this.__id__} state changed -> onfocus`);
+                console.log(`MapBalloon ${this.id} state changed -> onfocus`);
                 // focus animation
                 if (this.$mapBalloon) {
                     this.$mapBalloon.classList.remove('unfocus');
@@ -146,11 +146,11 @@ class MapBalloon extends google.maps.OverlayView {
                 }
                 break
              case MapBalloonState.onclosestart:
-                console.log(`MapBalloon ${this.__id__} state changed -> onclosestart`);
+                console.log(`MapBalloon ${this.id} state changed -> onclosestart`);
                 this._close();
                 break
               case MapBalloonState.onclosecomplete:
-                console.log(`MapBalloon ${this.__id__} state changed -> onclosecomplete`);
+                console.log(`MapBalloon ${this.id} state changed -> onclosecomplete`);
                 break
         }
     }
@@ -170,7 +170,7 @@ class MapBalloon extends google.maps.OverlayView {
         this.state = MapBalloonState.onhide;
         // container element
         this.$mapBalloon = document.createElement('div');
-        this.$mapBalloon.id = this.__id__;
+        this.$mapBalloon.id = this.id;
         this.$mapBalloon.classList.add('mapBalloon');
         this.$mapBalloon.classList.add('hide');
 
@@ -180,7 +180,7 @@ class MapBalloon extends google.maps.OverlayView {
         this.$mapBalloon.appendChild($dot);
         this.$dot = $dot;
         if (this.$dot == null) {
-            console.warn(`<span class=dot> is necessary in ${this.__id__}.`)
+            console.warn(`<span class=dot> is necessary in ${this.id}.`)
         }
 
         // balloon
@@ -189,7 +189,7 @@ class MapBalloon extends google.maps.OverlayView {
         this.$mapBalloon.appendChild($balloon);
         this.$balloon = $balloon;
         if (this.$balloon == null) {
-            console.warn(`<div class=balloon> is necessary in ${this.__id__}.`)
+            console.warn(`<div class=balloon> is necessary in ${this.id}.`)
         }
 
         // balloon leg
@@ -200,7 +200,7 @@ class MapBalloon extends google.maps.OverlayView {
         this.$balloon.appendChild($balloonleg);
         this.$balloonleg = $balloonleg;
         if (this.$balloonleg == null) {
-            console.warn(`<ing class=balloonleg> is necessary in ${this.__id__}.`)
+            console.warn(`<ing class=balloonleg> is necessary in ${this.id}.`)
         }
 
         // title
@@ -276,7 +276,7 @@ class MapBalloon extends google.maps.OverlayView {
      * Close this view component.
      */
     _close() {
-        console.log(`${this.__id__} close function called.`);
+        console.log(`${this.id} close function called.`);
         var _this = this;
         const interval = 1000;
         // start animation

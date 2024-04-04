@@ -67,14 +67,14 @@ class PageNavigationView {
         </div>
     `
 
-    __id__ = null;
+    id = null;
 
     _pageRoutes = [];
     _state = null;
     _pageBackTitle = '';
 
     constructor(id) {
-        this.__id__ = id;
+        this.id = id;
         document.getElementById(id).innerHTML = this.__template__;
         this._setElements();
         this._setEventHandlers();
@@ -154,10 +154,10 @@ class PageNavigationView {
      * DOM nodes as variables.
      */
     _setElements() {
-        this.$pageNavigationView = document.getElementById(this.__id__);
+        this.$pageNavigationView = document.getElementById(this.id);
         if (this.$pageNavigationView == null) {
             console.warn(
-                `<section id=${this.__id__} class=pageNavigationView></section> is necessary in HTML.`);
+                `<section id=${this.id} class=pageNavigationView></section> is necessary in HTML.`);
         }
         this.$breadcrumbs = this.$pageNavigationView.querySelector('.breadcrumbs');
         if (this.$breadcrumbs == null) {

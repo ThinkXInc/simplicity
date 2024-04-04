@@ -95,7 +95,7 @@ class InputPageViewController {
         // Use destructuring to apply configuration properties to the instance
         Object.assign(this, {
             submitUrl: config.url,
-            alertMessage: config.alertMessage || new AlertMessage(id, `${id}__AlertMessage`),
+            alertMessage: config.alertMessage || new AlertMessage(`${id}__AlertMessage`),
             isEnterButtonToNext: config.isEnterButtonToNext,
             isPageIndexInHash: config.isPageIndexInHash,
             preventDefaultPageControl: config.preventDefaultPageControl,
@@ -269,7 +269,7 @@ class InputPageViewController {
 
         // loading
         if(this.loading != null) {
-            this.loading.addToParent();
+            this.loading.addToParent(this.$view);
         }
 
         // create pages
@@ -291,7 +291,7 @@ class InputPageViewController {
         $container.appendChild($pagesContainer);
 
         // alert message
-        this.alertMessage.addToParent($container);
+        this.alertMessage.addTo($container);
     }
 
     /**
@@ -309,13 +309,13 @@ class InputPageViewController {
             $wrapper.classList.add('wrapper');
             component.components.forEach((componentInWrapper, k) => {
                 this._setPageComponent(componentInWrapper, $wrapper, pageIndex, k);
-                componentInWrapper.addToParent($wrapper);
+                componentInWrapper.addTo($wrapper.id);
                 componentInWrapper.setPageIndex(pageIndex);
             });
         } else {
             let _id = component.id;
             if (_id == null) {
-                console.error(`page ${pageIndex} component ${componentIndex}: no id is set in the instance.`);
+                console.error(`page ${pageIndex} component ${componentIndex} (${component}): no id is set in the instance.`);
             }
     
             // Set the viewController for the component

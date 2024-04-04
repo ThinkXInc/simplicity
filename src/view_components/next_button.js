@@ -13,14 +13,13 @@ class NextButtonConfig extends ViewComponentConfig {
 /**
  * A class for Next Button components.
  * @constructor
- * @param {string} parent_id - The id of the parent element.
  * @param {string} id - The id for the button element.
  * @param {string} text - The text to display in the button.
  */
 class NextButton extends ViewComponentBase {
 
-    constructor(parent_id, id, config = new NextButtonConfig()) {
-        super(parent_id, id, config);
+    constructor(id, config = new NextButtonConfig()) {
+        super(id, config);
         this.config = config;
     }
 
@@ -38,7 +37,7 @@ class NextButton extends ViewComponentBase {
      * nextButtonTapped exists in the view controller, this method will be called when the button is clicked.
      */
     _setEventHandlers() {
-        console.log(`Set the click event handler for ${this.__id__}.`);
+        console.log(`Set the click event handler for ${this.id}.`);
         this.$view.addEventListener('click', () => {
             if(this.viewController && typeof this.viewController.nextButtonTapped === "function"){
                 this.viewController.nextButtonTapped(this);

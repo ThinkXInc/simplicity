@@ -155,18 +155,17 @@ class TableViewCell {
         this.tableView = tableView
         this.config = config;
         this.index = index;
-        this.__id__ = this.id;
 
         this._setElements();
     }
 
-    get id() { return `${this.tableView.__id__}Cell_${this.index}`; }
+    get id() { return `${this.tableView.id}Cell_${this.index}`; }
 
-    get className() { return `${this.tableView.__id__}Cell`; }
+    get className() { return `${this.tableView.id}Cell`; }
 
     set content(content) {
         //if (!TableViewCellContent.prototype.isPrototypeOf(this.config.cellContentClass.prototype)) {
-        //    throw new Error(`tableViewCellContent in ${this.__id__} config is not a subclass of ${TableViewCellContent.name} but ${this.config.cellContentClass.name}.`);
+        //    throw new Error(`tableViewCellContent in ${this.id} config is not a subclass of ${TableViewCellContent.name} but ${this.config.cellContentClass.name}.`);
         //}
         if (!this.config.cellContentClass.prototype.isPrototypeOf(content)) {
             throw Error(`Provided content is not an instance of ${this.config.cellContentClass.name}.`);
@@ -262,7 +261,7 @@ class TableViewCell {
         e.stopPropagation();
 
         // Trigger deletion logic here
-        debuglog(`Delete button clicked for cell with ID: ${this.__id__}, index: ${this.index}`);
+        debuglog(`Delete button clicked for cell with ID: ${this.id}, index: ${this.index}`);
 
         // switch action by config.deleteCellAtionType
         switch (this.config.deleteCellActionType) {
@@ -434,7 +433,7 @@ const TableViewState = Object.freeze({
  */
 class TableViewProtocol {
     tableViewCellSelectedAtIndex(selectedIndex, cell) {
-        console.log(`${this.__id__}: cell ID:${cell.id} Index:${selectedIndex} clicked`)
+        console.log(`${this.id}: cell ID:${cell.id} Index:${selectedIndex} clicked`)
         throw new Error('You have to implement this tableViewCellSeletedAtIndex method to the child class!!');
     }
 }
@@ -457,9 +456,9 @@ class TableViewProtocol {
  */
 class TableView extends ViewComponentBase {
     constructor(id, config = new TableViewConfig()) {
-        super('', id, config);
+        super(id, config);
 
-        this.__id__ = id;
+        this.id = id;
         this.config = config;
 
         this._setElements();
@@ -472,7 +471,7 @@ class TableView extends ViewComponentBase {
         this._contents = contents;
         this._resetCells();
         this._setEventHandlers();
-        console.log(`${contents.length} cells set to ${this.__id__}.`);
+        console.log(`${contents.length} cells set to ${this.id}.`);
     }
 
     set state(state) {
@@ -496,8 +495,8 @@ class TableView extends ViewComponentBase {
     _setElements() {
         // Main container
         this.$view = document.createElement('div');
-        this.$view.id = this.__id__;
-        this.$view.classList.add('TableView', this.__id__);
+        this.$view.id = this.id;
+        this.$view.classList.add('TableView', this.id);
         
         // Wrapper
         this.$tableViewContainer = document.createElement('div');
@@ -513,14 +512,14 @@ class TableView extends ViewComponentBase {
         // ListView Wrapper
         this.$tableView = document.createElement('div');
         this.$tableView.classList.add('tableView');
-        this.$tableView.id = `${this.__id__}TableView`;
-        this.$tableView.classList.add(`${this.__id__}TableView`);
+        this.$tableView.id = `${this.id}TableView`;
+        this.$tableView.classList.add(`${this.id}TableView`);
         
         // List
         this.$tableListView = document.createElement('ul');
         this.$tableListView.classList.add('tableListView');
-        this.$tableListView.id = `${this.__id__}ListView`;
-        this.$tableListView.classList.add(`${this.__id__}ListView`);
+        this.$tableListView.id = `${this.id}ListView`;
+        this.$tableListView.classList.add(`${this.id}ListView`);
         this.$tableView.appendChild(this.$tableListView);
         
         this.$tableViewContainer.appendChild(this.$tableView);
@@ -560,7 +559,7 @@ class TableView extends ViewComponentBase {
                     gradientLoaderConfig[key] = loaderConfig[key];
                 }
 
-                const loader = new GradientViewLoader(null, 'TableViewGradientLoader', gradientLoaderConfig);
+                const loader = new GradientViewLoader('TableViewGradientLoader', gradientLoaderConfig);
                 this.loader = loader;
                 this.$loader = loader.$view;
                 this.$tableView.appendChild(loader.$view);
@@ -632,11 +631,11 @@ class TableView extends ViewComponentBase {
     }
 
     _resetCells() {
-        console.log(`${this.__id__} resetCells:`);
+        console.log(`${this.id} resetCells:`);
 
         // Reset tableView
         if (!this.$tableListView) {
-            console.error(`${this.__id__}.$tableListView is undefined.`)
+            console.error(`${this.id}.$tableListView is undefined.`)
         }
         this.$tableListView.innerHTML = '';
 
@@ -729,7 +728,7 @@ class TableView extends ViewComponentBase {
         // TODO: 
         let previousState = this.state;
 
-        console.log(`${this.__id__} close function called. (previousState ${previousState})`);
+        console.log(`${this.id} close function called. (previousState ${previousState})`);
 
         var _this = this;
 
@@ -745,12 +744,12 @@ class TableView extends ViewComponentBase {
                     break;
                 case TableViewCloseAnimationType.fadeOut:
                     cell.fadeOut(0, () => {
-                        console.log(`Cell ${cell.__id__} faded out`);
+                        console.log(`Cell ${cell.id} faded out`);
                     });
                     break;
                 case TableViewCloseAnimationType.delayedFadeOut:
                     cell.fadeOut(cell.__index__ * this.config.cellCloseAimationDelay, () => {
-                        console.log(`Cell ${cell.__id__} faded out after delay`);
+                        console.log(`Cell ${cell.id} faded out after delay`);
                     });
                     break;
                 default:

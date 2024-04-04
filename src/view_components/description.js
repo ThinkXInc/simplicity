@@ -13,13 +13,12 @@ class DescriptionConfig extends ViewComponentConfig {
 /**
  * A class for description components.
  * @constructor
- * @param {string} parent_id - The id of the parent element.
  * @param {string} id - The id for the new element.
  */
 class Description extends ViewComponentBase {
 
-    constructor(parent_id, id, config = new DescriptionConfig()) {
-        super(parent_id, id, config);
+    constructor(id, config = new DescriptionConfig()) {
+        super(id, config);
         this.config = config;
         this.text = this.config.text;
     }

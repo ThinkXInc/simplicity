@@ -88,7 +88,6 @@ class ListMenu {
  *     );
  *     
  *     let dropdownButton = new DropdownButton(
- *         'parent_id_here', // parent_id
  *         'countrySelectButton', // id
  *         'Your Country', // title
  *         'Please select your country.', // description
@@ -110,8 +109,8 @@ class ListMenu {
  */
 class DropdownButton extends ViewComponentBase{
 
-    constructor(parent_id, id, field_name, listMenuItems, config = new DropdownButtonConfig()) {
-        super(parent_id, id, config);
+    constructor(id, field_name, listMenuItems, config = new DropdownButtonConfig()) {
+        super(id, config);
         this.config = config;
 
         this.items = listMenuItems;
@@ -178,7 +177,7 @@ class DropdownButton extends ViewComponentBase{
             }
         }
         const event = new CustomEvent(
-            'selected', {detail: {value: selectedValue, id: this.__id__}});
+            'selected', {detail: {value: selectedValue, id: this.id}});
         this.$view.dispatchEvent(event);
     }
 
@@ -271,7 +270,7 @@ class DropdownButton extends ViewComponentBase{
      * @param {ListMenu} items - list of ListMenu with (title, value)
      */
     _setListMenuItems(items) {
-        console.log(`set ${items.length} list menu items into ${this.__id__}.`)
+        console.log(`set ${items.length} list menu items into ${this.id}.`)
         if (IS_DEBUG) { console.table(items) };
         items.forEach((item) => {
             let $item = document.createElement('li');
@@ -298,7 +297,7 @@ class DropdownButton extends ViewComponentBase{
     _setEventHandlers() {
         const _this = this;
         this.$dropdownButtonClickable.addEventListener('click', e => {
-            console.log(`[event] button ${_this.__id__} clicked`)
+            console.log(`[event] button ${_this.id} clicked`)
             if (_this._state == DropdownButtonState.onclose) {
                 _this.state = DropdownButtonState.onopen;
                 e.stopPropagation();
@@ -307,11 +306,11 @@ class DropdownButton extends ViewComponentBase{
                _this.state = DropdownButtonState.onclose;
             }
             else {
-                console.error(`unknown current state of ${_this.__id__} ${_this._state}`)
+                console.error(`unknown current state of ${_this.id} ${_this._state}`)
             }
         });
         this.$listMenu.addEventListener('click', e => {
-            console.log(`[event] list menu ${_this.__id__} clicked`)
+            console.log(`[event] list menu ${_this.id} clicked`)
             const hoveredItem = this.$listMenu.querySelector(':hover');
             const selectedValue = hoveredItem.dataset.value;
             console.log(hoveredItem);
@@ -322,7 +321,7 @@ class DropdownButton extends ViewComponentBase{
             this.state = DropdownButtonState.onclose;
             // TODO: delete when unnecessary for the long term 
             // // dispatch event
-            // const event = new CustomEvent('selected', {detail: {id: this.__id__, value: selectedValue}});
+            // const event = new CustomEvent('selected', {detail: {id: this.id, value: selectedValue}});
             // this.$view.dispatchEvent(event);
 
             if(this.viewController && typeof this.viewController._dropdownButtonSelected === "function"){
@@ -343,7 +342,7 @@ class DropdownButton extends ViewComponentBase{
      */
     _addClosingUnderSheet(_this, $before) {
         let under = document.createElement('span');
-        under.id = this.__id__ + '-under';
+        under.id = this.id + '-under';
         under.style.position = 'absolute';
         under.style.width = `${screen.width + 1000}px`;
         under.style.height = `${screen.height + 1000}px`;
@@ -367,7 +366,7 @@ class DropdownButton extends ViewComponentBase{
      * Remove undersheet element when close.
      */
     _removeClosingUnderSheet() {
-        document.getElementById(this.__id__ + '-under').remove();
+        document.getElementById(this.id + '-under').remove();
     }
 
     /* public functions */
@@ -380,7 +379,7 @@ class DropdownButton extends ViewComponentBase{
      */
     alert(onAlert, message) {
         // TODO: modify to ensure alertId is set by the format
-        const alertId = this.__id__ + '_alert';
+        const alertId = this.id + '_alert';
         let $parent = this.$view;
         let $footer = $parent.querySelector('.footer');
         if (onAlert) {

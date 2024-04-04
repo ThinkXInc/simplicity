@@ -45,7 +45,7 @@
  * @param {string} id - The DOM id where this view is replaced.
  */
  class EditContentView {
-    __id__ = null;
+    id = null;
     _state = EditContentViewState.onhide;
 
     // text fields
@@ -100,7 +100,7 @@
 
     constructor(id) {
         // set veiw id
-        this.__id__ = id;
+        this.id = id;
         // initialize view elements
         this._setElements();
         // initialize layout
@@ -117,7 +117,7 @@
     set content(content) {
         this._content = content;
         if (content) {
-            console.log(`content ${content.__id__} successfully set.`);
+            console.log(`content ${content.id} successfully set.`);
             this.$labelField.text = content.label;
             this.$titleField.text = content.title;
             this.$textField.text = content.text;
@@ -144,7 +144,7 @@
      */
     set editingContent(editingContent) {
         this._editingContent = editingContent;
-        console.log(`editingContent id:${editingContent.__id__} successfully set.`);
+        console.log(`editingContent id:${editingContent.id} successfully set.`);
         console.table(this._editingContent);
 
         if (!editingContent.isEmpty()) {
@@ -222,10 +222,10 @@
      * DOM nodes as variables.
      */
     _setElements() {
-        this.$editContentView = document.getElementById(this.__id__);
+        this.$editContentView = document.getElementById(this.id);
         if (this.$editContentView == null) {
             console.warn(
-                `<section id=${this.__id__} class=editContentView></section> is necessary in HTML.`);
+                `<section id=${this.id} class=editContentView></section> is necessary in HTML.`);
         }
         this.$header = this.$editContentView.querySelector('.editheader');
         if (this.$header == null) {
@@ -272,7 +272,7 @@
         }
         // label
         this.$labelField.$textArea.addEventListener('input', (e) => {
-            console.log(`${this.$labelField.__id__}: text in textarea changed.`)
+            console.log(`${this.$labelField.id}: text in textarea changed.`)
             const label = _this.$labelField.$textArea.value;
             console.info(label);
             let c = this.editingContent;
@@ -281,7 +281,7 @@
         });
         // title
         this.$titleField.$textArea.addEventListener('input', (e) => {
-            console.log(`${this.$titleField.__id__}: text in textarea changed.`)
+            console.log(`${this.$titleField.id}: text in textarea changed.`)
             const title = _this.$titleField.$textArea.value;
             console.info(title);
             let c = this.editingContent;
@@ -290,7 +290,7 @@
         });
         // text
         this.$textField.$textArea.addEventListener('input', (e) => {
-            console.log(`${this.$textField.__id__}: text in textarea changed.`)
+            console.log(`${this.$textField.id}: text in textarea changed.`)
             const text = _this.$textField.$textArea.value;
             console.info(text);
             let c = this.editingContent;
@@ -299,7 +299,7 @@
         });
         // target
         this.$targetUserSelectButton.$dropdownButton.addEventListener('selected', (e) => {
-            console.log(`${this.$targetUserSelectButton.__id__}: button menu selected.`)
+            console.log(`${this.$targetUserSelectButton.id}: button menu selected.`)
             const val = _this.$targetUserSelectButton.selectedValue;
             let c = this.editingContent;
             c.target = val;
@@ -307,7 +307,7 @@
         })
         // radius
         this.$radiusSelectButton.$dropdownButton.addEventListener('selected', (e) => {
-            console.log(`${this.$radiusSelectButton.__id__}: button menu selected.`)
+            console.log(`${this.$radiusSelectButton.id}: button menu selected.`)
             const val = _this.$radiusSelectButton.selectedValue;
             let c = this.editingContent;
             c.radius = val;
@@ -416,7 +416,7 @@
     * @return
     */
     _close() {
-        console.log(`${this.__id__} close`);
+        console.log(`${this.id} close`);
         const interval = 100;
         this.$editContentView.animate({
             opacity: 0

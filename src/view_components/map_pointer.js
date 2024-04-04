@@ -98,7 +98,7 @@ class MapPointerOption {
  * @param {MapPointerOption} options - Select options with pairs of title and value.
  */
 class MapPointer extends google.maps.OverlayView {
-    __id__ = null;
+    id = null;
 
     __template_sample__ = `
     <div id=$id class=mapPointer>
@@ -121,11 +121,11 @@ class MapPointer extends google.maps.OverlayView {
     constructor(id, coordinate, options) {
         super();
         // set veiw id
-        this.__id__ = id;
+        this.id = id;
         // set data
         this._coordinate = coordinate;
         if (typeof coordinate !== "object") {
-            console.error(`coordinate of ${this.__id__} must be type of Coordinate . but ${typeof coordinate}`);
+            console.error(`coordinate of ${this.id} must be type of Coordinate . but ${typeof coordinate}`);
         }
         this.options = options;
     }
@@ -183,16 +183,16 @@ class MapPointer extends google.maps.OverlayView {
         this._state = state;
         switch (state) {
             case MapPointerState.onhide:
-                console.log(`MapPointer ${this.__id__} state changed -> onhide`);
+                console.log(`MapPointer ${this.id} state changed -> onhide`);
                 break
             case MapPointerState.onshow:
-                console.log(`MapPointer ${this.__id__} state changed -> onshow`);
+                console.log(`MapPointer ${this.id} state changed -> onshow`);
                 break
             //case MapPointerState.onhover:
-            //    console.log(`MapPointer ${this.__id__} state changed -> onhover`);
+            //    console.log(`MapPointer ${this.id} state changed -> onhover`);
             //    break
             case MapPointerState.onclosestart:
-                console.log(`MapPointer ${this.__id__} state changed -> onclosestart`);
+                console.log(`MapPointer ${this.id} state changed -> onclosestart`);
                 console.log(`action: ${this.action} value: ${this._value}`)
                 switch (this.action) {
                     case MapPointerAction.selectAndClose:
@@ -216,7 +216,7 @@ class MapPointer extends google.maps.OverlayView {
                 this._close();
                 break
              case MapPointerState.onclosecomplete:
-                console.log(`MapPointer ${this.__id__} state changed -> onclosecomplete`);
+                console.log(`MapPointer ${this.id} state changed -> onclosecomplete`);
                 // NOTE: process something before hide
                 break
         }
@@ -237,12 +237,12 @@ class MapPointer extends google.maps.OverlayView {
         this.state = MapPointerState.onhide;
         // container element
         this.$mapPointer = document.createElement('div');
-        this.$mapPointer.id = this.__id__;
+        this.$mapPointer.id = this.id;
         this.$mapPointer.classList.add('mapPointer');
         if (this._options.length == 1 ) {this.$mapPointer.classList.add('single');}
         if (this._options.length == 2 ) {this.$mapPointer.classList.add('double');}
         if (this.$mapPointer == null) {
-            console.warn(`<div id=${this.__id__} class=mapPointer> is necessary.`)
+            console.warn(`<div id=${this.id} class=mapPointer> is necessary.`)
         }
 
         // arrow
@@ -253,7 +253,7 @@ class MapPointer extends google.maps.OverlayView {
         this.$mapPointer.appendChild($arrow);
         this.$arrow = $arrow;
         if (this.$arrow == null) {
-            console.warn(`<img class=arrow> is necessary in ${this.__id__}.`)
+            console.warn(`<img class=arrow> is necessary in ${this.id}.`)
         }
 
         // select items container
@@ -262,7 +262,7 @@ class MapPointer extends google.maps.OverlayView {
         this.$mapPointer.appendChild($listMenu);
         this.$listMenu = $listMenu;
         if (this.$listMenu == null) {
-            console.warn(`<ul class=listMenu> is necessary in ${this.__id__}.`)
+            console.warn(`<ul class=listMenu> is necessary in ${this.id}.`)
         }
 
         // set items
@@ -344,7 +344,7 @@ class MapPointer extends google.maps.OverlayView {
                         break
                 }
             } else {
-                console.log(`${this.__id__} is busy. nothing happens.`);
+                console.log(`${this.id} is busy. nothing happens.`);
             }
         })
     }
@@ -353,7 +353,7 @@ class MapPointer extends google.maps.OverlayView {
      * Close this view component.
      */
     _close() {
-        console.log(`${this.__id__} close function called.`);
+        console.log(`${this.id} close function called.`);
         let _this = this;
         const interval = 1000;
         let timeOutID;

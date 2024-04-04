@@ -54,14 +54,11 @@ class GradientViewLoaderConfig {
 class GradientViewLoader {
     /**
      * @constructor
-     * @param {string} parent_id - Parent container ID
      * @param {string} id - ID for the loader element
      * @param {GradientViewLoaderConfig} config - Configuration object
      */
-    constructor(parent_id, id, config) {
-        // Initialize instance variables
-        this.__parent_id__ = parent_id;
-        this.__id__ = id;
+    constructor(id, config) {
+        this.id = id;
         this.config = config;
         this.$view = null;
         this.isLoading = false;
@@ -80,6 +77,7 @@ class GradientViewLoader {
     _checkConfig() {
         // Basic validation checks for config object
         if (!this.config || typeof this.config !== 'object') {
+            console.error(this.config)
             throw new Error('Invalid configuration object.');
         }
 
@@ -108,14 +106,11 @@ class GradientViewLoader {
      * Sets up the initial elements required for the loader.
      */
     _setElements() {
-        // Create and set the elements
-        const $parentView = document.getElementById(this.parent_id);
-
         // Create main wrapper div
         const $view = document.createElement('div');
-        $view.id = this.__id__;
+        $view.id = this.id;
         $view.classList.add('gradientViewIndicator');
-        $view.classList.add(this.__id__);
+        $view.classList.add(this.id);
         this.$view = $view;
     
         // Create container div
@@ -137,14 +132,13 @@ class GradientViewLoader {
         $container.appendChild($indicatorWrapper);
         $view.appendChild($container);
     
-        // Append to parent
-        if ($parentView) {
-            $parentView.appendChild($view);
-        }
-        
         // Set up indicators and start the animation
         this._setupIndicators(this.config);
         this._startAnimation();
+    }
+
+    appendTo($parentView) {
+        $parentView.appendChild($view);
     }
 
     /**
@@ -190,7 +184,7 @@ class GradientViewLoader {
         }
 
         for(let i = 0; i < numIndicator; i++) {
-            const gradientId = `${this.__id__}__animatedGradient${i}`;
+            const gradientId = `${this.id}__animatedGradient${i}`;
 
             // Create gradient
             const $gradient = document.createElementNS("http://www.w3.org/2000/svg", 'linearGradient');
@@ -266,7 +260,7 @@ class GradientViewLoader {
               x2 = initialX2 + index;
             }
             if (this.$gradients[index] == null) {
-                console.error(`${this.__id__} must have $gradient ${index}".`)
+                console.error(`${this.id} must have $gradient ${index}".`)
             }
             this.$gradients[index].setAttribute('x1', `${x1}%`);
             this.$gradients[index].setAttribute('x2', `${x2}%`);

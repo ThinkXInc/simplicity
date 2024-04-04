@@ -63,7 +63,7 @@ class KeywordsFieldConfig extends TextFieldConfig {
  *    keywords = ["Keyword 1", "Keyword 2", ... ]
  * 
  * html:
- *    <div id="this.__id__" class="textField">
+ *    <div id="this.id" class="textField">
  *      <div class="inputOuter">
  *          <h6 class="title">{this.__title__}</h6>
  *          <ul class="keywords">
@@ -85,7 +85,7 @@ class KeywordsFieldConfig extends TextFieldConfig {
  *   </div>
  * 
  * Usage:
- *  const keywordsField = new KeywordsField('parent_id', 'id', ...);
+ *  const keywordsField = new KeywordsField('id', ...);
  * 
  *  keywordsField.$textField.addEventListener(keywordsFieldCustomEventSubmit, (event) => {
  *      const keywords = event.detail.keywords;
@@ -95,7 +95,6 @@ class KeywordsFieldConfig extends TextFieldConfig {
 class KeywordsField extends TextField {
      /**
      * @constructor
-     * @param {string} parent_id - Parent container ID
      * @param {string} id - ID for the keyword field
      * @param {string} field_name - The name attribute for the input field
      * @param {string} locale - The locale for the field (e.g., 'en', 'fr')
@@ -104,7 +103,6 @@ class KeywordsField extends TextField {
      * @param {KeywordsFieldConfig} config - Configuration object
      */
      constructor(
-        parent_id,
         id,
         field_name,
         locale,
@@ -113,7 +111,6 @@ class KeywordsField extends TextField {
     ) {        
         
         super(
-            parent_id, 
             id, 
             field_name, 
             locale,
@@ -121,7 +118,7 @@ class KeywordsField extends TextField {
             config
         );
 
-        this.__id__ = id,
+        this.id = id,
         this.locale = locale;
         this.__lang__ = lang;
 
@@ -165,7 +162,7 @@ class KeywordsField extends TextField {
      * Add keywords list.
      * 
      *  html:
-     *    <div id="{this.__id__}" class="textField">
+     *    <div id="{this.id}" class="textField">
      *      <div class="inputOuter">
      *          <h6 class="title">{this.__title__}</h6>
      *          <ul class="keywords">

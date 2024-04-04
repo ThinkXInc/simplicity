@@ -86,7 +86,7 @@ let settings = {
  * @param {bool} fullScreenControl - if true, Pegman icon menu appears
  */
 class PositionMap extends ViewComponentBase{
-    __id__;
+    id;
     __field_name_lat__;
     __field_name_lng__;
 
@@ -96,9 +96,9 @@ class PositionMap extends ViewComponentBase{
     _pointerCoordinate;
     _label;
 
-    constructor(parent_id, id, config = new PositionMapConfig()) {
+    constructor(id, config = new PositionMapConfig()) {
 
-        super(parent_id, id, config);
+        super(id, config);
 
         this.config = config;
 
@@ -109,12 +109,12 @@ class PositionMap extends ViewComponentBase{
         // set map center coordinate
         this._mapCoordinate = this.config.defaultMapCoordinate;
         if (typeof this._mapCoordinate !== "object") {
-            console.error(`mapCoordinate of ${this.__id__} must be type of Coordinate. but ${typeof latLng}`);
+            console.error(`mapCoordinate of ${this.id} must be type of Coordinate. but ${typeof latLng}`);
         }
         // set default pin coordinate
         this._pointerCoordinate = this.config.defaultPointerCoordinate;
         if (typeof this._pointerCoordinate !== "object") {
-            console.error(`pointerCoordinate of ${this.__id__} must be type of Coordinate. but ${typeof latLng}`);
+            console.error(`pointerCoordinate of ${this.id} must be type of Coordinate. but ${typeof latLng}`);
         }
 
         // create default pin
@@ -169,7 +169,7 @@ class PositionMap extends ViewComponentBase{
             Cookies.set(cookieNameLat, mapCoordinate.lat, { expires: 3, secure: true, sameSite: 'strict' });
             Cookies.set(cookieNameLng, mapCoordinate.lng, { expires: 3, secure: true, sameSite: 'strict' });
         } else {
-            console.error(`The value of ${this.__id__} is excluded from being stored in cookies.`);
+            console.error(`The value of ${this.id} is excluded from being stored in cookies.`);
         }
     }
 
@@ -180,7 +180,7 @@ class PositionMap extends ViewComponentBase{
         const previousState = this._mapCoordinate;
         this._mapCoordinate = mapCoordinate;
         this._setValueToCookies(mapCoordinate);
-        console.log(`${this.__id__}.mapCoordinate updated`)
+        console.log(`${this.id}.mapCoordinate updated`)
         // reset center position
         if (window.map != null) {
             window.map.setCenter(mapCoordinate.latlng)
@@ -203,7 +203,7 @@ class PositionMap extends ViewComponentBase{
     set pointerCoordinate(pointerCoordinate) {
         const previousState = this._pointerCoordinate;
         this._pointerCoordinate = pointerCoordinate;
-        console.log(`${this.__id__}.pointerCoordinate updated`)
+        console.log(`${this.id}.pointerCoordinate updated`)
 
         if (window.map != null) {
 
@@ -211,7 +211,7 @@ class PositionMap extends ViewComponentBase{
             const event = new CustomEvent(
                 'pointerCoordinateUpdated', {
                     detail: {
-                        id: this.__id__,
+                        id: this.id,
                         coordinate: pointerCoordinate
                     }});
             this.$positionMap.dispatchEvent(event);
@@ -234,10 +234,10 @@ class PositionMap extends ViewComponentBase{
      * DOM nodes as variables.
      */
     _setElements() {
-        this.$positionMap = document.getElementById(this.__id__);
+        this.$positionMap = document.getElementById(this.id);
         if (this.$positionMap == null) {
             console.warn(
-                `<div id=${this.__id__} class=positionMap></div> is necessary in HTML.`);
+                `<div id=${this.id} class=positionMap></div> is necessary in HTML.`);
         }
  
         // google map element
@@ -304,8 +304,8 @@ class PositionMap extends ViewComponentBase{
         // new mapPointer is created when this positionMap is clicked
         document.addEventListener('positionMapPointerCoordinateUpdated', 
             (event) => {
-                console.log(`positionMapPointerCoordinateUpdated event listened in ${_this.__id__}`)
-                const mapPointerId = event.detail.__id__;
+                console.log(`positionMapPointerCoordinateUpdated event listened in ${_this.id}`)
+                const mapPointerId = event.detail.id;
                 const newCoordinate = event.detail.coordinate; 
 
                 if(this.viewController && typeof this.viewController._positionMapPointerCoordinateUpdated === "function"){
@@ -391,7 +391,7 @@ function initMap() {
                 const event = new CustomEvent(
                     'positionMapPointerCoordinateUpdated', {
                         detail: {
-                            id: mapPointer.__id__,
+                            id: mapPointer.id,
                             coordinate: newCoordinate
                         }});
                 document.dispatchEvent(event);

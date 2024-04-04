@@ -3,12 +3,14 @@ class FormComponentBaseConfig extends ViewComponentConfig {
         defaultValue = null,
         cookieExclude = false,
         hasCookiePrefix = false,
+        cookiePrefix = '',
         validators = [],
         ...otherOptions
     } = {}) {
         super(otherOptions);
         this.defaultValue = defaultValue;
         this.cookieExclude = cookieExclude;
+        this.cookiePrefix = cookiePrefix;
         this.hasCookiePrefix = hasCookiePrefix;
         this.validators = validators;
     }
@@ -24,13 +26,13 @@ class FormComponentBaseConfig extends ViewComponentConfig {
  * _restoreValueFromCookie() provide utilities for interacting with the cookies.
  */
 class FormComponentBase extends ViewComponentBase {
-    constructor(parent_id, id, field_name, config = new FormComponentBaseConfig()) {
-        super(parent_id, id, config);
+    constructor(id, field_name, config = new FormComponentBaseConfig()) {
+        super(id, config);
         this.config = config;
         this.validators = config.validators;
 
         this.__field_name__ = field_name;
-        this.__cookie_prefix__ = this.config.hasCookiePrefix ? `${parent_id}__` : '';
+        this.__cookie_prefix__ = this.config.hasCookiePrefix ? `${this.config.cookiePrefix}__` : '';
         this.__cookie_name__ = `${this.__cookie_prefix__}${field_name}`;
 
         // Set the default value.
@@ -62,7 +64,7 @@ class FormComponentBase extends ViewComponentBase {
                 Cookies.set(this.__cookie_name__, value, { expires: 3, secure: true, sameSite: 'strict' });
                 console.log(`Save cookie => key: ${this.__cookie_name__} value: ${value}`);
             } else {
-                console.error(`The value of ${this.__id__} is excluded from being stored in cookies.`);
+                console.error(`The value of ${this.id} is excluded from being stored in cookies.`);
             }
         }
     }
@@ -111,16 +113,16 @@ class FormComponentBase extends ViewComponentBase {
             debuglog(`Running validator: ${validator.errorType}`);
             errorMessage = validator.validate(this.value);
             if (errorMessage !== null) {
-                console.log(`Validation error found for ${this.__id__}: ${errorMessage}`);
+                console.log(`Validation error found for ${this.id}: ${errorMessage}`);
                 this.alert(true, errorMessage);
                 break;
             }
         }
         if (errorMessage === null) {
-            debuglog(`No validation errors found in ${this.__id__}`);
+            debuglog(`No validation errors found in ${this.id}`);
             this.alert(false);
         } else {
-            debuglog(`Validation failed for ${this.__id__} with result: ${errorMessage ? "Error: " + errorMessage : "No errors"}`);
+            debuglog(`Validation failed for ${this.id} with result: ${errorMessage ? "Error: " + errorMessage : "No errors"}`);
         }
         return errorMessage;
     }

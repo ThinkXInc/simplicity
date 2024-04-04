@@ -43,7 +43,7 @@ class ContentTableViewCell {
     </li>
     `;
     // settings
-    __id__ = null;
+    id = null;
     __table_view_id__ = null;
     __index__ = null;
     __fade_out_duration__ = 2;
@@ -58,7 +58,7 @@ class ContentTableViewCell {
         // set veiw id
         this.__table_view_id__ = table_view_id;
         this.__index__ = index;
-        this.__id__ = `${table_view_id}_${index}`
+        this.id = `${table_view_id}_${index}`
         // set elements
         this._setElements();
     }
@@ -103,23 +103,23 @@ class ContentTableViewCell {
      */
     _resetCell() {
         // set texts by this._content
-        this.__template__ = this.__template__.replace('$id', this.__id__);
+        this.__template__ = this.__template__.replace('$id', this.id);
         this.__template__ = this.__template__.replace('$label', this._content.label);
         this.__template__ = this.__template__.replace('$title', this._content.title);
         this.__template__ = this.__template__.replace('$text', this._content.text);
         this.__template__ = this.__template__.replace('$updated', this._content.updated);
         this.__template__ = this.__template__.replace('$author', this._content.author);
         this.$tableView.innerHTML += this.__template__;
-        this.$cellView = document.getElementById(this.__id__);
+        this.$cellView = document.getElementById(this.id);
         if (this.$cellView == null) {
-            console.warn(`<li id=${this.__id__} class=contentTableViewCell></li> not found.`);
+            console.warn(`<li id=${this.id} class=contentTableViewCell></li> not found.`);
         }
     }
 
     /* public functions */
     hide() {
-        console.log(`hide function called in ${this.__id__}`);
-        document.getElementById(this.__id__).classList.add('fadeOutToLeft');
+        console.log(`hide function called in ${this.id}`);
+        document.getElementById(this.id).classList.add('fadeOutToLeft');
     }
 }
 
@@ -147,7 +147,7 @@ const ContentTableViewState = Object.freeze({
  * @param {string} id - The DOM id where this view is replaced.
  */
 class ContentTableView {
-    __id__ = null;
+    id = null;
     __max_default_cell_number__ = 20;
     __adding_cell_number__ = 20;
 
@@ -158,7 +158,7 @@ class ContentTableView {
 
     constructor(id) {
         // set veiw id
-        this.__id__ = id;
+        this.id = id;
         // initialize view elements
         this._setElements();
         // initialize layout
@@ -240,10 +240,10 @@ class ContentTableView {
      * DOM nodes as variables.
      */
     _setElements() {
-        this.$contentTableView = document.getElementById(this.__id__);
+        this.$contentTableView = document.getElementById(this.id);
         if (this.$contentTableView == null) {
             console.warn(
-                `<ul id=${this.__id__} class=contentTableView></ul> is necessary in HTML.`);
+                `<ul id=${this.id} class=contentTableView></ul> is necessary in HTML.`);
         }
     }
 
@@ -259,22 +259,22 @@ class ContentTableView {
     _setEventHandlers() {
         const _this = this;
         this._cells.forEach((cell, index) => {
-            console.log(`set event for ${cell.__id__}`);
-            document.getElementById(cell.__id__).addEventListener('click', e => {
-                console.log(`cell ${cell.__id__} clicked`)
+            console.log(`set event for ${cell.id}`);
+            document.getElementById(cell.id).addEventListener('click', e => {
+                console.log(`cell ${cell.id} clicked`)
                 _this._selectedIndex = cell.__index__;
                 _this.state = ContentTableViewState.onselected;
             });
-            document.getElementById(cell.__id__).addEventListener('mouseover', e => {
+            document.getElementById(cell.id).addEventListener('mouseover', e => {
                 _this.$contentTableView.dispatchEvent(
                     new CustomEvent(
-                        'onmouseover', {detail: {cellId: cell.__id__, index: cell.__index__}}
+                        'onmouseover', {detail: {cellId: cell.id, index: cell.__index__}}
                     ));
             });
-            document.getElementById(cell.__id__).addEventListener('mouseout', e => {
+            document.getElementById(cell.id).addEventListener('mouseout', e => {
                 _this.$contentTableView.dispatchEvent(
                     new CustomEvent(
-                        'onmouseout', {detail: {cellId: cell.__id__, index: cell.__index__}}
+                        'onmouseout', {detail: {cellId: cell.id, index: cell.__index__}}
                     ));
             });
         })
@@ -289,7 +289,7 @@ class ContentTableView {
         // set table view cells from contents
         this.$contentTableView.innerHTML = '';
         this._cells = this._contents.map((content, i) => {
-            var cell = new ContentTableViewCell(this.__id__, i);
+            var cell = new ContentTableViewCell(this.id, i);
             cell.content = content;
             return cell;
         })
@@ -307,7 +307,7 @@ class ContentTableView {
     * Close this view component.
     */
     _close() {
-        console.log(`${this.__id__} close function called. (previousState ${this.state})`);
+        console.log(`${this.id} close function called. (previousState ${this.state})`);
         var _this = this;
         const interval = 50;
         this._cells.forEach(cell =>{

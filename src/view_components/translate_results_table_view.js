@@ -72,7 +72,7 @@ class TranslateResultsTableViewCell {
     </li>
     `;
     // settings
-    __id__ = null;
+    id = null;
     __table_view_id__ = null;
     __index__ = null;
     __fade_out_duration__ = 2;
@@ -91,7 +91,7 @@ class TranslateResultsTableViewCell {
         // set veiw id
         this.__table_view_id__ = table_view_id;
         this.__index__ = index;
-        this.__id__ = `${table_view_id}_${index}`
+        this.id = `${table_view_id}_${index}`
         // set elements
         this._setElements();
     }
@@ -180,15 +180,15 @@ class TranslateResultsTableViewCell {
     _resetCell() {
         ///this.state = TranslateResultsTableViewCellState.onhide;
         // set texts by this._content
-        this.__template__ = this.__template__.replace('$id', this.__id__);
+        this.__template__ = this.__template__.replace('$id', this.id);
         this.__template__ = this.__template__.replace('$lang', this._lang);
         this.__template__ = this.__template__.replace('$text', this._text);
         // TODO: switch if manual is true
         this.$tableView.querySelector('.listContainer').innerHTML += this.__template__;
         // set elements
-        this.$cellView = document.getElementById(this.__id__);
+        this.$cellView = document.getElementById(this.id);
         if (this.$cellView == null) {
-            console.warn(`<li id=${this.__id__} class=translateResultsTableViewCell></li> not found.`);
+            console.warn(`<li id=${this.id} class=translateResultsTableViewCell></li> not found.`);
         }
         this.$lang = this.$cellView.querySelector('.lang');
         this.$text = this.$cellView.querySelector('.text');
@@ -202,9 +202,9 @@ class TranslateResultsTableViewCell {
     // * @param {string} animationClass 
     // */
     //_show(animationClass='fadeInToBottom', interval=500) {
-    //    console.log(`show function called in ${this.__id__}`);
+    //    console.log(`show function called in ${this.id}`);
     //    this.$translateResultsTableView.style.display = 'block';
-    //    document.getElementById(this.__id__).classList.add(animationClass);
+    //    document.getElementById(this.id).classList.add(animationClass);
     //    setTimeout(()=>{
     //        this.state = TranslateResultsTableViewCellState.onloading;
     //    }, interval);
@@ -215,8 +215,8 @@ class TranslateResultsTableViewCell {
     // * @param {string} animationClass 
     // */
     //_hide(animationClass='fadeOutToLeft', interval=500) {
-    //    console.log(`hide function called in ${this.__id__}`);
-    //    document.getElementById(this.__id__).classList.add(animationClass);
+    //    console.log(`hide function called in ${this.id}`);
+    //    document.getElementById(this.id).classList.add(animationClass);
     //    setTimeout(()=>{
     //        this.state = TranslateResultsTableViewCellState.onhide;
     //        this.$translateResultsTableView.style.display = 'none';
@@ -254,7 +254,7 @@ const TranslateResultsTableViewState = Object.freeze({
  * @param {string} id - The DOM id where this view is replaced.
  */
 class TranslateResultsTableView {
-    __id__ = null;
+    id = null;
     __innter_template__ = `
     <ul class=listContainer></ul>
     <div class=footer>
@@ -273,7 +273,7 @@ class TranslateResultsTableView {
 
     constructor(id) {
         // set veiw id
-        this.__id__ = id;
+        this.id = id;
         // initialize view elements
         this._setElements();
         // initialize layout
@@ -331,10 +331,10 @@ class TranslateResultsTableView {
      * DOM nodes as variables.
      */
     _setElements() {
-        this.$translateResultsTableView = document.getElementById(this.__id__);
+        this.$translateResultsTableView = document.getElementById(this.id);
         if (this.$translateResultsTableView == null) {
             console.warn(
-                `<section id=${this.__id__} class=translateResultsTableView></section> is necessary in HTML.`);
+                `<section id=${this.id} class=translateResultsTableView></section> is necessary in HTML.`);
         }
         this.$translateResultsTableView.innerHTML = this.__innter_template__;
         this.$listContainer = this.$translateResultsTableView.querySelector('.listContainer');
@@ -361,22 +361,22 @@ class TranslateResultsTableView {
     _setEventHandlers() {
         const _this = this;
         this._cells.forEach((cell, index) => {
-            console.log(`set event for ${cell.__id__}`);
-            document.getElementById(cell.__id__).addEventListener('click', e => {
-                console.log(`cell ${cell.__id__} clicked`)
+            console.log(`set event for ${cell.id}`);
+            document.getElementById(cell.id).addEventListener('click', e => {
+                console.log(`cell ${cell.id} clicked`)
                 _this._selectedIndex = cell.__index__;
                 _this.state = TranslateResultsTableViewState.onselected;
             });
-            document.getElementById(cell.__id__).addEventListener('mouseover', e => {
+            document.getElementById(cell.id).addEventListener('mouseover', e => {
                 _this.$translateResultsTableView.dispatchEvent(
                     new CustomEvent(
-                        'onmouseover', {detail: {cellId: cell.__id__, index: cell.__index__}}
+                        'onmouseover', {detail: {cellId: cell.id, index: cell.__index__}}
                     ));
             });
-            document.getElementById(cell.__id__).addEventListener('mouseout', e => {
+            document.getElementById(cell.id).addEventListener('mouseout', e => {
                 _this.$translateResultsTableView.dispatchEvent(
                     new CustomEvent(
-                        'onmouseout', {detail: {cellId: cell.__id__, index: cell.__index__}}
+                        'onmouseout', {detail: {cellId: cell.id, index: cell.__index__}}
                     ));
             });
         })
@@ -391,7 +391,7 @@ class TranslateResultsTableView {
         // set table view cells from contents
         this.$listContainer.innerHTML = '';
         this._cells = Object.keys(this._results).map((key, i) => {
-            var cell = new TranslateResultsTableViewCell(this.__id__, i);
+            var cell = new TranslateResultsTableViewCell(this.id, i);
             const result = this._results[key];
             cell.result = result;
             return cell;
@@ -429,7 +429,7 @@ class TranslateResultsTableView {
     * Close this view component.
     */
     _close(shouldAnimateCells=true) {
-        console.log(`${this.__id__} close function called. (previousState ${this.state})`);
+        console.log(`${this.id} close function called. (previousState ${this.state})`);
         var _this = this;
         const interval = 50;
         if (shouldAnimateCells) {

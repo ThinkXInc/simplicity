@@ -61,7 +61,7 @@
  * @param {string} id - The DOM id where this view is inserted.
  */
  class FileUploadTableViewCell {
-    __id__ = null;
+    id = null;
     __table_view_id__ = null;
     __index__ = null;
     __uploadedFileName__ = null;
@@ -75,7 +75,7 @@
         // set veiw id
         this.__table_view_id__ = table_view_id;
         this.__index__ = index;
-        this.__id__ = `${table_view_id}_${index}`
+        this.id = `${table_view_id}_${index}`
 
         // set elements
         this._setElements();
@@ -122,7 +122,7 @@
     _resetCell() {
         // Create new cell view element
         this.$cellView = document.createElement('div');
-        this.$cellView.id = this.__id__;
+        this.$cellView.id = this.id;
         this.$cellView.classList.add('uploadFileTableViewCell');
 
         // Create child elements of the cell view
@@ -166,8 +166,8 @@
 
     /* public functions */
     hide() {
-        console.log(`hide function called in ${this.__id__}`);
-        document.getElementById(this.__id__).classList.add('fadeOutToLeft');
+        console.log(`hide function called in ${this.id}`);
+        document.getElementById(this.id).classList.add('fadeOutToLeft');
     }
 }
 
@@ -197,7 +197,6 @@
  *  usage:
  * 
  *     documentUploadView = new FileUploadView(
- *         'parent_id',
  *         'documentUploadView',
  *         [FileExtension.png, FileExtension.jpg],
  *         'Upload Documents', 
@@ -209,7 +208,6 @@
  *     )
  * 
  * `</code>`
- * @param {string} parent_id - The DOM id of the parent element where this view will be appended.
  * @param {string} id - The DOM id where this view is set.
  * @param {list of FileExtension} requested_file_extensions - eg. [FileExtension.jpg, FileExtension.png]
  * @param {string} title - title text
@@ -243,15 +241,15 @@
     _file = null;
 
     constructor(
-        parent_id, id,
+        id,
         requested_file_extensions,
         title, subtitle, orTitle, browseButtonTitle, dropTitle,
         uploadedFilesTableTitle
     ) {
-        super(parent_id, id, 'div');
+        super(id, 'div');
 
         // set 
-        this.__id__ = id;
+        this.id = id;
         this.__title__ =  title;
         this.__subtitle__ = subtitle;
         this.__requested_file_extensions__ = requested_file_extensions;
@@ -296,10 +294,10 @@
         this.controller.fileUploadViewStateChange(this, this._showingstate); // <-- protocol function call
         switch (state) {
             case FileUploadViewShowingState.onhide:
-                console.log(`FileUploadView ${this.__id__} showing state changed -> onhide`);
+                console.log(`FileUploadView ${this.id} showing state changed -> onhide`);
                 break
             case FileUploadViewShowingState.onshow:
-                console.log(`FileUploadView ${this.__id__} showing state changed -> onshow`);
+                console.log(`FileUploadView ${this.id} showing state changed -> onshow`);
                 break
         }
     }
@@ -322,7 +320,7 @@
 
 
     _createElements() {
-        const container = document.getElementById(this.__id__);
+        const container = document.getElementById(this.id);
 
         const fileUploadView = document.createElement('div');
         fileUploadView.classList.add('fileUploadView');
@@ -384,10 +382,10 @@
      */
     _setElements() {
         // fileUploadView
-        this.$fileUploadView = document.getElementById(this.__id__);
+        this.$fileUploadView = document.getElementById(this.id);
         if (this.$fileUploadView == null) {
             console.warn(
-                `<section id=${this.__id__} class=fileUploadView></section> is necessary in HTML.`);
+                `<section id=${this.id} class=fileUploadView></section> is necessary in HTML.`);
         }
         // title
         this.$title = this.$fileUploadView.querySelector('.title');
@@ -524,12 +522,12 @@
     }
 
     _setFileUploadCellEventHandler(cell){
-        console.log(document.getElementById(cell.__id__));
+        console.log(document.getElementById(cell.id));
 
-        console.log(`set event for ${cell.__id__}`);
-            currentCell = document.getElementById(cell.__id__);
+        console.log(`set event for ${cell.id}`);
+            currentCell = document.getElementById(cell.id);
             currentCell.querySelector('.close-icon').addEventListener('click', e => {
-                console.log(`cell ${cell.__id__} clicked`);
+                console.log(`cell ${cell.id} clicked`);
                 currentCell.remove()
                 this.controller.fileUploadViewFileRemoved(this, cell); // <-- protocol function call
             });
@@ -560,7 +558,7 @@
      * @throws {Error} If the method is not overridden in the ViewController.
      */
     fileUploadViewStateChange(fileUploadView, state) {
-        throw new Error(`ViewController of FileUploadView ${fileUploadView.__id__} must implement _fileUploadViewStateChange method!`);
+        throw new Error(`ViewController of FileUploadView ${fileUploadView.id} must implement _fileUploadViewStateChange method!`);
     }
 
     /**
@@ -572,7 +570,7 @@
      * @throws {Error} If the method is not overridden in the ViewController.
      */
     fileUploadViewFileUploaded(fileUploadView, file) {
-        throw new Error(`ViewController of FileUploadView ${fileUploadView.__id__} must implement _fileUploadViewFileUploaded method!`);
+        throw new Error(`ViewController of FileUploadView ${fileUploadView.id} must implement _fileUploadViewFileUploaded method!`);
     }
 
     /**
@@ -584,7 +582,7 @@
      * @throws {Error} If the method is not overridden in the ViewController.
      */
     fileUploadViewFocusChange(fileUploadView, focus) {
-        throw new Error(`ViewController of FileUploadView ${fileUploadView.__id__} must implement _fileUploadViewFocusChange method!`);
+        throw new Error(`ViewController of FileUploadView ${fileUploadView.id} must implement _fileUploadViewFocusChange method!`);
     }
 
     /**
@@ -596,7 +594,7 @@
      * @throws {Error} If the method is not overridden in the ViewController.
      */
     fileUploadViewFileRemoved(fileUploadView, cell) {
-        throw new Error(`ViewController of FileUploadView ${fileUploadView.__id__} must implement _fileUploadViewFileRemoved method!`);
+        throw new Error(`ViewController of FileUploadView ${fileUploadView.id} must implement _fileUploadViewFileRemoved method!`);
     }
 }
 

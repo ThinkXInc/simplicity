@@ -2,12 +2,20 @@
 class LoadingConfig extends ViewComponentConfig {
     constructor({
         htmlTag = 'div',
+        position = LoadingAppendedAs.firstChild,
         ...otherOptions
     } = {}) {
         super(otherOptions);
+        this.position = position;
         this.htmlTag = htmlTag;
     }
 }
+
+const LoadingAppendedAs = Object.freeze({ 
+    firstChild: 0, 
+    lastChild: 1
+});
+
 
 /**
  * Base class for loading components. Manages loading state and display style.
@@ -19,20 +27,16 @@ class LoadingComponentBase extends ViewComponentBase {
     /**
      * Constructs an instance of LoadingComponentBase.
      * 
-     * @param {string} parent_id - The id of the parent element.
      * @param {string} id - The id of the loading component.
      */
-    constructor(parent_id, id, config = new LoadingConfig()) {
-		super(parent_id, id, config);
+    constructor(id, config = new LoadingConfig()) {
+		super(id, config);
         this.config = config;
         this.isLoading = false;
         this.$view.style.display = 'none';
 	}
 
-    addToParent() {
-        const parentId = this.__parent_id__;
-        let $parent = document.getElementById(parentId);
-    
+    addToParent($parent) {
         // Check if $parent is null or not an instance of HTMLElement
         if (!$parent || !($parent instanceof HTMLElement)) {
             console.error(`[ERROR] Could not find a parent element with id=${parentId} or the element is not a valid HTML element.`);
@@ -45,12 +49,10 @@ class LoadingComponentBase extends ViewComponentBase {
             return;
         }
     
-        // If parent has no children, append this.$view normally
-        if ($parent.childNodes.length === 0) {
-            $parent.appendChild(this.$view);
-        } else {
-            // Otherwise, insert this.$view as the first child
+        if (this.config.position == LoadingAppendedAs.firstChild) {
             $parent.insertBefore(this.$view, $parent.firstChild);
+        } else {
+            $parent.appendChild(this.$view);
         }
     }
 

@@ -31,7 +31,6 @@
  *     //...
  * );
  *
- * @param {string} parent_id - The id of the parent component.
  * @param {string} id - The id of this page.
  * @param {Object} locale - A dictionary containing localization text.
  * @param {string} lang - The language to display (default: 'en').
@@ -69,7 +68,7 @@ class AddressInputPage extends Page {
     __country_code_component_id__ = 'addressInputPageCountryCode';
     __tel_component_id__ = 'addressInputPageTel';
 
-    constructor(parent_id, id, locale, lang = 'en', 
+    constructor(id, locale, lang = 'en', 
                 countries,
                 locale_key_title = 'page_2_title',
                 locale_key_back_button = 'page_2_backbutton_title',
@@ -90,23 +89,23 @@ class AddressInputPage extends Page {
                 locale_key_tel_title = 'page_2_tel_title',
                 locale_key_tel_placeholder = 'page_2_tel_placeholder') {
 
-        let backButton = new BackButton(parent_id, this.__back_button_component_id__, locale[locale_key_back_button][lang]);
-        let title = new Title(parent_id, this.__title_component_id__, locale[locale_key_title][lang]);
-        let postalCode = new TextField(parent_id, this.__postal_code_component_id__, TextFieldType.singleline, locale[locale_key_postal_code_title][lang], 'postal_code', locale[locale_key_postal_code_placeholder][lang], 30, 1, false);
-        let city = new TextField(parent_id, this.__city_component_id__, TextFieldType.singleline, locale[locale_key_city_title][lang], 'city', locale[locale_key_city_placeholder][lang], 40, 1, false);
-        let province = new TextField(parent_id, this.__province_component_id__, TextFieldType.singleline, locale[locale_key_province_title][lang], 'province', locale[locale_key_province_placeholder][lang], 40, 1, false);
-        let address1 = new TextField(parent_id, this.__address_1_component_id__, TextFieldType.singleline, locale[locale_key_address1_title][lang], 'address1', locale[locale_key_address1_placeholder][lang], 100, 1, false);
-        let address2 = new TextField(parent_id, this.__address_2_component_id__, TextFieldType.singleline, locale[locale_key_address2_title][lang], 'address2', locale[locale_key_address2_placeholder][lang], 100, 0, false);
+        let backButton = new BackButton(this.__back_button_component_id__, locale[locale_key_back_button][lang]);
+        let title = new Title(this.__title_component_id__, locale[locale_key_title][lang]);
+        let postalCode = new TextField(this.__postal_code_component_id__, TextFieldType.singleline, locale[locale_key_postal_code_title][lang], 'postal_code', locale[locale_key_postal_code_placeholder][lang], 30, 1, false);
+        let city = new TextField(this.__city_component_id__, TextFieldType.singleline, locale[locale_key_city_title][lang], 'city', locale[locale_key_city_placeholder][lang], 40, 1, false);
+        let province = new TextField(this.__province_component_id__, TextFieldType.singleline, locale[locale_key_province_title][lang], 'province', locale[locale_key_province_placeholder][lang], 40, 1, false);
+        let address1 = new TextField(this.__address_1_component_id__, TextFieldType.singleline, locale[locale_key_address1_title][lang], 'address1', locale[locale_key_address1_placeholder][lang], 100, 1, false);
+        let address2 = new TextField(this.__address_2_component_id__, TextFieldType.singleline, locale[locale_key_address2_title][lang], 'address2', locale[locale_key_address2_placeholder][lang], 100, 0, false);
         
         // position map and tel country code need proper classes and handling
-        let positionMap = new PositionMap(parent_id, this.__position_map_component_id__, 'lat', 'lng', defaultCoordinate, defaultCoordinate, locale[locale_key_position_map_label][lang]);
-        let telCountryCode = new DropdownButton(parent_id, this.__country_code_component_id__, locale[locale_key_country_code_title][lang], locale[locale_key_country_code_description][lang], 'tel_country_code', DropdownMenuType.list, DropdownMenuDisplayPositionType.upperover, countries.dials.map((dial, i) => new ListMenu(`${countries.names[i]} +${dial}`, dial)));
+        let positionMap = new PositionMap(this.__position_map_component_id__, 'lat', 'lng', defaultCoordinate, defaultCoordinate, locale[locale_key_position_map_label][lang]);
+        let telCountryCode = new DropdownButton(this.__country_code_component_id__, locale[locale_key_country_code_title][lang], locale[locale_key_country_code_description][lang], 'tel_country_code', DropdownMenuType.list, DropdownMenuDisplayPositionType.upperover, countries.dials.map((dial, i) => new ListMenu(`${countries.names[i]} +${dial}`, dial)));
 
-        let tel = new TextField(parent_id, this.__tel_component_id__, TextFieldType.singleline, locale[locale_key_tel_title][lang], 'tel', locale[locale_key_tel_placeholder][lang], 20, 1, false);
-        let nextButton = new NextButton(parent_id, this.__next_button_component_id__, locale[locale_key_next_button][lang]);
+        let tel = new TextField(this.__tel_component_id__, TextFieldType.singleline, locale[locale_key_tel_title][lang], 'tel', locale[locale_key_tel_placeholder][lang], 20, 1, false);
+        let nextButton = new NextButton(this.__next_button_component_id__, locale[locale_key_next_button][lang]);
 
         let components = [backButton, title, postalCode, city, province, address1, address2, positionMap, telCountryCode, tel, nextButton];
-        super(parent_id, id, components);
+        super(id, components);
     }
 }
 

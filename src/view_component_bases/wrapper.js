@@ -25,15 +25,14 @@ class WrapperConfig extends ViewComponentConfig {
  * </code>
  *
  * @constructor
- * @param {string} parent_id - The id of the parent element.
  * @param {string} id - The id for the new element.
  * @param {Array} components - view components
  */
 class Wrapper extends ViewComponentBase {
     components;
 
-    constructor(parent_id, id, components, config = new WrapperConfig()) {
-        super(parent_id, id, config);
+    constructor(id, components, config = new WrapperConfig()) {
+        super(id, config);
         this.config = config;
 
         if (!Array.isArray(components)) {

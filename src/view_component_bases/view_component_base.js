@@ -13,15 +13,13 @@ class ViewComponentConfig {
 /**
  * A base class for view components.
  * @constructor
- * @param {string} parent_id - The id of the parent element.
  * @param {string} id - The id for the new element.
  * @param {string} text - The text to display in the element.
  */
 class ViewComponentBase {
-    constructor(parent_id, id, config = new ViewComponentConfig()) {
+    constructor(id, config = new ViewComponentConfig()) {
         debuglog(`Initializing ${this.constructor.name} with id=${id}`)
-        this.__parent_id__ = parent_id;
-        this.__id__ = id;
+        this.id = id;
         this.config = config;
 
         this._setElements();
@@ -63,7 +61,7 @@ class ViewComponentBase {
     _checkProtocolAdherenceForClass(protocolClass) {
         Object.getOwnPropertyNames(protocolClass.prototype).forEach(methodName => {
             if (methodName !== "constructor" && typeof this[methodName] !== "function") {
-                throw new Error(`${this.__id__} must implement ${methodName} method of ${protocolClass.name}`);
+                throw new Error(`${this.id} must implement ${methodName} method of ${protocolClass.name}`);
             }
         });
     }
@@ -78,8 +76,8 @@ class ViewComponentBase {
         }
         // create view
         this.$view = document.createElement(this.config.htmlTag);
-        this.$view.id = this.__id__;
-        this.$view.classList.add(`${this.__id__}`);
+        this.$view.id = this.id;
+        this.$view.classList.add(`${this.id}`);
         this.$view.classList.add(`${this.constructor.name}`);
     }
 
@@ -89,38 +87,25 @@ class ViewComponentBase {
      * @param {Page} page 
      */
     addToPage(page) {
-        this.addToParent(page.$view);
+        // NOTE: この時点でpageのdom elementはまだHTML上にないことに注意
+        // すべてのview componentをpageにアタッチした後でなければpageはHTML上に作られない
+        // 詳しくはInputPageViewControllerのsetElements()のフローを参照
+        if (!page.$view.id) {
+            console.error(`[ERROR] ${page.$view} has no id`);
+        }
+        this.addTo(page.$view);
         this.setPageIndex(page.pageIndex);
-        this.$view.classList.add(`${page.__id__}__${this.constructor.name}`);
+        this.$view.classList.add(`${page.id}__${this.constructor.name}`);
     }
 
-    /**
-     * Adds this component to the given parent DOM element.
-     *
-     * This method is necessary because it encapsulates the responsibility of 
-     * adding the component to the DOM within the component itself. This allows 
-     * for greater flexibility as the component can be appended to various 
-     * parent DOM elements as required, and ensures that the component has 
-     * control over its own representation in the DOM.
-     *
-     * @param {HTMLElement} $parent - The parent DOM element to which this 
-     * component will be appended. If not provided or null, an error is logged.
-     *
-     * @returns {void}
-     */
-    addToParent($parent) {
+    addTo($parent) {
         if (!$parent || $parent == undefined || !($parent instanceof HTMLElement)) {
             console.error(
-                `[ERROR] Tried ${this.__parent_id__} appendChild ${this.__id__}. The parent element id=${this.__parent_id__} is necessary in HTML.`);
+                `[ERROR] $parent must exist but ${$parent} `);
         } else {
-            debuglog(`[${$parent.className}] appendChild ${this.__id__}`)
+            debuglog(`[${$parent.className}] appendChild ${this.id}`)
             $parent.appendChild(this.$view);
         }
-    }
-
-    addTo(parentDOMID) {
-        const $parent = document.getElementById(parentDOMID);
-        this.addToParent($parent);
     }
 
     /**
