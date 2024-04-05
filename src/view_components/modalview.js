@@ -67,7 +67,7 @@ class ModalView extends ViewComponentBase {
         this.$contentWrapper.appendChild(this.$title);
 
         // MainContent
-        this.$mainContent = document.createElement('p');
+        this.$mainContent = document.createElement('div');
         this.$mainContent.classList.add('mainContent');
         this.$mainContent.textContent = this.config.text;
         this.$contentWrapper.appendChild(this.$mainContent);

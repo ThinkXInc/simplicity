@@ -54,6 +54,7 @@ class InputPageViewControllerConfig {
         loading = false,
         alertMessage = null, // Set up inside the constructor if null
         defaultPageIndex = 0,
+        isAllPageShown = false,
         isEnterButtonToNext = true,
         isPageIndexInHash = false,
         pageIndexKeyInHash = 'page',
@@ -64,6 +65,7 @@ class InputPageViewControllerConfig {
         this.loading = loading;
         this.alertMessage = alertMessage;
         this.defaultPageIndex = defaultPageIndex;
+        this.isAllPageShown = isAllPageShown;
         this.isEnterButtonToNext = isEnterButtonToNext;
         this.isPageIndexInHash = isPageIndexInHash;
         this.pageIndexKeyInHash = pageIndexKeyInHash;
@@ -90,6 +92,7 @@ class InputPageViewController {
         this.pages = pages;
         this.locale = locale;
         this.lang = lang;
+        this.config = config;
 
         // Use destructuring to apply configuration properties to the instance
         Object.assign(this, {
@@ -129,7 +132,11 @@ class InputPageViewController {
         }
 
         this.loading = config.loading
-        this.pageIndex = config.defaultPageIndex;
+        if(!this.config.isAllPageShown) {
+            this.pageIndex = config.defaultPageIndex;
+        } else {
+            this.showAllPages();
+        }
     }
 
     /**
@@ -152,20 +159,7 @@ class InputPageViewController {
         const previousPageIndex = this._pageIndex;
         debuglog(`pageIndex changed ${previousPageIndex} -> ${pageIndex}`)
         this._pageIndex = pageIndex;
-        // display only the page in current state.
-        let $pages = this.$inputPageView.querySelectorAll('.inputPageViewPage')
-        $pages.forEach(($page, i) => {
-            if (parseInt($page.dataset.pageIndex) == this._pageIndex) {
-                // show page
-                if (!this.preventDefaultPageControl) {$page.classList.add('show')};
-                $page.style.display = "flex";
-                $page.style.flexDirection = "column";
-            } else if (!this.preventDefaultPageControl) {
-                // hide page
-                $page.classList.remove('show');
-                $page.style.display = "none";
-            }
-        })
+        this.showPageOnly(pageIndex);
     }
 
     get pageIndex() {return this._pageIndex}
@@ -326,6 +320,42 @@ class InputPageViewController {
             return
         }
         Browser.updateValueInHash(this.config.pageIndexKeyInHash, String(page), true);
+    }
+
+    showPageOnly(pageIndex) {
+        let $pages = this.$inputPageView.querySelectorAll('.inputPageViewPage')
+        $pages.forEach(($page, i) => {
+            if (parseInt($page.dataset.pageIndex) == pageIndex) {
+                this.showPage($page);
+            } else if (!this.preventDefaultPageControl) {
+                this.hidePage($page);
+            }
+        })
+    }
+
+    showAllPages() {
+        let $pages = this.$inputPageView.querySelectorAll('.inputPageViewPage')
+        $pages.forEach(($page, i) => {
+            this.showPage($page);
+        })
+    }
+
+    hideAllPages() {
+        let $pages = this.$inputPageView.querySelectorAll('.inputPageViewPage')
+        $pages.forEach(($page, i) => {
+            this.hidePage($page);
+        })
+    }
+
+    showPage($page) {
+        if (!this.preventDefaultPageControl) {$page.classList.add('show')};
+        $page.style.display = "flex";
+        $page.style.flexDirection = "column";
+    }
+
+    hidePage($page) {
+        $page.classList.remove('show');
+        $page.style.display = "none";
     }
 
     /**

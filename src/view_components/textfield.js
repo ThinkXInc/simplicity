@@ -101,7 +101,10 @@ const TextFieldPlaceTo = Object.freeze({
  *  <div id="{this.id}" class="textField">
  *      <div class="inputOuter">
  *          <h6 class="title">{this.__title__}</h6>
- *          <input class="{this.fieldName}form" name="{this.fieldName}" type="text" autocomplete="off">
+ *          <div class="inputWrapper">
+ *             <input class="{this.fieldName}form" name="{this.fieldName}" type="text" autocomplete="off">
+ *             <div class="inputAfter"></div>
+ *          </div>
  *          <div class="footer">
  *              <span class="indicator"></span>
  *              <span class="message"></span>
