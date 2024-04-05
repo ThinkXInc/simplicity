@@ -62,7 +62,7 @@ class ModalView extends ViewComponentBase {
 
         // Title
         this.$title = document.createElement('h3');
-        this.$title.classList.add('title');
+        this.$title.classList.add('ModalViewTitle');
         this.$title.textContent = this.config.title;
         this.$contentWrapper.appendChild(this.$title);
 
@@ -93,7 +93,7 @@ class ModalView extends ViewComponentBase {
 
         // Alert for displaying error messages
         this.$alert = document.createElement('div');
-        this.$alert.classList.add('alert');
+        this.$alert.classList.add('ModalViewAlert');
         this.$alert.style.display = 'none'; // Initially hidden
         this.$contentWrapper.appendChild(this.$alert);
     }

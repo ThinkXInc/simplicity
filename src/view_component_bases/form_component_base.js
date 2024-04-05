@@ -40,6 +40,7 @@ class FormComponentBase extends ViewComponentBase {
         if (this.config.defaultValue !== null) {
             this.value = this.config.defaultValue; // If defaultValue is set, use it.
         }
+
     }
 
     /**

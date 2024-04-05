@@ -47,6 +47,12 @@ class Browser {
     return html;
   }
 
+  static getLangFromUrl() {
+    const pathSegments = window.location.pathname.split('/').filter(Boolean);
+    return pathSegments.length > 0 ? pathSegments[0] : null;
+  }
+
+
   /**
    * Get search params string.
    * 
@@ -202,4 +208,5 @@ class Browser {
         return null;
     }
   }
+
 }

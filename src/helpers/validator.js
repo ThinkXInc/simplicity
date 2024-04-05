@@ -79,31 +79,39 @@ class Validator {
         switch (this.errorType) {
             case ValidationErrorType.required:
                 if (!this._validateNotNullOrEmpty(value)) {
+                    debuglog(`validated: ${value} is null.`)
                     return this.errorMessage;
                 } 
                 break;
             case ValidationErrorType.maxLength:
+                debuglog(`validating.. ${value} > max length ${this.maxLength}.`)
                 if (!this._validateMaxLength(value)) {
+                    debuglog(`validated: ${value} > max length ${this.maxLength}.`)
                     return this.errorMessage;
                 }
                 break;
             case ValidationErrorType.emailFormat:
                 if (!this._validateFormat(value, RegexType.email)) {
+                    debuglog(`validated: ${value} is invalid email format.`)
                     return this.errorMessage;
                 }
                 break;
             case ValidationErrorType.passwordFormat:
                 if (!this._validateFormat(value, RegexType.password)) {
+                    debuglog(`validated: ${value} is invalid password format.`)
+                    return this.errorMessage;
                     return this.errorMessage;
                 }
                 break;
             case ValidationErrorType.telFormat:
                 if (!this._validateFormat(value, RegexType.tel)) {
+                    debuglog(`validated: ${value} is invalid tel format.`)
                     return this.errorMessage;
                 }
                 break;
             case ValidationErrorType.notCorresponding:
                 if (!this._validateNotCorrespond(value)) {
+                    debuglog(`validated: ${value} is not corresponding.`)
                     return this.errorMessage;
                 }
                 break;

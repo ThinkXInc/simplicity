@@ -78,7 +78,6 @@ class TextFieldConfig extends FormComponentBaseConfig {
 const TextFieldState = Object.freeze({ onhide: 0, onshow: 1, });
 //onfocus: 3,  // TODO:
 //onlock: 4,  // TODO:
-const TextFieldLoadingState = Object.freeze({ none: 0, onloading: 1, done: 2, });
 const TextFieldValidationState = Object.freeze({ none: 0, onalert: 1, onverified: 1, });
 const TextFieldInputState = Object.freeze({ empty: 0, filled: 1, overmaximum: 2, });
 const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
@@ -248,21 +247,6 @@ class TextField extends FormComponentBase {
                 break
             case TextFieldState.onshow:
                 console.log(`TextField ${this.id} state changed -> onshow`);
-                break
-        }
-    }
-
-    /**
-     * loadingState setter.
-     */
-    set loadingState(state) {
-        this._loadingState = state;
-        switch (state) {
-            case TextFieldLoadingState.none:
-                console.log(`TextField ${this.id} loadingState changed -> none`);
-                break
-            case TextFieldLoadingState.onloading:
-                console.log(`TextField ${this.id} loadingState changed -> onloading`);
                 break
         }
     }
@@ -459,6 +443,7 @@ class TextField extends FormComponentBase {
     _setEventHandlers() {
         const _this = this;
         debuglog(`Set input event handler for ${this.id}.`);
+
         this.$textArea.addEventListener('input', (e) => {
             _this.text = _this.$textArea.value;
             _this.count = _this.$textArea.value.length;
@@ -672,6 +657,7 @@ class TextField extends FormComponentBase {
     alert(onAlert, message) {
         const alertMessageId = this.id + '__alert';
    
+        debuglog(`alert called. onAlert:${onAlert} message:${message}`)
         if (onAlert) {
             console.log(`Alert turned on for ${this.id} with message: ${message}`);
             this.$textField.classList.add('alert');
@@ -697,7 +683,8 @@ class TextField extends FormComponentBase {
             this._removeAlertMessage(alertMessageId);
 
         } else {
-            //DEBUG: console.log(`Alert method called for ${this.id} to remove the message but not found.`);
+            //DEBUG: 
+            debuglog(`[WARNING] Alert method called for ${this.id} to remove the message but not found.`);
         }
     }
 

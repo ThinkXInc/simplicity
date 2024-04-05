@@ -35,7 +35,11 @@ class Locale {
      * @param {Object} localeDictionary - The dictionary of localized strings.
      */
     constructor(localeDictionary) {
-        this.localeDictionary = localeDictionary;
+        if (typeof localeDictionary === 'object' && localeDictionary !== null && !Array.isArray(localeDictionary)) {
+            this.localeDictionary = localeDictionary;
+        } else {
+            console.error('localeDictionary should be an object.');
+        }
     }
 
     /**
