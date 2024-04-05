@@ -56,6 +56,7 @@ class InputPageViewControllerConfig {
         defaultPageIndex = 0,
         isEnterButtonToNext = true,
         isPageIndexInHash = false,
+        pageIndexKeyInHash = 'page',
         preventDefaultPageControl = false
     } = {}) {
         this.dataModelClass = dataModelClass;
@@ -65,14 +66,12 @@ class InputPageViewControllerConfig {
         this.defaultPageIndex = defaultPageIndex;
         this.isEnterButtonToNext = isEnterButtonToNext;
         this.isPageIndexInHash = isPageIndexInHash;
+        this.pageIndexKeyInHash = pageIndexKeyInHash;
         this.preventDefaultPageControl = preventDefaultPageControl;
     }
 }
 
 class InputPageViewControllerProtocol {
-    completeSubmission() {
-        throw new Error('Subclasses must override this method');
-    }
 }
 
 class InputPageViewController {
@@ -101,9 +100,7 @@ class InputPageViewController {
             preventDefaultPageControl: config.preventDefaultPageControl,
         });
 
-
         // Potentially check protocol adherence here
-        this._checkProtocolAdherence();
         this._checkProtocolAdherenceForSubClass();
 
         // setup page components
@@ -120,7 +117,6 @@ class InputPageViewController {
         console.table(this._values);
         console.log(`data model for ${this.id} initialized`);
 
-        // locale
         if (this.locale == null) {
             console.error(`${id} no locale json data found.`);
         } else {
@@ -132,42 +128,8 @@ class InputPageViewController {
             console.log(`${id} initial language is set as ${lang}`);
         }
 
-        // loading
         this.loading = config.loading
-
-        // start page index
         this.pageIndex = config.defaultPageIndex;
-    }
-
-    /**
-     * This method checks the adherence of the InputPageViewController to the defined protocols.
-     * The protocols checked are: NextButtonProtocol, BackButtonProtocol, TextFieldProtocol, and DropdownButtonProtocol.
-     * If a required method from a protocol is not implemented, it will throw an error.
-     */
-    _checkProtocolAdherence() {
-        this._checkProtocolAdherenceForClass(NextButtonProtocol);
-        this._checkProtocolAdherenceForClass(BackButtonProtocol);
-        this._checkProtocolAdherenceForClass(TextFieldProtocol);
-        this._checkProtocolAdherenceForClass(DropdownButtonProtocol);
-        this._checkProtocolAdherenceForClass(PositionMapProtocol);
-        this._checkProtocolAdherenceForClass(FileUploadViewProtocol);
-        this._checkProtocolAdherenceForClass(LoadingProtocol);
-    }
-
-    /**
-     * This method checks the adherence of the InputPageViewController to a given protocol class.
-     * It creates an instance of the protocol class, iterates over its methods, and checks that each is implemented in the InputPageViewController.
-     * If a required method is not implemented, it will throw an error.
-     * 
-     * @param {Object} protocolClass - The protocol class to check adherence to.
-     * @throws {Error} If a required method from the protocol class is not implemented.
-     */
-    _checkProtocolAdherenceForClass(protocolClass) {
-        Object.getOwnPropertyNames(protocolClass.prototype).forEach(methodName => {
-            if (methodName !== "constructor" && typeof this[methodName] !== "function") {
-                throw new Error(`InputPageViewController must implement ${methodName} method of ${protocolClass.name}`);
-            }
-        });
     }
 
     /**
@@ -194,22 +156,16 @@ class InputPageViewController {
         let $pages = this.$inputPageView.querySelectorAll('.inputPageViewPage')
         $pages.forEach(($page, i) => {
             if (parseInt($page.dataset.pageIndex) == this._pageIndex) {
+                // show page
                 if (!this.preventDefaultPageControl) {$page.classList.add('show')};
                 $page.style.display = "flex";
                 $page.style.flexDirection = "column";
             } else if (!this.preventDefaultPageControl) {
+                // hide page
                 $page.classList.remove('show');
                 $page.style.display = "none";
             }
         })
-        if (!(isNaN(this._pageIndex))) {
-            // call interface
-            this.pageIndexChanged(this._pageIndex);
-            // update browser's url
-            if (this.isPageIndexInHash) {
-                this._updatePageIndexInBrowswerURL(this._pageIndex);
-            }
-        }
     }
 
     get pageIndex() {return this._pageIndex}
@@ -335,16 +291,18 @@ class InputPageViewController {
      */
     _setEventHandlers() {
         const _this = this;
+
         window.addEventListener('load', (event) => {
             console.log('** the whole page has been loaded. **');
-            _this.viewDidLoad();
         })
+
         window.addEventListener('hashchange', (event) => {
             console.log('hashchange event detected');
             console.log(`url changed. -> ${Browser.getRelativePath()}`)
-            const page = Browswer.getValueFromHash('page', 'int');
+            const page = Browswer.getValueFromHash(this.config.pageIndexKeyInHash, 'int');
             _this.pageIndex = page;
         }, false);
+
         if(this.isEnterButtonToNext) {
             window.addEventListener('keydown', (event) => {
                 if (event.key === 'Enter') {
@@ -367,7 +325,7 @@ class InputPageViewController {
             console.error(`invalid page number ${page} of type ${typeof page}`);
             return
         }
-        Browser.updateValueInHash('page', String(page), true);
+        Browser.updateValueInHash(this.config.pageIndexKeyInHash, String(page), true);
     }
 
     /**
@@ -409,7 +367,7 @@ class InputPageViewController {
      * Initialize Cookie storage.
      * *For debug purpose.
      */
-    _resetValuesInCookie() {
+    resetValuesInCookie() {
         this._components.forEach((component) => {
             if (Utils.isInheritedFrom(component, FormComponentBase)) {
                 component._removeValueInCookies();
@@ -420,67 +378,21 @@ class InputPageViewController {
     }
 
     /**
-     * @interface
-     * 
-     * Called when the whole page has been loaded.
-     * 
-     */
-    viewDidLoad() {
-        // NOTE: override this function
-    }
-
-    /**
-     * @interface
-     * 
-     * Called when pageIndex changed.
-     * @param {Int} pageIndex
-     */
-    pageIndexChanged(pageIndex) {
-        // NOTE: override this function
-    }
-
-    /**
-     * Method that is called when the next button is tapped.
-     * If it's not the last page, this function validates the current page and moves to the next one if validation passes.
-     * If it's the last page, this function submits the form values.
-     * This method can be overridden by subclasses to provide specific functionality.
-     *
-     * @param {NextButton} nextButton - The next button instance that was tapped.
-     */
-    nextButtonTapped(nextButton) {
-        console.debug(`Button ${nextButton.id} tapped.`);
-        console.log(this.values);
-        console.log(this.getValuesFromCookies());
-        
-        this._nextButtonAction();
-    }
-
-    _nextButtonAction() {
-        // If not the last page, navigate to the next page. If it is the last page, submit the data.
-        const isLastPage = this.pageIndex == this.pages.length - 1;
-        if (isLastPage) {
-            this._submitData(this.submitUrl);
-        } else {
-            this._navigateToNextPage();
-        }
-    }
-
-    /**
      * Validates the current page and if validation passes, navigates to the next page.
      * Manages loading animation during these processes.
      */
-    _navigateToNextPage() {
+    navigateToNextPage() {
         this.startLoading();
 
         // Validate current page
-        const errors = this._validatePage(this.pageIndex);
+        const errors = this.validatePage(this.pageIndex);
         if (errors.length > 0) {
             this.stopLoading();
             return; // Return early if there are validation errors
         }
 
         // If validation passes, move to the next page
-        this.pageIndex += 1;
+        this.incrementPageIndex();
         this.stopLoading();
     }
 
@@ -492,7 +404,7 @@ class InputPageViewController {
      *
      * @param {Object} component - The component object that the method will navigate to its page.
      */
-    _navigateToPageOf(component) {
+    navigateToPageOf(component) {
         if ('pageIndex' in component) {
             this.pageIndex = component.pageIndex;
         } else {
@@ -500,127 +412,13 @@ class InputPageViewController {
         }
     }
 
-    /**
-     * Validates all pages and if validation passes, submits the form.
-     * Manages loading animation during these processes.
-     */
-    _submitData(url) {
-        this.startLoading();
-
-        // Validate all pages and stop loading if there's an error.
-        if (this.pages.some((page, i) => this._validatePage(i).length > 0)) {
-            this.stopLoading();
-            return; // Return early if there are validation errors
-        }
-
-        console.log(`[Field values] ${JSON.stringify(this.values)}`);
-        this._submit(url, this.values);
-        this.stopLoading();
-    }
-
-    /**
-     * Handles successful form submission.
-     * 
-     * @param {Object} res The response from the server.
-     * 
-     * Example Success Response:
-     * {
-     *   'data': user.response_json(),
-     *   'user_id': user_id,
-     *   'success': {
-     *       'code': 201,
-     *       'message': 'new user created.'
-     *   }
-     * }
-     * 
-     * Example Error Response:
-     * {
-     *   'data': user.response_json(),
-     *   'error': {
-     *     'key': 'user_id',
-     *     'code': ErrorCode.BAD_REQUEST.value,
-     *     'reason': 'BAD_REQUEST',
-     *     'message': 'The user_id is invalid.'
-     *   }
-     * }
-     */
-    _onSubmitSuccess(res) {
-        // Success object returned.
-        if (!('error' in res)) {
-            console.log(`[success] ${res.code} ${res.message}`);
-            this.alertMessage.hide()
-
-            setTimeout(() => { this.stopLoading(); }, 1000);
-            // Reset cookie storage
-            //this._resetValuesInCookie();
-            this.completeSubmission();
-
-        // Error object returned.
-        } else {
-            console.log(`[error] ${res.error.code} ${res.error.reason}`);
-
-            // Handle by error types
-            let isFirstErrorHandled = false;
-            res.errors.forEach((error) => {
-                console.warn(`[fieldName] ${error.fieldName} [message] ${error.message}`);
-            
-                let component = this.componentByFieldName(error.fieldName);
-                component.alert(true, error.message);
-            
-                if (!isFirstErrorHandled) {
-                    this._navigateToPageOf(component);
-                    isFirstErrorHandled = true;
-                }
-            });
-        }
-    }
-
-    /**
-     * Handles errors during form submission.
-     * 
-     * @param {Object} error The error object from the fetch promise.
-     * 
-     * Example Error Object:
-     * {
-     *   'type': 'fetch_error',
-     *   'message': 'Network request failed'
-     * }
-     */
-    _onSubmitError(error) {
-        console.warn('↑↑↑↑ API request error');
-        setTimeout(() => { this.stopLoading(); }, 1000);
-    }
-
-
-    _submit(url, values) {
-        // Send data
+    submit(url, values, onsuccess, onerror) {
         Http.post(
             url, 
             values, 
-            this._onSubmitSuccess.bind(this),
-            this._onSubmitError.bind(this)
+            onsuccess.bind(this),
+            onerror.bind(this)
         );
-    }
-
-    /**
-     * Method to be overridden in subclass, defining what to do after a successful form submission.
-     * 
-     * For example, to redirect to another page:
-     * 
-     * completeSubmission() {
-     *     // URL to redirect to after successful form submission
-     *     const url = 'https://example.com/success_page';
-     *     Browser.goTo(url);
-     * }
-     */
-    completeSubmission() {
-        // Uncomment and modify the following lines in the subclass
-        /*
-        // URL to redirect to after successful form submission
-        const url = '/success_page';
-        Browser.goTo(url);
-        */
-        throw new Error('You have to implement the method completeSubmission()!');
     }
 
     /**
@@ -634,117 +432,17 @@ class InputPageViewController {
      */
     backButtonTapped(backButton) {
         debuglog(`button ${backButton.id} tapped.`);
+        this.decrementPageIndex();
+    }
+
+    incrementPageIndex() {
+        this.pageIndex += 1;
+    }
+
+    decrementPageIndex() {
         if (this.pageIndex > 0) {
             this.pageIndex = this.pageIndex - 1;
         }
-    }
-
-    /**
-     * Called when a TextField input changes.
-     * This method needs to be overridden by subclasses.
-     * @param {TextField} textField - The TextField instance where the input changed.
-     * @param {string} value - The new input value.
-     */
-    textFieldInputValueChanged(textField, value) {
-        if(typeof this.valueChanged !== 'function'){
-            throw new Error(`Instance ${this.id} must implement the method valueChanged in subclass!`);
-        }
-        console.log(`textField ${textField.id} input with value ${value}.`);
-        this.valueChanged(textField, value);
-        //this._setValueForKey(textField.fieldName, value)
-        //if(typeof this._setValueForKey !== 'function'){
-        //    throw new Error(`Instance ${this.id} must implement the method _setValueForKey in subclass!`);
-        //}
-    }
-
-    /**
-     * Called when a TextField loses focus (unfocus).
-     * This method needs to be overridden by subclasses.
-     * @param {TextField} textField - The TextField instance that lost focus.
-     * @param {string} value - The current value of the TextField.
-     */
-    textFieldOnBlur(textField, value) {
-        if(typeof this.unfocused !== 'function'){
-            throw new Error(`Instance ${this.id} must implement the method unfocused in subclass!`);
-        }
-        console.log(`textField ${textField.id} onblur with value ${value}.`);
-        this.unfocused(textField, value);
-    }
-
-    /**
-     * @interface
-     * 
-     * Called when a DropdownButton is selected.
-     * 
-     * @param {DropdownButton} dropdownButton
-     * @param {string} value
-     */
-    dropdownButtonSelected(dropdownButton, value) {
-        console.log(`dropdownButton ${dropdownButton.id} selected with value ${value}.`);
-        this.unfocused(dropdownButton, value);
-        this.valueChanged(dropdownButton, value);
-        // NOTE: override this function
-        //this._setValueForKey(dropdownButton.fieldName, value)
-    }
-
-    /**
-     * @interface
-     * 
-     * Called when a PositionMap.pointerCoordinate is updated.
-     * 
-     * @param {Coordinate} newCoordinate 
-     */
-    positionMapPointerCoordinateUpdated(positionMap, newCoordinate) {
-        console.log(`positionMap ${positionMap.id}.pointerCoordinate updated with value ${newCoordinate.lat} ${newCoordinate.lng}`);
-        const keyLat = `${positionMap.fieldNameLat}`;
-        const keyLng = `${positionMap.fieldNameLng}`;
-        this.valueChanged(positionMap, newCoordinate);
-        //this._setValuesForKeys(
-        //    {
-        //        [keyLat]: newCoordinate.lat,
-        //        [keyLng]: newCoordinate.lng
-        //    }
-        //)
-        // NOTE: override this function
-    }
-
-    /**
-     * @interface
-     * FileUploadView protocol
-     */
-    fileUploadViewStateChange(fileUploadView, state) {
-    }
-    fileUploadViewFileUploaded(fileUploadView, file) {
-    }
-    fileUploadViewFocusChange(fileUploadView, focus) {
-    }
-    fileUploadViewFileRemoved(fileUploadView, cell) {
-    }
-
-    /**
-     * @interface
-     * 
-     * Called when a TextField is input changed or,
-     * Called when a DropdownButton is selected.
-     * 
-     * @param {TextField/DropdownButton} component
-     * @param {string} value
-     */
-    valueChanged(component, value) {
-        // NOTE: override this function
-    }
-
-    /**
-     * @interface
-     * 
-     * Called when a TextField is blur(unfocus) or,
-     * Called when a DropdownButton is selected.
-     * 
-     * @param {TextField/DropdownButton} component
-     * @param {string} value
-     */
-    unfocused(component, value) {
-        // NOTE: override this function
     }
 
     /**
@@ -755,7 +453,7 @@ class InputPageViewController {
      * @param {ViewComponentBase} component - The component to validate.
      * @return {string|null} - The error message if validation fails, or null if it passes.
      */
-    _validateComponent(component) {
+    validateComponent(component) {
         debuglog(`Validating component: ${component.id}`)
         return component.validate()
     }
@@ -769,11 +467,11 @@ class InputPageViewController {
      * @returns {Array} a 2-dim list of all errors found in the page.
      * [[component, 'error message'], ..}
      */
-    _validatePage(pageIndex) {
+    validatePage(pageIndex) {
         let errors = [];
         this._pageComponents[pageIndex].forEach((component, j) => {
             if (component instanceof TextField || component instanceof DropdownButton) {
-                const errorMessage = this._validateComponent(component);
+                const errorMessage = this.validateComponent(component);
                 if (errorMessage != null) {
                     errors.push([component, errorMessage]);
                 }
@@ -783,6 +481,14 @@ class InputPageViewController {
         return errors
     }
 
+    validateAllPages() {
+        // Validate all pages and stop loading if there's an error.
+        if (this.pages.some((page, i) => this.validatePage(i).length > 0)) {
+            return false; // Return early if there are validation errors
+        }
+        return true;
+    }
+
     /**
      * HTTP POST to submit data.
      * 
@@ -790,7 +496,7 @@ class InputPageViewController {
      * @param {function} onsuccess
      * @param {function} onfailed
      */
-    post(url, onsuccess, onfailed) {
+    post(url, values, onsuccess, onfailed) {
         fetch(
             url,
             {
@@ -799,8 +505,7 @@ class InputPageViewController {
                     //'Content-Type': 'application/x-www-form-urlencoded',
                     'Content-Type': 'application/json',
             },
-            // DataModel object as this._values
-            body: this._values.json()
+            body: values // this._values.json()
         })
         .then(response => response.json())
         .then(data => {
@@ -879,6 +584,5 @@ class InputPageViewController {
         console.warn(`component ${id} not found in component list.`);
         return null;  // Return null when the component is not found
     }
-
 }
 

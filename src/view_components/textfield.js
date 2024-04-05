@@ -21,6 +21,7 @@ class TextFieldConfig extends FormComponentBaseConfig {
         defaultValue = null,
         onDisableClassName = 'disable',
         onFocusClassName = 'focus',
+        onMouseDownClassName = 'clicked',
         shouldTrackLocalChangeInCookie = true,
         cookieExclude = false,
         hasCookiePrefix = false,
@@ -54,6 +55,7 @@ class TextFieldConfig extends FormComponentBaseConfig {
         this.defaultValue = defaultValue;
         this.onDisableClassName = onDisableClassName;
         this.onFocusClassName = onFocusClassName;
+        this.onMouseDownClassName = onMouseDownClassName;
         this.shouldTrackLocalChangeInCookie = shouldTrackLocalChangeInCookie;
         this.cookieExclude = cookieExclude;
         this.hasCookiePrefix = hasCookiePrefix;
@@ -458,12 +460,6 @@ class TextField extends FormComponentBase {
             _this.text = _this.$textArea.value;
             _this.count = _this.$textArea.value.length;
 
-            if(this.viewController && typeof this.viewController.textFieldInputValueChanged === "function"){
-                this.viewController.textFieldInputValueChanged(this, _this.$textArea.value);
-            } else {
-                console.error('ViewController not set or textFieldInputValueChanged not a function');
-            }
-
             // set state as the text count 
             console.log(`max text count: ${_this.config.maxTextLength} count: ${_this.count}`);
             if (this.count > this.config.maxTextLength) {
@@ -499,12 +495,12 @@ class TextField extends FormComponentBase {
 
             // Add 'clicked' class on mousedown
             this.$doneButton.addEventListener('mousedown', () => {
-                _this.$doneButton.classList.add('clicked');
+                _this.$doneButton.classList.add(_this.config.onMouseDownClassName);
             });
 
             // Remove 'clicked' class on mouseup
             this.$doneButton.addEventListener('mouseup', () => {
-                _this.$doneButton.classList.remove('clicked');
+                _this.$doneButton.classList.remove(_this.config.onMouseDownClassName);
             });
         }
 
@@ -518,12 +514,12 @@ class TextField extends FormComponentBase {
 
             // Add 'clicked' class on mousedown
             this.$cancelButton.addEventListener('mousedown', () => {
-                _this.$cancelButton.classList.add('clicked');
+                _this.$cancelButton.classList.add(_this.config.onMouseDownClassName);
             });
 
             // Remove 'clicked' class on mouseup
             this.$cancelButton.addEventListener('mouseup', () => {
-                _this.$cancelButton.classList.remove('clicked');
+                _this.$cancelButton.classList.remove(_this.config.onMouseDownClassNam);
             });
         }
 
@@ -532,11 +528,6 @@ class TextField extends FormComponentBase {
             console.log(`[event] blur -> ${_this.$textArea.value}`)
             if (_this.config.onFocusClassName) {
                 _this.$view.classList.remove(_this.config.onFocusClassName);
-            }
-            if (this.viewController && typeof this.viewController.textFieldOnBlur === "function") {
-                this.viewController.textFieldOnBlur(this, _this.$textArea.value);
-            } else {
-                console.error('ViewController not set or textFieldOnBlur not a function');
             }
         });
 
@@ -635,7 +626,9 @@ class TextField extends FormComponentBase {
      */
     _togglePasswordMode(passwordMode) {
         if (this.config.type == TextFieldType.multiplelines) {
-            console.warn(`<textarea> doesn't allow password type.`);
+            if (passwordMode) {
+                console.warn(`<textarea> doesn't allow password type.`);
+            }
             return;
         }
         this.$textArea.type = passwordMode ? 'password' : 'text';
