@@ -49,13 +49,13 @@ class LastNameFirstNamePage extends Page {
         let title_component_id = Page.generateComponentId(pageId, 'Title');
 
         // Locale keys are generated as {pageId}__{component class name}__{field name}__{role}
-        let locale_key_first_name_title = Page.createLocaleKey(pageId, 'TextField', first_name_field_name, 'title');
-        let locale_key_first_name_placeholder = Page.createLocaleKey(pageId, 'TextField', first_name_field_name, 'placeholder');
-        let locale_key_last_name_title = Page.createLocaleKey(pageId, 'TextField', last_name_field_name, 'title');
-        let locale_key_last_name_placeholder = Page.createLocaleKey(pageId, 'TextField', last_name_field_name, 'placeholder');
-        let locale_key_title = Page.createLocaleKey(pageId, 'Title', 'title');
-        let locale_key_back_button = Page.createLocaleKey(pageId, 'BackButton', 'title');
-        let locale_key_next_button = Page.createLocaleKey(pageId, 'NextButton', 'title');
+        let locale_key_first_name_title = Page.generateLocaleKey(pageId, 'TextField', first_name_field_name, 'title');
+        let locale_key_first_name_placeholder = Page.generateLocaleKey(pageId, 'TextField', first_name_field_name, 'placeholder');
+        let locale_key_last_name_title = Page.generateLocaleKey(pageId, 'TextField', last_name_field_name, 'title');
+        let locale_key_last_name_placeholder = Page.generateLocaleKey(pageId, 'TextField', last_name_field_name, 'placeholder');
+        let locale_key_title = Page.generateLocaleKey(pageId, 'Title', 'title');
+        let locale_key_back_button = Page.generateLocaleKey(pageId, 'BackButton', 'title');
+        let locale_key_next_button = Page.generateLocaleKey(pageId, 'NextButton', 'title');
         
         // Initialize the TextFields
         let firstNameField = new TextField(

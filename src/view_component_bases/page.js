@@ -94,10 +94,10 @@ class Page {
      * @returns {string} The created locale key.
      * 
      * Example:
-     * createLocaleKey('LastNameFirstNamePage', 'TextField', 'first_name', 'title')
+     * generateLocaleKey('LastNameFirstNamePage', 'TextField', 'first_name', 'title')
      * returns 'LastNameFirstNamePage__TextField__first_name__title'
      */
-    static createLocaleKey(id, component_class_name, fieldName = "", role = "") {
+    static generateLocaleKey(id, component_class_name, fieldName = "", role = "") {
         let parts = [id, component_class_name];
 
         if (fieldName) {

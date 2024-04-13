@@ -7,52 +7,6 @@ const keywordsFieldLabelClassName = 'label';
 const keywordsFieldDeleteClassName = 'delete';
 const keywordsFieldPressClassName = 'press';
 
-class KeywordsFieldConfig extends TextFieldConfig {
-    constructor({
-        maxTextLength,
-        type = TextFieldType.singleline,
-        pressText = 'press',
-        enterText = 'Enter ↵',
-        title = "",
-        placeholder = "",
-        cookieExclude = true,
-        isDefaultValueRestoredFromCookie = false,
-        shouldMapTextToDeleteButtonBGColor = false,
-        constantDeleteButtonBGColorSaturation = 31, 
-        constantDeleteButtonBGColorLightness = 38,  
-        initRows = 1,
-        verticalFlex = false,
-        hasTitle = true,
-        passwordMode = false,
-        defaultValue = null,
-        hasCookiePrefix = false,
-        scrollControlElementId = null,
-        isCounter = false,
-        ...otherOptions
-    } = {}) {
-        super(otherOptions);
-        this.maxTextLength = maxTextLength;
-        this.type = type;
-        this.pressText = pressText;
-        this.enterText = enterText;
-        this.title = title;
-        this.placeholder = placeholder;
-        this.cookieExclude = cookieExclude;
-        this.isDefaultValueRestoredFromCookie = isDefaultValueRestoredFromCookie;
-        this.shouldMapTextToDeleteButtonBGColor = shouldMapTextToDeleteButtonBGColor;
-        this.constantDeleteButtonBGColorSaturation = constantDeleteButtonBGColorSaturation;
-        this.constantDeleteButtonBGColorLightness = constantDeleteButtonBGColorLightness;
-        this.initRows = initRows;
-        this.verticalFlex = verticalFlex;
-        this.hasTitle = hasTitle;
-        this.passwordMode = passwordMode;
-        this.defaultValue = defaultValue;
-        this.hasCookiePrefix = hasCookiePrefix;
-        this.scrollControlElementId = scrollControlElementId;
-        this.isCounter = isCounter;
-    }
-}
-
 /**
  * `KeywordsField` is an extension of the `TextField` class to handle keywords.
  * It allows adding, removing, and managing keywords in an interactive manner.
@@ -93,37 +47,42 @@ class KeywordsFieldConfig extends TextFieldConfig {
  *  });
  */
 class KeywordsField extends TextField {
-     /**
-     * @constructor
-     * @param {string} id - ID for the keyword field
-     * @param {string} fieldName - The name attribute for the input field
-     * @param {string} locale - The locale for the field (e.g., 'en', 'fr')
-     * @param {string} lang - The language of the content
-     * @param {function[]} validators - Array of validation functions
-     * @param {KeywordsFieldConfig} config - Configuration object
-     */
-     constructor(
+    constructor({
         id,
         fieldName,
-        locale,
-        lang,
-        config = new KeywordsFieldConfig()
-    ) {        
+        maxTextLength,
+        type = TextFieldType.singleline,
+        pressText = 'press',
+        enterText = 'Enter ↵',
+        title = "",
+        placeholder = "",
+        cookieExclude = true,
+        isDefaultValueRestoredFromCookie = false,
+        shouldMapTextToDeleteButtonBGColor = false,
+        constantDeleteButtonBGColorSaturation = 31,
+        constantDeleteButtonBGColorLightness = 38,
+        initRows = 1,
+        verticalFlex = false,
+        hasTitle = true,
+        passwordMode = false,
+        defaultValue = null,
+        hasCookiePrefix = false,
+        scrollControlElementId = null,
+        isCounter = false
+    }) {
         
-        super(
-            id, 
-            fieldName, 
-            locale,
-            lang,
-            config
-        );
+        super({ id, fieldName, type, defaultValue, maxTextLength, initRows, verticalFlex, hasTitle, title, placeholder, passwordMode, cookieExclude, hasCookiePrefix, isDefaultValueRestoredFromCookie, scrollControlElementId, isCounter });
 
         this.id = id,
-        this.locale = locale;
-        this.lang = lang;
 
-        this._addElements();
+        this.createElements();
         this._addEventHandlers();
+
+        this.pressText = pressText;
+        this.enterText = enterText;
+        this.shouldMapTextToDeleteButtonBGColor = shouldMapTextToDeleteButtonBGColor;
+        this.constantDeleteButtonBGColorLightness = constantDeleteButtonBGColorSaturation;
+        this.constantDeleteButtonBGColorLightness = constantDeleteButtonBGColorLightness;
 
         this.keywords = [];
         this.onEdit = false;
@@ -184,7 +143,7 @@ class KeywordsField extends TextField {
      *   </div>
      * 
      */
-    _addElements() {
+    createElements() {
         // Add class name
         this.$textField.classList.add('KeywordsField');
 
@@ -197,7 +156,7 @@ class KeywordsField extends TextField {
         // Create the $press element
         const $press = document.createElement('p');
         $press.className = keywordsFieldPressClassName;
-        $press.innerHTML = `${this.config.pressText}<strong>${this.config.enterText}</strong>`;
+        $press.innerHTML = `${this.pressText}<strong>${this.enterText}</strong>`;
         this.$inputWrapper.appendChild($press);  // This will add $press to the end of the container
         this.$press = $press;
     }
@@ -323,7 +282,7 @@ class KeywordsField extends TextField {
         $deleteButton.className = keywordsFieldDeleteClassName;
         $deleteButton.type = 'button'; // Indicate it's a button for user-interaction (not a submit button)
         $deleteButton.innerHTML = SVGIcons.cancelIconSVG;
-        if(this.config.shouldMapTextToDeleteButtonBGColor) {
+        if(this.shouldMapTextToDeleteButtonBGColor) {
             $deleteButton.style.backgroundColor = this.textToHSL(keyword);
         }
         $deleteButton.addEventListener('click', () => {
@@ -440,8 +399,8 @@ class KeywordsField extends TextField {
             hue += range;
         }
     
-        const saturation = this.config.constantDeleteButtonBGColorSaturation;
-        const lightness = this.config.constantDeleteButtonBGColorLightness; 
+        const saturation = this.constantDeleteButtonBGColorSaturation;
+        const lightness = this.constantDeleteButtonBGColorLightness; 
     
         return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
     }

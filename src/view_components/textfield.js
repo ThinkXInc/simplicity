@@ -1,80 +1,4 @@
 'use strict'
-/**
- * @fileoverview business/view_components/textfield.js
- * TextField view component class.
- * 
- * @author kaz@thinkxinc.com (Kazuki Otsuka)
- */
-class TextFieldConfig extends ViewComponentConfig {
-    constructor({
-        defaultValue = null,
-        type = TextFieldType.singleline,
-        validators = [],
-        maxTextLength = 999,
-        initRows = 6,
-        verticalFlex = false,
-        hasTitle = true,
-        title = "",
-        placeholder = "",
-        counterFormat = `$count/$maxcount`,
-        passwordMode = false,
-        onDisableClassName = 'disable',
-        onFocusClassName = 'focus',
-        onMouseDownClassName = 'clicked',
-        shouldTrackLocalChangeInCookie = true,
-        cookieExclude = false,
-        hasCookiePrefix = false,
-        isDefaultValueRestoredFromCookie = true,
-        scrollControlElementId = null,
-        isCounter = true,
-        isDoneButton = false,
-        isCancelButton = false,
-        isTitlePlacedAtInputLeft = false,
-        shouldEnterKeySubmitDoneButton = false,
-        eventNameDoneButtonClick = 'doneButtonClick',
-        eventNameCancelButtonClick = 'cancelButtonClick',
-        doneButtonPlace = TextFieldPlaceTo.inputAfter,
-        messagePlace = TextFieldPlaceTo.footerMiddle,
-        counterPlace = TextFieldPlaceTo.footerRight,
-        indicatorPlace = TextFieldPlaceTo.footerLeft,
-        ...otherOptions
-    } = {}) {
-        super(otherOptions);
-
-        // Explicit property assignments
-        this.defaultValue = defaultValue;
-        this.type = type;
-        this.validators = validators;
-        this.maxTextLength = maxTextLength;
-        this.initRows = initRows;
-        this.verticalFlex = verticalFlex;
-        this.hasTitle = hasTitle;
-        this.title = title;
-        this.placeholder = placeholder;
-        this.counterFormat = counterFormat;
-        this.passwordMode = passwordMode;
-        this.onDisableClassName = onDisableClassName;
-        this.onFocusClassName = onFocusClassName;
-        this.onMouseDownClassName = onMouseDownClassName;
-        this.shouldTrackLocalChangeInCookie = shouldTrackLocalChangeInCookie;
-        this.cookieExclude = cookieExclude;
-        this.hasCookiePrefix = hasCookiePrefix;
-        this.isDefaultValueRestoredFromCookie = isDefaultValueRestoredFromCookie;
-        this.scrollControlElementId = scrollControlElementId;
-        this.isCounter = isCounter;
-        this.isDoneButton = isDoneButton;
-        this.isCancelButton = isCancelButton;
-        this.isTitlePlacedAtInputLeft = isTitlePlacedAtInputLeft;
-        this.shouldEnterKeySubmitDoneButton = shouldEnterKeySubmitDoneButton;
-        this.eventNameDoneButtonClick = eventNameDoneButtonClick;
-        this.eventNameCancelButtonClick = eventNameCancelButtonClick;
-        this.doneButtonPlace = doneButtonPlace;
-        this.messagePlace = messagePlace;
-        this.counterPlace = counterPlace;
-        this.indicatorPlace = indicatorPlace;
-    }
-}
-
 const TextFieldState = Object.freeze({ empty: 0, filled: 1, overmaximum: 2, });
 const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
 
@@ -103,9 +27,72 @@ const TextFieldPlaceTo = Object.freeze({
  *  </div>
   */
 class TextField {
-    constructor(id, fieldName, config = new TextFieldConfig()) {
+    constructor({
+        id, // no default (must be provided)
+        fieldName, // no default (must be provided)
+        type = TextFieldType.singleline,
+        defaultValue = null,
+        validators = [],
+        maxTextLength = 999,
+        initRows = 6,
+        verticalFlex = false,
+        hasTitle = true,
+        title = "",
+        placeholder = "",
+        counterFormat = `$count/$maxcount`,
+        passwordMode = false,
+        onDisableClassName = 'disable',
+        onFocusClassName = 'focus',
+        onMouseDownClassName = 'clicked',
+        shouldTrackLocalChangeInCookie = true,
+        cookieExclude = false,
+        hasCookiePrefix = false,
+        isDefaultValueRestoredFromCookie = true,
+        scrollControlElementId = null,
+        isCounter = true,
+        isDoneButton = false,
+        isCancelButton = false,
+        isTitlePlacedAtInputLeft = false,
+        shouldEnterKeySubmitDoneButton = false,
+        eventNameDoneButtonClick = 'doneButtonClick',
+        eventNameCancelButtonClick = 'cancelButtonClick',
+        doneButtonPlace = TextFieldPlaceTo.inputAfter,
+        messagePlace = TextFieldPlaceTo.footerMiddle,
+        counterPlace = TextFieldPlaceTo.footerRight,
+        indicatorPlace = TextFieldPlaceTo.footerLeft
+    }) {
         this.id = id;
-        this.config = config;
+        this.fieldName = fieldName;
+        this.type = type;
+        this.defaultValue = defaultValue;
+        this.validators = validators;
+        this.maxTextLength = maxTextLength;
+        this.initRows = initRows;
+        this.verticalFlex = verticalFlex;
+        this.hasTitle = hasTitle;
+        this.title = title;
+        this.placeholder = placeholder;
+        this.counterFormat = counterFormat;
+        this.passwordMode = passwordMode;
+        this.onDisableClassName = onDisableClassName;
+        this.onFocusClassName = onFocusClassName;
+        this.onMouseDownClassName = onMouseDownClassName;
+        this.shouldTrackLocalChangeInCookie = shouldTrackLocalChangeInCookie;
+        this.cookieExclude = cookieExclude;
+        this.hasCookiePrefix = hasCookiePrefix;
+        this.isDefaultValueRestoredFromCookie = isDefaultValueRestoredFromCookie;
+        this.scrollControlElementId = scrollControlElementId;
+        this.isCounter = isCounter;
+        this.isDoneButton = isDoneButton;
+        this.isCancelButton = isCancelButton;
+        this.isTitlePlacedAtInputLeft = isTitlePlacedAtInputLeft;
+        this.shouldEnterKeySubmitDoneButton = shouldEnterKeySubmitDoneButton;
+        this.eventNameDoneButtonClick = eventNameDoneButtonClick;
+        this.eventNameCancelButtonClick = eventNameCancelButtonClick;
+        this.doneButtonPlace = doneButtonPlace;
+        this.messagePlace = messagePlace;
+        this.counterPlace = counterPlace;
+        this.indicatorPlace = indicatorPlace;
 
         const options = [
             {name: 'fieldName', value: fieldName, type: 'string'},
@@ -120,18 +107,18 @@ class TextField {
                 console.error(`${option.name} must be of type ${option.type}, but got ${typeof option.value}`);
             }
         });
- 
-        this.createElements();
-        this.setEventHandlers();
+
+        this._createElements();
+        this._setEventHandlers();
 
         this.count = 0;
-        this.validators = this.config.validators;
+        this.validators = this.validators;
 
-        this._togglePasswordMode(this.config.passwordMode);
+        this._togglePasswordMode(this.passwordMode);
 
         this._restoreValueFromCookie();
 
-        if(this.config.verticalFlex) {
+        if(this.verticalFlex) {
             this._resizeTextArea();
         }
     }
@@ -152,7 +139,7 @@ class TextField {
     set text(text) {
         this._text = text;
         this.$textArea.value = text;
-        if(this.config.verticalFlex) {
+        if(this.verticalFlex) {
             this._resizeTextArea();
         }
         console.log(this.$textArea.value)
@@ -167,7 +154,7 @@ class TextField {
             this.$textField.dispatchEvent(event);
             // save cookie
             if (this.validate() == null) {
-                if (this.config.shouldTrackLocalChangeInCookie) {
+                if (this.shouldTrackLocalChangeInCookie) {
                     this._setValueToCookies(text);
                 } else {
                     if (this.savedValue != null && text != this.savedValue) {
@@ -195,9 +182,9 @@ class TextField {
     set count(count) {
         this._count = count;
         // update counter text
-        if (this.config.isCounter) {
-            this.$counter.innerHTML = this.config.counterFormat
-                .replace('$count', count).replace('$maxcount', this.config.maxTextLength);
+        if (this.isCounter) {
+            this.$counter.innerHTML = this.counterFormat
+                .replace('$count', count).replace('$maxcount', this.maxTextLength);
         }
     }
 
@@ -234,10 +221,12 @@ class TextField {
 
     // Create elements
 
-    createElements() {
+    _createElements() {
         this.$view = document.createElement('div');
         this.$view.id = this.id;
         this.$view.classList.add(`${this.id}`);
+        console.warn(this.id)
+        console.warn(this.constructor.name)
         this.$view.classList.add(`${this.constructor.name}`);
  
         // textField
@@ -257,26 +246,26 @@ class TextField {
     
         const $title = document.createElement('h6');
         $title.className = 'title';
-        $title.textContent = this.config.title;
-        if (this.config.isTitlePlacedAtInputLeft) {
+        $title.textContent = this.title;
+        if (this.isTitlePlacedAtInputLeft) {
             $inputWrapper.appendChild($title);
         } else {
             $inputOuter.appendChild($title);
         }
-        if (!this.config.hasTitle) $title.remove();
+        if (!this.hasTitle) $title.remove();
 
         $inputOuter.appendChild($inputWrapper);
     
-        const $inputElem = document.createElement(this.config.type == TextFieldType.singleline ? 'input' : 'textarea');
+        const $inputElem = document.createElement(this.type == TextFieldType.singleline ? 'input' : 'textarea');
         $inputElem.className = this.fieldName + 'form';
         $inputElem.name = this.fieldName;
         if ($inputElem instanceof HTMLInputElement) {
             $inputElem.type = 'text';
         }
-        $inputElem.placeholder = this.config.placeholder;
+        $inputElem.placeholder = this.placeholder;
         $inputElem.autocomplete = 'off';
-        if (this.config.type !== TextFieldType.singleline) {
-            $inputElem.rows = this.config.initRows;
+        if (this.type !== TextFieldType.singleline) {
+            $inputElem.rows = this.initRows;
             $inputElem.contentEditable = true;
         }
         $inputWrapper.appendChild($inputElem);
@@ -326,23 +315,19 @@ class TextField {
 
         if (this.$indicator) {
             
-            console.warn(this.config)
-            console.warn(this.config.indicatorPlace)
-            console.warn(places[this.config.indicatorPlace])
-            console.warn(places)
-            places[this.config.indicatorPlace].appendChild(this.$indicator);
+            places[this.indicatorPlace].appendChild(this.$indicator);
         }
         if (this.$message) {
-            places[this.config.messagePlace].appendChild(this.$message);
+            places[this.messagePlace].appendChild(this.$message);
         }
-        if (this.$counter && this.config.isCounter) {
-            places[this.config.counterPlace].appendChild(this.$counter);
+        if (this.$counter && this.isCounter) {
+            places[this.counterPlace].appendChild(this.$counter);
         }
-        if (this.$doneButton && this.config.isDoneButton) {
-            places[this.config.doneButtonPlace].appendChild(this.$doneButton);
+        if (this.$doneButton && this.isDoneButton) {
+            places[this.doneButtonPlace].appendChild(this.$doneButton);
         }
-        if (this.$cancelButton && this.config.isCancelButton) {
-            places[this.config.cancelButtonPlace].appendChild(this.$cancelButton);
+        if (this.$cancelButton && this.isCancelButton) {
+            places[this.cancelButtonPlace].appendChild(this.$cancelButton);
         }
       
         // Append columns to footer
@@ -352,7 +337,7 @@ class TextField {
 
     // Events
 
-    setEventHandlers() {
+    _setEventHandlers() {
         const _this = this;
         debuglog(`Set input event handler for ${this.id}.`);
 
@@ -361,8 +346,8 @@ class TextField {
             _this.count = _this.$textArea.value.length;
 
             // set state as the text count 
-            console.log(`max text count: ${_this.config.maxTextLength} count: ${_this.count}`);
-            if (this.count > this.config.maxTextLength) {
+            console.log(`max text count: ${_this.maxTextLength} count: ${_this.count}`);
+            if (this.count > this.maxTextLength) {
                 this.textFieldState = TextFieldState.overmaximum;
                 this.$textField.classList.add('alert');
             } else if (this.count === 0) {
@@ -373,13 +358,13 @@ class TextField {
                 this.$textField.classList.remove('alert');
             }
             // Auto resize textarea
-            if (_this.config.verticalFlex) {
+            if (_this.verticalFlex) {
                 _this._resizeTextArea();
             }
         })
 
         // DoneButton is submit when EnterKey is pressed
-        if (this.config.shouldEnterKeySubmitDoneButton) {
+        if (this.shouldEnterKeySubmitDoneButton) {
             this.$textArea.addEventListener('keyup', function(event) {
                 if (event.key === 'Enter') {  // 13 is the keycode for Enter
                     _this._handleEnterKeyPress(event);
@@ -389,55 +374,55 @@ class TextField {
 
         // Add doneButton click handler
         debuglog(`Set button event handler for ${this.id}.`);
-        if (this.config.isDoneButton) {
+        if (this.isDoneButton) {
             this.$doneButton.addEventListener('click', () => {
-                _this.$textField.dispatchEvent(new CustomEvent(_this.config.eventNameDoneButtonClick, {
+                _this.$textField.dispatchEvent(new CustomEvent(_this.eventNameDoneButtonClick, {
                     detail: { id: this.id, value: this.value }
                 }));
             });
 
             // Add 'clicked' class on mousedown
             this.$doneButton.addEventListener('mousedown', () => {
-                _this.$doneButton.classList.add(_this.config.onMouseDownClassName);
+                _this.$doneButton.classList.add(_this.onMouseDownClassName);
             });
 
             // Remove 'clicked' class on mouseup
             this.$doneButton.addEventListener('mouseup', () => {
-                _this.$doneButton.classList.remove(_this.config.onMouseDownClassName);
+                _this.$doneButton.classList.remove(_this.onMouseDownClassName);
             });
         }
 
         // Add cancelButton click handler
-        if (this.config.isCancelButton) {
+        if (this.isCancelButton) {
             this.$cancelButton.addEventListener('click', () => {
-                _this.$textField.dispatchEvent(new CustomEvent(_this.config.eventNameCancelButtonClick, {
+                _this.$textField.dispatchEvent(new CustomEvent(_this.eventNameCancelButtonClick, {
                     detail: { id: this.id,  value: this.value }
                 }));
             });
 
             // Add 'clicked' class on mousedown
             this.$cancelButton.addEventListener('mousedown', () => {
-                _this.$cancelButton.classList.add(_this.config.onMouseDownClassName);
+                _this.$cancelButton.classList.add(_this.onMouseDownClassName);
             });
 
             // Remove 'clicked' class on mouseup
             this.$cancelButton.addEventListener('mouseup', () => {
-                _this.$cancelButton.classList.remove(_this.config.onMouseDownClassNam);
+                _this.$cancelButton.classList.remove(_this.onMouseDownClassNam);
             });
         }
 
         debuglog(`Set the blur event handler for ${this.id}.`);
         this.$textArea.addEventListener('blur', () => {
             console.log(`[event] blur -> ${_this.$textArea.value}`)
-            if (_this.config.onFocusClassName) {
-                _this.$view.classList.remove(_this.config.onFocusClassName);
+            if (_this.onFocusClassName) {
+                _this.$view.classList.remove(_this.onFocusClassName);
             }
         });
 
         debuglog(`Set the focus event handler for ${this.id}.`);
         this.$textArea.addEventListener('focus', () => {
-            if (_this.config.onFocusClassName) {
-                _this.$view.classList.add(_this.config.onFocusClassName);
+            if (_this.onFocusClassName) {
+                _this.$view.classList.add(_this.onFocusClassName);
             }
         });
     }
@@ -445,7 +430,7 @@ class TextField {
     // Settings
 
     _togglePasswordMode(passwordMode) {
-        if (this.config.type == TextFieldType.multiplelines) {
+        if (this.type == TextFieldType.multiplelines) {
             if (passwordMode) {
                 console.warn(`<textarea> doesn't allow password type.`);
             }
@@ -460,10 +445,10 @@ class TextField {
 
     disableInteractions(disable) {
         if (disable) {
-            this.$textField.classList.add(this.config.onDisableClassName);
+            this.$textField.classList.add(this.onDisableClassName);
             this.$textArea.setAttribute('disabled', true);
        } else {
-            this.$textField.classList.remove(this.config.onDisableClassName);
+            this.$textField.classList.remove(this.onDisableClassName);
             this.$textArea.removeAttribute('disabled');
        }
     }
@@ -504,8 +489,8 @@ class TextField {
     }
     
     _getScrollViewElement() {
-        return this.config.scrollControlElementId
-            ? document.getElementById(this.config.scrollControlElementId) 
+        return this.scrollControlElementId
+            ? document.getElementById(this.scrollControlElementId) 
             : null;
     }
     
@@ -519,7 +504,7 @@ class TextField {
     }
     
     _ensureFooterVisibility(scrollViewElem, originalScrollTop, isFooterTopVisible, viewportHeight) {
-        if (this.config.scrollControlElementId && scrollViewElem) {
+        if (this.scrollControlElementId && scrollViewElem) {
             requestAnimationFrame(() => {
                 let footerBottomPositionAfter = this.$footer.getBoundingClientRect().bottom;
                 let isFooterBottomHidden = footerBottomPositionAfter > viewportHeight;
@@ -615,7 +600,7 @@ class TextField {
             newAlertMessage.classList.add('alertMessage');
             newAlertMessage.id = alertMessageId;
             newAlertMessage.innerText = message;
-            $footer.querySelector(this.config.messagePlace).appendChild(newAlertMessage);
+            $footer.querySelector(this.messagePlace).appendChild(newAlertMessage);
         } else {
             $alertMessage.innerText = message;
         }
@@ -637,7 +622,7 @@ class TextField {
 
     _setValueToCookies(value) {
         if (value !== null) {
-            if (!this.config.cookieExclude) {
+            if (!this.cookieExclude) {
                 Cookies.set(this.__cookie_name__, value, { expires: 3, secure: true, sameSite: 'strict' });
                 console.log(`Save cookie => key: ${this.__cookie_name__} value: ${value}`);
             } else {
