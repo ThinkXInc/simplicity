@@ -24,13 +24,11 @@ const RegexType = Object.freeze({
  * </code>
  */
 class Validator {
-    /**
-     * Create a validation.
-     * @param {number} errorType - The type of error this validation is checking for.
-     * @param {string} errorMessage - The error message to display if the validation fails.
-     * @param {Array} args - Additional arguments needed for this validation.
-     */
-    constructor(errorType, locale, lang, maxLength = 9999999) {
+    constructor({
+        errorType,
+        errorMessage,
+        maxLength = 9999999
+    }) {
         if (errorType == null) {
             throw new Error('Validator requires errorType.');
         }
@@ -39,8 +37,7 @@ class Validator {
         }
 
         this.errorType = errorType;
-        this.locale = locale;
-        this.errorMessage = locale.get(errorType, lang);
+        this.errorMessage = errorMessage;
         this.maxLength = maxLength;
 
         // Check for maxLength value if errorType is maxLength

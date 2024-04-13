@@ -67,8 +67,13 @@ class Locale {
      * console.log(locale.get("first_name", "de"));  // Error: Language "de" not found for key "first_name" in dictionary.
      */
     get(key, lang, ...args) {
+        if (!key) {
+            throw new Error("Key parameter is not set for getting locale key.");
+        }
+
+        // Check if 'lang' parameter is not provided or falsy
         if (!lang) {
-            throw new Error(`lang paramter is not set for getting locale key: ${key}.`);
+            throw new Error(`Lang parameter is not set for getting locale key: ${key}.`);
         }
 
         if (!this.localeDictionary.hasOwnProperty(key)) {

@@ -23,6 +23,7 @@ const paths = {
         './src/view_component_bases/form_component_base.js',
         './src/view_component_bases/loading_component_base.js',
         './src/view_component_bases/wrapper.js',
+        './src/view_components/page_view.js',
         './src/view_components/title.js',
         './src/view_components/button.js',
         './src/view_components/next_button.js',

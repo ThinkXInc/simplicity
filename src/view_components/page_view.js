@@ -39,7 +39,7 @@ class PageView {
         }
     }
 
-    append(element, pageIndex) {
+    appendChild(element, pageIndex) {
         if (pageIndex >= 0 && pageIndex < this.numPages) {
             const page = this.pages[pageIndex];
             page.elements.push(element);
