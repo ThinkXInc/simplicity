@@ -1,3 +1,4 @@
+// WILL DEPRECATE
 class FormComponentBaseConfig extends ViewComponentConfig {
     constructor({
         defaultValue = null,

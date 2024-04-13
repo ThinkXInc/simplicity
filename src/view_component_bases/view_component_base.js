@@ -1,3 +1,4 @@
+// WILL DEPRECATE
 class ViewComponentConfig {
     constructor({
         htmlTag = 'div',

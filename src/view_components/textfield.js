@@ -5,9 +5,9 @@
  * 
  * @author kaz@thinkxinc.com (Kazuki Otsuka)
  */
-class TextFieldConfig extends FormComponentBaseConfig {
+class TextFieldConfig extends ViewComponentConfig {
     constructor({
-        htmlTag = 'div',
+        defaultValue = null,
         type = TextFieldType.singleline,
         validators = [],
         maxTextLength = 999,
@@ -18,7 +18,6 @@ class TextFieldConfig extends FormComponentBaseConfig {
         placeholder = "",
         counterFormat = `$count/$maxcount`,
         passwordMode = false,
-        defaultValue = null,
         onDisableClassName = 'disable',
         onFocusClassName = 'focus',
         onMouseDownClassName = 'clicked',
@@ -41,7 +40,9 @@ class TextFieldConfig extends FormComponentBaseConfig {
         ...otherOptions
     } = {}) {
         super(otherOptions);
-        this.htmlTag = htmlTag;
+
+        // Explicit property assignments
+        this.defaultValue = defaultValue;
         this.type = type;
         this.validators = validators;
         this.maxTextLength = maxTextLength;
@@ -52,7 +53,6 @@ class TextFieldConfig extends FormComponentBaseConfig {
         this.placeholder = placeholder;
         this.counterFormat = counterFormat;
         this.passwordMode = passwordMode;
-        this.defaultValue = defaultValue;
         this.onDisableClassName = onDisableClassName;
         this.onFocusClassName = onFocusClassName;
         this.onMouseDownClassName = onMouseDownClassName;
@@ -75,11 +75,7 @@ class TextFieldConfig extends FormComponentBaseConfig {
     }
 }
 
-const TextFieldState = Object.freeze({ onhide: 0, onshow: 1, });
-//onfocus: 3,  // TODO:
-//onlock: 4,  // TODO:
-const TextFieldValidationState = Object.freeze({ none: 0, onalert: 1, onverified: 1, });
-const TextFieldInputState = Object.freeze({ empty: 0, filled: 1, overmaximum: 2, });
+const TextFieldState = Object.freeze({ empty: 0, filled: 1, overmaximum: 2, });
 const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
 
 const TextFieldPlaceTo = Object.freeze({ 
@@ -91,12 +87,6 @@ const TextFieldPlaceTo = Object.freeze({
 });
 
 /**
- * A class for creating TextField components. 
- *
- * This class relies on a configuration object of type TextFieldConfig 
- * for more granular control over its properties.
- * 
- * HTML Structure:
  *  <div id="{this.id}" class="textField">
  *      <div class="inputOuter">
  *          <h6 class="title">{this.__title__}</h6>
@@ -112,15 +102,12 @@ const TextFieldPlaceTo = Object.freeze({
  *      </div>
  *  </div>
   */
-class TextField extends FormComponentBase {
-    constructor(id, fieldName, locale, lang, config = new TextFieldConfig()) {
-        super(id, fieldName, config);
-
-        // set config
+class TextField {
+    constructor(id, fieldName, config = new TextFieldConfig()) {
+        this.id = id;
         this.config = config;
 
         const options = [
-            {name: 'lang', value: lang, type: 'string'},
             {name: 'fieldName', value: fieldName, type: 'string'},
         ];
 
@@ -134,29 +121,21 @@ class TextField extends FormComponentBase {
             }
         });
  
-        // set locale
-        this.locale = locale;
-        // initialize view elements
-        this._setElements();
-        // set event handlers
-        this._setEventHandlers();
-        // set counter 
+        this.createElements();
+        this.setEventHandlers();
+
         this.count = 0;
-        // validators
         this.validators = this.config.validators;
-        // password mode
+
         this._togglePasswordMode(this.config.passwordMode);
-        // restore from cookie
+
         this._restoreValueFromCookie();
-        // Resize textarea. Ensure the browser gets a chance to recalculate layout before resizing
+
         if(this.config.verticalFlex) {
             this._resizeTextArea();
         }
     }
 
-    /**
-     * value getter / setter.
-     */
     get value() {
         return this._text;
     }
@@ -170,9 +149,6 @@ class TextField extends FormComponentBase {
         }
     }
 
-    /**
-     * text setter /getter.
-     */
     set text(text) {
         this._text = text;
         this.$textArea.value = text;
@@ -180,12 +156,11 @@ class TextField extends FormComponentBase {
             this._resizeTextArea();
         }
         console.log(this.$textArea.value)
-        // count
+
         if (text) {
             this.count = text.length;
         }
 
-        // Run only when updated not reset
         if (!this.onReset) {
             // dispatch event
             const event = new CustomEvent('textupdated', {detail: {new: text,}});
@@ -211,20 +186,12 @@ class TextField extends FormComponentBase {
 
     get text() {return this._text}
 
-    /**
-     * Reset textField
-     * 
-     * This update prevents validation or update event.
-     */
     reset() {
         this.onReset = true;
         this.text = '';
         this.onReset = false;
     }
 
-    /**
-     * count setter / getter.
-     */
     set count(count) {
         this._count = count;
         // update counter text
@@ -236,58 +203,19 @@ class TextField extends FormComponentBase {
 
     get count() {return this._count}
 
-    /**
-     * state setter.
-     */
-    set state(state) {
-        this._state = state;
-        switch (state) {
-            case TextFieldState.onhide:
-                console.log(`TextField ${this.id} state changed -> onhide`);
-                break
-            case TextFieldState.onshow:
-                console.log(`TextField ${this.id} state changed -> onshow`);
-                break
-        }
-    }
-
-    /**
-     * validationState setter.
-     */
-    set validationState(state) {
-        this._validationState = state;
-        switch (state) {
-            case TextFieldValidationState.none:
-                debuglog(`TextField ${this.id} validationState changed -> none`);
-                this.$textField.classList.remove('alert');
-                break
-            case TextFieldValidationState.onalert:
-                debuglog(`TextField ${this.id} validationState changed -> onalert`);
-                this.$textField.classList.add('alert');
-                break
-            case TextFieldValidationState.onverified:
-                debuglog(`TextField ${this.id} validationState changed -> onverified`);
-                this.$textField.classList.remove('alert');
-                break
-        }
-    }
-
-    /**
-     * inputState setter.
-     */
-    set inputState(state) {
-        this._inputState = state;
-        switch (state) {
-            case TextFieldInputState.empty:
-                debuglog(`TextField ${this.id} inputState changed -> empty`);
+    set textFieldState(state) {
+        this._textFieldState = this.textFieldState;
+        switch (this.textFieldState) {
+            case TextFieldState.empty:
+                debuglog(`TextField ${this.id} state changed -> empty`);
                 this.$textField.classList.remove('overMaximumTextCount');
                 break
-            case TextFieldInputState.filled:
-                debuglog(`TextField ${this.id} inputState changed -> filled`);
+            case TextFieldState.filled:
+                debuglog(`TextField ${this.id} state changed -> filled`);
                 this.$textField.classList.remove('overMaximumTextCount');
                 break
-            case TextFieldInputState.overmaximum:
-                debuglog(`TextField ${this.id} inputState changed -> overmaximum`);
+            case TextFieldState.overmaximum:
+                debuglog(`TextField ${this.id} state changed -> overmaximum`);
                 this.$textField.classList.add('overMaximumTextCount');
                 break
         }
@@ -303,35 +231,15 @@ class TextField extends FormComponentBase {
 
     get onDisable () { return this._onDisable; }
 
-    disableInteractions(disable) {
-        if (disable) {
-            this.$textField.classList.add(this.config.onDisableClassName);
-            this.$textArea.setAttribute('disabled', true);
-       } else {
-            this.$textField.classList.remove(this.config.onDisableClassName);
-            this.$textArea.removeAttribute('disabled');
-       }
-    }
 
-    /**
-     * Explicitly update value in cookie.
-     * 
-     * [NOTE]: If shouldTrackLocalChangeInCookie is false,
-     *   cookie is not update unless calling this method.
-     * 
-     * @param {string} text 
-     */
-    updateValueInCookie(text) {
-        this._setValueToCookies(text);
-    }
+    // Create elements
 
-    /**
-     * DOM nodes as variables.
-     * Note: This method overrides the _setElements method in the base class.
-     */
-    _setElements() {
-        super._setElements('div'); // call super method to create the div element
-    
+    createElements() {
+        this.$view = document.createElement('div');
+        this.$view.id = this.id;
+        this.$view.classList.add(`${this.id}`);
+        this.$view.classList.add(`${this.constructor.name}`);
+ 
         // textField
         this.$textField = this.$view;
         this.$textField ?? console.warn(`<section id=${this.id} class=textField></section> is necessary in HTML.`);
@@ -417,6 +325,11 @@ class TextField extends FormComponentBase {
 
 
         if (this.$indicator) {
+            
+            console.warn(this.config)
+            console.warn(this.config.indicatorPlace)
+            console.warn(places[this.config.indicatorPlace])
+            console.warn(places)
             places[this.config.indicatorPlace].appendChild(this.$indicator);
         }
         if (this.$message) {
@@ -437,10 +350,9 @@ class TextField extends FormComponentBase {
         this.$textField.appendChild($inputOuter);
     }
 
-    /**
-     * Set event handlers.
-     */
-    _setEventHandlers() {
+    // Events
+
+    setEventHandlers() {
         const _this = this;
         debuglog(`Set input event handler for ${this.id}.`);
 
@@ -451,11 +363,14 @@ class TextField extends FormComponentBase {
             // set state as the text count 
             console.log(`max text count: ${_this.config.maxTextLength} count: ${_this.count}`);
             if (this.count > this.config.maxTextLength) {
-                this._setState(TextFieldValidationState.onalert, TextFieldInputState.overmaximum);
+                this.textFieldState = TextFieldState.overmaximum;
+                this.$textField.classList.add('alert');
             } else if (this.count === 0) {
-                this._setState(TextFieldValidationState.none, TextFieldInputState.empty);
+                this.textFieldState = TextFieldState.empty;
+                this.$textField.classList.remove('alert');
             } else {
-                this._setState(TextFieldValidationState.none, TextFieldInputState.filled);
+                this.textFieldState = TextFieldState.filled;
+                this.$textField.classList.remove('alert');
             }
             // Auto resize textarea
             if (_this.config.verticalFlex) {
@@ -527,6 +442,34 @@ class TextField extends FormComponentBase {
         });
     }
 
+    // Settings
+
+    _togglePasswordMode(passwordMode) {
+        if (this.config.type == TextFieldType.multiplelines) {
+            if (passwordMode) {
+                console.warn(`<textarea> doesn't allow password type.`);
+            }
+            return;
+        }
+        this.$textArea.type = passwordMode ? 'password' : 'text';
+    }
+
+    _setPlaceholder(placeholder) {
+        this.$textArea.placeholder = placeholder;
+    }
+
+    disableInteractions(disable) {
+        if (disable) {
+            this.$textField.classList.add(this.config.onDisableClassName);
+            this.$textArea.setAttribute('disabled', true);
+       } else {
+            this.$textField.classList.remove(this.config.onDisableClassName);
+            this.$textArea.removeAttribute('disabled');
+       }
+    }
+
+    // UI Interfactions
+
     _handleEnterKeyPress(event) {
         debuglog(`${this.id} Press Enter`);
         event.preventDefault(); // Prevent the default action (e.g., new line in a textarea)
@@ -590,70 +533,28 @@ class TextField extends FormComponentBase {
         }
     }
 
-    /**
-     * Sets the validation state and input state of the TextField.
-     *
-     * @param {TextFieldValidationState} validationState - The validation state to be set for the TextField.
-     * @param {TextFieldInputState} inputState - The input state to be set for the TextField.
-     *
-     * The TextFieldValidationState and TextFieldInputState are enumeration values representing different states.
-     * TextFieldValidationState can be 'onalert', 'none', or other states defined in the enumeration.
-     * TextFieldInputState can be 'overmaximum', 'empty', 'filled', or other states defined in the enumeration.
-     */
-    _setState(validationState, inputState) {
-        this.validationState = validationState;
-        this.inputState = inputState;
-    }
+    // Validation & Alert
 
-    /* private functions */
-
-    /**
-     * Toggle Password mode.
-     *
-     * @param {boolean} passwordMode this.config.passwordMode
-     */
-    _togglePasswordMode(passwordMode) {
-        if (this.config.type == TextFieldType.multiplelines) {
-            if (passwordMode) {
-                console.warn(`<textarea> doesn't allow password type.`);
+    validate() {
+        let errorMessage = null;
+        for (let validator of this.validators) {
+            debuglog(`Running validator: ${validator.errorType}`);
+            errorMessage = validator.validate(this.value);
+            if (errorMessage !== null) {
+                console.log(`Validation error found for ${this.id}: ${errorMessage}`);
+                this.alert(true, errorMessage);
+                break;
             }
-            return;
         }
-        this.$textArea.type = passwordMode ? 'password' : 'text';
+        if (errorMessage === null) {
+            debuglog(`No validation errors found in ${this.id}`);
+            this.alert(false);
+        } else {
+            debuglog(`Validation failed for ${this.id} with result: ${errorMessage ? "Error: " + errorMessage : "No errors"}`);
+        }
+        return errorMessage;
     }
 
-    /**
-     * Set placeholder.
-     * @param {string} placeholder - 
-     */
-    _setPlaceholder(placeholder) {
-        this.$textArea.placeholder = placeholder;
-    }
-
-    /* public functions */
-
-    /**
-     * Add/Remove alert.
-     * 
-     * When an alert is triggered, the alert method will add a 'alert' class to the textField 
-     * and add a paragraph tag within the footer, resulting in:
-     * 
-     * <div id="{this.id}" class="textField alert">
-     *    <div class="inputOuter">
-     *        <h6 class="title">{this.__title__}</h6>
-     *        <input class="{this.fieldName}form" name="{this.fieldName}" type="text" autocomplete="off">
-     *        <div class="footer cf">
-     *            <span class="indicator"></span>
-     *            <span class="message"></span>
-     *            <span class="counter"></span>
-     *            <p class="alertMessage" id="{this.id}__alert">{message}</p>
-     *        </div>
-     *    </div>
-     * </div>
-     * 
-     * @param {bool} onAlert 
-     * @param {string} message
-     */
     alert(onAlert, message) {
         const alertMessageId = this.id + '__alert';
    
@@ -688,35 +589,16 @@ class TextField extends FormComponentBase {
         }
     }
 
-    /**
-     * Checks if an alert message with a given ID is present in the text field's footer.
-     *
-     * @param {string} alertMessageId - The ID of the alert message to check for.
-     * @returns {boolean} - True if the alert message is present; otherwise, false.
-     */
     _isAlerted(alertMessageId) {
         const $alertMessage = this._getAlertMessage(alertMessageId);
         return $alertMessage ? true : false;
     }
   
-    /**
-     * Checks if an alert message with a given ID has content equal to the specified message.
-     *
-     * @param {string} alertMessageId - The ID of the alert message to check.
-     * @param {string} message - The message to compare to the alert message's content.
-     * @returns {boolean} - True if the content is equal; otherwise, false.
-     */
     _isAlertMessageEqualTo(alertMessageId, message) {
         const $alertMessage = this._getAlertMessage(alertMessageId);
         return $alertMessage && $alertMessage.innerText === message;
     }
   
-    /**
-     * Sets the content of an alert message with a given ID.
-     *
-     * @param {string} alertMessageId - The ID of the alert message to update.
-     * @param {string} message - The new message content.
-     */
     _setAlertMessage(alertMessageId, message) {
         const $alertMessage = this._getAlertMessage(alertMessageId);
         if ($alertMessage) {
@@ -724,13 +606,6 @@ class TextField extends FormComponentBase {
         }
     }
   
-    /**
-     * Appends an alert message with a specified ID and content to the text field's footer.
-     * If an alert message with the given ID already exists, its content is updated.
-     *
-     * @param {string} alertMessageId - The ID to assign to the alert message.
-     * @param {string} message - The content/message to set for the alert.
-     */
     _appendAlertMessage(alertMessageId, message) {
         const $alertMessage = this._getAlertMessage(alertMessageId);
         const $footer = this.$footer;
@@ -746,11 +621,6 @@ class TextField extends FormComponentBase {
         }
     }
   
-    /**
-     * Removes an alert message with a given ID from the text field's footer.
-     *
-     * @param {string} alertMessageId - The ID of the alert message to be removed.
-     */
     _removeAlertMessage(alertMessageId) {
         const $alertMessage = this._getAlertMessage(alertMessageId);
         if ($alertMessage) {
@@ -759,40 +629,96 @@ class TextField extends FormComponentBase {
         }
     }
   
-    /**
-     * Helper function to get a reference to an alert message by its ID.
-     *
-     * @param {string} alertMessageId - The ID of the alert message to find.
-     * @returns {HTMLElement|null} - The found alert message element, or null if not found.
-     * @private
-     */
     _getAlertMessage(alertMessageId) {
         return this.$footer.querySelector(`#` + alertMessageId);
     }
-}
 
-class TextFieldProtocol {
-    /**
-     * To be overridden in the ViewController. 
-     * Called when the input value of a TextField changes.
-     * 
-     * @param {TextField} textField - The TextField that triggered the event.
-     * @param {string} value - The current input value of the TextField.
-     * @throws {Error} If the method is not overridden in the ViewController.
-     */
-    textFieldInputValueChanged(textField, value) {
-        throw new Error(`ViewController of TextField ${textField.id} must implement textFieldInputValueChanged method!`);
+    // Cookie
+
+    _setValueToCookies(value) {
+        if (value !== null) {
+            if (!this.config.cookieExclude) {
+                Cookies.set(this.__cookie_name__, value, { expires: 3, secure: true, sameSite: 'strict' });
+                console.log(`Save cookie => key: ${this.__cookie_name__} value: ${value}`);
+            } else {
+                console.error(`The value of ${this.id} is excluded from being stored in cookies.`);
+            }
+        }
     }
 
-    /**
-     * To be overridden in the ViewController. 
-     * Called when the TextField loses focus.
-     * 
-     * @param {TextField} textField - The TextField that triggered the event.
-     * @param {string} value - The current input value of the TextField.
-     * @throws {Error} If the method is not overridden in the ViewController.
-     */
-    textFieldOnBlur(textField, value) {
-        throw new Error(`ViewController of TextField ${textField.id} must implement textFieldOnBlur method!`);
+    _getValueFromCookies() {
+        const value = Cookies.get(this.__cookie_name__);
+        if (value !== undefined) {
+            return value;
+        }
+        return null;
+    }
+
+    _removeValueInCookies() {
+        Cookies.remove(this.__cookie_name__);
+        console.log(`${this.__cookie_name__} removed from cookie.`);
+    }
+
+    _restoreValueFromCookie(ignoreNull = true) {
+        debuglog("Cookie Name:", this.__cookie_name__);
+        debuglog("Value from Cookie:", this._getValueFromCookies());
+ 
+        const cookieValue = this._getValueFromCookies();
+
+        if (ignoreNull && cookieValue === null) {
+            debuglog(`Cookie value is null and ignoreNull is set to true. Current value not overwritten.`);
+            return;
+        }
+
+        console.log(`Restoring value from cookie [${this.__cookie_name__}]: ${cookieValue}`);
+        this.savedValue = cookieValue;
+        this.value = cookieValue;
+        debuglog("Value after restoring from cookie:", this.value);
+    }
+
+    // Others
+    addToPage(page) {
+        // WILL DEPRECATE
+        // NOTE: この時点でpageのdom elementはまだHTML上にないことに注意
+        // すべてのview componentをpageにアタッチした後でなければpageはHTML上に作られない
+        // 詳しくはInputPageViewControllerのsetElements()のフローを参照
+        if (!page.$view.id) {
+            console.error(`[ERROR] ${page.$view} has no id`);
+        }
+        this.addTo(page.$view);
+        this.setPageIndex(page.pageIndex);
+        this.$view.classList.add(`${page.id}__${this.constructor.name}`);
+    }
+
+    addTo($parent) {
+        // WILL DEPRECATE
+        if (!$parent || $parent == undefined || !($parent instanceof HTMLElement)) {
+            console.error(
+                `[ERROR] $parent must exist but ${$parent} `);
+        } else {
+            debuglog(`[${$parent.className}] appendChild ${this.id}`)
+            $parent.appendChild(this.$view);
+        }
+    }
+
+    setViewController(viewController) {
+        // WILL DEPRECATE
+        this.viewController = viewController;
+        //this._setEventHandlers(); <- this causes double event registration [WILL REMOVE THIS LINE]
+    }
+
+    setPageIndex(pageIndex) {
+        // WILL DEPRECATE
+        this.pageIndex = pageIndex;
+    }
+
+    scrollTo(delay = 0) {
+        setTimeout(() => {
+            this.$view.scrollIntoView({
+                behavior: 'smooth', // Enable smooth scrolling
+                block: 'start', // Scroll to the start (top) of this.$view
+                inline: 'nearest' // In case of horizontal scrolling, scroll in the nearest viewport
+            });
+        }, delay);
     }
 }

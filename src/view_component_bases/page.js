@@ -23,11 +23,11 @@ class Page {
             throw new Error(`Components must be an array, but got ${typeof components}.`);
         }
 
-        components.forEach(component => {
-            if (!Utils.isInheritedFrom(component, ViewComponentBase) && !Utils.isInheritedFrom(component, Wrapper)) {
-                throw new Error(`All components must be a subclass of ViewComponentBase or Wrapper, but got ${component.constructor.name}.`);
-            }
-        });
+        //components.forEach(component => {
+        //    if (!Utils.isInheritedFrom(component, ViewComponentBase) && !Utils.isInheritedFrom(component, Wrapper)) {
+        //        throw new Error(`All components must be a subclass of ViewComponentBase or Wrapper, but got ${component.constructor.name}.`);
+        //    }
+        //});
 
         this.components = components;
     }
