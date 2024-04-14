@@ -113,6 +113,7 @@ class TextField {
 
         this.count = 0;
         this.validators = this.validators;
+        this.alertMessageId = this.id + '__alert';
 
         this._togglePasswordMode(this.passwordMode);
 
@@ -150,7 +151,7 @@ class TextField {
 
         if (!this.onReset) {
             // dispatch event
-            const event = new CustomEvent('textupdated', {detail: {new: text,}});
+            const event = new CustomEvent('textchanged', {detail: {newValue: text,}});
             this.$textField.dispatchEvent(event);
             // save cookie
             if (this.validate() == null) {
@@ -525,78 +526,76 @@ class TextField {
             errorMessage = validator.validate(this.value);
             if (errorMessage !== null) {
                 console.log(`Validation error found for ${this.id}: ${errorMessage}`);
-                this.alert(true, errorMessage);
+                this.alert(errorMessage);
                 break;
             }
         }
         if (errorMessage === null) {
             debuglog(`No validation errors found in ${this.id}`);
-            this.alert(false);
+            this.disableAlert();
         } else {
             debuglog(`Validation failed for ${this.id} with result: ${errorMessage ? "Error: " + errorMessage : "No errors"}`);
         }
         return errorMessage;
     }
 
-    alert(onAlert, message) {
-        const alertMessageId = this.id + '__alert';
-   
-        debuglog(`alert called. onAlert:${onAlert} message:${message}`)
-        if (onAlert) {
-            console.log(`Alert turned on for ${this.id} with message: ${message}`);
-            this.$textField.classList.add('alert');
+    alert(message) {
+        debuglog(`alert called. message:${message}`)
+        console.log(`Alert turned on for ${this.id} with message: ${message}`);
+        this.$textField.classList.add('alert');
     
-            // If the alertMessage already exists, update it or return if it's the same.
-            if (this._isAlerted(alertMessageId)) {
-                if (!this._isAlertMessageEqualTo(alertMessageId, message)) {
-                    this._setAlertMessage(message);
-                    console.log(`Updated alert message for ${this.id} to: ${message}`);
-                } else {
-                    console.log(`Alert message for ${this.id} is already set to: ${message}`);
-                }
-                return;
+        // If the alertMessage already exists, update it or return if it's the same.
+        if (this._isAlerted()) {
+            if (!this._isAlertMessageEqualTo(message)) {
+                this._setAlertMessage(message);
+                console.log(`Updated alert message for ${this.id} to: ${message}`);
+            } else {
+                console.log(`Alert message for ${this.id} is already set to: ${message}`);
             }
+            return;
+        }
     
-            // Create new alert message if it does not exist.
-            this._appendAlertMessage(alertMessageId, message);
-            debuglog(`Created new alert message for ${this.id} with message: ${message}`);
+        // Create new alert message if it does not exist.
+        this._appendAlertMessage(message);
+        debuglog(`Created new alert message for ${this.id} with message: ${message}`);
+    }
 
-        } else if (this._isAlerted(alertMessageId)) { // Only run if $alertMessage exists
+    disableAlert() {
+        if (this._isAlerted()) { // Only run if $alertMessage exists
             console.log(`Alert turned off for ${this.id}`);
             // Remove alert message
-            this._removeAlertMessage(alertMessageId);
-
+            this._removeAlertMessage();
         } else {
             //DEBUG: 
             debuglog(`[WARNING] Alert method called for ${this.id} to remove the message but not found.`);
         }
     }
 
-    _isAlerted(alertMessageId) {
-        const $alertMessage = this._getAlertMessage(alertMessageId);
+    _isAlerted() {
+        const $alertMessage = this._getAlertMessageElement();
         return $alertMessage ? true : false;
     }
   
-    _isAlertMessageEqualTo(alertMessageId, message) {
-        const $alertMessage = this._getAlertMessage(alertMessageId);
+    _isAlertMessageEqualTo(message) {
+        const $alertMessage = this._getAlertMessageElement();
         return $alertMessage && $alertMessage.innerText === message;
     }
   
-    _setAlertMessage(alertMessageId, message) {
-        const $alertMessage = this._getAlertMessage(alertMessageId);
+    _setAlertMessage(message) {
+        const $alertMessage = this._getAlertMessageElement();
         if ($alertMessage) {
             $alertMessage.innerText = message;
         }
     }
   
-    _appendAlertMessage(alertMessageId, message) {
-        const $alertMessage = this._getAlertMessage(alertMessageId);
+    _appendAlertMessage(message) {
+        const $alertMessage = this._getAlertMessageElement();
         const $footer = this.$footer;
   
         if (!$alertMessage) {
             const newAlertMessage = document.createElement('p');
             newAlertMessage.classList.add('alertMessage');
-            newAlertMessage.id = alertMessageId;
+            newAlertMessage.id = this.alertMessageId;
             newAlertMessage.innerText = message;
             $footer.querySelector(this.messagePlace).appendChild(newAlertMessage);
         } else {
@@ -604,16 +603,16 @@ class TextField {
         }
     }
   
-    _removeAlertMessage(alertMessageId) {
-        const $alertMessage = this._getAlertMessage(alertMessageId);
+    _removeAlertMessage() {
+        const $alertMessage = this._getAlertMessageElement();
         if ($alertMessage) {
             this.$textField.classList.remove('alert');
             $alertMessage.remove();
         }
     }
   
-    _getAlertMessage(alertMessageId) {
-        return this.$footer.querySelector(`#` + alertMessageId);
+    _getAlertMessageElement() {
+        return this.$footer.querySelector(`#` + this.alertMessageId);
     }
 
     // Cookie
