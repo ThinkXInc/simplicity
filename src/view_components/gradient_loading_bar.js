@@ -16,28 +16,16 @@ var GradientPattern = Object.freeze({
     cooler: 'linear-gradient(90deg, rgba(128,246,255,1) 0%, rgba(57,162,204,1) 35%, rgba(164,251,255,1) 100%)'
 });
 
-
-/**
- * Class for gradient loading bars. Extends from LoadingComponentBase and adds gradient behavior.
- * 
- * @class GradientLoadingBar
- * @extends {LoadingComponentBase}
- */
-class GradientLoadingBar extends LoadingComponentBase {
-    /**
-     * Constructs an instance of GradientLoadingBar.
-     * 
-     * @param {string} id - The id of the loading component.
-     * @param {string} [gradient_pattern=GradientPattern.smilan] - The gradient pattern to be used.
-     */
-    constructor(id, config, gradient_pattern = GradientPattern.smilan) {
-        super(id, config);
-        this.__gradient_pattern__ = gradient_pattern;
+class GradientLoadingBar extends LoadingBase {
+    constructor({
+        id,
+        gradientPattern = GradientPattern.smilan,
+        position = LoadingAppendedAs.firstChild
+    }) {
+        super({ id, position });
+        this.gradientPattern = gradientPattern;
     }
 
-    /**
-     * Inherited from LoadingComponentBase, sets the height and width for the component.
-     */
     _setElements() {
         super._setElements();
         this.$view.style.height = '7px';
@@ -45,12 +33,9 @@ class GradientLoadingBar extends LoadingComponentBase {
         this.$view.style.flexShrink = '0';
     }
 
-    /**
-     * Starts the loading state, makes the component visible, and initiates the gradient effect.
-     */
     startLoading() {
         super.startLoading();
-        toggleGradientLoader(this.$view, true, this.__gradient_pattern__);
+        toggleGradientLoader(this.$view, true, this.gradientPattern);
     }
 
     /**
@@ -58,18 +43,13 @@ class GradientLoadingBar extends LoadingComponentBase {
      */
     stopLoading() {
         super.stopLoading();
-        toggleGradientLoader(this.$view, false, this.__gradient_pattern__);
+        toggleGradientLoader(this.$view, false, this.gradientPattern);
     }
 }
 
 
 /**
  * Toggles the gradient loading effect for a specified element.
- * 
- * @function toggleGradientLoader
- * @param {HTMLElement} $loader - The element for which the gradient loading effect should be toggled.
- * @param {boolean} [enable=true] - Whether the gradient loading effect should be on.
- * @param {string} [pattern=GradientPattern.smilan] - The gradient pattern to be used.
  */
 function toggleGradientLoader($loader, enable = true, pattern = GradientPattern.smilan) {
     // Check if style is already added to head

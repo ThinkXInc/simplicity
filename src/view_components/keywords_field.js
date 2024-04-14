@@ -51,6 +51,7 @@ class KeywordsField extends TextField {
         id,
         fieldName,
         maxTextLength,
+        validators = [],
         type = TextFieldType.singleline,
         pressText = 'press',
         enterText = 'Enter ↵',
@@ -71,7 +72,7 @@ class KeywordsField extends TextField {
         isCounter = false
     }) {
         
-        super({ id, fieldName, type, defaultValue, maxTextLength, initRows, verticalFlex, hasTitle, title, placeholder, passwordMode, cookieExclude, hasCookiePrefix, isDefaultValueRestoredFromCookie, scrollControlElementId, isCounter });
+        super({ id, fieldName, type, defaultValue, validators, maxTextLength, initRows, verticalFlex, hasTitle, title, placeholder, passwordMode, cookieExclude, hasCookiePrefix, isDefaultValueRestoredFromCookie, scrollControlElementId, isCounter });
 
         this.id = id,
 

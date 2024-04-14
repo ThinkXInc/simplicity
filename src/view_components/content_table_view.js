@@ -170,6 +170,7 @@ class ContentTableView {
      */
     set contents(contents) {
        this._contents = contents;
+       console.warn(contents)
        this._resetCells();
        console.log(`${contents.length} cells successfully set.`);
     }
@@ -288,7 +289,11 @@ class ContentTableView {
     _resetCells() {
         // set table view cells from contents
         this.$contentTableView.innerHTML = '';
+        console.warn(this._contents)
         this._cells = this._contents.map((content, i) => {
+            console.warn(this.id)
+            console.warn(i)
+            console.warn(content)
             var cell = new ContentTableViewCell(this.id, i);
             cell.content = content;
             return cell;

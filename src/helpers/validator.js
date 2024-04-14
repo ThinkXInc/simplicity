@@ -32,8 +32,8 @@ class Validator {
         if (errorType == null) {
             throw new Error('Validator requires errorType.');
         }
-        if (locale == null) {
-            throw new Error('Validator requires locale object.');
+        if (errorMessage == null) {
+            throw new Error('Validator requires errorMessage.');
         }
 
         this.errorType = errorType;

@@ -225,8 +225,6 @@ class TextField {
         this.$view = document.createElement('div');
         this.$view.id = this.id;
         this.$view.classList.add(`${this.id}`);
-        console.warn(this.id)
-        console.warn(this.constructor.name)
         this.$view.classList.add(`${this.constructor.name}`);
  
         // textField

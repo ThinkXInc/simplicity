@@ -1,90 +1,3 @@
-class TableViewConfig extends ViewComponentConfig {
-    constructor({
-        protocols = [TableViewProtocol],
-        isHeader = false,
-        isFooter = false,
-        loadingType = TableViewLoadingType.gradientViewLoader,
-        loaderImage = '/img/load-of-the-ring@2x.png',  // TODO: use SvgIcon class
-        loaderSize = '24px',
-        gradientViewLoaderConfig = {
-            numIndicator: 3,
-            individualHeight: 7,
-            spaceBetween: 10,
-            animationDelay: 10,
-            defaultShift: 10,
-            shiftAmount: -20,
-            rx: 2,
-            ry: 2,
-        },
-        maxDefaultCellNumber = 20,
-        addingCellNumber = 20,
-        cellClass = TableViewCell,
-        cellContentClass = TableViewCellContent,
-        cellSelectedClassName = 'selected',
-        cellHiddenClassName = 'hide',
-        cellFadeOutClassName = 'fadeOut',
-        cellFadeOutLeftClassName = 'fadeOutLeft',
-        hiddenClassName = 'hide',
-        closeAnimationDelay = 0,
-        closeAnimationType = TableViewCloseAnimationType.fadeOut,
-        closeAnimationCurve = 'easeInSine', 
-        cellCloseAnimationType = TableViewCellCloseAnimationType.fadeOutLeft,
-        cellCloseAnimationDelay = 10,
-        cellCloseAnimationDuration = 400,
-        insertCellAnimationType = TableViewInsertCellAnimationType.moveFromLeft,
-        insertCellAnimationDuration = 20,
-        insertCellAnimationCurve = 'easeInSine',
-        insertCellAnimationHiddenClassNameMoveFromLeft = 'hiddenForMoveFromLeft',
-        insertCellAnimationHiddenClassNameFadeIn = 'hiddenForFadeIn',
-        buttonContainerPosition = TableViewCellButtonContainerPosition.Right,
-        deleteCellActionType = TableViewDeleteCellActionType.dispatchDeleteCellEvent,
-        deleteCellAnimationType = TableViewDeleteCellAnimationType.fadeOut,
-        deleteCellEventName = 'deleteCell',
-        deleteCellAnimationDuration = 10,
-        deleteCellAnimationDelay = 0,
-        deleteCellAnimationCurve = 'easeInSine',
-        deleteCellAnimationClassNameMoveToLeft = 'deleteByMoveToLeft',
-        deleteCellAnimationClassNameFadeOut = 'deleteByFadeOut',
-        ...otherOptions
-    } = {}) {
-        super(otherOptions);
-        this.protocols = protocols;
-        this.isHeader = isHeader;
-        this.isFooter = isFooter;
-        this.loadingType = loadingType;
-        this.loaderImage = loaderImage;
-        this.gradientViewLoaderConfig = gradientViewLoaderConfig;
-        this.maxDefaultCellNumber = maxDefaultCellNumber;
-        this.addingCellNumber = addingCellNumber;
-        this.cellClass = cellClass;
-        this.cellContentClass = cellContentClass; // Corrected the variable name
-        this.cellSelectedClassName = cellSelectedClassName;
-        this.cellHiddenClassName = cellHiddenClassName;
-        this.cellFadeOutClassName = cellFadeOutClassName;
-        this.cellFadeOutLeftClassName = cellFadeOutLeftClassName;
-        this.hiddenClassName = hiddenClassName;
-        this.closeAnimationDelay = closeAnimationDelay;
-        this.closeAnimationType = closeAnimationType;
-        this.closeAnimationCurve = closeAnimationCurve;
-        this.cellCloseAnimationType = cellCloseAnimationType;
-        this.cellCloseAnimationDelay = cellCloseAnimationDelay;
-        this.cellCloseAnimationDuration = cellCloseAnimationDuration;
-        this.insertCellAnimationType = insertCellAnimationType;
-        this.insertCellAnimationDuration = insertCellAnimationDuration;
-        this.insertCellAnimationCurve = insertCellAnimationCurve;
-        this.insertCellAnimationHiddenClassNameFadeIn = insertCellAnimationHiddenClassNameFadeIn;
-        this.insertCellAnimationHiddenClassNameMoveFromLeft = insertCellAnimationHiddenClassNameMoveFromLeft;
-        this.buttonContainerPosition = buttonContainerPosition;
-        this.deleteCellActionType = deleteCellActionType;
-        this.deleteCellAnimationType = deleteCellAnimationType;
-        this.deleteCellEventName = deleteCellEventName;
-        this.deleteCellAnimationDuration = deleteCellAnimationDuration;
-        this.deleteCellAnimationCurve = deleteCellAnimationCurve;
-        this.deleteCellAnimationClassNameMoveToLeft = deleteCellAnimationClassNameMoveToLeft;
-        this.deleteCellAnimationClassNameFadeOut = deleteCellAnimationClassNameFadeOut;
-    }
-}
-
 const TableViewLoadingType = Object.freeze({
     gradientViewLoader: 'gradientViewLoader',
     circleLoader: 'circleLoader',
@@ -151,10 +64,56 @@ class TableViewCellContent {
  * </li>
  */
 class TableViewCell {
-    constructor(tableView, index, config = new TableViewConfig()) {
-        this.tableView = tableView
-        this.config = config;
+    constructor({
+        tableView,
+        index,
+        cellContentClass = TableViewCellContent,
+        cellSelectedClassName = 'selected',
+        cellHiddenClassName = 'hide',
+        cellFadeOutClassName = 'fadeOut',
+        cellFadeOutLeftClassName = 'fadeOutLeft',
+        buttonContainerPosition = TableViewCellButtonContainerPosition.Right,
+        deleteCellActionType = TableViewDeleteCellActionType.dispatchDeleteCellEvent,
+        deleteCellAnimationType = TableViewDeleteCellAnimationType.fadeOut,
+        deleteCellEventName = 'deleteCell',
+        deleteCellAnimationDuration = 10,
+        deleteCellAnimationDelay = 0,
+        deleteCellAnimationCurve = 'easeInSine',
+        deleteCellAnimationClassNameMoveToLeft = 'deleteByMoveToLeft',
+        deleteCellAnimationClassNameFadeOut = 'deleteByFadeOut',
+        insertCellAnimationType = TableViewInsertCellAnimationType.moveFromLeft,
+        insertCellAnimationDuration = 20,
+        insertCellAnimationCurve = 'easeInSine',
+        insertCellAnimationHiddenClassNameMoveFromLeft = 'hiddenForMoveFromLeft',
+        insertCellAnimationHiddenClassNameFadeIn = 'hiddenForFadeIn',
+        title = '',
+        text = '',
+        icon = ''
+    }) {
+        this.tableView = tableView;
         this.index = index;
+        this.cellContentClass = cellContentClass;
+        this.cellSelectedClassName = cellSelectedClassName;
+        this.cellHiddenClassName = cellHiddenClassName;
+        this.cellFadeOutClassName = cellFadeOutClassName;
+        this.cellFadeOutLeftClassName = cellFadeOutLeftClassName;
+        this.buttonContainerPosition = buttonContainerPosition;
+        this.deleteCellActionType = deleteCellActionType;
+        this.deleteCellAnimationType = deleteCellAnimationType;
+        this.deleteCellEventName = deleteCellEventName;
+        this.deleteCellAnimationDuration = deleteCellAnimationDuration;
+        this.deleteCellAnimationDelay = deleteCellAnimationDelay;
+        this.deleteCellAnimationCurve = deleteCellAnimationCurve;
+        this.deleteCellAnimationClassNameMoveToLeft = deleteCellAnimationClassNameMoveToLeft;
+        this.deleteCellAnimationClassNameFadeOut = deleteCellAnimationClassNameFadeOut;
+        this.insertCellAnimationType = insertCellAnimationType;
+        this.insertCellAnimationDuration = insertCellAnimationDuration;
+        this.insertCellAnimationCurve = insertCellAnimationCurve;
+        this.insertCellAnimationHiddenClassNameMoveFromLeft = insertCellAnimationHiddenClassNameMoveFromLeft;
+        this.insertCellAnimationHiddenClassNameFadeIn = insertCellAnimationHiddenClassNameFadeIn;
+        this._title = title;
+        this._text = text;
+        this.icon = icon;
 
         this._setElements();
     }
@@ -164,11 +123,11 @@ class TableViewCell {
     get className() { return `${this.tableView.id}Cell`; }
 
     set content(content) {
-        //if (!TableViewCellContent.prototype.isPrototypeOf(this.config.cellContentClass.prototype)) {
-        //    throw new Error(`tableViewCellContent in ${this.id} config is not a subclass of ${TableViewCellContent.name} but ${this.config.cellContentClass.name}.`);
+        //if (!TableViewCellContent.prototype.isPrototypeOf(this.cellContentClass.prototype)) {
+        //    throw new Error(`tableViewCellContent in ${this.id} config is not a subclass of ${TableViewCellContent.name} but ${this.cellContentClass.name}.`);
         //}
-        if (!this.config.cellContentClass.prototype.isPrototypeOf(content)) {
-            throw Error(`Provided content is not an instance of ${this.config.cellContentClass.name}.`);
+        if (!this.cellContentClass.prototype.isPrototypeOf(content)) {
+            throw Error(`Provided content is not an instance of ${this.cellContentClass.name}.`);
         }
 
         this._content = content;
@@ -191,6 +150,10 @@ class TableViewCell {
     get text() { this._text; }
 
     setContent(content) {
+        console.error('>>>KLLLLLLLLLLLKKKKKKKKKKKKKKKKKK')
+        console.warn(content)
+        console.warn(content.title)
+        console.warn(content.text)
         this.content = content;
 
         this.title = content.title;
@@ -246,7 +209,7 @@ class TableViewCell {
     }
 
     _setButtonContainerPosition() {
-        if (this.config.buttonContainerPosition === TableViewCellButtonContainerPosition.Left) {
+        if (this.buttonContainerPosition === TableViewCellButtonContainerPosition.Left) {
             this.$buttonContainer.classList.add('left');
         } else {
             this.$buttonContainer.classList.add('right');
@@ -264,10 +227,10 @@ class TableViewCell {
         debuglog(`Delete button clicked for cell with ID: ${this.id}, index: ${this.index}`);
 
         // switch action by config.deleteCellAtionType
-        switch (this.config.deleteCellActionType) {
+        switch (this.deleteCellActionType) {
             case TableViewDeleteCellActionType.dispatchDeleteCellEvent:
                 // Dispatch event
-                this.tableView.$view.dispatchEvent(new CustomEvent(this.config.deleteCellEventName, { detail: { index: this.index, cell: this } }));
+                this.tableView.$view.dispatchEvent(new CustomEvent(this.deleteCellEventName, { detail: { index: this.index, cell: this } }));
                 break;
             case TableViewDeleteCellActionType.deleteImmediately:
                 // Delete immediately
@@ -313,19 +276,19 @@ class TableViewCell {
         this.$view.addEventListener('transitionend', handleTransitionEnd);
     
         // Insert animation
-        switch (this.config.insertCellAnimationType) {
+        switch (this.insertCellAnimationType) {
             case TableViewInsertCellAnimationType.fadeIn:
-                this.$view.classLists.add(this.config.insertCellAnimationHiddenClassNameFadeIn)
+                this.$view.classLists.add(this.insertCellAnimationHiddenClassNameFadeIn)
                 console.log("Starting fadeIn transition");
                 setTimeout(() => {
-                    this.$view.classList.remove(this.config.insertCellAnimationHiddenClassNameFadeIn); // Smoothly slides the new item into view
+                    this.$view.classList.remove(this.insertCellAnimationHiddenClassNameFadeIn); // Smoothly slides the new item into view
                 }, delay); // Tiny delay to ensure it's added to the DOM before the transition starts
                 break;
             case TableViewInsertCellAnimationType.moveFromLeft:
-                this.$view.classList.add(this.config.insertCellAnimationHiddenClassNameMoveFromLeft)
+                this.$view.classList.add(this.insertCellAnimationHiddenClassNameMoveFromLeft)
                 console.log("Starting moveFromLeft transition");
                 setTimeout(() => {
-                    this.$view.classList.remove(this.config.insertCellAnimationHiddenClassNameMoveFromLeft); // Smoothly slides the new item into view
+                    this.$view.classList.remove(this.insertCellAnimationHiddenClassNameMoveFromLeft); // Smoothly slides the new item into view
                 }, delay); // Tiny delay to ensure it's added to the DOM before the transition starts
                 break;
         }
@@ -359,13 +322,13 @@ class TableViewCell {
                 
             case TableViewDeleteCellAnimationType.fadeOut:
                 setTimeout(() => {
-                    this.$view.classList.add(this.config.deleteCellAnimationClassNameFadeOut);
+                    this.$view.classList.add(this.deleteCellAnimationClassNameFadeOut);
                 }, delay); // Tiny delay to ensure it's added to the DOM before the transition starts
                 break;
     
             case TableViewDeleteCellAnimationType.moveToLeft:
                 setTimeout(() => {
-                    this.$view.classList.add(this.config.deleteCellAnimationClassNameMoveToLeft);
+                    this.$view.classList.add(this.deleteCellAnimationClassNameMoveToLeft);
                 }, delay); // Tiny delay to ensure it's added to the DOM before the transition starts
                 break;
     
@@ -378,9 +341,9 @@ class TableViewCell {
         this.$view.animate([
             { opacity: 0 }
         ], {
-            duration: this.config.cellCloseAnimationDuration,
+            duration: this.cellCloseAnimationDuration,
             delay: delay,
-            easing: this.config.cellCloseAnimationCurve,
+            easing: this.cellCloseAnimationCurve,
             fill: 'forwards'
         }).finished.then(()=> {
             onComplete();
@@ -398,9 +361,9 @@ class TableViewCell {
                 transform: 'translateX(-20px)'
             }
         ], {
-            duration: this.config.cellCloseAnimationDuration,
+            duration: this.cellCloseAnimationDuration,
             delay: delay,
-            easing: this.config.cellCloseAnimationCurve,
+            easing: this.cellCloseAnimationCurve,
             iterations: 1,
             fill: 'forwards'
         }).finished.then(()=> {
@@ -411,11 +374,11 @@ class TableViewCell {
     }
 
     hide() {
-        this.$view.classList.add(this.config.cellHiddenClassName);
+        this.$view.classList.add(this.cellHiddenClassName);
     }
 
     show() {
-        this.$view.classList.remove(this.config.cellHiddenClassName);
+        this.$view.classList.remove(this.cellHiddenClassName);
     }
 
 }
@@ -454,21 +417,106 @@ class TableViewProtocol {
  * </div>
  * 
  */
-class TableView extends ViewComponentBase {
-    constructor(id, config = new TableViewConfig()) {
-        super(id, config);
+class TableView {
+    constructor({
+            id,
+            protocols = [TableViewProtocol],
+            validators = [],
+            isHeader = false,
+            isFooter = false,
+            loadingType = TableViewLoadingType.gradientViewLoader,
+            loaderImage = '/img/load-of-the-ring@2x.png',
+            loaderSize = '24px',
+            gradientViewLoaderConfig = {
+                numIndicator: 3,
+                individualHeight: 7,
+                spaceBetween: 10,
+                animationDelay: 10,
+                defaultShift: 10,
+                shiftAmount: -20,
+                rx: 2,
+                ry: 2,
+            },
+            maxDefaultCellNumber = 20,
+            addingCellNumber = 20,
+            cellClass = TableViewCell,
+            cellContentClass = TableViewCellContent,
+            cellSelectedClassName = 'selected',
+            cellHiddenClassName = 'hide',
+            cellFadeOutClassName = 'fadeOut',
+            cellFadeOutLeftClassName = 'fadeOutLeft',
+            hiddenClassName = 'hide',
+            closeAnimationDelay = 0,
+            closeAnimationType = TableViewCloseAnimationType.fadeOut,
+            closeAnimationCurve = 'easeInSine',
+            cellCloseAnimationType = TableViewCellCloseAnimationType.fadeOutLeft,
+            cellCloseAnimationDelay = 10,
+            cellCloseAnimationDuration = 400,
+            insertCellAnimationType = TableViewInsertCellAnimationType.moveFromLeft,
+            insertCellAnimationDuration = 20,
+            insertCellAnimationCurve = 'easeInSine',
+            insertCellAnimationHiddenClassNameMoveFromLeft = 'hiddenForMoveFromLeft',
+            insertCellAnimationHiddenClassNameFadeIn = 'hiddenForFadeIn',
+            buttonContainerPosition = TableViewCellButtonContainerPosition.Right,
+            deleteCellActionType = TableViewDeleteCellActionType.dispatchDeleteCellEvent,
+            deleteCellAnimationType = TableViewDeleteCellAnimationType.fadeOut,
+            deleteCellEventName = 'deleteCell',
+            deleteCellAnimationDuration = 10,
+            deleteCellAnimationDelay = 0,
+            deleteCellAnimationCurve = 'easeInSine',
+            deleteCellAnimationClassNameMoveToLeft = 'deleteByMoveToLeft',
+            deleteCellAnimationClassNameFadeOut = 'deleteByFadeOut',
+        }) {
+            
+            this.id = id;
+            this.protocols = protocols;
+            this.isHeader = isHeader;
+            this.isFooter = isFooter;
+            this.loadingType = loadingType;
+            this.loaderImage = loaderImage;
+            this.loaderSize = loaderSize;
+            this.gradientViewLoaderConfig = gradientViewLoaderConfig;
+            this.maxDefaultCellNumber = maxDefaultCellNumber;
+            this.addingCellNumber = addingCellNumber;
+            this.cellClass = cellClass;
+            this.cellContentClass = cellContentClass;
+            this.cellSelectedClassName = cellSelectedClassName;
+            this.cellHiddenClassName = cellHiddenClassName;
+            this.cellFadeOutClassName = cellFadeOutClassName;
+            this.cellFadeOutLeftClassName = cellFadeOutLeftClassName;
+            this.hiddenClassName = hiddenClassName;
+            this.closeAnimationDelay = closeAnimationDelay;
+            this.closeAnimationType = closeAnimationType;
+            this.closeAnimationCurve = closeAnimationCurve;
+            this.cellCloseAnimationType = cellCloseAnimationType;
+            this.cellCloseAnimationDelay = cellCloseAnimationDelay;
+            this.cellCloseAnimationDuration = cellCloseAnimationDuration;
+            this.insertCellAnimationType = insertCellAnimationType;
+            this.insertCellAnimationDuration = insertCellAnimationDuration;
+            this.insertCellAnimationCurve = insertCellAnimationCurve;
+            this.insertCellAnimationHiddenClassNameMoveFromLeft = insertCellAnimationHiddenClassNameMoveFromLeft;
+            this.insertCellAnimationHiddenClassNameFadeIn = insertCellAnimationHiddenClassNameFadeIn;
+            this.buttonContainerPosition = buttonContainerPosition;
+            this.deleteCellActionType = deleteCellActionType;
+            this.deleteCellAnimationType = deleteCellAnimationType;
+            this.deleteCellEventName = deleteCellEventName;
+            this.deleteCellAnimationDuration = deleteCellAnimationDuration;
+            this.deleteCellAnimationDelay = deleteCellAnimationDelay;
+            this.deleteCellAnimationCurve = deleteCellAnimationCurve;
+            this.deleteCellAnimationClassNameMoveToLeft = deleteCellAnimationClassNameMoveToLeft;
+            this.deleteCellAnimationClassNameFadeOut = deleteCellAnimationClassNameFadeOut;
+    
 
-        this.id = id;
-        this.config = config;
+            this._setElements();
 
-        this._setElements();
-
-        this.state = null;
-        this.selectedIndex = null;
+            this.state = null;
+            this.selectedIndex = null;
     }
 
     set contents(contents) {
         this._contents = contents;
+        console.error('<<<<<<<<<<<<<<<<<<')
+        console.warn(contents)
         this._resetCells();
         this._setEventHandlers();
         console.log(`${contents.length} cells set to ${this.id}.`);
@@ -503,7 +551,7 @@ class TableView extends ViewComponentBase {
         this.$tableViewContainer.classList.add('tableViewContainer');
         
         // Header
-        if (this.config.isHeader) {
+        if (this.isHeader) {
             this.$tableViewHeader = document.createElement('div');
             this.$tableViewHeader.classList.add('tableViewHeader');
             this.$tableViewContainer.appendChild(this.$tableViewHeader);
@@ -525,7 +573,7 @@ class TableView extends ViewComponentBase {
         this.$tableViewContainer.appendChild(this.$tableView);
 
         // Footer
-        if (this.config.isFooter) {
+        if (this.isFooter) {
             this.$tableViewFooter = document.createElement('div');
             this.$tableViewFooter.classList.add('tableViewFooter');
             this.$tableViewContainer.appendChild(this.$tableViewFooter);
@@ -534,24 +582,24 @@ class TableView extends ViewComponentBase {
         this.$view.appendChild(this.$tableViewContainer);
 
         // Loader
-        switch (this.config.loadingType) {
+        switch (this.loadingType) {
             // Circle Loader
             case TableViewLoadingType.circleLoader:
                 this.$loader = document.createElement('img');
                 this.$loader.classList.add('loader');
-                this.$loader.src = this.config.loaderImage;
+                this.$loader.src = this.loaderImage;
                 this.$loader.style.position = 'absolute';
                 this.$loader.style.top = '50%';
                 this.$loader.style.left = '50%';
-                this.$loader.style.width = this.config.loaderSize;
-                this.$loader.style.height = this.config.loaderSize;
+                this.$loader.style.width = this.loaderSize;
+                this.$loader.style.height = this.loaderSize;
                 this.$loader.style.transform = 'translate(-50%, -50%)'; // Center the loader
                 this.$loader.style.display = 'none';  // Initially hidden
                 this.$tableView.appendChild(this.$loader);
                 break;
             // Gradient Loader
             case TableViewLoadingType.gradientViewLoader:
-                const loaderConfig = this.config.gradientViewLoaderConfig;
+                const loaderConfig = this.gradientViewLoaderConfig;
                 const gradientLoaderConfig = new GradientViewLoaderConfig();
                 
                 // Assign the properties from the configuration to the gradient loader config.
@@ -581,7 +629,11 @@ class TableView extends ViewComponentBase {
         this._contents.splice(index, 0, content);
 
         // After adding content to _contents
-        let newCell = new this.config.cellClass(this, index, this.config);
+        let newCell = new this.cellClass({
+            tableView: this, 
+            index: index,
+        });
+        console.warn(newCell.setContent)
         newCell.setContent(content);
         newCell.insert(index, delay, () => {
             console.log('Insert animation finished!');
@@ -604,9 +656,9 @@ class TableView extends ViewComponentBase {
         }
     
         const cell = this.cells[index];
-        const delay = this.config.deleteCellAnimationDelay;
+        const delay = this.deleteCellAnimationDelay;
     
-        cell.delete(this.config.deleteCellAnimationType, delay, () => {
+        cell.delete(this.deleteCellAnimationType, delay, () => {
             console.log('Delete animation finished!');
             onComplete && onComplete(cell);
         });
@@ -631,7 +683,7 @@ class TableView extends ViewComponentBase {
     }
 
     _resetCells() {
-        console.log(`${this.id} resetCells:`);
+        console.log(`${this.id} resetCells: with ${this._contents.length} contents`);
 
         // Reset tableView
         if (!this.$tableListView) {
@@ -640,12 +692,16 @@ class TableView extends ViewComponentBase {
         this.$tableListView.innerHTML = '';
 
         //// Check if tableViewCellClass is a subclass of TableViewCellClass
-        //if (!TableViewCell.prototype.isPrototypeOf(this.config.cellClass.prototype)) {
-        //    throw new Error(`this.config.cellClass does not inherit from TableViewCell. but ${this.config.cellClass}`);
+        //if (!TableViewCell.prototype.isPrototypeOf(this.cellClass.prototype)) {
+        //    throw new Error(`this.cellClass does not inherit from TableViewCell. but ${this.cellClass}`);
         //}
         // Re initialize cells
         this.cells = this._contents.map((content, i) => {
-            let cell = new this.config.cellClass(this, i, this.config);
+            console.warn(content)
+            console.warn(this.cellClass)
+            let cell = new this.cellClass({
+                tableView: this, 
+                index: i});
             cell.setContent(content);
             cell.add();
             return cell;
@@ -659,9 +715,9 @@ class TableView extends ViewComponentBase {
         this.state = TableViewState.onSelected;
         this.tableViewCellSelectedAtIndex(cell.index, cell);
         this.cells.forEach((cell) => {
-            cell.$view.classList.remove(this.config.cellSelectedClassName);
+            cell.$view.classList.remove(this.cellSelectedClassName);
         })
-        cell.$view.classList.add(this.config.cellSelectedClassName)
+        cell.$view.classList.add(this.cellSelectedClassName)
     }
 
     _setEventHandlers() {
@@ -687,16 +743,16 @@ class TableView extends ViewComponentBase {
     }
 
     show() {
-        this.$view.classList.remove(this.config.tableViewHiddenClassName);
+        this.$view.classList.remove(this.tableViewHiddenClassName);
     }
 
     hide() {
-        this.$view.classList.add(this.config.tableViewHiddenClassName);
+        this.$view.classList.add(this.tableViewHiddenClassName);
     }
 
     loading(isLoading) {
         if(isLoading) {
-            switch (this.config.loadingType) {
+            switch (this.loadingType) {
                 // Circle Loader
                 case TableViewLoadingType.circleLoader:
                     this.$tableListView.style.display = 'none';  // Hide the table
@@ -709,7 +765,7 @@ class TableView extends ViewComponentBase {
                     break;
             }
         } else {
-            switch (this.config.loadingType) {
+            switch (this.loadingType) {
                 // Circle Loader
                 case TableViewLoadingType.circleLoader:
                     this.$tableListView.style.display = 'block'; // Show the table
@@ -739,7 +795,7 @@ class TableView extends ViewComponentBase {
                 return;  // Skip the cell if its index is greater than the limit
             }
 
-            switch (this.config.closeAnimationType) {
+            switch (this.closeAnimationType) {
                 case TableViewCloseAnimationType.noAnimation:
                     break;
                 case TableViewCloseAnimationType.fadeOut:
@@ -748,7 +804,7 @@ class TableView extends ViewComponentBase {
                     });
                     break;
                 case TableViewCloseAnimationType.delayedFadeOut:
-                    cell.fadeOut(cell.__index__ * this.config.cellCloseAimationDelay, () => {
+                    cell.fadeOut(cell.__index__ * this.cellCloseAimationDelay, () => {
                         console.log(`Cell ${cell.id} faded out after delay`);
                     });
                     break;
@@ -758,7 +814,7 @@ class TableView extends ViewComponentBase {
         });
 
         // TableView Animation
-        switch (this.config.closeAnimationType) {
+        switch (this.closeAnimationType) {
             case TableViewCloseAnimationType.noAnimation:
                 this.state = TableViewState.onCloseComplete;
                 this.dispatchOnCloseCompleteEvent(previousState);
@@ -766,7 +822,7 @@ class TableView extends ViewComponentBase {
 
             case TableViewCloseAnimationType.fadeOut:
                 // Fadeout TableView
-                this.fadeOut(this.config.closeAnimationDelay, () => {
+                this.fadeOut(this.closeAnimationDelay, () => {
                     _this.state = TableViewState.onCloseComplete;
                     this.dispatchOnCloseCompleteEvent(previousState);
                 });
@@ -774,7 +830,7 @@ class TableView extends ViewComponentBase {
 
             case TableViewCloseAnimationType.delayedFadeOut:
                 const numWait = Math.min(this.cells.length, maxCellIndexToAnimate + 1); // +1 because index starts from 0
-                const delay = this.config.cellCloseAimationDelay * numWait;
+                const delay = this.cellCloseAimationDelay * numWait;
                 // Fadeout TableView
                 this.fadeOut(delay, () => {
                     _this.state = TableViewState.onCloseComplete;
@@ -792,7 +848,7 @@ class TableView extends ViewComponentBase {
         this.$view.animate(
             { opacity: 0 },
             delay,
-            this.config.closeAnimationCurve
+            this.closeAnimationCurve
         ).finished.then(()=> {
             onComplete();
         })
@@ -809,4 +865,49 @@ class TableView extends ViewComponentBase {
 
     }
 
+    // Others
+    addToPage(page) {
+        // WILL DEPRECATE
+        // NOTE: この時点でpageのdom elementはまだHTML上にないことに注意
+        // すべてのview componentをpageにアタッチした後でなければpageはHTML上に作られない
+        // 詳しくはInputPageViewControllerのsetElements()のフローを参照
+        if (!page.$view.id) {
+            console.error(`[ERROR] ${page.$view} has no id`);
+        }
+        this.addTo(page.$view);
+        this.setPageIndex(page.pageIndex);
+        this.$view.classList.add(`${page.id}__${this.constructor.name}`);
+    }
+    
+    addTo($parent) {
+        // WILL DEPRECATE
+        if (!$parent || $parent == undefined || !($parent instanceof HTMLElement)) {
+            console.error(
+                `[ERROR] $parent must exist but ${$parent} `);
+        } else {
+            debuglog(`[${$parent.className}] appendChild ${this.id}`)
+            $parent.appendChild(this.$view);
+        }
+    }
+    
+    setViewController(viewController) {
+        // WILL DEPRECATE
+        this.viewController = viewController;
+        //this._setEventHandlers(); <- this causes double event registration [WILL REMOVE THIS LINE]
+    }
+    
+    setPageIndex(pageIndex) {
+        // WILL DEPRECATE
+        this.pageIndex = pageIndex;
+    }
+    
+    scrollTo(delay = 0) {
+        setTimeout(() => {
+            this.$view.scrollIntoView({
+                behavior: 'smooth', // Enable smooth scrolling
+                block: 'start', // Scroll to the start (top) of this.$view
+                inline: 'nearest' // In case of horizontal scrolling, scroll in the nearest viewport
+            });
+        }, delay);
+    }
 }

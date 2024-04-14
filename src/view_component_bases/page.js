@@ -1,18 +1,8 @@
-/**
- * Represents a page consisting of a collection of components. 
- * Each component must be an instance of ViewComponentBase or Wrapper.
- *
- * @extends ViewComponentBase
- * 
- * @param {string} id - The unique identifier for the page.
- * @param {Array} components - An array of components that make up the page.
- * 
- * @throws {Error} If the components parameter is not an array or if any component 
- * is not a subclass of ViewComponentBase or Wrapper.
- */
 class Page {
-    components;
-    constructor(id, components = []) {
+    constructor({
+        id,
+        components = []
+    }) {
         debuglog(`Construct ${id}`)
         this.id = id;
 

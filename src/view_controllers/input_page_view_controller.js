@@ -84,27 +84,32 @@ class InputPageViewController {
     _components = [];  // Array for storing all form components
     _pageComponents = [];  // [[comp 0 in page 0, comp 1 in page 0, ..], [..],..]
     
-    _locale = null;  // Locale text dictionary 
-    _lang = null;  // Language of the user
-
-    constructor(id, pages, locale, lang, config = new InputPageViewControllerConfig()) {
+    constructor({
+        id,
+        pages,
+        dataModelClass = InputPageViewDataModel, // Default to a generic data model if not specified
+        url = '',
+        loading = false,
+        alertMessage = null, // Set up inside the constructor if null
+        defaultPageIndex = 0,
+        isAllPageShown = false,
+        isEnterButtonToNext = true,
+        isPageIndexInHash = false,
+        pageIndexKeyInHash = 'page',
+        preventDefaultPageControl = false
+    }) {
         this.id = id;
-        this.pages = pages;
-        this.locale = locale;
-        this.lang = lang;
-        this.config = config;
-
-        // Use destructuring to apply configuration properties to the instance
-        Object.assign(this, {
-            submitUrl: config.url,
-            alertMessage: config.alertMessage || new AlertMessage(`${id}__AlertMessage`),
-            isEnterButtonToNext: config.isEnterButtonToNext,
-            isPageIndexInHash: config.isPageIndexInHash,
-            preventDefaultPageControl: config.preventDefaultPageControl,
-        });
-
-        // Potentially check protocol adherence here
-        this._checkProtocolAdherenceForSubClass();
+        this._pages = pages;
+        this.submitUrl = url;
+        this.loading = loading;
+        this.alertMessage = alertMessage || new AlertMessage(`${id}__AlertMessage`);
+        this.isEnterButtonToNext = isEnterButtonToNext;
+        this.isPageIndexInHash = isPageIndexInHash;
+        this.pageIndexKeyInHash = pageIndexKeyInHash;
+        this.preventDefaultPageControl = preventDefaultPageControl;
+        this.defaultPageIndex = defaultPageIndex;
+        this.isAllPageShown = isAllPageShown;
+        this.dataModel = new dataModelClass(); // Instantiate the data model class
 
         // setup page components
         this._setElements(pages);
@@ -113,48 +118,21 @@ class InputPageViewController {
         this._setEventHandlers();
 
         // data model
-        this.dataModel = config.dataModelClass;
+        this.dataModel = this.dataModelClass;
         //this._resetValuesInCookie(); // DEBUG:
 
         // defalut values are set to each component
         console.table(this._values);
         console.log(`data model for ${this.id} initialized`);
 
-        if (this.locale == null) {
-            console.error(`${id} no locale json data found.`);
-        } else {
-            console.log(`${id} locale json data found`);
-        }
-        if (this.lang == null) {
-            console.error(`${id} no language information is given.`);
-        } else {
-            console.log(`${id} initial language is set as ${lang}`);
-        }
-
-        this.loading = config.loading
-        if(!this.config.isAllPageShown) {
-            this.pageIndex = config.defaultPageIndex;
+        this.loading = loading
+        if(!this.isAllPageShown) {
+            this.pageIndex = this.defaultPageIndex;
         } else {
             this.showAllPages();
         }
     }
 
-    /**
-     * Checks if all methods from InputPageViewControllerProtocol are implemented.
-     */
-    _checkProtocolAdherenceForSubClass() {
-        Object.getOwnPropertyNames(InputPageViewControllerProtocol.prototype).forEach(methodName => {
-            if (methodName !== "constructor" && typeof this[methodName] !== "function") {
-                throw new Error(`Subclasses must implement ${methodName} method of InputPageViewControllerProtocol`);
-            }
-        });
-    }
-
-    /**
-     * pageIndex setter / getter
-     * 
-     * Display only the pageIndex in current state.
-     */
     set pageIndex(pageIndex) {
         const previousPageIndex = this._pageIndex;
         debuglog(`pageIndex changed ${previousPageIndex} -> ${pageIndex}`)
@@ -164,9 +142,6 @@ class InputPageViewController {
 
     get pageIndex() {return this._pageIndex}
 
-    /**
-     * values  getter
-     */
     get values() {
         let _values = {};
         this._components.forEach((component, i) => {
@@ -215,8 +190,8 @@ class InputPageViewController {
         $container.classList.add($container.id);
         this.$inputPageView.appendChild($container);
 
-        // loading
-        if(this.loading != null) {
+        //// loading
+        if(this.loading) {
             this.loading.addToParent(this.$view);
         }
 
@@ -293,7 +268,7 @@ class InputPageViewController {
         window.addEventListener('hashchange', (event) => {
             console.log('hashchange event detected');
             console.log(`url changed. -> ${Browser.getRelativePath()}`)
-            const page = Browswer.getValueFromHash(this.config.pageIndexKeyInHash, 'int');
+            const page = Browswer.getValueFromHash(this.pageIndexKeyInHash, 'int');
             _this.pageIndex = page;
         }, false);
 
@@ -319,7 +294,7 @@ class InputPageViewController {
             console.error(`invalid page number ${page} of type ${typeof page}`);
             return
         }
-        Browser.updateValueInHash(this.config.pageIndexKeyInHash, String(page), true);
+        Browser.updateValueInHash(this.pageIndexKeyInHash, String(page), true);
     }
 
     showPageOnly(pageIndex) {
@@ -548,10 +523,6 @@ class InputPageViewController {
         })
     }
 
-    /**
-     * @method
-     * Start loading. Implement this in subclass.
-     */
     startLoading() {
         debuglog(`start loading.. ${this.loading.id}`)
         if (this.loading == null) {
@@ -561,10 +532,6 @@ class InputPageViewController {
         this.loading.startLoading();
     }
 
-    /**
-     * @method
-     * Stop loading. Implement this in subclass.
-     */
     stopLoading() {
         debuglog(`stop loading. ${this.loading.id}`)
         if (this.loading == null) {
