@@ -150,12 +150,7 @@ class TableViewCell {
     get text() { this._text; }
 
     setContent(content) {
-        console.error('>>>KLLLLLLLLLLLKKKKKKKKKKKKKKKKKK')
-        console.warn(content)
-        console.warn(content.title)
-        console.warn(content.text)
         this.content = content;
-
         this.title = content.title;
         this.text = content.text;
     }
@@ -515,8 +510,7 @@ class TableView {
 
     set contents(contents) {
         this._contents = contents;
-        console.error('<<<<<<<<<<<<<<<<<<')
-        console.warn(contents)
+        debuglog(contents)
         this._resetCells();
         this._setEventHandlers();
         console.log(`${contents.length} cells set to ${this.id}.`);
