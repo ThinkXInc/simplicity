@@ -15,6 +15,9 @@
 @icon: #d9d9d9;
 @icon-hover: #fff;
  
+@ease: cubic-bezier(.65,0,.34,1); 
+@ease2: cubic-bezier(.4, 0, .2, 1);
+
 // TextField
 div.TextField {
     div.inputOuter {
@@ -130,6 +133,68 @@ div.TextField.overMaximumTextCount {
            span.counter {
                 color: @alert-red;
             }
+        }
+    }
+}
+
+// LoadButton
+button.LoadButton {
+    position: relative;
+    width: 150px; // Adjust as necessary
+    height: 50px; // Adjust as necessary
+    border: 1px solid #ccc; // Adjust as necessary
+    background-color: #f9f9f9; // Adjust as necessary
+    text-align: center;
+    overflow: hidden;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    transition:
+        width 0.2s @ease,
+        border-radius 0.2s @ease,
+        background-color 0.2s @ease,
+        box-shadow 0.2s @ease;
+
+    span.LoadButtonLabel,
+    img.LoadButtonLoader {
+      transition:
+        opacity 0.2s @ease,
+        visibility 0.2s @ease,
+        left 0.1s @ease2;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    span.LoadButtonLabel {
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+    
+    img.LoadButtonLoader {
+        width: 31px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+        visibility: hidden;
+    }
+    &:hover {
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2)
+    }
+    &.load {
+        //width: 200px !important;
+        //border-radius: 20px !important;
+        background-color: #3e3e3e !important;
+
+        span.LoadButtonLabel {
+          opacity: 0;
+          visibility: hidden;
+          left: 20px;
+        }
+    
+        img.LoadButtonLoader {
+          opacity: 1;
+          visibility: visible;
+          left: 30px;
         }
     }
 }
