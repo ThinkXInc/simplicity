@@ -46,7 +46,7 @@ class TextField {
         onMouseDownClassName = 'clicked',
         shouldTrackLocalChangeInCookie = true,
         cookieExclude = false,
-        hasCookiePrefix = false,
+        cookiePrefix = 'sixths.ai',
         isDefaultValueRestoredFromCookie = true,
         scrollControlElementId = null,
         isCounter = true,
@@ -79,7 +79,7 @@ class TextField {
         this.onMouseDownClassName = onMouseDownClassName;
         this.shouldTrackLocalChangeInCookie = shouldTrackLocalChangeInCookie;
         this.cookieExclude = cookieExclude;
-        this.hasCookiePrefix = hasCookiePrefix;
+        this.cookiePrefix = cookiePrefix;
         this.isDefaultValueRestoredFromCookie = isDefaultValueRestoredFromCookie;
         this.scrollControlElementId = scrollControlElementId;
         this.isCounter = isCounter;
@@ -114,10 +114,9 @@ class TextField {
         this.count = 0;
         this.validators = this.validators;
         this.alertMessageId = this.id + '__alert';
+        this.cookieName = `${this.cookiePrefix}_${this.fieldName}`
 
         this._togglePasswordMode(this.passwordMode);
-
-        this._restoreValueFromCookie();
 
         if(this.verticalFlex) {
             this._resizeTextArea();
@@ -156,7 +155,7 @@ class TextField {
             // save cookie
             if (this.validate() == null) {
                 if (this.shouldTrackLocalChangeInCookie) {
-                    this._setValueToCookies(text);
+                    this.setValueToCookies(text);
                 } else {
                     if (this.savedValue != null && text != this.savedValue) {
                         debuglog(`value:${text} != savedValue:${this.savedValue} -> edited`)
@@ -539,11 +538,7 @@ class TextField {
     alert(message) {
         debuglog(`alert called. message:${message}`)
         console.log(`Alert turned on for ${this.id} with message: ${message}`);
-        console.log(this.$textField)
-        console.log(this.$textField.classList)
         this.$textField.classList.add('alert');
-        this.$view.classList.add('Ebm')
-        this.$view.classList.add('alert')
     
         // If the alertMessage already exists, update it or return if it's the same.
         if (this._isAlerted()) {
@@ -554,7 +549,6 @@ class TextField {
                 console.log(`Alert message for ${this.id} is already set to: ${message}`);
             }
             this.$textField.classList.add('alert');
-        this.$view.classList.add('alert')
             return;
         }
     
@@ -622,42 +616,42 @@ class TextField {
 
     // Cookie
 
-    _setValueToCookies(value) {
+    setValueToCookies(value) {
         if (value !== null) {
             if (!this.cookieExclude) {
-                Cookies.set(this.__cookie_name__, value, { expires: 3, secure: true, sameSite: 'strict' });
-                console.log(`Save cookie => key: ${this.__cookie_name__} value: ${value}`);
+                Cookies.set(this.cookieName, value, { expires: 3, secure: true, sameSite: 'strict' });
+                console.log(`Save cookie => key: ${this.cookieName} value: ${value}`);
             } else {
                 console.error(`The value of ${this.id} is excluded from being stored in cookies.`);
             }
         }
     }
 
-    _getValueFromCookies() {
-        const value = Cookies.get(this.__cookie_name__);
+    getValueFromCookies() {
+        const value = Cookies.get(this.cookieName);
         if (value !== undefined) {
             return value;
         }
         return null;
     }
 
-    _removeValueInCookies() {
-        Cookies.remove(this.__cookie_name__);
-        console.log(`${this.__cookie_name__} removed from cookie.`);
+    removeValueInCookies() {
+        Cookies.remove(this.cookieName);
+        console.log(`${this.cookieName} removed from cookie.`);
     }
 
-    _restoreValueFromCookie(ignoreNull = true) {
-        debuglog("Cookie Name:", this.__cookie_name__);
-        debuglog("Value from Cookie:", this._getValueFromCookies());
+    restoreValueFromCookie(ignoreNull = true) {
+        debuglog("Cookie Name:", this.cookieName);
+        debuglog("Value from Cookie:", this.getValueFromCookies());
  
-        const cookieValue = this._getValueFromCookies();
+        const cookieValue = this.getValueFromCookies();
 
         if (ignoreNull && cookieValue === null) {
             debuglog(`Cookie value is null and ignoreNull is set to true. Current value not overwritten.`);
             return;
         }
 
-        console.log(`Restoring value from cookie [${this.__cookie_name__}]: ${cookieValue}`);
+        console.log(`Restoring value from cookie [${this.cookieName}]: ${cookieValue}`);
         this.savedValue = cookieValue;
         this.value = cookieValue;
         debuglog("Value after restoring from cookie:", this.value);

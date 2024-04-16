@@ -375,7 +375,7 @@ class InputPageViewController {
     resetValuesInCookie() {
         this._components.forEach((component) => {
             if (Utils.isInheritedFrom(component, FormComponentBase)) {
-                component._removeValueInCookies();
+                component.removeValueInCookies();
                 console.log(`${component.fieldName} removed from cookie.`);
             }
         });

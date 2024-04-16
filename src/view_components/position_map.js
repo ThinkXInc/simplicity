@@ -161,7 +161,7 @@ class PositionMap extends ViewComponentBase{
      * 
      * @param {*} value 
      */
-    _setValueToCookies(mapCoordinate) {
+    setValueToCookies(mapCoordinate) {
         const cookieNameLat = `${prefix}__${component.fieldNameLat}`;
         const cookieNameLng = `${prefix}__${component.fieldNameLng}`;
      
@@ -179,7 +179,7 @@ class PositionMap extends ViewComponentBase{
     set mapCoordinate(mapCoordinate) {
         const previousState = this._mapCoordinate;
         this._mapCoordinate = mapCoordinate;
-        this._setValueToCookies(mapCoordinate);
+        this.setValueToCookies(mapCoordinate);
         console.log(`${this.id}.mapCoordinate updated`)
         // reset center position
         if (window.map != null) {

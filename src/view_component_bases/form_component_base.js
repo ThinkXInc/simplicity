@@ -23,8 +23,8 @@ class FormComponentBaseConfig extends ViewComponentConfig {
  * The constructor takes in several parameters, including fieldName for identifying the form field,
  * and other parameters for cookie handling (like cookieExclude, hasCookiePrefix and isDefaultValueRestoredFromCookie).
  * 
- * Other methods like _getValueFromCookies(), _setValueToCookies(value), _removeValueInCookies() and 
- * _restoreValueFromCookie() provide utilities for interacting with the cookies.
+ * Other methods like getValueFromCookies(), setValueToCookies(value), removeValueInCookies() and 
+ * restoreValueFromCookie() provide utilities for interacting with the cookies.
  */
 class FormComponentBase extends ViewComponentBase {
     constructor(id, fieldName, config = new FormComponentBaseConfig()) {
@@ -48,7 +48,7 @@ class FormComponentBase extends ViewComponentBase {
      * Retrieves the value of this field from cookies.
      * @return {string|null} - The value of this field stored in cookies, or null if it does not exist.
      */
-    _getValueFromCookies() {
+    getValueFromCookies() {
         const value = Cookies.get(this.__cookie_name__);
         if (value !== undefined) {
             return value;
@@ -60,7 +60,7 @@ class FormComponentBase extends ViewComponentBase {
      * Sets a value to cookies for this field.
      * @param {string|null} value - The value to be set to cookies. If it's null, the function will do nothing.
      */
-    _setValueToCookies(value) {
+    setValueToCookies(value) {
         if (value !== null) {
             if (!this.config.cookieExclude) {
                 Cookies.set(this.__cookie_name__, value, { expires: 3, secure: true, sameSite: 'strict' });
@@ -74,7 +74,7 @@ class FormComponentBase extends ViewComponentBase {
     /**
      * Removes the value of this field from cookies.
      */
-    _removeValueInCookies() {
+    removeValueInCookies() {
         Cookies.remove(this.__cookie_name__);
         console.log(`${this.__cookie_name__} removed from cookie.`);
     }
@@ -83,11 +83,11 @@ class FormComponentBase extends ViewComponentBase {
      * Restores the value of this field from cookies and sets it as the current value.
      * @param {boolean} ignoreNull - if true, the function will not overwrite the current value with null if the cookie value is null.
      */
-    _restoreValueFromCookie(ignoreNull = true) {
+    restoreValueFromCookie(ignoreNull = true) {
         debuglog("Cookie Name:", this.__cookie_name__);
-        debuglog("Value from Cookie:", this._getValueFromCookies());
+        debuglog("Value from Cookie:", this.getValueFromCookies());
  
-        const cookieValue = this._getValueFromCookies();
+        const cookieValue = this.getValueFromCookies();
 
         if (ignoreNull && cookieValue === null) {
             debuglog(`Cookie value is null and ignoreNull is set to true. Current value not overwritten.`);
