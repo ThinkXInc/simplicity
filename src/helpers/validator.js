@@ -2,7 +2,10 @@ const ValidationErrorType = Object.freeze(
     { 
         required: 'required', maxLength: 'max_length',
         emailFormat: 'email_format', passwordFormat: 'password_format',
-        telFormat: 'tel_format', postalCodeFormat: 'postal_code_format', notCorresponding: 'not_corresponding' })
+        telFormat: 'tel_format', postalCodeFormat: 'postal_code_format',
+        domainFormat: 'domain_format',
+        notCorresponding: 'not_corresponding',
+     })
 
 
 const RegexType = Object.freeze({
@@ -10,6 +13,7 @@ const RegexType = Object.freeze({
     password: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/,
     postalcode: /^(?:[A-Z0-9]+([- ]?[A-Z0-9]+)*)?$/,
     tel: /^[\+]?[(]?[0-9]{2,3}[)]?[-\s\.]?[0-9]{4,6}[-\s\.]?[0-9]{4,6}$/im,
+    domainFormat: /^(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[a-zA-Z0-9-._~:\/?#\[\]@!$&'()*+,;=]*)?$/
 })
 
 /**
@@ -103,6 +107,11 @@ class Validator {
             case ValidationErrorType.telFormat:
                 if (!this._validateFormat(value, RegexType.tel)) {
                     debuglog(`validated: ${value} is invalid tel format.`)
+                    return this.errorMessage;
+                }
+                break;
+            case ValidationErrorType.domainFormat:
+                if (!this._validateFormat(value, RegexType.domainFormat)) {
                     return this.errorMessage;
                 }
                 break;

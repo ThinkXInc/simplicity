@@ -199,6 +199,46 @@ button.LoadButton {
     }
 }
 
+// VerifyCodeForm
+div.VerifyCodeForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    div.verifyCodeFormContainer {
+        width: 24vw;
+        min-width: 220px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        input.verifyInput {
+            width: 50px;
+            height: 50px;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            font-size: 2em;
+            text-align: center;
+        }
+        input.verifyInput:focus {
+            border-color: var(#007fb9); // FIXME: not affected
+            box-shadow: var(#3e3e3e); // FIXME: not affected
+        }
+    }
+    p.alert {
+        color: @alert-red;
+        font-size: 0.8em;
+        margin-top: 9px;            
+    }
+
+    &.alert {
+        div.verifyCodeFormContainer {
+            input.verifyInput {
+                border: 1px solid @alert-red;
+            }
+        }
+    }
+}
+
+
 // DropdownButton
 div.DropdownButton {
     div.DropdownButtonClickable {

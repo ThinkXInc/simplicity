@@ -348,13 +348,10 @@ class TextField {
             console.log(`max text count: ${_this.maxTextLength} count: ${_this.count}`);
             if (this.count > this.maxTextLength) {
                 this.textFieldState = TextFieldState.overmaximum;
-                this.$textField.classList.add('alert');
             } else if (this.count === 0) {
                 this.textFieldState = TextFieldState.empty;
-                this.$textField.classList.remove('alert');
             } else {
                 this.textFieldState = TextFieldState.filled;
-                this.$textField.classList.remove('alert');
             }
             // Auto resize textarea
             if (_this.verticalFlex) {
@@ -542,7 +539,11 @@ class TextField {
     alert(message) {
         debuglog(`alert called. message:${message}`)
         console.log(`Alert turned on for ${this.id} with message: ${message}`);
+        console.log(this.$textField)
+        console.log(this.$textField.classList)
         this.$textField.classList.add('alert');
+        this.$view.classList.add('Ebm')
+        this.$view.classList.add('alert')
     
         // If the alertMessage already exists, update it or return if it's the same.
         if (this._isAlerted()) {
@@ -552,12 +553,15 @@ class TextField {
             } else {
                 console.log(`Alert message for ${this.id} is already set to: ${message}`);
             }
+            this.$textField.classList.add('alert');
+        this.$view.classList.add('alert')
             return;
         }
     
         // Create new alert message if it does not exist.
         this._appendAlertMessage(message);
         debuglog(`Created new alert message for ${this.id} with message: ${message}`);
+        console.log(this.$textField.classList)
     }
 
     disableAlert() {
@@ -604,6 +608,7 @@ class TextField {
     }
   
     _removeAlertMessage() {
+        console.log(`remove alert from ${this.id}`)
         const $alertMessage = this._getAlertMessageElement();
         if ($alertMessage) {
             this.$textField.classList.remove('alert');
