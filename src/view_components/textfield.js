@@ -46,7 +46,7 @@ class TextField {
         onMouseDownClassName = 'clicked',
         shouldTrackLocalChangeInCookie = true,
         cookieExclude = false,
-        cookiePrefix = 'sixths.ai',
+        cookiePrefix = '',
         isDefaultValueRestoredFromCookie = true,
         scrollControlElementId = null,
         isCounter = true,
