@@ -4,6 +4,7 @@ const ValidationErrorType = Object.freeze(
         emailFormat: 'email_format', passwordFormat: 'password_format',
         telFormat: 'tel_format', postalCodeFormat: 'postal_code_format',
         domainFormat: 'domain_format',
+        positiveIntegerFormat: 'positive_integer_format',
         notCorresponding: 'not_corresponding',
      })
 
@@ -13,7 +14,8 @@ const RegexType = Object.freeze({
     password: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/,
     postalcode: /^(?:[A-Z0-9]+([- ]?[A-Z0-9]+)*)?$/,
     tel: /^[\+]?[(]?[0-9]{2,3}[)]?[-\s\.]?[0-9]{4,6}[-\s\.]?[0-9]{4,6}$/im,
-    domainFormat: /^(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[a-zA-Z0-9-._~:\/?#\[\]@!$&'()*+,;=]*)?$/
+    domainFormat: /^(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[a-zA-Z0-9-._~:\/?#\[\]@!$&'()*+,;=]*)?$/,
+    positiveIntegerFormat: /^[1-9]\d*$/,
 })
 
 /**
@@ -31,7 +33,9 @@ class Validator {
     constructor({
         errorType,
         errorMessage,
-        maxLength = 9999999
+        maxLength = 9999999,
+        min = 1,
+        max = 999999,
     }) {
         if (errorType == null) {
             throw new Error('Validator requires errorType.');
@@ -43,6 +47,8 @@ class Validator {
         this.errorType = errorType;
         this.errorMessage = errorMessage;
         this.maxLength = maxLength;
+        this.min = min;
+        this.max = max;
 
         // Check for maxLength value if errorType is maxLength
         if (errorType === ValidationErrorType.maxLength) {
@@ -53,6 +59,10 @@ class Validator {
                 throw new Error('For length validation, error message must include $0 placeholder.');
             }
             this.errorMessage = this.errorMessage.replace('$0', this.maxLength);
+        }
+
+        if (errorType === ValidationErrorType.positiveIntegerFormat) {
+            this.errorMessage = this.errorMessage.replace('$0', this.min).replace('$1', this.max);
         }
     }
 
@@ -121,6 +131,15 @@ class Validator {
                     return this.errorMessage;
                 }
                 break;
+            case ValidationErrorType.positiveIntegerFormat:
+                if (!this._validateFormat(value, RegexType.positiveIntegerFormat)) {
+                    return this.errorMessage;
+                }
+                const numericValue = Number(value);
+                if (numericValue < this.minLength || numericValue > this.maxLength) {
+                    return this.errorMessage;
+                }
+                break;
         }
 
         return null;
@@ -162,4 +181,5 @@ class Validator {
     _validateFormat(value, regex) {
         return regex.test(value);
     }
+
 }

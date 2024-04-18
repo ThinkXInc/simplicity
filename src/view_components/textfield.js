@@ -50,16 +50,20 @@ class TextField {
         isDefaultValueRestoredFromCookie = true,
         scrollControlElementId = null,
         isCounter = true,
+        counterPlace = TextFieldPlaceTo.footerRight,
         isDoneButton = false,
+        doneButtonPlace = TextFieldPlaceTo.inputAfter,
         isCancelButton = false,
+        isIncrementer = false,
+        incrementButtonPlace = TextFieldPlaceTo.inputAfter,
+        incrementUpImgSrc = '',
+        incrementDownImgSrc = '',
         isTitlePlacedAtInputLeft = false,
         shouldEnterKeySubmitDoneButton = false,
         eventNameDoneButtonClick = 'doneButtonClick',
         eventNameCancelButtonClick = 'cancelButtonClick',
-        doneButtonPlace = TextFieldPlaceTo.inputAfter,
         messagePlace = TextFieldPlaceTo.footerMiddle,
-        counterPlace = TextFieldPlaceTo.footerRight,
-        indicatorPlace = TextFieldPlaceTo.footerLeft
+        indicatorPlace = TextFieldPlaceTo.footerLeft,
     }) {
         this.id = id;
         this.fieldName = fieldName;
@@ -85,6 +89,10 @@ class TextField {
         this.isCounter = isCounter;
         this.isDoneButton = isDoneButton;
         this.isCancelButton = isCancelButton;
+        this.isIncrementer = isIncrementer;
+        this.incrementButtonPlace = incrementButtonPlace;
+        this.incrementUpImgSrc = incrementUpImgSrc;
+        this.incrementDownImgSrc = incrementDownImgSrc;
         this.isTitlePlacedAtInputLeft = isTitlePlacedAtInputLeft;
         this.shouldEnterKeySubmitDoneButton = shouldEnterKeySubmitDoneButton;
         this.eventNameDoneButtonClick = eventNameDoneButtonClick;
@@ -112,6 +120,10 @@ class TextField {
         this._setEventHandlers();
 
         this.count = 0;
+        if (defaultValue) {
+            this.defaultValue = defaultValue;
+            this.value = defaultValue;
+        }
         this.validators = this.validators;
         this.alertMessageId = this.id + '__alert';
         this.cookieName = `${this.cookiePrefix}_${this.fieldName}`
@@ -310,9 +322,7 @@ class TextField {
             this[`$${elem}`] = $elem;
         })
 
-
         if (this.$indicator) {
-            
             places[this.indicatorPlace].appendChild(this.$indicator);
         }
         if (this.$message) {
@@ -326,6 +336,27 @@ class TextField {
         }
         if (this.$cancelButton && this.isCancelButton) {
             places[this.cancelButtonPlace].appendChild(this.$cancelButton);
+        }
+
+        if (this.isIncrementer) {
+            this.$view.classList.add('Incrementer');
+            this.$incrementButton = document.createElement('div');
+            this.$incrementButton.className = 'incrementButton';
+            this.$incrementUp = document.createElement('button');
+            this.$incrementUp.classList.add('incrementUp');
+            this.$incrementDown = document.createElement('button');
+            this.$incrementDown.classList.add('incrementDown');
+            const $upImg = document.createElement('img');
+            $upImg.classList.add('up')
+            $upImg.src = this.incrementUpImgSrc;
+            const $downImg = document.createElement('img');
+            $downImg.classList.add('down')
+            $downImg.src = this.incrementDownImgSrc;
+            this.$incrementUp.appendChild($upImg);
+            this.$incrementDown.appendChild($downImg);
+            this.$incrementButton.appendChild(this.$incrementUp);
+            this.$incrementButton.appendChild(this.$incrementDown);
+            places[this.incrementButtonPlace].appendChild(this.$incrementButton);
         }
       
         // Append columns to footer
@@ -404,6 +435,17 @@ class TextField {
             this.$cancelButton.addEventListener('mouseup', () => {
                 _this.$cancelButton.classList.remove(_this.onMouseDownClassNam);
             });
+        }
+
+        if (this.isIncrementer) {
+            this.$incrementUp.addEventListener('click', () => {
+                const numericValue = Number(this.value);
+                _this.value = `${numericValue + 1}`;
+            })
+            this.$incrementDown.addEventListener('click', () => {
+                const numericValue = Number(this.value);
+                _this.value = `${numericValue - 1}`;
+            })
         }
 
         debuglog(`Set the blur event handler for ${this.id}.`);
