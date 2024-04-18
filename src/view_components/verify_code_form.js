@@ -45,6 +45,9 @@ class VerifyCodeForm {
         this.inputs.forEach(($input, index) => {
             $input.addEventListener('input', this.handleInput.bind(this, index));
             $input.addEventListener('keydown', this.handleBackspace.bind(this, index));
+            if (index === 0) {
+                $input.addEventListener('paste', this.handlePaste.bind(this));
+            }
         });
     }
 
@@ -65,6 +68,17 @@ class VerifyCodeForm {
                 previousInput.focus();
             }
         }
+    }
+
+    handlePaste(event) {
+        event.preventDefault();
+        const pastedText = (event.clipboardData || window.clipboardData).getData('text').slice(0, 4);
+        pastedText.split('').forEach((char, index) => {
+            if (this.inputs[index]) {
+                this.inputs[index].value = char;
+            }
+        });
+        this.checkAllFilled();
     }
 
     checkAllFilled() {
