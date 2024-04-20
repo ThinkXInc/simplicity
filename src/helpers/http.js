@@ -81,7 +81,7 @@ class Http {
      * Http.post(url, data, onSuccess, onFailed);
      * 
      */
-    static post(url, data, onSuccess, onFailed) {
+    static post(url, data, onSuccess, onFailed, onComplete = ()=>{}) {
 
         debuglog('------> Request Payload');  // DEBUG:
         console.log(`[Request data] ${JSON.stringify(data)}`);
@@ -110,6 +110,10 @@ class Http {
         .catch((error) => {
             console.info(`${url} request failed:`, error);
             onFailed(error);
+        })
+        .finally(()=> {
+            console.log('Request operation completed.');
+            onComplete();
         })
     }
 }
