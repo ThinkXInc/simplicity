@@ -9,7 +9,14 @@ class LoadButton {
         this.labelText = labelText;
         this.loaderSrc = loaderSrc;
         this.createElements();
+
+        this.isDisable = false;
     }
+
+    set isDisable(isDisable) {
+        this._isDisable = isDisable;
+    }
+    get isDisable() {return this._idDisable }
 
     createElements(){
         const $button = document.createElement('button');
@@ -38,6 +45,18 @@ class LoadButton {
         } else {
             console.log(`LoadButton: ${this.id} load -> false`)
             this.$button.classList.remove('load');
+        }
+    }
+
+    disable(isDisable) {
+        if (isDisable) {
+            console.log(`LoadButton: ${this.id} disable -> true`)
+            this.$button.classList.add('disable');
+            this.isDisable = true;
+        } else {
+            console.log(`LoadButton: ${this.id} disable -> false`)
+            this.$button.classList.remove('disable');
+            this.isDisable = false;
         }
     }
 }

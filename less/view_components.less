@@ -250,6 +250,9 @@ button.LoadButton {
           left: 30px;
         }
     }
+    &.disable {
+        background-color: #656565 !important;
+    }
 }
 
 // VerifyCodeForm
@@ -291,6 +294,62 @@ div.VerifyCodeForm {
     }
 }
 
+// TermsScrollView
+div.TermsScrollView {
+    border-radius: 4px;
+    div.termsViewContainer {
+        height: 400px;
+        width: 470px;
+        overflow-y: scroll;
+        background-color: #f9f9f9;
+        border-radius: 0px;
+        div.termsView {
+            h1, h2, h3, h4 {
+                font-weight: 600;
+                padding: 7px 10px;
+            }
+            h1.title {
+                text-align: center;
+            }
+            p.introduction {
+
+            }
+            ul.section-list {
+                padding: 10px 14px 14px 42px;
+                font-size: 0.9em;
+                list-style-type: decimal;
+                li {
+                    padding: 5px 5px 5px 5px;
+                }
+            }
+            p.agreement-notice {
+                text-decoration: underline;
+            }
+            address {
+                padding: 5px 20px 5px 20px;
+            }
+            h2.subtitle {
+                text-align: center;
+            }
+            h3.section-title {
+
+            }
+            h4.clause-title {
+
+            }
+            p {
+                font-size: 0.9em;
+                padding: 0px 14px 10px 14px;
+            }
+            ul {
+                padding: 5px 20px 5px 31px;
+                font-size: 0.9em;
+                list-style: disc;
+
+            }
+        }
+    }
+}
 
 // DropdownButton
 div.DropdownButton {
