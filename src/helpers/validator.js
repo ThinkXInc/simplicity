@@ -1,7 +1,7 @@
 const ValidationErrorType = Object.freeze(
     { 
         required: 'required', maxLength: 'max_length',
-        emailFormat: 'email_format', passwordFormat: 'password_format',
+        emailFormat: 'email_format', passwordFormat: 'invalid_password_format',
         telFormat: 'tel_format', postalCodeFormat: 'postal_code_format',
         domainFormat: 'domain_format',
         positiveIntegerFormat: 'positive_integer_format',
