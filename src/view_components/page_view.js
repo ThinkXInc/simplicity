@@ -14,15 +14,15 @@ class PageView {
     }
 
     createElements() {
-        this.view = document.createElement('div');
-        this.view.id = this.id;
-        this.view.classList.add('PageView')
+        this.$view = document.createElement('div');
+        this.$view.id = this.id;
+        this.$view.classList.add('PageView')
 
         this.pages.forEach((page, i) => {
             const $page = document.createElement('div');
             $page.classList.add('PageViewContainer')
             $page.classList.add(`${this.id}_${i}`);
-            this.view.appendChild($page);
+            this.$view.appendChild($page);
             $page.style.display = 'none';
             page.container = $page;
             if (i === this.currentPageIndex) {
@@ -31,14 +31,23 @@ class PageView {
         });
     }
 
-    mount(selector) {
-        const container = document.querySelector(selector);
-        if (container) {
-            container.appendChild(this.view);
-            this.show(this.currentPageIndex);
+    mount(selectorOrElement) {
+        let container;
+    
+        // Check if the input is a string, implying a selector
+        if (typeof selectorOrElement === 'string') {
+            container = document.querySelector(selectorOrElement);
+            if (!container) {
+                console.error(`No element found with selector ${selectorOrElement}`);
+                return;
+            }
+        } else if (selectorOrElement instanceof Element) {
+            container = selectorOrElement;
         } else {
-            console.error(`No element found with selector ${selector}`);
+            console.error('Invalid input: selector must be a string or a DOM element');
+            return;
         }
+        container.appendChild(this.$view);
     }
 
     appendChild(element, pageIndex) {

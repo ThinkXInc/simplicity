@@ -1,6 +1,6 @@
-// Define ModalViewConfig
-class ModalViewConfig extends ViewComponentConfig {
+class ModalView {
     constructor({
+        id,
         title = "",
         text = "",
         cancelButtonText = "Cancel",
@@ -9,38 +9,27 @@ class ModalViewConfig extends ViewComponentConfig {
         htmlTag = 'div',
         protocols = [],
         validators = []
-    } = {}) {
-        super({ htmlTag, protocols, validators });
+    }) {
+        this.id = id;
         this.title = title;
         this.text = text;
         this.cancelButtonText = cancelButtonText;
         this.doneButtonText = doneButtonText;
         this.shouldCloseOnTapBG = shouldCloseOnTapBG;
-    }
-}
+        this.htmlTag = htmlTag;
+        this.protocols = protocols;
+        this.validators = validators;
 
-// Define ModalViewProtocol
-class ModalViewProtocol {
-    done() {
-        throw new Error('You have to implement the done method in the subclass of ModalView!');
-    }
-}
+        this.createElements();
 
-// Define ModalView
-class ModalView extends ViewComponentBase {
-    constructor(id, config = new ModalViewConfig()) {
-        super(id, config);
-        this.config = config;
-        this._setElements();
-
-        if (this.config.shouldCloseOnTapBG) {
-            this._initializeCloseOnBackgroundTap();
+        if (this.shouldCloseOnTapBG) {
+            this.setCloseOnBackgroundTap();
         }
     }
 
-    _setElements() {
-        super._setElements();
-
+    createElements() {
+        this.$view = document.createElement(this.htmlTag);
+        this.$view.id = this.id;
         this.$view.classList.add('ModalView');
         this.$view.style.display = 'none';
 
@@ -63,13 +52,16 @@ class ModalView extends ViewComponentBase {
         // Title
         this.$title = document.createElement('h3');
         this.$title.classList.add('ModalViewTitle');
-        this.$title.textContent = this.config.title;
+        this.$title.textContent = this.title;
         this.$contentWrapper.appendChild(this.$title);
 
         // MainContent
         this.$mainContent = document.createElement('div');
+        this.$mainContent.id = `${this.id}MainContent`;
         this.$mainContent.classList.add('mainContent');
-        this.$mainContent.textContent = this.config.text;
+        if (this.text.length) {
+            this.$mainContent.textContent = this.text;
+        }
         this.$contentWrapper.appendChild(this.$mainContent);
 
         // Footer
@@ -80,14 +72,14 @@ class ModalView extends ViewComponentBase {
         // CancelButton
         this.$cancelButton = document.createElement('button');
         this.$cancelButton.classList.add('cancelButton');
-        this.$cancelButton.textContent = this.config.cancelButtonText;
+        this.$cancelButton.textContent = this.cancelButtonText;
         this.$cancelButton.addEventListener('click', () => this.cancel());
         this.$footer.appendChild(this.$cancelButton);
 
         // DoneButton
         this.$doneButton = document.createElement('button');
         this.$doneButton.classList.add('doneButton');
-        this.$doneButton.textContent = this.config.doneButtonText;
+        this.$doneButton.textContent = this.doneButtonText;
         this.$doneButton.addEventListener('click', () => this.done());
         this.$footer.appendChild(this.$doneButton);
 
@@ -98,7 +90,26 @@ class ModalView extends ViewComponentBase {
         this.$contentWrapper.appendChild(this.$alert);
     }
 
-    _initializeCloseOnBackgroundTap() {
+    mount(selectorOrElement) {
+        let container;
+    
+        // Check if the input is a string, implying a selector
+        if (typeof selectorOrElement === 'string') {
+            container = document.querySelector(selectorOrElement);
+            if (!container) {
+                console.error(`No element found with selector ${selectorOrElement}`);
+                return;
+            }
+        } else if (selectorOrElement instanceof Element) {
+            container = selectorOrElement;
+        } else {
+            console.error('Invalid input: selector must be a string or a DOM element');
+            return;
+        }
+        container.appendChild(this.$view);
+    }
+
+    setCloseOnBackgroundTap() {
         this.$bg.addEventListener('click', (event) => {
             debuglog(`${this.id} bg tapped.`)
             // Ensure the click event originated from the background itself
@@ -132,5 +143,51 @@ class ModalView extends ViewComponentBase {
         } else {
             this.$alert.style.display = 'none';
         }
+    }
+
+    // Others (WILL DEPRECATE)
+    addToPage(page) {
+        // WILL DEPRECATE
+        // NOTE: この時点でpageのdom elementはまだHTML上にないことに注意
+        // すべてのview componentをpageにアタッチした後でなければpageはHTML上に作られない
+        // 詳しくはInputPageViewControllerのsetElements()のフローを参照
+        if (!page.$view.id) {
+            console.error(`[ERROR] ${page.$view} has no id`);
+        }
+        this.addTo(page.$view);
+        this.setPageIndex(page.pageIndex);
+        this.$view.classList.add(`${page.id}__${this.constructor.name}`);
+    }
+
+    addTo($parent) {
+        // WILL DEPRECATE
+        if (!$parent || $parent == undefined || !($parent instanceof HTMLElement)) {
+            console.error(
+                `[ERROR] $parent must exist but ${$parent} `);
+        } else {
+            debuglog(`[${$parent.className}] appendChild ${this.id}`)
+            $parent.appendChild(this.$view);
+        }
+    }
+
+    setViewController(viewController) {
+        // WILL DEPRECATE
+        this.viewController = viewController;
+        //this._setEventHandlers(); <- this causes double event registration [WILL REMOVE THIS LINE]
+    }
+
+    setPageIndex(pageIndex) {
+        // WILL DEPRECATE
+        this.pageIndex = pageIndex;
+    }
+
+    scrollTo(delay = 0) {
+        setTimeout(() => {
+            this.$view.scrollIntoView({
+                behavior: 'smooth', // Enable smooth scrolling
+                block: 'start', // Scroll to the start (top) of this.$view
+                inline: 'nearest' // In case of horizontal scrolling, scroll in the nearest viewport
+            });
+        }, delay);
     }
 }
