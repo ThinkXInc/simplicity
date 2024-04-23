@@ -25,7 +25,7 @@ class Http {
      * Http.get(url, onSuccess, onFailed);
      * 
      */
-    static get(url, onSuccess, onFailed) {
+    static get(url, onSuccess, onFailed, onComplete = ()=>{}) {
 
         debuglog('------> GET Request Initiated');  // DEBUG:
         console.log(`[Requesting data from] ${url}`);
@@ -51,6 +51,10 @@ class Http {
         .catch((error) => {
             console.info(`${url} request failed:`, error);
             onFailed(error);
+        })
+        .finally(()=> {
+            console.log('Request operation completed.');
+            onComplete();
         })
     }
 
