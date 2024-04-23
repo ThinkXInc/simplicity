@@ -21,7 +21,7 @@ class Browser {
   /**
    * Redirect to a new URL.
    * 
-   * @param {String} url - The full URL to redirect to.
+   * @param {String} url - e.g. https%3A//quantz.sixths.ai/v1/ja/home
    */
   static redirectToUrl(url) {
     console.log(`tring to redirect to ${url}`)
