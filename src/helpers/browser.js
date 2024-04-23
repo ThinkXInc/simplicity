@@ -19,6 +19,30 @@ class Browser {
   }
 
   /**
+   * Redirect to a new URL.
+   * 
+   * @param {String} url - The full URL to redirect to.
+   */
+  static redirectToUrl(url) {
+    console.log(`tring to redirect to ${url}`)
+    let decodedUrl;
+    try {
+        decodedUrl = decodeURIComponent(url);
+    } catch (e) {
+        console.error('Error decoding the URL:', e);
+        return; // Stop further execution if URL is badly encoded
+    }
+
+    try {
+        const url = new URL(decodedUrl);
+        const relativeUrl = url.pathname + url.search;
+        window.location.href = relativeUrl;
+    } catch (e) {
+        console.error('Failed to construct URL:', e);
+    }
+  }
+
+  /**
    * Update url in address bar.
    * 
    * @public
