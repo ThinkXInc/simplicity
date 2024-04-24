@@ -21,6 +21,7 @@ class LoadButton {
     createElements(){
         const $button = document.createElement('button');
         $button.id = this.id
+        $button.classList.add(this.id);
         $button.classList.add('LoadButton');
 
         const $label = document.createElement('span');
