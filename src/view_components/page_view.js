@@ -71,6 +71,12 @@ class PageView {
         }
     }
 
+    showAll() {
+        this.pages.forEach((page, i) => {
+            page.container.style.display = 'block';
+        });
+    }
+
     next() {
         if (this.currentPageIndex < this.numPages - 1) {
             this.show(this.currentPageIndex + 1);
