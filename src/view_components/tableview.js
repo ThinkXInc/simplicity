@@ -422,16 +422,6 @@ class TableView {
             loadingType = TableViewLoadingType.gradientViewLoader,
             loaderImage = '/img/load-of-the-ring@2x.png',
             loaderSize = '24px',
-            gradientViewLoaderConfig = {
-                numIndicator: 3,
-                individualHeight: 7,
-                spaceBetween: 10,
-                animationDelay: 10,
-                defaultShift: 10,
-                shiftAmount: -20,
-                rx: 2,
-                ry: 2,
-            },
             maxDefaultCellNumber = 20,
             addingCellNumber = 20,
             cellClass = TableViewCell,
@@ -470,7 +460,6 @@ class TableView {
             this.loadingType = loadingType;
             this.loaderImage = loaderImage;
             this.loaderSize = loaderSize;
-            this.gradientViewLoaderConfig = gradientViewLoaderConfig;
             this.maxDefaultCellNumber = maxDefaultCellNumber;
             this.addingCellNumber = addingCellNumber;
             this.cellClass = cellClass;
@@ -593,15 +582,17 @@ class TableView {
                 break;
             // Gradient Loader
             case TableViewLoadingType.gradientViewLoader:
-                const loaderConfig = this.gradientViewLoaderConfig;
-                const gradientLoaderConfig = new GradientViewLoaderConfig();
-                
-                // Assign the properties from the configuration to the gradient loader config.
-                for (const key in loaderConfig) {
-                    gradientLoaderConfig[key] = loaderConfig[key];
-                }
-
-                const loader = new GradientViewLoader('TableViewGradientLoader', gradientLoaderConfig);
+                const loader = new GradientViewLoader({
+                    id: 'TableViewGradientLoader',
+                    numIndicator: 3,
+                    individualHeight: 7,
+                    spaceBetween: 10,
+                    animationDelay: 10,
+                    defaultShift: 10,
+                    shiftAmount: -20,
+                    rx: 2,
+                    ry: 2,
+                });
                 this.loader = loader;
                 this.$loader = loader.$view;
                 this.$tableView.appendChild(loader.$view);

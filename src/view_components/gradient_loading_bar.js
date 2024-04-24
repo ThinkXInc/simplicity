@@ -16,35 +16,69 @@ var GradientPattern = Object.freeze({
     cooler: 'linear-gradient(90deg, rgba(128,246,255,1) 0%, rgba(57,162,204,1) 35%, rgba(164,251,255,1) 100%)'
 });
 
-class GradientLoadingBar extends LoadingBase {
+//const LoadingAppendedAs = Object.freeze({ 
+//    firstChild: 0, 
+//    lastChild: 1
+//});
+
+class GradientLoadingBar {
     constructor({
         id,
         gradientPattern = GradientPattern.smilan,
         position = LoadingAppendedAs.firstChild
     }) {
-        super({ id, position });
+        this.id = id;
+        this.position = position;
+        this.isLoading = false;
+        this.createElements();
+        this.$view.style.display = 'none';
         this.gradientPattern = gradientPattern;
     }
 
-    _setElements() {
-        super._setElements();
+    createElements() {
+        this.$view = document.createElement('div');
+        this.$view.id = this.id;
+        this.$view.classList.add(`${this.id}`);
+        this.$view.classList.add(`${this.constructor.name}`);
         this.$view.style.height = '7px';
         this.$view.style.width = '100%';
         this.$view.style.flexShrink = '0';
     }
 
-    startLoading() {
-        super.startLoading();
+	startLoading() {
+        this.$view.style.display = 'block';
+        this.isLoading = true;
         toggleGradientLoader(this.$view, true, this.gradientPattern);
+	}
+
+	stopLoading() {
+        this.$view.style.display = 'none';
+        this.isLoading = false;
+        toggleGradientLoader(this.$view, false, this.gradientPattern);
+	}
+
+    addToParent($parent) {
+        // Check if $parent is null or not an instance of HTMLElement
+        if (!$parent || !($parent instanceof HTMLElement)) {
+            console.error(`[ERROR] Could not find a parent element with id=${parentId} or the element is not a valid HTML element.`);
+            return;
+        }
+    
+        // Check if this.$view is valid
+        if (!this.$view || !(this.$view instanceof HTMLElement)) {
+            console.error(`[ERROR] this.$view is not a valid HTMLElement.`);
+            return;
+        }
+    
+        if (this.position == LoadingAppendedAs.firstChild) {
+            $parent.insertBefore(this.$view, $parent.firstChild);
+        } else {
+            $parent.appendChild(this.$view);
+        }
     }
 
-    /**
-     * Stops the loading state, hides the component, and stops the gradient effect.
-     */
-    stopLoading() {
-        super.stopLoading();
-        toggleGradientLoader(this.$view, false, this.gradientPattern);
-    }
+
+
 }
 
 

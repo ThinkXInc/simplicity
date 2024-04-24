@@ -42,6 +42,28 @@ class Browser {
     }
   }
 
+
+  /**
+   * Parse query strings from a URL search string and return them as an object.
+   * 
+   * @param {String} searchString - The query string part of a URL.
+   * @return {Object} - An object containing all query parameters as key-value pairs.
+   */
+  static parseQueryStrings(searchString) {
+    try {
+      const params = new URLSearchParams(searchString);
+      let queryParams = {};
+      for (let [key, value] of params.entries()) {
+        queryParams[key] = value;
+      }
+      return queryParams;
+    } catch (e) {
+      console.error('Failed to parse query strings:', e);
+      console.log(searchString);
+      return {}; // Return an empty object if there is an error parsing the search string
+    }
+  }
+
   /**
    * Update url in address bar.
    * 
