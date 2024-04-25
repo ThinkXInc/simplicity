@@ -148,6 +148,8 @@ class TextField {
         }
     }
 
+    get text() {return this._text}
+
     set text(text) {
         this._text = text;
         this.$textArea.value = text;
@@ -182,8 +184,6 @@ class TextField {
             }
         }
     }
-
-    get text() {return this._text}
 
     reset() {
         this.onReset = true;

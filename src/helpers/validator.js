@@ -5,6 +5,7 @@ const ValidationErrorType = Object.freeze(
         telFormat: 'tel_format', postalCodeFormat: 'postal_code_format',
         domainFormat: 'domain_format',
         positiveIntegerFormat: 'positive_integer_format',
+        positiveFloatFormat: 'positive_float_format',
         notCorresponding: 'not_corresponding',
      })
 
@@ -16,6 +17,7 @@ const RegexType = Object.freeze({
     tel: /^[\+]?[(]?[0-9]{2,3}[)]?[-\s\.]?[0-9]{4,6}[-\s\.]?[0-9]{4,6}$/im,
     domainFormat: /^(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[a-zA-Z0-9-._~:\/?#\[\]@!$&'()*+,;=]*)?$/,
     positiveIntegerFormat: /^[1-9]\d*$/,
+    positiveFloatFormat: /^[+]?\d+(\.\d+)?$/,
 })
 
 /**
@@ -135,8 +137,15 @@ class Validator {
                 if (!this._validateFormat(value, RegexType.positiveIntegerFormat)) {
                     return this.errorMessage;
                 }
-                const numericValue = Number(value);
-                if (numericValue < this.minLength || numericValue > this.maxLength) {
+                if (Number(value) < Number(this.minLength) || Number(value) > Number(this.maxLength)) {
+                    return this.errorMessage;
+                }
+                break;
+            case ValidationErrorType.positiveFloatFormat:
+                if (!this._validateFormat(value, RegexType.positiveFloatFormat)) {
+                    return this.errorMessage;
+                }
+                if (Number(value) < Number(this.minLength) || Number(value) > Number(this.maxLength)) {
                     return this.errorMessage;
                 }
                 break;
