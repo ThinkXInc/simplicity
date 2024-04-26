@@ -70,14 +70,12 @@ class ColorPicker {
     addEventHandlers() {
         const _this = this;
 
-        // When the input value changes, update the display and internal color value
         this.$colorInput.addEventListener('input', (e) => {
             _this.color = e.target.value;
             console.log(`${_this.id} color changed to ${e.target.value}`);
-            _this.$view.dispatchEvent(new CustomEvent('colorchanged', { detail: _this.color }));
+            _this.$view.dispatchEvent(new CustomEvent('valuechanged', { detail: {newValue: _this.color,}}));
         });
         
-        // When the display is clicked, trigger the hidden input click
         this.$colorDisplay.addEventListener('click', () => {
             _this.$colorInput.click();
         });

@@ -63,7 +63,7 @@ class Validator {
             this.errorMessage = this.errorMessage.replace('$0', this.maxLength);
         }
 
-        if (errorType === ValidationErrorType.positiveIntegerFormat) {
+        if (errorType === ValidationErrorType.positiveIntegerFormat || errorType == ValidationErrorType.positiveFloatFormat) {
             this.errorMessage = this.errorMessage.replace('$0', this.min).replace('$1', this.max);
         }
     }

@@ -43,7 +43,7 @@ class RadioButton {
     set value(newValue) {
         if (newValue !== this._value) {
             this._value = newValue;
-            this.$view.dispatchEvent(new CustomEvent("valuechanged", { detail: { value: newValue } }));
+            this.$view.dispatchEvent(new CustomEvent("valuechanged", { detail: { newValue : this._value} }));
         }
     }
 
@@ -153,5 +153,21 @@ class RadioButton {
             });
         });
 
+    }
+
+    alert(message) {
+        const existingAlert = this.$footer.querySelector('.alertMessage');
+        if (existingAlert) {
+            this.$footer.removeChild(existingAlert);
+            this.$view.classList.remove('alert');
+        }
+
+        if (message) {
+            this.$view.classList.add('alert');
+            const newAlertMessage = document.createElement('p');
+            newAlertMessage.classList.add('alertMessage');
+            newAlertMessage.textContent = message;
+            this.$footer.appendChild(newAlertMessage);
+        }
     }
 }

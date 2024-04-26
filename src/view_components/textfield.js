@@ -581,7 +581,7 @@ class TextField {
         }
         if (errorMessage === null) {
             debuglog(`No validation errors found in ${this.id}`);
-            this.disableAlert();
+            this.alert(false);
         } else {
             debuglog(`Validation failed for ${this.id} with result: ${errorMessage ? "Error: " + errorMessage : "No errors"}`);
         }
@@ -591,80 +591,22 @@ class TextField {
     alert(message) {
         debuglog(`alert called. message:${message}`)
         console.log(`Alert turned on for ${this.id} with message: ${message}`);
-        this.$textField.classList.add('alert');
-    
-        // If the alertMessage already exists, update it or return if it's the same.
-        if (this._isAlerted()) {
-            if (!this._isAlertMessageEqualTo(message)) {
-                this._setAlertMessage(message);
-                console.log(`Updated alert message for ${this.id} to: ${message}`);
-            } else {
-                console.log(`Alert message for ${this.id} is already set to: ${message}`);
-            }
-            this.$textField.classList.add('alert');
-            return;
-        }
-    
-        // Create new alert message if it does not exist.
-        this._appendAlertMessage(message);
-        debuglog(`Created new alert message for ${this.id} with message: ${message}`);
-        console.log(this.$textField.classList)
-    }
 
-    disableAlert() {
-        if (this._isAlerted()) { // Only run if $alertMessage exists
-            console.log(`Alert turned off for ${this.id}`);
-            // Remove alert message
-            this._removeAlertMessage();
-        } else {
-            //DEBUG: 
-            debuglog(`[WARNING] Alert method called for ${this.id} to remove the message but not found.`);
-        }
-    }
-
-    _isAlerted() {
-        const $alertMessage = this._getAlertMessageElement();
-        return $alertMessage ? true : false;
-    }
-  
-    _isAlertMessageEqualTo(message) {
-        const $alertMessage = this._getAlertMessageElement();
-        return $alertMessage && $alertMessage.innerText === message;
-    }
-  
-    _setAlertMessage(message) {
-        const $alertMessage = this._getAlertMessageElement();
-        if ($alertMessage) {
-            $alertMessage.innerText = message;
-        }
-    }
-  
-    _appendAlertMessage(message) {
-        const $alertMessage = this._getAlertMessageElement();
-        const $footer = this.$footer;
-  
-        if (!$alertMessage) {
-            const newAlertMessage = document.createElement('p');
-            newAlertMessage.classList.add('alertMessage');
-            newAlertMessage.id = this.alertMessageId;
-            newAlertMessage.innerText = message;
-            $footer.querySelector(this.messagePlace).appendChild(newAlertMessage);
-        } else {
-            $alertMessage.innerText = message;
-        }
-    }
-  
-    _removeAlertMessage() {
-        console.log(`remove alert from ${this.id}`)
-        const $alertMessage = this._getAlertMessageElement();
+        const $alertMessage = document.getElementById(this.alertMessageId);
         if ($alertMessage) {
             this.$textField.classList.remove('alert');
             $alertMessage.remove();
         }
-    }
-  
-    _getAlertMessageElement() {
-        return this.$footer.querySelector(`#` + this.alertMessageId);
+
+        if (message) {
+            this.$textField.classList.add('alert');
+            const newAlertMessage = document.createElement('p');
+            newAlertMessage.id = this.alertMessageId;
+            newAlertMessage.classList.add('alertMessage');
+            newAlertMessage.innerText = message;
+            this.$footer.appendChild(newAlertMessage);
+            this.$footer.classList.add('alert');
+        }
     }
 
     // Cookie
