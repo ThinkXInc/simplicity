@@ -38,6 +38,8 @@ class TextField {
         verticalFlex = false,
         hasTitle = true,
         title = "",
+        hasUnit = false,
+        unit = "",
         placeholder = "",
         counterFormat = `$count/$maxcount`,
         passwordMode = false,
@@ -75,6 +77,8 @@ class TextField {
         this.verticalFlex = verticalFlex;
         this.hasTitle = hasTitle;
         this.title = title;
+        this.hasUnit = hasUnit;
+        this.unit = unit;
         this.placeholder = placeholder;
         this.counterFormat = counterFormat;
         this.passwordMode = passwordMode;
@@ -286,6 +290,13 @@ class TextField {
         $inputAfter.className = 'inputAfter';
         $inputWrapper.appendChild($inputAfter);
         this.$inputAfter = $inputAfter;
+
+        if (this.hasUnit) {
+            const $unit = document.createElement('span');
+            $unit.classList.add('unit');
+            $unit.textContent = this.unit;
+            $inputAfter.appendChild($unit);
+        }
 
         // footer
         const $footer = document.createElement('div');

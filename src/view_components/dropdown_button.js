@@ -10,6 +10,7 @@
  * @author kaz@thinkxinc.com (Kazuki Otsuka)
  */
 
+// FIXME: remove config -> all constructor args
 class DropdownButtonConfig extends ViewComponentConfig {
     constructor({
         htmlTag = 'div',
@@ -37,6 +38,7 @@ const DropdownMenuDisplayPositionType = Object.freeze({ bottom: 1, bottomover: 2
 /**
  * Dropdown list Data Model.
  */
+// FIXME: new ListItem({title: "..", "value": "..."})
 class ListMenu {
     title = null;
     value = null; // value of enum
@@ -107,6 +109,7 @@ class ListMenu {
  * @param {string} title - displayed title.
  * @param {[ListMenu]} listMenuItems - list of ListMenu with title, value.
  */
+// FIXME: new DropdownButton({id: "..", fieldName: "...", items: ...})
 class DropdownButton extends ViewComponentBase{
 
     constructor(id, fieldName, listMenuItems, config = new DropdownButtonConfig()) {

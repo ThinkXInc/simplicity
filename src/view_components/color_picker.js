@@ -63,8 +63,8 @@ class ColorPicker {
         $colorDisplay.style.cursor = 'pointer';
         this.$colorDisplay = $colorDisplay;
 
-        $view.appendChild($colorInput);
         $view.appendChild($colorDisplay);
+        $view.appendChild($colorInput);
     }
 
     addEventHandlers() {
