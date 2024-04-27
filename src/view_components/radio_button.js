@@ -25,6 +25,7 @@ class RadioButton {
         this.fieldName = fieldName;
         this.items = items;
         this.defaultValue = defaultValue;
+        this._value = defaultValue;
 
         this.hasTitle = hasTitle;
         this.title = title;
