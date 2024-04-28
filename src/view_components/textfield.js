@@ -40,6 +40,7 @@ class TextField {
         title = "",
         hasUnit = false,
         unit = "",
+        unitPlace = TextFieldPlaceTo.inputAfter,
         placeholder = "",
         counterFormat = `$count/$maxcount`,
         passwordMode = false,
@@ -79,6 +80,7 @@ class TextField {
         this.title = title;
         this.hasUnit = hasUnit;
         this.unit = unit;
+        this.unitPlace = unitPlace;
         this.placeholder = placeholder;
         this.counterFormat = counterFormat;
         this.passwordMode = passwordMode;
@@ -291,13 +293,6 @@ class TextField {
         $inputWrapper.appendChild($inputAfter);
         this.$inputAfter = $inputAfter;
 
-        if (this.hasUnit) {
-            const $unit = document.createElement('span');
-            $unit.classList.add('unit');
-            $unit.textContent = this.unit;
-            $inputAfter.appendChild($unit);
-        }
-
         // footer
         const $footer = document.createElement('div');
         $footer.className = 'footer';
@@ -347,6 +342,12 @@ class TextField {
         }
         if (this.$cancelButton && this.isCancelButton) {
             places[this.cancelButtonPlace].appendChild(this.$cancelButton);
+        }
+        if (this.hasUnit) {
+            const $unit = document.createElement('span');
+            $unit.classList.add('unit');
+            $unit.textContent = this.unit;
+            places[this.unitPlace].appendChild($unit);
         }
 
         if (this.isIncrementer) {
