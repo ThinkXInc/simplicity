@@ -77,7 +77,7 @@ class AsyncTaskClient {
                     return;
                 }
 
-                const serverUrl = `wss://${this.config.host}/ws?token=${encodeURIComponent(token)}`;
+                const serverUrl = `wss://${this.config.host}/stream/ws?token=${encodeURIComponent(token)}`;
 
                 this.socket = new WebSocket(serverUrl);
                 this.socket.onopen = () => {
