@@ -67,6 +67,7 @@ class TextField {
         eventNameCancelButtonClick = 'cancelButtonClick',
         messagePlace = TextFieldPlaceTo.footerMiddle,
         indicatorPlace = TextFieldPlaceTo.footerLeft,
+        alertPlace = TextFieldPlaceTo.footerMiddle,
     }) {
         this.id = id;
         this.fieldName = fieldName;
@@ -107,6 +108,7 @@ class TextField {
         this.messagePlace = messagePlace;
         this.counterPlace = counterPlace;
         this.indicatorPlace = indicatorPlace;
+        this.alertPlace = alertPlace;
 
         const options = [
             {name: 'fieldName', value: fieldName, type: 'string'},
@@ -302,10 +304,13 @@ class TextField {
         // Create the footer columns
         const $leftColumn = document.createElement('div');
         $leftColumn.className = 'left';
+        this.$leftColumn = $leftColumn;
         const $middleColumn = document.createElement('div');
         $middleColumn.className = 'middle';
+        this.$middleColumn = $middleColumn;
         const $rightColumn = document.createElement('div');
         $rightColumn.className = 'right';
+        this.$rightColumn = $rightColumn;
 
         const places = {
             [TextFieldPlaceTo.inputOuter]: $inputOuter,
@@ -370,6 +375,9 @@ class TextField {
             this.$incrementButton.appendChild(this.$incrementDown);
             places[this.incrementButtonPlace].appendChild(this.$incrementButton);
         }
+
+        this.$alertContainer = places[this.alertPlace];
+        console.log(`alert place for ${this.id} is set to ${this.alertPlace}.`)
       
         // Append columns to footer
         this.$footer.append($leftColumn, $middleColumn, $rightColumn);
@@ -595,17 +603,27 @@ class TextField {
 
         const $alertMessage = document.getElementById(this.alertMessageId);
         if ($alertMessage) {
+            console.log('remove alert message in ', this.id)
             this.$textField.classList.remove('alert');
             $alertMessage.remove();
         }
 
         if (message) {
+            const places = {
+                [TextFieldPlaceTo.inputOuter]: this.$inputOuter,
+                [TextFieldPlaceTo.inputAfter]: this.$inputAfter,
+                [TextFieldPlaceTo.footerLeft]: this.$leftColumn,
+                [TextFieldPlaceTo.footerMiddle]: this.$middleColumn,
+                [TextFieldPlaceTo.footerRight]: this.$rightColumn
+            };
             this.$textField.classList.add('alert');
-            const newAlertMessage = document.createElement('p');
-            newAlertMessage.id = this.alertMessageId;
-            newAlertMessage.classList.add('alertMessage');
-            newAlertMessage.innerText = message;
-            this.$footer.appendChild(newAlertMessage);
+            const $newAlertMessage = document.createElement('p');
+            $newAlertMessage.id = this.alertMessageId;
+            $newAlertMessage.classList.add('alertMessage');
+            $newAlertMessage.innerText = message;
+            const alertContainer = places[this.alertPlace];
+            console.log(`append alert "${message}"`, alertContainer);
+            alertContainer.appendChild($newAlertMessage);
             this.$footer.classList.add('alert');
         }
     }
