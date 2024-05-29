@@ -63,7 +63,14 @@ class PageView {
     show(index) {
         if (index >= 0 && index < this.numPages) {
             this.pages.forEach((page, i) => {
-                page.container.style.display = i === index ? 'block' : 'none';
+                if (i === index) {
+                    page.container.style.display = 'block';
+                    // Dispatch the event when the page is shown
+                    const event = new CustomEvent('pageShown', { detail: { pageIndex: index, page: page } });
+                    this.$view.dispatchEvent(event);
+                } else {
+                    page.container.style.display = 'none';
+                }
             });
             this.currentPageIndex = index;
         } else {
