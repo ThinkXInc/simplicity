@@ -41,7 +41,8 @@ class TermsScrollView {
         fetch(this.templateURL)
             .then(response => {return response.text()})  // Convert the response to text
             .then(html => {
-                this.$termsView.innerHTML = html;  // Insert the HTML into the element
+                const termsContent = '<div id="terms"' + html.split('<div id="terms"')[1].split('<div class="footer')[0]
+                this.$termsView.innerHTML = '<div id="terms"' + termsContent;  // Insert the HTML into the element
             })
             .catch(error => console.error('Error loading the terms template:', error));
     }
