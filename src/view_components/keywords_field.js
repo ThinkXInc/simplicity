@@ -76,14 +76,14 @@ class KeywordsField extends TextField {
 
         this.id = id,
 
-        this.createElements();
-        this._addEventHandlers();
-
         this.pressText = pressText;
         this.enterText = enterText;
         this.shouldMapTextToDeleteButtonBGColor = shouldMapTextToDeleteButtonBGColor;
         this.constantDeleteButtonBGColorLightness = constantDeleteButtonBGColorSaturation;
         this.constantDeleteButtonBGColorLightness = constantDeleteButtonBGColorLightness;
+
+        this.createElements();
+        this._addEventHandlers();
 
         this.keywords = [];
         this.onEdit = false;
