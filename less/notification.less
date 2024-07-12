@@ -1,0 +1,100 @@
+// Notification
+@ease: cubic-bezier(.65,0,.34,1); 
+
+div.Notification {
+    cursor: pointer;
+    position: absolute;
+    z-index: 1000;
+    padding: 6px;
+    border: 1px solid #fafafa;
+    background-color: white;
+    border-radius: 3px;
+    box-sizing: border-box;
+    display: none;
+
+    // position
+    &.top-center {
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  
+    &.bottom-right {
+      bottom: 10px;
+      right: 10px;
+    }
+
+    // show
+    &.show {
+      display: block;
+    }
+ 
+    // color
+    &.info {
+      border-color: rgb(147, 147, 147);
+    }
+
+    &.success {
+      border-color: #50636a;
+    }
+
+    &.warning {
+      border-color: orange;
+    }
+
+    &.error {
+      border-color: red;
+    }
+
+    p.NotificationMessage {
+      margin: 0;
+      padding: 0;
+      color: #525252;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+ 
+    // animation
+    &.fade-in-from-top {
+      animation: fadeInFromTop 1s @ease;
+    }
+  
+    &.fade-in {
+      animation: fadeIn 0.5s @ease;
+    }
+ 
+    @keyframes fadeInFromTop {  // FIXME: not work properly
+      0% {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+ 
+    &.fade-out {
+      animation: fadeOut 1s @ease forwards;
+    }
+  
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+}
+  
+ 
