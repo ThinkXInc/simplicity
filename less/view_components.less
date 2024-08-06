@@ -19,7 +19,7 @@
 @ease2: cubic-bezier(.4, 0, .2, 1);
 
 // TextField
-div.TextField {
+div.TextField:not(.Incrementer) {
     div.inputOuter {
         padding: 4px 12px;
         border: solid 1px @input-border;
@@ -118,7 +118,7 @@ div.TextField {
         }
     }
 }
-div.TextField.alert {
+div.TextField:not(.Incrementer).alert {
     div.inputOuter {
         border: 1px solid @alert-red;
         h6.title {
@@ -138,7 +138,8 @@ div.TextField.overMaximumTextCount {
 div.TextField.Incrementer {
     div.inputOuter {
         div.inputWrapper {
-            width: 115px;
+            display: flex;
+            width: max-content;
             border: 1px solid #dfdfdf;
             border-radius: 4px;
             box-shadow: 0 1px 3px #f1f1f1;
@@ -165,6 +166,8 @@ div.TextField.Incrementer {
 div.TextField.Incrementer.alert {
     div.inputOuter {
         div.inputWrapper {
+            display: flex;
+            width: max-content;
             border: 1px solid @alert-red;
             border-radius: 4px;
             box-shadow: 0 1px 3px #f1f1f1;
