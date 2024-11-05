@@ -67,6 +67,7 @@ class ModalView {
         // Footer
         this.$footer = document.createElement('div');
         this.$footer.classList.add('footer');
+        this.$footer.classList.add('modalViewFooter');
         this.$window.appendChild(this.$footer);
 
         // CancelButton
