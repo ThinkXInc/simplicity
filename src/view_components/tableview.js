@@ -604,6 +604,11 @@ class TableView {
         document.getElementById(elementId).appendChild(this.$view)
     }
 
+    mount($parent) {
+        $parent.innerHTML = '';
+        $parent.appendChild(this.$view);
+    }
+
     insertCell(content, index, delay = 0, onComplete) {
         // First, check if the provided index is valid, and within range.
         if (index < 0 || (this.cells && index > this.cells.length)) {
