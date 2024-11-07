@@ -33,6 +33,7 @@ class FileUploader {
 
     // Function to handle data available from MediaRecorder
     handleDataAvailable(event) {
+        console.log('[FileUploader] handleDataAvailable called with event:', event);
         if (event.data && event.data.size > 0) {
             this.recordedBlobs.push(event.data);
         }
@@ -62,12 +63,19 @@ class FileUploader {
 
     // Stop recording function
     stopRecording() {
-        if (!this.mediaRecorder || this.mediaRecorder.state === 'inactive') {
-            console.warn('[FileUploader] MediaRecorder is not recording.');
-            return;
-        }
-        console.log('[FileUploader] MediaRecorder stop recording.');
-        this.mediaRecorder.stop();
+        return new Promise((resolve, reject) => {
+            if (!this.mediaRecorder || this.mediaRecorder.state === 'inactive') {
+                console.warn('[FileUploader] MediaRecorder is not recording.');
+                resolve();
+                return;
+            }
+            this.mediaRecorder.onstop = () => {
+                console.log('[FileUploader] MediaRecorder stopped.');
+                resolve();
+            };
+            console.log('[FileUploader] MediaRecorder stop recording.');
+            this.mediaRecorder.stop();
+        });
     }
 
     // Function to upload video and data
