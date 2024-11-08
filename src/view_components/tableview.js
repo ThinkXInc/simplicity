@@ -149,10 +149,18 @@ class TableViewCell {
 
     get text() { this._text; }
 
+    set label(value) {
+        this._label = value;
+        this.$label.textContent = value;
+    }
+
+    get label() { this._label; }
+
     setContent(content) {
         this.content = content;
         this.title = content.title;
         this.text = content.text;
+        this.label = content.label;
     }
 
     _setElements() {
