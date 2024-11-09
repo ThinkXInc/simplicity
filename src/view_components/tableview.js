@@ -41,11 +41,13 @@ class TableViewCellContent {
         //id = '',  NOTE: this overrides id. not permitted.
         title = '',
         text = '',
-        icon = '' 
+        icon = '',
+        label = ''
     } = {}) {
         this.title = title;
         this.text = text;
         this.icon = icon;
+        this.label = label;
     } 
 }
 
@@ -88,6 +90,7 @@ class TableViewCell {
         insertCellAnimationHiddenClassNameFadeIn = 'hiddenForFadeIn',
         title = '',
         text = '',
+        label = '',
         icon = ''
     }) {
         this.tableView = tableView;
@@ -113,6 +116,7 @@ class TableViewCell {
         this.insertCellAnimationHiddenClassNameFadeIn = insertCellAnimationHiddenClassNameFadeIn;
         this._title = title;
         this._text = text;
+        this._label = label;
         this.icon = icon;
 
         this._setElements();
