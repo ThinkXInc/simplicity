@@ -70,12 +70,14 @@ class ModalView {
         this.$footer.classList.add('modalViewFooter');
         this.$window.appendChild(this.$footer);
 
-        // CancelButton
-        this.$cancelButton = document.createElement('button');
-        this.$cancelButton.classList.add('cancelButton');
-        this.$cancelButton.textContent = this.cancelButtonText;
-        this.$cancelButton.addEventListener('click', () => this.cancel());
-        this.$footer.appendChild(this.$cancelButton);
+        // CancelButton (create only if cancelButtonText is provided)
+        if (this.cancelButtonText) {
+            this.$cancelButton = document.createElement('button');
+            this.$cancelButton.classList.add('cancelButton');
+            this.$cancelButton.textContent = this.cancelButtonText;
+            this.$cancelButton.addEventListener('click', () => this.cancel());
+            this.$footer.appendChild(this.$cancelButton);
+        }
 
         // DoneButton
         this.$doneButton = document.createElement('button');
