@@ -1,4 +1,12 @@
+const AnimationType = {
+    NO_ANIMATION: 'no-animation',
+    EXPAND: 'expand',
+    SHRINK: 'shrink'
+};
+
 class ModalView {
+    static stylesInjected = false;
+
     constructor({
         id,
         title = "",
@@ -8,7 +16,9 @@ class ModalView {
         shouldCloseOnTapBG = true,
         htmlTag = 'div',
         protocols = [],
-        validators = []
+        validators = [],
+        showAnimation = AnimationType.NO_ANIMATION,
+        closeAnimation = AnimationType.NO_ANIMATION
     }) {
         this.id = id;
         this.title = title;
@@ -19,6 +29,8 @@ class ModalView {
         this.htmlTag = htmlTag;
         this.protocols = protocols;
         this.validators = validators;
+        this.showAnimation = showAnimation;
+        this.closeAnimation = closeAnimation;
 
         this.createElements();
 
@@ -42,6 +54,8 @@ class ModalView {
         // Window
         this.$window = document.createElement('div');
         this.$window.classList.add('window');
+        this.$window.style.transformOrigin = 'center center';
+        this.$window.style.animationFillMode = 'forwards';
         this.$view.appendChild(this.$window);
 
         // ContentWrapper
@@ -91,6 +105,25 @@ class ModalView {
         this.$alert.classList.add('ModalViewAlert');
         this.$alert.style.display = 'none'; // Initially hidden
         this.$contentWrapper.appendChild(this.$alert);
+
+        // Inject styles if not already done
+        if (!ModalView.stylesInjected) {
+            const style = document.createElement('style');
+            style.type = 'text/css';
+            style.innerHTML = `
+            @keyframes modalExpand {
+                from { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+                to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            }
+
+            @keyframes modalShrink {
+                from { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+                to { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            }
+            `;
+            document.head.appendChild(style);
+            ModalView.stylesInjected = true;
+        }
     }
 
     mount(selectorOrElement) {
@@ -114,9 +147,7 @@ class ModalView {
 
     setCloseOnBackgroundTap() {
         this.$bg.addEventListener('click', (event) => {
-            debuglog(`${this.id} bg tapped.`)
             // Ensure the click event originated from the background itself
-            // and not from any of its child elements.
             if (event.target === this.$bg) {
                 this.cancel();
             }
@@ -126,11 +157,39 @@ class ModalView {
     show() {
         // Show the modal view (e.g., make it visible in the DOM)
         this.$view.style.display = 'block';
+
+        // Reset any previous animations
+        this.$window.style.animation = '';
+
+        if (this.showAnimation === AnimationType.EXPAND) {
+            this.$window.style.animation = 'modalExpand 0.3s  forwards';
+        } else if (this.showAnimation === AnimationType.SHRINK) {
+            this.$window.style.animation = 'modalShrink 0.3s reverse forwards';
+        } else {
+            // No animation
+            this.$window.style.animation = '';
+        }
     }
 
     cancel() {
-        // Close the modal view (e.g., hide it, remove it from the DOM, etc.)
-        this.$view.style.display = 'none';
+        // Reset any previous animations
+        this.$window.style.animation = '';
+
+        if (this.closeAnimation === AnimationType.SHRINK) {
+            this.$window.style.animation = 'modalShrink 0.3s forwards';
+            this.$window.addEventListener('animationend', () => {
+                this.$view.style.display = 'none';
+                this.$window.style.animation = '';
+            }, { once: true });
+        } else if (this.closeAnimation === AnimationType.EXPAND) {
+            this.$window.style.animation = 'modalExpand 0.3s reverse forwards';
+            this.$window.addEventListener('animationend', () => {
+                this.$view.style.display = 'none';
+                this.$window.style.animation = '';
+            }, { once: true });
+        } else {
+            this.$view.style.display = 'none';
+        }
     }
 
     close() {
