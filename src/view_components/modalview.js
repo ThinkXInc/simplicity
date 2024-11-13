@@ -146,7 +146,11 @@ class ModalView {
     }
 
     setCloseOnBackgroundTap() {
+        if(!this.$bg) {
+            console.eror(`[ModalView] no bg to set action.`)
+        }
         this.$bg.addEventListener('click', (event) => {
+            console.log(`[ModalView] bg clicked.`)
             // Ensure the click event originated from the background itself
             if (event.target === this.$bg) {
                 this.cancel();
