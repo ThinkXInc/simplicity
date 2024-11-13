@@ -137,7 +137,7 @@ class Validator {
                 if (!this._validateFormat(value, RegexType.positiveIntegerFormat)) {
                     return this.errorMessage;
                 }
-                if (Number(value) < Number(this.minLength) || Number(value) > Number(this.maxLength)) {
+                if (Number(value) < Number(this.min) || Number(value) > Number(this.max)) {
                     return this.errorMessage;
                 }
                 break;
@@ -145,7 +145,7 @@ class Validator {
                 if (!this._validateFormat(value, RegexType.positiveFloatFormat)) {
                     return this.errorMessage;
                 }
-                if (Number(value) < Number(this.minLength) || Number(value) > Number(this.maxLength)) {
+                if (Number(value) < Number(this.min) || Number(value) > Number(this.max)) {
                     return this.errorMessage;
                 }
                 break;
