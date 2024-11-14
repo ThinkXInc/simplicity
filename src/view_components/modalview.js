@@ -4,6 +4,13 @@ const AnimationType = {
     SHRINK: 'shrink'
 };
 
+const ModalViewStyle = {
+    DEFAULT: 'defaultStyle',
+    DARK: 'darkStyle',
+};
+
+
+
 class ModalView {
     static stylesInjected = false;
 
@@ -18,7 +25,9 @@ class ModalView {
         protocols = [],
         validators = [],
         showAnimation = AnimationType.NO_ANIMATION,
-        closeAnimation = AnimationType.NO_ANIMATION
+        closeAnimation = AnimationType.NO_ANIMATION,
+        baseCSSStyle = ModalViewStyle.DEFAULT,
+        onDone = ()=>{}
     }) {
         this.id = id;
         this.title = title;
@@ -31,6 +40,8 @@ class ModalView {
         this.validators = validators;
         this.showAnimation = showAnimation;
         this.closeAnimation = closeAnimation;
+        this.baseCSSStyle = baseCSSStyle;
+        this.onDone = onDone;
 
         this.createElements();
 
@@ -43,6 +54,7 @@ class ModalView {
         this.$view = document.createElement(this.htmlTag);
         this.$view.id = this.id;
         this.$view.classList.add('ModalView');
+        this.$view.classList.add(this.baseCSSStyle);
         this.$view.style.display = 'none';
 
         // Background
@@ -198,6 +210,10 @@ class ModalView {
 
     close() {
         this.cancel();
+    }
+
+    done() {
+        this.onDone();
     }
 
     alert(isShown, message = null) {
