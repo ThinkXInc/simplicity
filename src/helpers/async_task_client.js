@@ -71,11 +71,13 @@ class AsyncTaskClient {
 
     connect() {
         return new Promise((resolve, reject) => {
-            this.obtainToken().then((token) => {
-                if (!token) {
-                    reject("Token acquisition failed.");
+            this.obtainToken().then((data) => {
+                if (!data) {
+                    reject("Token data acquisition failed.");
                     return;
                 }
+
+                const { token, clientId } = data; // Destructure the token and clientId
 
                 const serverUrl = `wss://${this.config.host}/stream/ws?token=${encodeURIComponent(token)}`;
 
@@ -110,18 +112,19 @@ class AsyncTaskClient {
                 },
                 body: JSON.stringify({ origin })
             });
-
+    
             if (!response.ok) {
                 throw new Error('Token request was denied. Status: ' + response.status);
             }
-
-            return await response.text();
+    
+            const data = await response.json();
+            return data; // Return the entire data object
         } catch (error) {
             console.error('Error obtaining token:', error);
             return null;
         }
     }
-
+    
     submit(message) {
         // serialized JSON string using the WebSocket,
         // the server will recognize it as a text message (websocket.TextMessage).  
