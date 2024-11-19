@@ -8,7 +8,7 @@
  * @param {number} [delay=0] - The initial delay before the animation starts.
  * @param {boolean} [isCursor=true] - Whether to display the cursor effect using the left half block.
  */
-function flashText(element, propertyName, text, duration = 30, delay = 0, cursorChar = '\u258C', isCursor = true) {
+function flashText(element, propertyName, text, duration = 30, delay = 0, cursorChar = '\u258C', isCursor = true, callback) {
     // Ensure the element has the specified property
     if (!(propertyName in element)) {
         throw new Error(`Element ${element} does not have property: ${propertyName}`);
@@ -17,32 +17,28 @@ function flashText(element, propertyName, text, duration = 30, delay = 0, cursor
     // Variable to store interval ID
     let flashIntervalId;
 
-    // Clear any existing flash intervals
-    if (flashIntervalId) {
-        clearInterval(flashIntervalId);
-    }
-
     // Initial text
     let currentText = "";
     let index = 0;
-
-    // Unicode for left half block
-    const leftHalfBlock = cursorChar;
 
     // Function to update text and cursor
     const updateText = () => {
         if (index < text.length) {
             currentText += text[index];
             if (isCursor) {
-                element[propertyName] = currentText + leftHalfBlock;
+                element[propertyName] = currentText + cursorChar;
             } else {
                 element[propertyName] = currentText;
             }
             index++;
         } else {
-            // Remove the leftHalfBlock (if applicable) and update the property
+            // Remove the cursor and update the property
             element[propertyName] = currentText;
             clearInterval(flashIntervalId); // Clear the interval
+            // Call the callback if provided
+            if (typeof callback === 'function') {
+                callback();
+            }
         }
     };
 
