@@ -1,134 +1,103 @@
-'use strict'
-/**
- * @fileoverview business/view_components/dropdown_button.js
- * Dropdown button component class.
- * 
- * usage:
- * <code>
- * </code>
- * 
- * @author kaz@thinkxinc.com (Kazuki Otsuka)
- */
-
-// FIXME: remove config -> all constructor args
-class DropdownButtonConfig extends ViewComponentConfig {
-    constructor({
-        htmlTag = 'div',
-        title = '',
-        description = '',
-        type = DropdownMenuType.list,
-        position = DropdownMenuDisplayPositionType.upper,
-        validators = [],
-        ...otherOptions
-    } = {}) {
-        super(otherOptions);
-        this.htmlTag = htmlTag;
-        this.title = title;
-        this.description = description;
-        this.type = type;
-        this.position = position;
-        this.validators = validators;
-    }
-}
+'use strict';
 
 const DropdownButtonState = Object.freeze({ onclose: 1, onopen: 2, onselected: 3 });
 const DropdownMenuType = Object.freeze({ list: 1, widelist: 2, calendar: 3 });
 const DropdownMenuDisplayPositionType = Object.freeze({ bottom: 1, bottomover: 2, upper: 3, upperover: 4 });
 
+
+// Prepare SVG as a data URI (you can inline it directly or load from a separate file)
+const defaultArrowSvg = 
+`<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" id="arrow" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+	 viewBox="0 0 30 30" style="enable-background:new 0 0 30 30;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#666666;stroke-width:2.3;stroke-miterlimit:10;}
+</style>
+<path class="st0" d="M3,10.2l11.4,9.6c4.2-3.2,8.3-6.4,12.5-9.6"/>
+</svg>`;
+
+const defaultArrowIconPath = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(defaultArrowSvg)}`;
+
+
 /**
- * Dropdown list Data Model.
+ * ListItem class
+ * Represents a single item in the dropdown menu.
+ * 
+ * usage:
+ *   new ListItem({title: "Afghanistan", value: 12})
  */
-// FIXME: new ListItem({title: "..", "value": "..."})
-class ListMenu {
-    title = null;
-    value = null; // value of enum
-    constructor(title, value) {
+class ListItem {
+    constructor({ title, value }) {
         this.title = title;
         this.value = value;
         if (this.title == null || this.value == null) {
-            console.error('both title and value of ListMenu are necessary but null.')
+            console.error('both title and value of ListItem are necessary but null.');
         }
     }
 }
 
-
 /**
- * Dropdownbutton component class.
- * @constructor
- * @classdesc `<div class=dropdownButton id={id}></ul>` is necessary in HTML.
- * usage:
- * `<code>`
+ * Usage:
+ * ```
+ * const listMenuItems = [
+ *     new ListItem({title: 'Afghanistan', value: 12}),
+ *     new ListItem({title: 'Belarus', value: 73}),
+ *     new ListItem({title: 'China', value: 981}),
+ * ];
  * 
- *     <div class="dropdownButton">
- *         <div class="dropdownButtonClickable cf">
- *             <h6 class="description">Description here</h6>
- *             <span class="title">Title here</span>
- *             <img class="downarrow" src="/img/icons/arrow-down.png" srcset="/img/icons/arrow-down@2x.png 2x" />
- *             <div class="footer cf"></div>
- *         </div>
- *         <ul class="listmenu">
- *             <li class="listitem" data-value="item1" data-title="Item 1">Item 1</li>
- *             <li class="listitem" data-value="item2" data-title="Item 2">Item 2</li>
- *             <!-- More list items go here -->
- *         </ul>
- *     </div>
+ * let validator = new Validator(
+ *     dropdownButton, 
+ *     ValidationErrorType.required, 
+ *     "This field is required."
+ * );
  * 
- * 
- *     // Creating list menu items
- *     let listMenuItems = [
- *         {title: 'Afganistan', value: 12},
- *         {title: 'Belarus', value: 73},
- *         {title: 'China', value: 981},
- *         // More list items go here...
- *     ];
- *     
- *     // Defining a validator
- *     let validator = new Validator(
- *         dropdownButton, 
- *         ValidationErrorType.required, 
- *         "This field is required."
- *     );
- *     
- *     let dropdownButton = new DropdownButton(
- *         'countrySelectButton', // id
- *         'Your Country', // title
- *         'Please select your country.', // description
- *         'country', // fieldName
- *         DropdownMenuType.list, // type
- *         DropdownMenuDisplayPositionType.upper, // position
- *         listMenuItems, // listMenuItems
- *         'div', // htmlTag (optional)
- *         [validator] // validators (optional)
- *     );
- *     
- *     // Set the initial state
- *     dropdownButton.state = DropdownButtonState.onclose;
-* 
- * `</code>`
- * @param {string} id - The DOM id where this view is inserted.
- * @param {string} title - displayed title.
- * @param {[ListMenu]} listMenuItems - list of ListMenu with title, value.
+ * let dropdownButton = new DropdownButton({
+ *     id: 'countrySelectButton',
+ *     fieldName: 'country',
+ *     title: 'Your Country',
+ *     description: 'Please select your country.',
+ *     type: DropdownMenuType.list,
+ *     position: DropdownMenuDisplayPositionType.upper,
+ *     items: listMenuItems,
+ *     htmlTag: 'div',
+ *     validators: [validator]
+ * });
  */
-// FIXME: new DropdownButton({id: "..", fieldName: "...", items: ...})
-class DropdownButton extends ViewComponentBase{
+class DropdownButton {
 
-    constructor(id, fieldName, listMenuItems, config = new DropdownButtonConfig()) {
-        super(id, config);
-        this.config = config;
+    constructor({
+        id,
+        fieldName,
+        items = [],
+        title = '',
+        description = '',
+        type = DropdownMenuType.list,
+        position = DropdownMenuDisplayPositionType.upper,
+        validators = [],
+        htmlTag = 'div',
+        arrowIconPath = defaultArrowIconPath  // Add a new parameter for the arrow icon
+    } = {}) {
 
-        this.items = listMenuItems;
-
+        this.id = id;
         this.fieldName = fieldName;
-        this.__width__ = null;  // TODO: widelist
+        this.items = items;
+        this.title = title;
+        this.description = description;
+        this.type = type;
+        this.position = position;
+        this.validators = validators;
+        this.htmlTag = htmlTag;
+        this.arrowIconPath = arrowIconPath; // store the arrow icon path
+
         this._state = DropdownButtonState.onclose;
         this._selectedValue = null;
+
+        this._createElements();
+        this._setEventHandlers();
     }
 
-    /* setters */
+    /* setters and getters */
 
-    /**
-     * state setter.
-     */
     set state(state) {
         const previousState = this._state;
         this._state = state;
@@ -136,13 +105,13 @@ class DropdownButton extends ViewComponentBase{
             case DropdownButtonState.onclose:
                 console.log(`DropdownButton state changed -> onclose`);
                 this._removeClosingUnderSheet();
-                this.$toggleItem.style.display = 'none';
-                break
+                if (this.$toggleItem) this.$toggleItem.style.display = 'none';
+                break;
+
             case DropdownButtonState.onopen:
                 console.log(`DropdownButton state changed -> onopen`);
-                console.log(this.$toggleItem);
-                this.$toggleItem.style.display = 'block';
-                console.log(this.config.position);
+                if (this.$toggleItem) this.$toggleItem.style.display = 'block';
+
                 if (this.position == DropdownMenuDisplayPositionType.bottom) {
                     this.$toggleItem.style.top = `${this.$view.offsetTop + this.$view.offsetHeight}px`;
                 } else if (this.position == DropdownMenuDisplayPositionType.bottomover) {
@@ -156,125 +125,105 @@ class DropdownButton extends ViewComponentBase{
                 }
                 // add click outside -> close event
                 this._addClosingUnderSheet(this, this.$listMenu);
-                break
+                break;
+
             case DropdownButtonState.onselected:
                 console.log(`DropdownButton state changed -> onselected`);
                 // NOTE: not in use so far
-                break
+                break;
         }
     }
- 
-    /**
-     * selectedValue setter / getter.
-     */
+
+    get state() {
+        return this._state;
+    }
+
     set selectedValue(selectedValue) {
-        const previousState = this._selectedValue;
+        const previousValue = this._selectedValue;
         this._selectedValue = selectedValue;
         if (selectedValue != null) {
             const item = this.items.find((item) => item.value == selectedValue);
             if (item == null) {
                 console.error(`${selectedValue} is not in items. see below.`);
-                console.table(this.items);}
-            else {
+                console.table(this.items);
+            } else {
                 this._setTitle(item.title);
             }
         }
-        const event = new CustomEvent(
-            'selected', {detail: {value: selectedValue, id: this.id}});
+        const event = new CustomEvent('selected', { detail: { value: selectedValue, id: this.id } });
         this.$view.dispatchEvent(event);
     }
 
-    get selectedValue() {return this._selectedValue;}
+    get selectedValue() { return this._selectedValue; }
 
-    /**
-     * value setter / getter.
-     */
     set value(value) {
-        super.value(value)
         this.selectedValue = value;
     }
 
     get value() {
         return this.selectedValue;
     }
- 
 
     /* private methods */
 
-    /**
-     * DOM nodes as variables.
-     */
-    _setElements(htmlTag) {
-        // Set up basic elements via parent class.
-        super._setElements(htmlTag);
-        this.$view.classList.add('dropdownButton');
+    _createElements() {
+        this.$view = document.createElement(this.htmlTag);
+        this.$view.id = this.id;
+        this.$view.classList.add('DropdownButton');
 
-        // Create and configure dropdown button clickable container.
+        // Create and configure clickable area
         let $dropdownButtonClickable = document.createElement('div');
-        $dropdownButtonClickable.className = "dropdownButtonClickable cf";
-        this.$view.append($dropdownButtonClickable);
+        $dropdownButtonClickable.className = "DropdownButtonClickable cf";
+        this.$view.appendChild($dropdownButtonClickable);
 
-        // Create and configure description.
+        // Create and configure description
         let $description = document.createElement('h6');
         $description.className = "description";
-        $description.textContent = this.config.description;
+        $description.textContent = this.description;
         $dropdownButtonClickable.appendChild($description);
 
-        // Create and configure title.
+        // Create and configure title
         let $title = document.createElement('span');
         $title.className = "title";
-        $title.textContent = this.config.title;
+        $title.textContent = this.title;
         $dropdownButtonClickable.appendChild($title);
 
-        // Create and configure down arrow image.
+        // Create and configure down arrow image
         let $downArrowImg = document.createElement('img');
         $downArrowImg.className = "downarrow";
-        $downArrowImg.src = "/img/icons/arrow-down.png";
-        $downArrowImg.srcset = "/img/icons/arrow-down@2x.png 2x";
+        $downArrowImg.src = this.arrowIconPath;  // Use the initialized arrowIconPath
         $dropdownButtonClickable.appendChild($downArrowImg);
 
-        // set list menu
-        if (type == DropdownMenuType.list || type == DropdownMenuType.widelist) {
+        // Create footer area
+        let $footer = document.createElement('div');
+        $footer.className = 'footer cf';
+        $dropdownButtonClickable.appendChild($footer);
+        this.$footer = $footer;
+
+        // set list menu if type is list or widelist
+        if (this.type == DropdownMenuType.list || this.type == DropdownMenuType.widelist) {
             const $listMenu = document.createElement('ul');
             $listMenu.className = 'listmenu';
             $listMenu.style.display = 'none';
             this.$view.appendChild($listMenu);
-        }
-
-        // set list menu items
-        if (type == DropdownMenuType.list || type == DropdownMenuType.widelist) {
-            this._setListMenuItems(listMenuItems);
-        }
-
-        // Assign class properties to corresponding HTML elements for easy access.
-        this.$title = this.$view.querySelector('.title');
-        this.$dropdownButtonClickable = this.$view.querySelector('.dropdownButtonClickable');
-        if (this.config.type == DropdownMenuType.list || this.config.type == DropdownMenuType.widelist) {
-            this.$listMenu = this.$view.querySelector('.listmenu');
+            this.$listMenu = $listMenu;
             this.$toggleItem = this.$listMenu;
+            this._setListMenuItems(this.items);
         }
 
-        // Log warnings for missing HTML elements.
+        // Assign class properties to corresponding elements for easy access
+        this.$title = this.$view.querySelector('.title');
+        this.$dropdownButtonClickable = this.$view.querySelector('.DropdownButtonClickable');
+
         if (!this.$title) console.warn(`<span class=title></span> is necessary in HTML.`);
         if (!this.$dropdownButtonClickable) console.warn(`<div class=dropdownButtonClickable></div> is necessary in HTML.`);
-        if (this.config.type == DropdownMenuType.list || this.config.type == DropdownMenuType.widelist) {
-            if (!this.$listMenu) console.warn(`<ul class=listmenu></ul> is necessary in HTML.`);
+        if ((this.type == DropdownMenuType.list || this.type == DropdownMenuType.widelist) && !this.$listMenu) {
+            console.warn(`<ul class=listmenu></ul> is necessary in HTML.`);
         }
     }
 
-    /**
-     * Initialize the layout for display.
-     */
-    _initLayout() {
-    }
-
-    /**
-     * Set list menu items (type: list, widelist).
-     * @param {ListMenu} items - list of ListMenu with (title, value)
-     */
     _setListMenuItems(items) {
         console.log(`set ${items.length} list menu items into ${this.id}.`)
-        if (IS_DEBUG) { console.table(items) };
         items.forEach((item) => {
             let $item = document.createElement('li');
             $item.className = "listitem";
@@ -285,106 +234,90 @@ class DropdownButton extends ViewComponentBase{
         });
     }
 
-    /**
-     * Set selected title.
-     * @param {string} title - 
-     */
     _setTitle(title) {
         console.log(`set ${title} as title.`)
         this.$title.innerHTML = title;
     }
 
-    /**
-     * Set event handlers.
-     */
     _setEventHandlers() {
         const _this = this;
-        this.$dropdownButtonClickable.addEventListener('click', e => {
-            console.log(`[event] button ${_this.id} clicked`)
-            if (_this._state == DropdownButtonState.onclose) {
-                _this.state = DropdownButtonState.onopen;
-                e.stopPropagation();
-            }
-            else if (_this._state == DropdownButtonState.onopen) {
-               _this.state = DropdownButtonState.onclose;
-            }
-            else {
-                console.error(`unknown current state of ${_this.id} ${_this._state}`)
-            }
-        });
-        this.$listMenu.addEventListener('click', e => {
-            console.log(`[event] list menu ${_this.id} clicked`)
-            const hoveredItem = this.$listMenu.querySelector(':hover');
-            const selectedValue = hoveredItem.dataset.value;
-            console.log(hoveredItem);
-            console.table(hoveredItem.dataset);
-            console.log(`selected value: ${selectedValue}`);
-            this._selectedValue = selectedValue;
-            this._setTitle(hoveredItem.dataset.title);
-            this.state = DropdownButtonState.onclose;
-            // TODO: delete when unnecessary for the long term 
-            // // dispatch event
-            // const event = new CustomEvent('selected', {detail: {id: this.id, value: selectedValue}});
-            // this.$view.dispatchEvent(event);
+        if (this.$dropdownButtonClickable) {
+            this.$dropdownButtonClickable.addEventListener('click', e => {
+                console.log(`[event] button ${_this.id} clicked`)
+                if (_this._state == DropdownButtonState.onclose) {
+                    _this.state = DropdownButtonState.onopen;
+                    e.stopPropagation();
+                }
+                else if (_this._state == DropdownButtonState.onopen) {
+                    _this.state = DropdownButtonState.onclose;
+                }
+                else {
+                    console.error(`unknown current state of ${_this.id} ${_this._state}`)
+                }
+            });
+        }
 
-            if(this.viewController && typeof this.viewController._dropdownButtonSelected === "function"){
-                this.viewController._dropdownButtonSelected(this, selectedValue);
-            } else {
-                console.error('ViewController not set or _dropdownButtonSelected not a function');
-            }
-        });
+        if (this.$listMenu) {
+            this.$listMenu.addEventListener('click', e => {
+                console.log(`[event] list menu ${_this.id} clicked`)
+                const hoveredItem = this.$listMenu.querySelector(':hover');
+                if (!hoveredItem) return;
+                const selectedValue = hoveredItem.dataset.value;
+                console.log(hoveredItem);
+                console.table(hoveredItem.dataset);
+                console.log(`selected value: ${selectedValue}`);
+                this._selectedValue = selectedValue;
+                this._setTitle(hoveredItem.dataset.title);
+                this.state = DropdownButtonState.onclose;
+
+                const event = new CustomEvent('selected', { detail: { value: selectedValue, id: this.id } });
+                this.$view.dispatchEvent(event);
+            });
+        }
     }
 
-    /**
-     * Add the element that changes state to close when clicked.
-     * 
-     * @description This function is reusable for similar cases
-     * by changing lines `modify this`.
-     * @param {DropdownButton} this - the instance of the UI component.
-     * @param {Element} $before - the element where this sheet is inserted.
-     */
     _addClosingUnderSheet(_this, $before) {
         let under = document.createElement('span');
         under.id = this.id + '-under';
         under.style.position = 'absolute';
         under.style.width = `${screen.width + 1000}px`;
         under.style.height = `${screen.height + 1000}px`;
-        //under.style.background = 'rgb(0,0,0,0.2)'; // visible test
         under.style.top = '0px';
         under.style.left = '0px';
         under.style.zIndex = 1;
-        this.$view.insertBefore(under, $before); // modify this
+        this.$view.insertBefore(under, $before);
         const __this = _this;
         under.addEventListener('click', e => {
-            if (__this._state == DropdownButtonState.onopen) { // modify this
-                __this.state = DropdownButtonState.onclose; // modify this
+            if (__this._state == DropdownButtonState.onopen) {
+                __this.state = DropdownButtonState.onclose;
                 e.currentTarget.remove();
             } else {
                 console.log('nothing happens.')
             }
-        }, {capture: true, once: true});
+        }, { capture: true, once: true });
     }
 
-    /**
-     * Remove undersheet element when close.
-     */
     _removeClosingUnderSheet() {
-        document.getElementById(this.id + '-under').remove();
+        const $under = document.getElementById(this.id + '-under');
+        if ($under) $under.remove();
     }
 
     /* public functions */
 
     /**
      * Add/Remove alert.
-     * 
-     * @param {bool} onAlert 
-     * @param {string} message
+     * @param {boolean|string} onAlert - If false, no alert. If string, show that message as alert.
+     * @param {string} [message] - Alert message to display.
      */
     alert(onAlert, message) {
-        // TODO: modify to ensure alertId is set by the format
         const alertId = this.id + '_alert';
         let $parent = this.$view;
         let $footer = $parent.querySelector('.footer');
+        if (onAlert && typeof onAlert === 'string') {
+            message = onAlert;
+            onAlert = true;
+        }
+
         if (onAlert) {
             // add alert to css
             $parent.classList.add('alert');
@@ -396,14 +329,14 @@ class DropdownButton extends ViewComponentBase{
                 $alertMessage.classList.add('alertMessage');
                 $alertMessage.id = alertId;
                 $footer.appendChild($alertMessage);
-            };
+            }
             $alertMessage.innerText = message;
 
         } else {
             // return if alertMessage is already removed
             let $alertMessage = document.getElementById(alertId);
-            if (document.getElementById(alertId) == null) { 
-                return 
+            if ($alertMessage == null) { 
+                return;
             } else {
                 // remove alert
                 $parent.classList.remove('alert');
@@ -412,6 +345,28 @@ class DropdownButton extends ViewComponentBase{
                 }
             }
         }
+    }
+
+    setViewController(viewController) {
+        this.viewController = viewController;
+    }
+
+    mount(selectorOrElement) {
+        let container;
+
+        if (typeof selectorOrElement === 'string') {
+            container = document.querySelector(selectorOrElement);
+            if (!container) {
+                console.error(`No element found with selector ${selectorOrElement}`);
+                return;
+            }
+        } else if (selectorOrElement instanceof Element) {
+            container = selectorOrElement;
+        } else {
+            console.error('Invalid input: selector must be a string or a DOM element');
+            return;
+        }
+        container.appendChild(this.$view);
     }
 }
 
