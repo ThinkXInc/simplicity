@@ -16,7 +16,22 @@ const defaultArrowSvg =
 <path class="st0" d="M3,10.2l11.4,9.6c4.2-3.2,8.3-6.4,12.5-9.6"/>
 </svg>`;
 
-const defaultArrowIconPath = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(defaultArrowSvg)}`;
+const DropdownButtonDefaultArrowIconPath = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(defaultArrowSvg)}`;
+
+const defaultSelectedSvg = 
+`<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" 
+     viewBox="0 0 50.3 50.3" xml:space="preserve" style="enable-background:new 0 0 50.3 50.3;">
+<style type="text/css">
+    .st2{fill:none;stroke:#000;stroke-width:5;stroke-miterlimit:10;}
+</style>
+<g id="ok">
+    <polyline class="st2" points="10.2,26.8 20.9,37 42,14.2"/>
+</g>
+</svg>`;
+
+const DropdownButtonDefaultSelectedIconPath = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(defaultSelectedSvg)}`;
+
 
 
 /**
@@ -27,8 +42,9 @@ const defaultArrowIconPath = `data:image/svg+xml;charset=UTF-8,${encodeURICompon
  *   new ListItem({title: "Afghanistan", value: 12})
  */
 class ListItem {
-    constructor({ title, value }) {
+    constructor({ title, value, description }) {
         this.title = title;
+        this.description = description;
         this.value = value;
         if (this.title == null || this.value == null) {
             console.error('both title and value of ListItem are necessary but null.');
@@ -75,7 +91,13 @@ class DropdownButton {
         position = DropdownMenuDisplayPositionType.upper,
         validators = [],
         htmlTag = 'div',
-        arrowIconPath = defaultArrowIconPath  // Add a new parameter for the arrow icon
+        arrowIconPath = DropdownButtonDefaultArrowIconPath,  // Add a new parameter for the arrow icon
+        hasSelectedIcon = false,
+        selectedIconPath = DropdownButtonDefaultSelectedIconPath, 
+        //selectedIconColor = '#19690D', 
+        isMultiSelect = false,
+        multiSelectDisplayTitle = '$0 selected', // New parameter for multi-selection display
+        descriptionClipLength = 30, 
     } = {}) {
 
         this.id = id;
@@ -88,10 +110,18 @@ class DropdownButton {
         this.validators = validators;
         this.htmlTag = htmlTag;
         this.arrowIconPath = arrowIconPath; // store the arrow icon path
+        this.hasSelectedIcon = hasSelectedIcon;
+        this.selectedIconPath = selectedIconPath;
+        //this.selectedIconColor = selectedIconColor;
+
+        this.descriptionClipLength = descriptionClipLength;
+
+        this.isMultiSelect = isMultiSelect;
+        this.multiSelectDisplayTitle = multiSelectDisplayTitle;
+
+        this._selectedValue = isMultiSelect ? [] : null;
 
         this._state = DropdownButtonState.onclose;
-        this._selectedValue = null;
-
         this._createElements();
         this._setEventHandlers();
     }
@@ -140,28 +170,57 @@ class DropdownButton {
 
     set selectedValue(selectedValue) {
         const previousValue = this._selectedValue;
-        this._selectedValue = selectedValue;
-        if (selectedValue != null) {
-            const item = this.items.find((item) => item.value == selectedValue);
+        if (!this.isMultiSelect) {
+            // Single selection
+            if (selectedValue != null) {
+            } else {
+                console.error(`${selectedValue} is null.`);
+            }
+            this._selectedValue = newVal;
+            const item = this.items.find(item => String(item.value) === String(newVal));
             if (item == null) {
                 console.error(`${selectedValue} is not in items. see below.`);
                 console.table(this.items);
             } else {
                 this._setTitle(item.title);
             }
+        } else {
+            // Multi-selection: assume newVal is an array of item values, or handle toggling yourself
+            if (Array.isArray(newVal)) {
+                this._selectedValue = newVal;
+                if (this._selectedValue.length === 1) {
+                    // Only one item selected set the item's title
+                    const item = this.items.find(item => String(item.value) === String(selectedValue[0]));
+                    if (item) {
+                        this._setTitle(item.title);
+                    }
+                } else {
+                    const count = Array.isArray(this._selectedValue) ? this._selectedValue.length : 0;
+                    const displayTitle = this.multiSelectDisplayTitle.replace('$0', count);
+                    this._setTitle(displayTitle);
+                }
+            } else {
+                console.warn(`[DropdownButton] newVal should be an array when isMultiSelect=true. Received: ${newVal}`);
+            }
         }
+        
         const event = new CustomEvent('selected', { detail: { value: selectedValue, id: this.id } });
         this.$view.dispatchEvent(event);
     }
 
     get selectedValue() { return this._selectedValue; }
 
-    set value(value) {
-        this.selectedValue = value;
-    }
+    set value(v) { this.selectedValue = v; }
+    get value() { return this.selectedValue; }
 
-    get value() {
-        return this.selectedValue;
+    get stringValue() {
+        if (!this.isMultiSelect) {
+            return this._selectedValue ? String(this._selectedValue) : '';
+        }
+        if (Array.isArray(this._selectedValue)) {
+            return this._selectedValue.join(',');
+        }
+        return '';
     }
 
     /* private methods */
@@ -229,7 +288,47 @@ class DropdownButton {
             $item.className = "listitem";
             $item.dataset.value = item.value;
             $item.dataset.title = item.title;
-            $item.textContent = item.title;
+            $item.dataset.description = item.description;
+
+            // -- create a container for the text lines
+            let $titleWrap = document.createElement('div');
+            $titleWrap.className = 'listitem-title-wrap';
+        
+            // main title
+            let $titleText = document.createElement('div');
+            $titleText.className = 'listitem-title';
+            $titleText.textContent = item.title;
+            $titleWrap.appendChild($titleText);
+
+            // optional description (below the title)
+            if (item.description) {
+                let $descText = document.createElement('div');
+                $descText.className = 'listitem-description';
+
+                // If we want to truncate it
+                if (this.descriptionClipLength > 0 &&
+                    item.description.length > this.descriptionClipLength) {
+                    $descText.textContent = 
+                        item.description.substring(0, this.descriptionClipLength) + '...';
+                } else {
+                    $descText.textContent = item.description;
+                }
+
+                $titleWrap.appendChild($descText);
+            }
+            $item.appendChild($titleWrap);
+
+            if (this.hasSelectedIcon){ 
+                let $checkIcon = document.createElement('img');
+                $checkIcon.className = 'selected-icon';
+                $checkIcon.src = this.selectedIconPath;
+                $checkIcon.style.width = '16px';  // or whatever
+                $checkIcon.style.visibility = 'hidden';  // hide by default
+                $item.appendChild($checkIcon);
+            }
+
+
+
             this.$listMenu.append($item);
         });
     }
@@ -243,7 +342,6 @@ class DropdownButton {
         const _this = this;
         if (this.$dropdownButtonClickable) {
             this.$dropdownButtonClickable.addEventListener('click', e => {
-                console.log(`[event] button ${_this.id} clicked`)
                 if (_this._state == DropdownButtonState.onclose) {
                     _this.state = DropdownButtonState.onopen;
                     e.stopPropagation();
@@ -251,27 +349,68 @@ class DropdownButton {
                 else if (_this._state == DropdownButtonState.onopen) {
                     _this.state = DropdownButtonState.onclose;
                 }
-                else {
-                    console.error(`unknown current state of ${_this.id} ${_this._state}`)
-                }
             });
         }
 
         if (this.$listMenu) {
             this.$listMenu.addEventListener('click', e => {
-                console.log(`[event] list menu ${_this.id} clicked`)
                 const hoveredItem = this.$listMenu.querySelector(':hover');
                 if (!hoveredItem) return;
-                const selectedValue = hoveredItem.dataset.value;
-                console.log(hoveredItem);
-                console.table(hoveredItem.dataset);
-                console.log(`selected value: ${selectedValue}`);
-                this._selectedValue = selectedValue;
-                this._setTitle(hoveredItem.dataset.title);
-                this.state = DropdownButtonState.onclose;
 
-                const event = new CustomEvent('selected', { detail: { value: selectedValue, id: this.id } });
-                this.$view.dispatchEvent(event);
+                const clickedValue = hoveredItem.dataset.value;
+                const clickedTitle = hoveredItem.dataset.title;
+                
+                if (!this.isMultiSelect) {
+                    // Single select logic (original)
+                    this._selectedValue = clickedValue;
+                    this._setTitle(clickedTitle);
+                    this.state = DropdownButtonState.onclose;
+
+                    // Fire "selected" event
+                    const event = new CustomEvent('selected', { detail: { value: clickedValue, id: this.id } });
+                    this.$view.dispatchEvent(event);
+                } else {
+                    // Multi-select: toggle this item’s presence in _selectedValue array
+                    if (!Array.isArray(this._selectedValue)) this._selectedValue = [];
+                    
+                    const index = this._selectedValue.indexOf(clickedValue);
+                    if (index >= 0) {
+                        // Already selected => unselect
+                        this._selectedValue.splice(index, 1);
+                        hoveredItem.classList.remove('selected');
+                        let icon = hoveredItem.querySelector('.selected-icon');
+                        if (icon) icon.style.visibility = 'hidden';
+                    } else {
+                        // Not selected => select
+                        this._selectedValue.push(clickedValue);
+                        hoveredItem.classList.add('selected');
+                        let icon = hoveredItem.querySelector('.selected-icon');
+                        if (icon) icon.style.visibility = 'visible';
+                    }
+                    
+                    if (this._selectedValue.length === 1) {
+                        const item = this.items.find(item => String(item.value) === String(this._selectedValue[0]));
+                        if (item) {
+                            this._setTitle(item.title);
+                        }
+                    } else {
+                        // Update the displayed title. For example, “2 selected”
+                        const count = Array.isArray(this._selectedValue) ? this._selectedValue.length : 0;
+                        if (!this.multiSelectDisplayTitle) {
+                            console.error('no this.multiSelectDisplayTitle set in DropdownButton.')
+                        }
+                        const displayTitle = this.multiSelectDisplayTitle.replace('$0', count);
+                        this._setTitle(displayTitle);
+                    }
+
+                    // Remain open for more selections
+                    // (If you want the dropdown to close after each selection, remove the line below)
+                    this.state = DropdownButtonState.onopen;
+
+                    // Fire "selected" event
+                    const event = new CustomEvent('selected', { detail: { value: this.value, id: this.id } });
+                    this.$view.dispatchEvent(event);
+                }
             });
         }
     }
@@ -279,9 +418,9 @@ class DropdownButton {
     _addClosingUnderSheet(_this, $before) {
         let under = document.createElement('span');
         under.id = this.id + '-under';
-        under.style.position = 'absolute';
-        under.style.width = `${screen.width + 1000}px`;
-        under.style.height = `${screen.height + 1000}px`;
+        under.style.position = 'fixed';//'absolute';
+        under.style.width = '100%';//`${screen.width + 1000}px`;
+        under.style.height = '100%';//`${screen.height + 1000}px`;
         under.style.top = '0px';
         under.style.left = '0px';
         under.style.zIndex = 1;
@@ -298,8 +437,10 @@ class DropdownButton {
     }
 
     _removeClosingUnderSheet() {
-        const $under = document.getElementById(this.id + '-under');
-        if ($under) $under.remove();
+        const underElements = document.querySelectorAll(`[id^="${this.id}-under"]`); // Select all elements with id starting with `${this.id}-under`
+        underElements.forEach($under => {
+            $under.remove(); // Remove each element
+        });
     }
 
     /* public functions */

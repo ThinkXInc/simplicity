@@ -361,12 +361,12 @@ div.DropdownButton {
         padding: 8px 14px;
         cursor: pointer;
         h6.description {
-            font-size: 0.7rem;
+            font-size: 11px;
             color: @text-gray;
             font-weight: 300;
         }
         span.title {
-            font-size: 1rem;
+            font-size: 13px;
             font-weight: 100;
             color: @text-black-light;
         }
@@ -398,11 +398,27 @@ div.DropdownButton {
             cursor: pointer;
             padding: 10px 16px;
             color: @text-black-light;
-            font-size: 1.1rem;
             border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            div.listitem-title-wrap {
+                display: flex;
+                flex-direction: column; /* so that description is below the title */
+            }
+            div.listitem-title {
+                font-weight: bold;
+                font-size: 13px;
+            }
+            div.listitem-description {
+                color: #666;
+                font-size: 10px;
+            }
         }
         li.listitem:hover {
             background-color: rgb(241, 241, 241);
+        }
+        li.listitem.selected {
+            background-color: #dddddd;
         }
     }
 }
