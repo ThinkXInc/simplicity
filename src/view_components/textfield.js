@@ -82,7 +82,7 @@ class TextField {
         this.hasUnit = hasUnit;
         this.unit = unit;
         this.unitPlace = unitPlace;
-        this.placeholder = placeholder;
+        this._placeholder = placeholder; 
         this.counterFormat = counterFormat;
         this.passwordMode = passwordMode;
         this.onDisableClassName = onDisableClassName;
@@ -125,6 +125,7 @@ class TextField {
         });
 
         this._createElements();
+        this._setPlaceholder(this._placeholder);
         this._setEventHandlers();
 
         this.count = 0;
@@ -190,6 +191,25 @@ class TextField {
             } else {
                 console.warn(`Cookie is not set for key ${this.fieldName} since the value is not valid.`)
             }
+        }
+    }
+
+    get placeholder() {
+        return this._placeholder;
+    }
+    
+    set placeholder(value) {
+      this._placeholder = value;
+      this._setPlaceholder(value); // call the private helper below
+    }
+
+    _setPlaceholder(placeholder) {
+        if (!placeholder) {
+            console.warning(`placeholder set to ${this.id}  but null.`)
+            return
+        }
+        if (this.$textArea) {
+          this.$textArea.placeholder = placeholder;
         }
     }
 
