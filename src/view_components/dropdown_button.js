@@ -168,18 +168,18 @@ class DropdownButton {
         return this._state;
     }
 
-    set selectedValue(selectedValue) {
+    set selectedValue(newVal) {
         const previousValue = this._selectedValue;
         if (!this.isMultiSelect) {
             // Single selection
-            if (selectedValue != null) {
+            if (newVal != null) {
             } else {
-                console.error(`${selectedValue} is null.`);
+                console.error(`${newVal} is null.`);
             }
             this._selectedValue = newVal;
             const item = this.items.find(item => String(item.value) === String(newVal));
             if (item == null) {
-                console.error(`${selectedValue} is not in items. see below.`);
+                console.error(`${newVal} is not in items. see below.`);
                 console.table(this.items);
             } else {
                 this._setTitle(item.title);
@@ -190,7 +190,7 @@ class DropdownButton {
                 this._selectedValue = newVal;
                 if (this._selectedValue.length === 1) {
                     // Only one item selected set the item's title
-                    const item = this.items.find(item => String(item.value) === String(selectedValue[0]));
+                    const item = this.items.find(item => String(item.value) === String(newVal[0]));
                     if (item) {
                         this._setTitle(item.title);
                     }
@@ -204,7 +204,7 @@ class DropdownButton {
             }
         }
         
-        const event = new CustomEvent('selected', { detail: { value: selectedValue, id: this.id } });
+        const event = new CustomEvent('selected', { detail: { value: newVal, id: this.id } });
         this.$view.dispatchEvent(event);
     }
 
