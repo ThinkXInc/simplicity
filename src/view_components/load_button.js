@@ -4,19 +4,22 @@ class LoadButton {
         id,
         labelText = '',
         loaderSrc = '/img/button-loader.svg',
+        onClick,
     }) {
         this.id = id;
         this.labelText = labelText;
         this.loaderSrc = loaderSrc;
         this.createElements();
 
-        this.isDisable = false;
+        this.isDisabled = false;
+
+        this._registerEvents(onClick);
     }
 
-    set isDisable(isDisable) {
-        this._isDisable = isDisable;
+    set isDisabled(isDisabled) {
+        this._isDisabled = isDisabled;
     }
-    get isDisable() {return this._idDisable }
+    get isDisabled() {return this._isDisabled }
 
     createElements(){
         const $button = document.createElement('button');
@@ -39,6 +42,15 @@ class LoadButton {
         this.$button = $button;
     }
 
+    _registerEvents(onClick) {
+        if (typeof onClick === 'function') {
+            this.$button.addEventListener('click', () => {
+                if (this._isDisabled) return;
+                onClick(this, this.id);
+            });
+        }
+    }
+
     load(isLoading) {
         if (isLoading){
             console.log(`LoadButton: ${this.id} load -> true`)
@@ -49,15 +61,15 @@ class LoadButton {
         }
     }
 
-    disable(isDisable) {
-        if (isDisable) {
+    disable(isDisabled) {
+        if (isDisabled) {
             console.log(`LoadButton: ${this.id} disable -> true`)
             this.$button.classList.add('disable');
-            this.isDisable = true;
+            this.isDisabled = true;
         } else {
             console.log(`LoadButton: ${this.id} disable -> false`)
             this.$button.classList.remove('disable');
-            this.isDisable = false;
+            this.isDisabled = false;
         }
     }
 }

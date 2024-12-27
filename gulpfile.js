@@ -24,6 +24,7 @@ const paths = {
         './src/view_component_bases/form_component_base.js',
         './src/view_component_bases/loading_base.js',
         './src/view_component_bases/load_button.js',
+        './src/view_components/loading_message.js',
         './src/view_components/notification.js',
         './src/view_components/load_button.js',
         './src/view_components/color_picker.js',
