@@ -4,6 +4,14 @@ const LoadingMessagePattern = {
     B: 'B',
 };
 
+// Named gradients
+const LoadingMessageGradient = {
+    gray:      { start: '#aaaaaa', end: '#fafafa' },
+    ocean:     { start: '#30688d', end: '#01BFD8' },
+    bluegreen: { start: '#00ff00', end: '#0000ff' },
+    alert:     { start: '#8c1111', end: '#8c1111' }, // just in case you want a 2-stop "red" gradient
+};
+
 class LoadingMessage {
     constructor({
         id,
@@ -58,82 +66,82 @@ class LoadingMessage {
             // Keyframe from 0%→100%→0% (ping-pong)
             // so it goes left→right→left continuously
             keyframesCss = `
-      @keyframes ${this.id}-gradient-animation {
-        0%   { background-position: 0% 30%; }
-        50%  { background-position: 100% 30%; }
-        100% { background-position: 0% 30%; }
-      }
-    `;
+                @keyframes ${this.id}-gradient-animation {
+                    0%   { background-position: 0% 30%; }
+                    50%  { background-position: 100% 30%; }
+                    100% { background-position: 0% 30%; }
+                }
+            `;
             gradientCss = `
-      #${this.id}.loading .fadeLayer.active {
-        background-image: linear-gradient(
-          to right,
-          var(--lm-grad-start, #aaaaaa),
-          var(--lm-grad-end,   #fafafa),
-          var(--lm-grad-start, #aaaaaa)
-        );
-        background-size: 300% 100%;
-        background-position: 0% 50%;
-        animation: ${this.id}-gradient-animation 3s ease-in-out infinite;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-    `;
+                #${this.id}.loading .fadeLayer.active {
+                    background-image: linear-gradient(
+                        to right,
+                        var(--lm-grad-start, #aaaaaa),
+                        var(--lm-grad-end,   #fafafa),
+                        var(--lm-grad-start, #aaaaaa)
+                    );
+                    background-size: 300% 100%;
+                    background-position: 0% 50%;
+                    animation: ${this.id}-gradient-animation 3s ease-in-out infinite;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+            `;
         } else {
             // Pattern B:
             // A "5-stop" gradient: A→B→A→B→A
             // Keyframe from 0%→100% left→right, loops seamlessly
             keyframesCss = `
-      @keyframes ${this.id}-gradient-animation {
-        0% {
-          background-position: 0% 50%;
-        }
-        100% {
-          background-position: 100% 50%;
-        }
-      }
-    `;
+                @keyframes ${this.id}-gradient-animation {
+                    0% {
+                        background-position: 0% 50%;
+                    }
+                    100% {
+                        background-position: 100% 50%;
+                    }
+                }
+            `;
             gradientCss = `
-      #${this.id}.loading .fadeLayer.active {
-        background-image: linear-gradient(
-          to right,
-          var(--lm-grad-start, #aaaaaa) 0%,
-          var(--lm-grad-end,   #fafafa) 30%,
-          var(--lm-grad-start, #aaaaaa) 40%,
-          var(--lm-grad-end,   #fafafa) 80%,
-          var(--lm-grad-start, #aaaaaa) 100%
-        );
-        background-size: 200% 100%;
-        background-position: 0% 50%;
-        animation: ${this.id}-gradient-animation 3s linear infinite;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-    `;
+                #${this.id}.loading .fadeLayer.active {
+                    background-image: linear-gradient(
+                        to right,
+                        var(--lm-grad-start, #aaaaaa) 0%,
+                        var(--lm-grad-end,   #fafafa) 30%,
+                        var(--lm-grad-start, #aaaaaa) 40%,
+                        var(--lm-grad-end,   #fafafa) 80%,
+                        var(--lm-grad-start, #aaaaaa) 100%
+                    );
+                    background-size: 200% 100%;
+                    background-position: 0% 50%;
+                    animation: ${this.id}-gradient-animation 3s linear infinite;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+            `;
         }
 
         styleEl.textContent = `
-    ${keyframesCss}
+            ${keyframesCss}
 
-    ${gradientCss}
+            ${gradientCss}
 
-    #${this.id} .fadeLayer {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      transition: opacity 0.3s ease;
-      opacity: 0;
-      white-space: pre-wrap;
-    }
+            #${this.id} .fadeLayer {
+                position: absolute;
+                top: 0; left: 0; right: 0; bottom: 0;
+                transition: opacity 0.3s ease;
+                opacity: 0;
+                white-space: pre-wrap;
+            }
 
-    #${this.id} .fadeLayer.active {
-      opacity: 1;
-    }
+            #${this.id} .fadeLayer.active {
+                opacity: 1;
+            }
 
-    #${this.id} {
-      position: relative;
-      min-height: 1em;
-    }
-  `;
+            #${this.id} {
+                position: relative;
+                min-height: 1em;
+            }
+        `;
 
         document.head.appendChild(styleEl);
     }
@@ -162,19 +170,71 @@ class LoadingMessage {
     }
 
     /**
-     * setText(...) - queue a new text.
-     * If you pass gradientStart/End, we override the default for this instance going forward.
+     * setText(...) - queue a new text with options for gradient, alert, loading, etc.
+     * 
+     * Usage examples:
+     *    setText('Now playing...', { gradient: LoadingMessageGradient.gray });
+     *    setText('Now playing...', { gradientStart: '#fff', gradientEnd: '#000' });
+     *    setText('Error', { alert: true });
+     *    setText('Loading stuff', { loading: true, gradient: LoadingMessageGradient.ocean });
      */
-    setText(newText, loading = false, alert = false, gradientStart = null, gradientEnd = null) {
-        if (gradientStart) this.gradientStart = gradientStart;
-        if (gradientEnd)   this.gradientEnd   = gradientEnd;
-        this._updateGradientVars(this.gradientStart, this.gradientEnd);
+    setText(text, options = {}) {
+        // Destructure your optional fields
+        const {
+            gradient,        // e.g. {start: '#aaaaaa', end: '#fafafa'}
+            gradientStart, 
+            gradientEnd,
+            alert = false,
+        } = options;
 
-        this._queue.push({ newText, loading, alert });
+        // Determine the final gradient colors for this text
+        // 1) If we have a named gradient, start with that
+        let finalStart = gradient ? gradient.start : this.gradientStart;
+        let finalEnd   = gradient ? gradient.end   : this.gradientEnd;
 
+        // 2) If the caller provided explicit gradientStart/End, override
+        if (gradientStart) finalStart = gradientStart;
+        if (gradientEnd)   finalEnd   = gradientEnd;
+
+        // Push it into our queue
+        this._queue.push({
+            newText: text,
+            alert,
+            gradientStart: finalStart,
+            gradientEnd: finalEnd,
+        });
+
+        // If we are not processing anything, kick things off
         if (!this._isProcessing) {
             this._processQueue();
         }
+    }
+
+    stop() {
+        // 1) Stop queue processing
+        this._isProcessing = false;
+        // 2) Clear any pending messages
+        this._queue = [];
+    
+        // 3) Fade out the currently active layer
+        const activeLayer = (this._activeIndex === 0) ? this.$layerA : this.$layerB;
+        activeLayer.classList.remove('active');
+    
+        // Ensure container is not in loading state
+        this.load(false);
+    
+        // 4) After the transition is done (~300ms), clear out text and styling
+        setTimeout(() => {
+            activeLayer.textContent = '';
+            activeLayer.style.color = '';
+            activeLayer.classList.remove('error');
+    
+            // Also clear out the inactive layer, just in case
+            const inactiveLayer = (this._activeIndex === 0) ? this.$layerB : this.$layerA;
+            inactiveLayer.textContent = '';
+            inactiveLayer.style.color = '';
+            inactiveLayer.classList.remove('error');
+        }, 300);
     }
 
     _processQueue() {
@@ -184,7 +244,12 @@ class LoadingMessage {
         }
         this._isProcessing = true;
 
-        const { newText, loading, alert } = this._queue.shift();
+        const {
+            newText,
+            alert,
+            gradientStart,
+            gradientEnd,
+        } = this._queue.shift();
 
         const now = Date.now();
         const timeSinceLast = now - this._lastDisplayedAt;
@@ -192,10 +257,16 @@ class LoadingMessage {
 
         setTimeout(() => {
             this._fadeOutOld(() => {
-                this._fadeInNew(newText, loading, alert, () => {
-                    this._lastDisplayedAt = Date.now();
-                    this._processQueue();
-                });
+                this._fadeInNew(
+                    newText,
+                    alert,
+                    gradientStart,
+                    gradientEnd,
+                    () => {
+                        this._lastDisplayedAt = Date.now();
+                        this._processQueue();
+                    }
+                );
             });
         }, waitRemaining);
     }
@@ -208,14 +279,17 @@ class LoadingMessage {
         }, 300);
     }
 
-    _fadeInNew(newText, loading, alert, onDone) {
-        this.load(loading);
-
+    _fadeInNew(newText, alert, gradientStart, gradientEnd, onDone) {
+        this.load(true);
+        
         // Clear error from both
         this.$layerA.style.color = '';
         this.$layerB.style.color = '';
         this.$layerA.classList.remove('error');
         this.$layerB.classList.remove('error');
+
+        // Update the gradient for this message
+        this._updateGradientVars(gradientStart, gradientEnd);
 
         // The inactive layer
         const newLayer = (this._activeIndex === 0) ? this.$layerB : this.$layerA;

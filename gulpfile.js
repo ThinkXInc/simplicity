@@ -19,6 +19,7 @@ const paths = {
         './src/helpers/utils.js',
         './src/helpers/effects.js',
         './src/helpers/file_uploader.js',
+        './src/helpers/volume_meter.js',
         './src/models/userbase.js',
         './src/view_component_bases/view_component_base.js',
         './src/view_component_bases/form_component_base.js',
