@@ -161,6 +161,10 @@ class LoadingMessage {
         this.$layerB = document.createElement('div');
         this.$layerA.classList.add('fadeLayer');
         this.$layerB.classList.add('fadeLayer');
+        this.$layerA.style.width = 'max-content';
+        this.$layerA.style.position = 'initial';
+        this.$layerB.style.width = 'max-content';
+        this.$layerB.style.position = 'initial';
 
         // layerA is active initially
         this.$layerA.classList.add('active');
