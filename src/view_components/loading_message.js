@@ -12,6 +12,13 @@ const LoadingMessageGradient = {
     alert:     { start: '#8c1111', end: '#8c1111' }, // just in case you want a 2-stop "red" gradient
 };
 
+// Text align options
+const LoadingMessageTextAlign = {
+    left:   'left',
+    center: 'center',
+    right:  'right'
+};
+
 class LoadingMessage {
     constructor({
         id,
@@ -21,6 +28,7 @@ class LoadingMessage {
         alertColor    = '#8c1111',   // default alert color
         minimumWaitTimeMs = 500,
         pattern = LoadingMessagePattern.B,  // default = Pattern B (5-stop)
+        textAlign = LoadingMessageTextAlign.center // default alignment = center
     }) {
         this.id = id;
         this.classList = classList;
@@ -28,9 +36,12 @@ class LoadingMessage {
         this.gradientEnd   = gradientEnd;
         this.alertColor    = alertColor;
         this.minimumWaitTimeMs = minimumWaitTimeMs;
-        
-        // Which pattern to use (A or B)
+
+        // Pattern (A or B)
         this.pattern = pattern;
+
+        // Text alignment
+        this.textAlign = textAlign;
 
         // Active layer (0 or 1)
         this._activeIndex = 0;
@@ -149,8 +160,9 @@ class LoadingMessage {
     createView() {
         this.$view = document.createElement('div');
         this.$view.id = this.id;
+        // Use the user-provided textAlign
         this.$view.style.width = '100%';
-        this.$view.style.textAlign = 'center';
+        this.$view.style.textAlign = this.textAlign;
         this.$view.classList.add('LoadingMessage');
 
         if (this.classList) {
