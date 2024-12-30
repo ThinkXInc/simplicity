@@ -149,6 +149,8 @@ class LoadingMessage {
     createView() {
         this.$view = document.createElement('div');
         this.$view.id = this.id;
+        this.$view.style.width = '100%';
+        this.$view.style.textAlign = 'center';
         this.$view.classList.add('LoadingMessage');
 
         if (this.classList) {
@@ -161,10 +163,10 @@ class LoadingMessage {
         this.$layerB = document.createElement('div');
         this.$layerA.classList.add('fadeLayer');
         this.$layerB.classList.add('fadeLayer');
-        this.$layerA.style.width = 'max-content';
-        this.$layerA.style.position = 'initial';
-        this.$layerB.style.width = 'max-content';
-        this.$layerB.style.position = 'initial';
+        this.$layerA.style.position = 'absolute';
+        this.$layerA.style.width = '100%';
+        this.$layerB.style.position = 'absolute';
+        this.$layerB.style.width = '100%';
 
         // layerA is active initially
         this.$layerA.classList.add('active');
