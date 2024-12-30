@@ -1,7 +1,14 @@
 class Draggable {
-    constructor({ element, onDragEnd }) {
+    /**
+     * @param {Object} options
+     * @param {HTMLElement} options.element - The DOM element to drag
+     * @param {Function} [options.onDrag]   - Called continuously while dragging (signature: ({left, top}) => void)
+     * @param {Function} [options.onDragEnd]- Called after mouseup with final position (signature: ({left, top}) => void)
+     */
+    constructor({ element, onDrag, onDragEnd }) {
         this.el = element;
-        this.onDragEnd = onDragEnd; // Optional callback
+        this.onDrag = onDrag;         // Optional callback
+        this.onDragEnd = onDragEnd;   // Optional callback
 
         this.isDragging = false;
 
@@ -13,7 +20,7 @@ class Draggable {
         this.mouseDownX = 0;
         this.mouseDownY = 0;
 
-        // Will store the most-recent newLeft/newTop to pass to onDragEnd
+        // Will store the most-recent newLeft/newTop to pass to callbacks
         this.lastLeft = 0;
         this.lastTop  = 0;
 
@@ -77,6 +84,11 @@ class Draggable {
         this.lastTop  = newTop;
 
         console.log(`[Draggable] Mouse move: left=${newLeft}, top=${newTop}`);
+
+        // If an onDrag callback was provided, call it
+        if (typeof this.onDrag === 'function') {
+            this.onDrag({ left: newLeft, top: newTop });
+        }
     }
 
     onMouseUp(e) {
