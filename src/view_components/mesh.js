@@ -38,16 +38,22 @@ class Mesh {
      *
      * @param {HTMLElement} $dom - DOM container to mount the SVG
      */
-    mount($dom) {
+    mount({ $parent, $insertBefore }) {
         // Create SVG element if not already created
         if (!this.svg) {
             this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
             this.svg.setAttribute('id', this.id);
-            $dom.appendChild(this.svg);
+    
+            // Insert the SVG before $insertBefore if provided, otherwise append to $parent
+            if ($insertBefore) {
+                $parent.insertBefore(this.svg, $insertBefore);
+            } else {
+                $parent.appendChild(this.svg);
+            }
         }
     
-        // Use getBoundingClientRect() instead of clientWidth/clientHeight
-        const rect = $dom.getBoundingClientRect();
+        // Use getBoundingClientRect() to get the dimensions
+        const rect = $parent.getBoundingClientRect();
         const width = rect.width;
         const height = rect.height;
     
@@ -55,6 +61,9 @@ class Mesh {
         this.height = height;
     
         // Set explicit width/height on the SVG
+        this.svg.style.position = 'absolute';
+        this.svg.style.top = '0px';
+        this.svg.style.left = '0px';
         this.svg.setAttribute('width', width);
         this.svg.setAttribute('height', height);
     
