@@ -9,7 +9,7 @@ const LoadingMessageGradient = {
     gray:      { start: '#aaaaaa', end: '#fafafa' },
     ocean:     { start: '#30688d', end: '#01BFD8' },
     bluegreen: { start: '#00ff00', end: '#0000ff' },
-    alert:     { start: '#8c1111', end: '#8c1111' }, // just in case you want a 2-stop "red" gradient
+    alert:     { start: '#8c1111', end: '#8c1111' },
 };
 
 // Text align options
@@ -51,6 +51,10 @@ class LoadingMessage {
         this._queue = [];
         this._isProcessing = false;
 
+        // (MODIFIED) We’ll store a single callback that should be run 
+        // after the entire queue is done.
+        this._onQueueComplete = null;
+
         // Create the CSS + DOM
         this.injectDynamicStyle();
         this.createView();
@@ -67,15 +71,11 @@ class LoadingMessage {
         const styleEl = document.createElement('style');
         styleEl.type = 'text/css';
 
-        // We build different CSS depending on the chosen pattern
         let keyframesCss = '';
         let gradientCss  = '';
 
         if (this.pattern === LoadingMessagePattern.A) {
-            // Pattern A:
-            // A "3-stop" gradient: A → B → A
-            // Keyframe from 0%→100%→0% (ping-pong)
-            // so it goes left→right→left continuously
+            // Pattern A (3-stop)
             keyframesCss = `
                 @keyframes ${this.id}-gradient-animation {
                     0%   { background-position: 0% 30%; }
@@ -99,9 +99,7 @@ class LoadingMessage {
                 }
             `;
         } else {
-            // Pattern B:
-            // A "5-stop" gradient: A→B→A→B→A
-            // Keyframe from 0%→100% left→right, loops seamlessly
+            // Pattern B (5-stop)
             keyframesCss = `
                 @keyframes ${this.id}-gradient-animation {
                     0% {
@@ -189,30 +187,33 @@ class LoadingMessage {
 
     /**
      * setText(...) - queue a new text with options for gradient, alert, loading, etc.
-     * 
-     * Usage examples:
-     *    setText('Now playing...', { gradient: LoadingMessageGradient.gray });
-     *    setText('Now playing...', { gradientStart: '#fff', gradientEnd: '#000' });
-     *    setText('Error', { alert: true });
-     *    setText('Loading stuff', { loading: true, gradient: LoadingMessageGradient.ocean });
+     *
+     * Pass a callback if you want to be notified *after the ENTIRE queue* has finished:
+     *    setText('Hello World', { loading: true }, () => {
+     *       console.log('Queue is done!');
+     *    });
      */
-    setText(text, options = {}) {
-        // Destructure your optional fields
+    setText(text, options = {}, onQueueComplete = null) {  // (MODIFIED)
         const {
             gradient,        // e.g. {start: '#aaaaaa', end: '#fafafa'}
             gradientStart, 
             gradientEnd,
             alert = false,
+            fadeOutAfterMs = 1000
         } = options;
 
         // Determine the final gradient colors for this text
-        // 1) If we have a named gradient, start with that
         let finalStart = gradient ? gradient.start : this.gradientStart;
         let finalEnd   = gradient ? gradient.end   : this.gradientEnd;
 
-        // 2) If the caller provided explicit gradientStart/End, override
         if (gradientStart) finalStart = gradientStart;
         if (gradientEnd)   finalEnd   = gradientEnd;
+
+        // (MODIFIED) If user passed a callback, store it. 
+        // Only keep the *most recent* callback in this._onQueueComplete
+        if (onQueueComplete) {
+            this._onQueueComplete = onQueueComplete;
+        }
 
         // Push it into our queue
         this._queue.push({
@@ -220,6 +221,7 @@ class LoadingMessage {
             alert,
             gradientStart: finalStart,
             gradientEnd: finalEnd,
+            fadeOutAfterMs
         });
 
         // If we are not processing anything, kick things off
@@ -256,8 +258,16 @@ class LoadingMessage {
     }
 
     _processQueue() {
+        // (MODIFIED) If queue is empty, we are done
         if (this._queue.length === 0) {
             this._isProcessing = false;
+
+            // Here’s where we call the user’s callback if available
+            if (this._onQueueComplete) {
+                this._onQueueComplete();
+                // Reset so it doesn’t get called repeatedly
+                this._onQueueComplete = null;
+            }
             return;
         }
         this._isProcessing = true;
@@ -267,6 +277,7 @@ class LoadingMessage {
             alert,
             gradientStart,
             gradientEnd,
+            fadeOutAfterMs
         } = this._queue.shift();
 
         const now = Date.now();
@@ -280,8 +291,10 @@ class LoadingMessage {
                     alert,
                     gradientStart,
                     gradientEnd,
+                    fadeOutAfterMs,
                     () => {
                         this._lastDisplayedAt = Date.now();
+                        // Process the *next* item
                         this._processQueue();
                     }
                 );
@@ -297,7 +310,7 @@ class LoadingMessage {
         }, 300);
     }
 
-    _fadeInNew(newText, alert, gradientStart, gradientEnd, onDone) {
+    _fadeInNew(newText, alert, gradientStart, gradientEnd, fadeOutAfterMs, onDone) {
         this.load(true);
         
         // Clear error from both
@@ -321,13 +334,31 @@ class LoadingMessage {
         newLayer.classList.add('active');
         this._activeIndex = (this._activeIndex === 0) ? 1 : 0;
 
+        //  **Fade-out logic** 
+        if (fadeOutAfterMs) {
+            setTimeout(() => {
+                // Only fade out if the text is still the same
+                if (newLayer.textContent === newText) {
+                    newLayer.classList.remove('active');
+                    // Wait for the fade-out transition (~300ms)
+                    setTimeout(() => {
+                        // Clear the text & remove error styles
+                        if (newLayer.textContent === newText) {
+                            newLayer.textContent = '';
+                            newLayer.style.color = '';
+                            newLayer.classList.remove('error');
+                        }
+                    }, 300);
+                }
+            }, fadeOutAfterMs);
+        }
+
         setTimeout(() => {
             if (onDone) onDone();
         }, 300);
     }
 
     load(isLoading) {
-        // Add or remove .loading => triggers the gradient on the active layer
         if (isLoading) {
             this.$view.classList.add('loading');
         } else {
@@ -335,9 +366,6 @@ class LoadingMessage {
         }
     }
 
-    /**
-     * Update container’s CSS vars so the gradient picks them up
-     */
     _updateGradientVars(startColor, endColor) {
         this.$view.style.setProperty('--lm-grad-start', startColor);
         this.$view.style.setProperty('--lm-grad-end', endColor);

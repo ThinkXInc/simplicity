@@ -71,6 +71,7 @@ class GradientViewLoader {
 
         const $indicatorWrapper = document.createElement('div');
         $indicatorWrapper.className = 'indicator-wrapper';
+        $indicatorWrapper.style.minWidth = `${this.indicatorWidth}px`;
 
         const $svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         $svg.setAttribute('viewBox', '0 0 100 10');
@@ -94,8 +95,19 @@ class GradientViewLoader {
         this.isLoading = false;
     }
 
-    appendTo($parentView) {
-        $parentView.appendChild($view);
+    mount($parent) {
+        // Check if $parent is null or not an instance of HTMLElement
+        if (!$parent || !($parent instanceof HTMLElement)) {
+            console.error(`[GradintViewLoader ERROR] Could not find a parent element with id=${parentId} or the element is not a valid HTML element.`);
+            return;
+        }
+    
+        // Check if this.$view is valid
+        if (!this.$view || !(this.$view instanceof HTMLElement)) {
+            console.error(`[GradintViewLoader ERROR] this.$view is not a valid HTMLElement.`);
+            return;
+        }
+        $parent.appendChild(this.$view);
     }
 
     /**
