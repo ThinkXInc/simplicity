@@ -26,7 +26,8 @@ class LoadingMessage {
         gradientStart = '#aaaaaa',   // default color A
         gradientEnd   = '#fafafa',   // default color B
         alertColor    = '#8c1111',   // default alert color
-        minimumWaitTimeMs = 500,
+        minimumWaitTimeMs = 100,
+        defatulFadeOutAfterMs = 500,
         pattern = LoadingMessagePattern.B,  // default = Pattern B (5-stop)
         textAlign = LoadingMessageTextAlign.center // default alignment = center
     }) {
@@ -36,6 +37,7 @@ class LoadingMessage {
         this.gradientEnd   = gradientEnd;
         this.alertColor    = alertColor;
         this.minimumWaitTimeMs = minimumWaitTimeMs;
+        this.defatulFadeOutAfterMs = defatulFadeOutAfterMs;
 
         // Pattern (A or B)
         this.pattern = pattern;
@@ -51,8 +53,7 @@ class LoadingMessage {
         this._queue = [];
         this._isProcessing = false;
 
-        // (MODIFIED) We’ll store a single callback that should be run 
-        // after the entire queue is done.
+        // We'll store a single callback that should be run after the entire queue is done.
         this._onQueueComplete = null;
 
         // Create the CSS + DOM
@@ -193,24 +194,42 @@ class LoadingMessage {
      *       console.log('Queue is done!');
      *    });
      */
-    setText(text, options = {}, onQueueComplete = null) {  // (MODIFIED)
+    setText(text, options = {}, onQueueComplete = null) {
         const {
             gradient,        // e.g. {start: '#aaaaaa', end: '#fafafa'}
             gradientStart, 
             gradientEnd,
             alert = false,
-            fadeOutAfterMs = 1000
+            // NOTE: removing default from destructuring so we can manually handle it
+            fadeOutAfterMs 
         } = options;
 
-        // Determine the final gradient colors for this text
+        // Determine final gradient colors for this text
         let finalStart = gradient ? gradient.start : this.gradientStart;
         let finalEnd   = gradient ? gradient.end   : this.gradientEnd;
 
         if (gradientStart) finalStart = gradientStart;
         if (gradientEnd)   finalEnd   = gradientEnd;
 
-        // (MODIFIED) If user passed a callback, store it. 
-        // Only keep the *most recent* callback in this._onQueueComplete
+        // Decide on the final fadeOutAfterMs
+        // If alert = true AND user did NOT explicitly pass fadeOutAfterMs,
+        // then do NOT fade out. Otherwise, default fade out in 1s.
+        let finalFadeOutAfterMs;
+        if (options.hasOwnProperty('fadeOutAfterMs')) {
+            // User explicitly provided fadeOutAfterMs (could be 0, 1000, etc.)
+            finalFadeOutAfterMs = fadeOutAfterMs;
+        } else {
+            // fadeOutAfterMs not explicitly set by user
+            if (alert) {
+                // For an alert message, do NOT fade out automatically
+                finalFadeOutAfterMs = null;
+            } else {
+                // Normal message fades out after 1s
+                finalFadeOutAfterMs = this.defatulFadeOutAfterMs;
+            }
+        }
+
+        // If user passed a callback, store it. (Only keep the most recent callback.)
         if (onQueueComplete) {
             this._onQueueComplete = onQueueComplete;
         }
@@ -221,7 +240,7 @@ class LoadingMessage {
             alert,
             gradientStart: finalStart,
             gradientEnd: finalEnd,
-            fadeOutAfterMs
+            fadeOutAfterMs: finalFadeOutAfterMs
         });
 
         // If we are not processing anything, kick things off
@@ -258,14 +277,13 @@ class LoadingMessage {
     }
 
     _processQueue() {
-        // (MODIFIED) If queue is empty, we are done
+        // If queue is empty, we are done
         if (this._queue.length === 0) {
             this._isProcessing = false;
 
-            // Here’s where we call the user’s callback if available
+            // Call the user’s callback if available
             if (this._onQueueComplete) {
                 this._onQueueComplete();
-                // Reset so it doesn’t get called repeatedly
                 this._onQueueComplete = null;
             }
             return;
@@ -307,13 +325,13 @@ class LoadingMessage {
         oldLayer.classList.remove('active');
         setTimeout(() => {
             if (onDone) onDone();
-        }, 300);
+        }, 0);
     }
 
     _fadeInNew(newText, alert, gradientStart, gradientEnd, fadeOutAfterMs, onDone) {
         this.load(true);
         
-        // Clear error from both
+        // Clear error from both layers
         this.$layerA.style.color = '';
         this.$layerB.style.color = '';
         this.$layerA.classList.remove('error');
@@ -322,7 +340,7 @@ class LoadingMessage {
         // Update the gradient for this message
         this._updateGradientVars(gradientStart, gradientEnd);
 
-        // The inactive layer
+        // Choose the inactive layer
         const newLayer = (this._activeIndex === 0) ? this.$layerB : this.$layerA;
         newLayer.textContent = newText;
 
@@ -334,8 +352,8 @@ class LoadingMessage {
         newLayer.classList.add('active');
         this._activeIndex = (this._activeIndex === 0) ? 1 : 0;
 
-        //  **Fade-out logic** 
-        if (fadeOutAfterMs) {
+        // Fade-out logic — only if fadeOutAfterMs is non-null
+        if (fadeOutAfterMs != null) {
             setTimeout(() => {
                 // Only fade out if the text is still the same
                 if (newLayer.textContent === newText) {
