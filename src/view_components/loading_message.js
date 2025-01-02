@@ -337,17 +337,18 @@ class LoadingMessage {
         this.$layerA.classList.remove('error');
         this.$layerB.classList.remove('error');
 
-        // Update the gradient for this message
-        this._updateGradientVars(gradientStart, gradientEnd);
-
         // Choose the inactive layer
         const newLayer = (this._activeIndex === 0) ? this.$layerB : this.$layerA;
         newLayer.textContent = newText;
 
+        // Update the gradient for this message
         if (alert) {
-            newLayer.style.color = this.alertColor;
+            this._updateGradientVars(this.alertColor, this.alertColor);
             newLayer.classList.add('error');
+        } else {
+            this._updateGradientVars(gradientStart, gradientEnd);
         }
+
 
         newLayer.classList.add('active');
         this._activeIndex = (this._activeIndex === 0) ? 1 : 0;
