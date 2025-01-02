@@ -7,6 +7,7 @@ const LoadingMessagePattern = {
 // Named gradients
 const LoadingMessageGradient = {
     gray:      { start: '#aaaaaa', end: '#fafafa' },
+    gray2:      { start: '#888', end: '#aaa' },
     ocean:     { start: '#30688d', end: '#01BFD8' },
     bluegreen: { start: '#00ff00', end: '#0000ff' },
     alert:     { start: '#8c1111', end: '#8c1111' },
@@ -26,7 +27,7 @@ class LoadingMessage {
         gradientStart = '#aaaaaa',   // default color A
         gradientEnd   = '#fafafa',   // default color B
         alertColor    = '#8c1111',   // default alert color
-        minimumWaitTimeMs = 100,
+        minimumWaitTimeMs = 0,
         defatulFadeOutAfterMs = 500,
         pattern = LoadingMessagePattern.B,  // default = Pattern B (5-stop)
         textAlign = LoadingMessageTextAlign.center // default alignment = center
@@ -195,6 +196,8 @@ class LoadingMessage {
      *    });
      */
     setText(text, options = {}, onQueueComplete = null) {
+        console.warn('.........................')
+        console.warn(text)
         const {
             gradient,        // e.g. {start: '#aaaaaa', end: '#fafafa'}
             gradientStart, 

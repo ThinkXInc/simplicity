@@ -53,9 +53,18 @@ class Mesh {
         }
     
         // Use getBoundingClientRect() to get the dimensions
-        const rect = $parent.getBoundingClientRect();
-        const width = rect.width;
-        const height = rect.height;
+        //const rect = $parent.getBoundingClientRect();
+        //const width = $parent.style.width; //rect.width;
+        //const height = $parent.style.height;//rect.height;
+        let width = parseFloat($parent.style.width);
+        let height = parseFloat($parent.style.height);
+        if (isNaN(width) || isNaN(height)) {
+            // Use getBoundingClientRect() as a fallback
+            const rect = $parent.getBoundingClientRect();
+            width = rect.width;
+            height = rect.height;
+        }
+
     
         this.width = width;
         this.height = height;
