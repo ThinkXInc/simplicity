@@ -4,255 +4,286 @@
  * @fileoverview helpers/browser.js
  * Browser control class.
  * 
- * @author kaz@thinkxinc.com (Kazuki Otsuka)
+ * @author 
  */
 class Browser {
 
-  /**
-   * Syncronously move page.
-   * 
-   * @param {String} relativePath 
-   */
-  static goTo(relativePath) {
-    let baseURL = window.location.origin;
-    window.location = baseURL + '/' + relativePath;
-  }
-
-  /**
-   * Redirect to a new URL.
-   * 
-   * @param {String} url - e.g. https%3A//quantz.sixths.ai/v1/ja/home
-   */
-  static redirectToUrl(url) {
-    console.log(`tring to redirect to ${url}`)
-    let decodedUrl;
-    try {
-        decodedUrl = decodeURIComponent(url);
-    } catch (e) {
-        console.error('Error decoding the URL:', e);
-        return; // Stop further execution if URL is badly encoded
+    /**
+     * Syncronously move page.
+     * 
+     * @param {String} relativePath 
+     */
+    static goTo(relativePath) {
+        let baseURL = window.location.origin;
+        window.location = baseURL + '/' + relativePath;
     }
 
-    try {
-        const url = new URL(decodedUrl);
-        const relativeUrl = url.pathname + url.search;
-        window.location.href = relativeUrl;
-    } catch (e) {
-        console.error('Failed to construct URL:', e);
-    }
-  }
+    /**
+     * Redirect to a new URL.
+     * 
+     * @param {String} url - e.g. https%3A//quantz.sixths.ai/v1/ja/home
+     */
+    static redirectToUrl(url) {
+        console.log(`tring to redirect to ${url}`);
+        let decodedUrl;
+        try {
+            decodedUrl = decodeURIComponent(url);
+        } catch (e) {
+            console.error('Error decoding the URL:', e);
+            return; // Stop further execution if URL is badly encoded
+        }
 
-
-  /**
-   * Parse query strings from a URL search string and return them as an object.
-   * 
-   * @param {String} searchString - The query string part of a URL.
-   * @return {Object} - An object containing all query parameters as key-value pairs.
-   */
-  static parseQueryStrings(searchString) {
-    try {
-      const params = new URLSearchParams(searchString);
-      let queryParams = {};
-      for (let [key, value] of params.entries()) {
-        queryParams[key] = value;
-      }
-      return queryParams;
-    } catch (e) {
-      console.error('Failed to parse query strings:', e);
-      console.log(searchString);
-      return {}; // Return an empty object if there is an error parsing the search string
-    }
-  }
-
-  /**
-   * Update url in address bar.
-   * 
-   * @public
-   * @param {string} path /path/to?key1=val1&key2=val2 or #key=val
-   * @param {bool} withHTML whether to push the current html and title into history.
-   */
-  static pushHistoryState(path, withHTML = true) {
-    let htmlState = null;
-
-    if (withHTML) {
-      const html = this.getHTML();
-      const title = document.title;
-      htmlState = { html, pageTitle: title };
+        try {
+            const url = new URL(decodedUrl);
+            const relativeUrl = url.pathname + url.search;
+            window.location.href = relativeUrl;
+        } catch (e) {
+            console.error('Failed to construct URL:', e);
+        }
     }
 
-    window.history.pushState(htmlState, "", path);
-  }
 
-  /**
-   * Get html in <content>.
-   * 
-   * @returns {string} html in <document><content>
-   */
-  static getHTML() {
-    const html = document.getElementById('content').innerHTML;
-    return html;
-  }
-
-  static getLangFromUrl() {
-    const pathSegments = window.location.pathname.split('/').filter(Boolean);
-    return pathSegments.length > 0 ? pathSegments[0] : null;
-  }
-
-
-  /**
-   * Get search params string.
-   * 
-   * @returns {string} ?key1=value1&key2=value2
-   */
-  getSearchParamsString() {
-    return window.location.search;
-  }
-
-  /**
-   * Get relative path string.
-   * 
-   * @param {bool} withSearchParams whether to include search params
-   * @param {bool} withHash whether to include hash string
-   * @returns {string} /path/to?key1=val1&key2=val2#fragment
-   */
-  getRelativePath(withSearchParams = true, withHash = true) {
-    let searchParams = new URLSearchParams(window.location.search);
-    return `${window.location.pathname}?${searchParams.toString()}${window.location.hash}`;
-  }
-
-  /**
-  * Get href string
-  * 
-  * @returns {string} https://domain.com/path/to?key1=val1&key2=val2
-  */
-  getURL() {
-    return window.location.href;
-  }
-
-  /**
-   * Get host string
-   * 
-   * @param withPort whether to add port number like :0000
-   * @returns {string} https://domain.com/path/to?key1=val1&key2=val2
-   */
-  getHost(withPort = true) {
-    if (withPort) {
-      return window.location.host;
-    } else {
-      return window.location.hostname;
-    }
-  }
-
-  /**
-   * Get value from search params string /path/to?key=value.
-   * 
-   * @param {string} key 
-   * @param {string} type  {'string', 'int', 'float'}
-   * @returns {string/number} value according to the designated type. null if not in url.
-   */
-  getValueFromSearchParams(key, type = 'string') {
-    let searchstring = window.location.search;
-    console.log(`get value of ${key} in ${searchstring}`);
-    let params = new Proxy(new URLSearchParams(searchstring), {
-      get: function get(searchParams, prop) {
-        return searchParams.get(prop);
-      }
-    });
-    return this._getValueFromParams(key, type, params);
-  }
-
-  /**
-   * Update value in query string /path/to?key=value.
-   * 
-   * @param {string} key target key
-   * @param {string} value new value
-   * @returns {string} new url string
-   */
-  updateValueInSearchParams(key, value, withHTML = true) {
-    let searchParams = new URLSearchParams(window.location.search);
-    searchParams.set(key, value);
-    let newRelativePath = `${window.location.pathname}?${searchParams.toString()}`;
-    this.pushHistoryState(newRelativePath, withHTML);
-  }
-  
-  /**
-   * Get value from hash string /path/to?key1=val1#key2=val2
-   * 
-   * @param {string} key 
-   * @param {string} type  {'string', 'int', 'float'}
-   * @returns {string/number} value according to the designated type. null if not in url.
-   */
-  getValueFromHash(key, type = 'string') {
-    let searchstring = window.location.hash;
-    console.log(`get value of ${key} in ${searchstring}`);
-    let params = new Proxy(new URLSearchParams(searchstring.replace("#", "?")), {
-      get: function get(searchParams, prop) {
-        return searchParams.get(prop);
-      }
-    });
-    return this._getValueFromParams(key, type, params);
-  }
-  
-  /**
-   * Update value in hash string /path/to?key1=val1#key2=val2
-   * 
-   * @param {string} key 
-   * @param {string} value 
-   * @param {boolean} withHTML 
-   */
-  static updateValueInHash(key, value, withHTML = false) {
-    let hash = window.location.hash.replace('#', '');
-    let keyVals = (hash === '') ? [] : hash.split('&');
-    let newhash = '';
-    let foundInHash = false;
-    console.log(`update hash ${hash} with key:${key} val:${value}`);
-    
-    keyVals.forEach((keyval, i) => {
-      let [_key, _val] = keyval.split('=');
-  
-      if (_key === key) {
-        foundInHash = true;
-        newhash += (i === 0) ? `${_key}=${value}` : `&${_key}=${value}`;
-      } else {
-        newhash += (i === 0) ? `${_key}=${_val}` : `&${_key}=${_val}`;
-      }
-    });
-  
-    if (!foundInHash) {
-      newhash += (newhash.length > 0) ? `&${key}=${value}` : `${key}=${value}`;
-    }
-  
-    newhash = `#${newhash}`;
-    this.pushHistoryState(newhash, withHTML);
-    console.log(`hash string updated #${hash} -> ${newhash}`);
-  }
-  
-  /**
-   * Get value from params dict.
-   * 
-   * @param {string} key 
-   * @param {string} type  {'string', 'int', 'float'}
-   * @param {dict} params {key: value} dictionary
-   * @returns {string/number} value according to the designated type. null if not in url.
-   */
-  _getValueFromParams(key, type = 'string', params) {
-    if (params[key] == null) {
-      console.error(`${key} not in the url query string.`);
+    /**
+     * Parse query strings from a URL search string and return them as an object.
+     * 
+     * @param {String} searchString - The query string part of a URL.
+     * @return {Object} - An object containing all query parameters as key-value pairs.
+     */
+    static parseQueryStrings(searchString) {
+        try {
+            const params = new URLSearchParams(searchString);
+            let queryParams = {};
+            for (let [key, value] of params.entries()) {
+                queryParams[key] = value;
+            }
+            return queryParams;
+        } catch (e) {
+            console.error('Failed to parse query strings:', e);
+            console.log(searchString);
+            return {}; // Return an empty object if there is an error parsing the search string
+        }
     }
 
-    console.log(`found ${key} in params. the value is ${params[key]}.`);
+    /**
+     * Update url in address bar.
+     * 
+     * @public
+     * @param {string} path /path/to?key1=val1&key2=val2 or #key=val
+     * @param {bool} withHTML whether to push the current html and title into history.
+     */
+    static pushHistoryState(path, withHTML = true) {
+        let htmlState = null;
 
-    switch (type) {
-      case 'string':
-        return params[key];
-      case 'int':
-        return parseInt(params[key]);
-      case 'float':
-        return parseFloat(params[key]);
-      default:
-        console.error(`${type} is unrecognized type to read query strings.`);
-        return null;
+        if (withHTML) {
+            const html = this.getHTML();
+            const title = document.title;
+            htmlState = { html, pageTitle: title };
+        }
+
+        window.history.pushState(htmlState, "", path);
     }
-  }
+
+    /**
+     * Get html in <content>.
+     * 
+     * @returns {string} html in <document><content>
+     */
+    static getHTML() {
+        const html = document.getElementById('content').innerHTML;
+        return html;
+    }
+
+    static getLangFromUrl() {
+        const pathSegments = window.location.pathname.split('/').filter(Boolean);
+        return pathSegments.length > 0 ? pathSegments[0] : null;
+    }
+
+    /**
+     * Get search params string.
+     * 
+     * @returns {string} ?key1=value1&key2=value2
+     */
+    getSearchParamsString() {
+        return window.location.search;
+    }
+
+    /**
+     * Get relative path string.
+     * 
+     * @param {bool} withSearchParams whether to include search params
+     * @param {bool} withHash whether to include hash string
+     * @returns {string} /path/to?key1=val1&key2=val2#fragment
+     */
+    getRelativePath(withSearchParams = true, withHash = true) {
+        let searchParams = new URLSearchParams(window.location.search);
+        return `${window.location.pathname}?${searchParams.toString()}${window.location.hash}`;
+    }
+
+    /**
+    * Get href string
+    * 
+    * @returns {string} https://domain.com/path/to?key1=val1&key2=val2
+    */
+    getURL() {
+        return window.location.href;
+    }
+
+    /**
+     * Get host string
+     * 
+     * @param withPort whether to add port number like :0000
+     * @returns {string} https://domain.com/path/to?key1=val1&key2=val2
+     */
+    getHost(withPort = true) {
+        if (withPort) {
+            return window.location.host;
+        } else {
+            return window.location.hostname;
+        }
+    }
+
+    static getURLParam(key) {
+        // parseQueryStrings expects something like '?page=program&model_id=xxx'
+        const params = this.parseQueryStrings(window.location.search);
+        return params[key] || null;
+    }
+
+    /**
+     * Get value from search params string /path/to?key=value.
+     * 
+     * @param {string} key 
+     * @param {string} type  {'string', 'int', 'float'}
+     * @returns {string/number} value according to the designated type. null if not in url.
+     */
+    static getValueFromSearchParams(key, type = 'string') {
+        let searchstring = window.location.search;
+        console.log(`get value of ${key} in ${searchstring}`);
+        let params = new Proxy(new URLSearchParams(searchstring), {
+            get: function get(searchParams, prop) {
+                return searchParams.get(prop);
+            }
+        });
+        return this._getValueFromParams(key, type, params);
+    }
+
+    /**
+     * Update value in query string /path/to?key=value.
+     * 
+     * @param {string} key target key
+     * @param {string} value new value
+     * @param {boolean} withHTML whether to push the current HTML/title in state
+     * @returns {string} new url string
+     */
+    updateValueInSearchParams(key, value, withHTML = true) {
+        let searchParams = new URLSearchParams(window.location.search);
+        searchParams.set(key, value);
+        let newRelativePath = `${window.location.pathname}?${searchParams.toString()}`;
+        this.pushHistoryState(newRelativePath, withHTML);
+    }
+
+    /**
+     * Get value from hash string /path/to?key1=val1#key2=val2
+     * 
+     * @param {string} key 
+     * @param {string} type  {'string', 'int', 'float'}
+     * @returns {string/number} value according to the designated type. null if not in url.
+     */
+    getValueFromHash(key, type = 'string') {
+        let searchstring = window.location.hash;
+        console.log(`get value of ${key} in ${searchstring}`);
+        let params = new Proxy(new URLSearchParams(searchstring.replace("#", "?")), {
+            get: function get(searchParams, prop) {
+                return searchParams.get(prop);
+            }
+        });
+        return this._getValueFromParams(key, type, params);
+    }
+
+    /**
+     * Update value in hash string /path/to?key1=val1#key2=val2
+     * 
+     * @param {string} key 
+     * @param {string} value 
+     * @param {boolean} withHTML 
+     */
+    static updateValueInHash(key, value, withHTML = false) {
+        let hash = window.location.hash.replace('#', '');
+        let keyVals = (hash === '') ? [] : hash.split('&');
+        let newhash = '';
+        let foundInHash = false;
+        console.log(`update hash ${hash} with key:${key} val:${value}`);
+
+        keyVals.forEach((keyval, i) => {
+            let [_key, _val] = keyval.split('=');
+
+            if (_key === key) {
+                foundInHash = true;
+                newhash += (i === 0) ? `${_key}=${value}` : `&${_key}=${value}`;
+            } else {
+                newhash += (i === 0) ? `${_key}=${_val}` : `&${_key}=${_val}`;
+            }
+        });
+
+        if (!foundInHash) {
+            newhash += (newhash.length > 0) ? `&${key}=${value}` : `${key}=${value}`;
+        }
+
+        newhash = `#${newhash}`;
+        this.pushHistoryState(newhash, withHTML);
+        console.log(`hash string updated #${hash} -> ${newhash}`);
+    }
+
+    /**
+     * Add or remove a query parameter in the current URL, optionally pushing a new history state.
+     * 
+     * @param {string} param - The query parameter key.
+     * @param {string|number|null|undefined} value - The value to set for the key. If null/undefined, param is removed.
+     * @param {boolean} doPushState - If true, a new history entry is pushed. Otherwise, the current entry is replaced.
+     */
+    static setQueryParam(param, value, doPushState = false) {
+        const url = new URL(window.location.href);
+        if (value === null || value === undefined) {
+            url.searchParams.delete(param);
+        } else {
+            url.searchParams.set(param, value);
+        }
+
+        if (doPushState) {
+            // If you want the browser "Back" button to treat each change as navigation
+            window.history.pushState({}, '', url.toString());
+        } else {
+            // If you just want to replace the current state
+            window.history.replaceState({}, '', url.toString());
+        }
+    }
+
+    /**
+     * Get value from params dict.
+     * 
+     * @param {string} key 
+     * @param {string} type  {'string', 'int', 'float'}
+     * @param {dict} params {key: value} dictionary
+     * @returns {string|number|null} value according to the designated type. null if not in url.
+     */
+    static _getValueFromParams(key, type = 'string', params) {
+        if (params[key] == null) {
+            console.error(`${key} not in the url query string.`);
+        }
+
+        console.log(`found ${key} in params. the value is ${params[key]}.`);
+
+        switch (type) {
+            case 'string':
+                return params[key];
+            case 'int':
+                return parseInt(params[key]);
+            case 'float':
+                return parseFloat(params[key]);
+            default:
+                console.error(`${type} is unrecognized type to read query strings.`);
+                return null;
+        }
+    }
 
 }
+
