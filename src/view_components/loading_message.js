@@ -196,8 +196,7 @@ class LoadingMessage {
      *    });
      */
     setText(text, options = {}, onQueueComplete = null) {
-        console.warn('.........................')
-        console.warn(text)
+        console.warn(`[LoadingMessage]`, text)
         const {
             gradient,        // e.g. {start: '#aaaaaa', end: '#fafafa'}
             gradientStart, 
