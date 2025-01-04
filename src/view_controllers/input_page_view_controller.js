@@ -192,7 +192,7 @@ class InputPageViewController {
 
         //// loading
         if(this.loading) {
-            this.loading.addToParent(this.$view);
+            this.loading.mount(this.$view);
         }
 
         // create pages
