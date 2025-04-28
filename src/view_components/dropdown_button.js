@@ -203,6 +203,8 @@ class DropdownButton {
                 console.warn(`[DropdownButton] newVal should be an array when isMultiSelect=true. Received: ${newVal}`);
             }
         }
+
+        this._updateSelectionStyles();
         
         const event = new CustomEvent('selected', { detail: { value: newVal, id: this.id } });
         this.$view.dispatchEvent(event);
@@ -377,15 +379,11 @@ class DropdownButton {
                     if (index >= 0) {
                         // Already selected => unselect
                         this._selectedValue.splice(index, 1);
-                        hoveredItem.classList.remove('selected');
-                        let icon = hoveredItem.querySelector('.selected-icon');
-                        if (icon) icon.style.visibility = 'hidden';
+                        this._setStyleSelect(hoveredItem, false)
                     } else {
                         // Not selected => select
                         this._selectedValue.push(clickedValue);
-                        hoveredItem.classList.add('selected');
-                        let icon = hoveredItem.querySelector('.selected-icon');
-                        if (icon) icon.style.visibility = 'visible';
+                        this._setStyleSelect(hoveredItem, true)
                     }
                     
                     if (this._selectedValue.length === 1) {
@@ -412,6 +410,48 @@ class DropdownButton {
                     this.$view.dispatchEvent(event);
                 }
             });
+        }
+    }
+
+    _setStyleSelect($item, select) {
+        if (select) {
+            $item.classList.add('selected');
+            let $icon = $item.querySelector('.selected-icon');
+            if ($icon) $icon.style.visibility = 'visible';
+        } else {
+            $item.classList.remove('selected');
+            let $icon = $item.querySelector('.selected-icon');
+            if ($icon) $icon.style.visibility = 'hidden';
+        }
+    }
+
+    _updateSelectionStyles() {
+        // If you don’t have a list menu, bail out.
+        if (!this.$listMenu) return;
+    
+        // 1. Un-select everything first.
+        const $listItems = this.$listMenu.querySelectorAll('.listitem');
+        $listItems.forEach($item => {
+            this._setStyleSelect($item, false);
+        });
+    
+        // 2. Now select the relevant items.
+        if (!this.isMultiSelect) {
+            // Single selection
+            const $match = this.$listMenu.querySelector(`.listitem[data-value="${this._selectedValue}"]`);
+            if ($match) {
+                this._setStyleSelect($match, true);
+            }
+        } else {
+            // Multi-selection
+            if (Array.isArray(this._selectedValue)) {
+                this._selectedValue.forEach(val => {
+                    const $match = this.$listMenu.querySelector(`.listitem[data-value="${val}"]`);
+                    if ($match) {
+                        this._setStyleSelect($match, true);
+                    }
+                });
+            }
         }
     }
 
