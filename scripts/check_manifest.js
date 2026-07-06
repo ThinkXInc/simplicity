@@ -6,7 +6,6 @@ const path = require('path');
 
 const ALLOWLIST = new Set([
     'src/pages/address_input_page.js',
-    'src/pages/file_upload_page.js',
     'src/pages/select_options_page.js',
     'src/view_component_bases/wrapper.js',
     'src/view_components/content_table_view.js',
