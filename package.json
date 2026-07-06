@@ -6,7 +6,8 @@
     "build:js": "gulp watch",
     "test": "node --test 'test/**/*.test.js'",
     "check:manifest": "node scripts/check_manifest.js",
-    "lint": "node scripts/gen_globals.js && node scripts/lint_gate.js"
+    "lint": "node scripts/gen_globals.js && node scripts/lint_gate.js",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",
@@ -18,7 +19,8 @@
     "gulp": "^4.0.2",
     "jsdom": "27.0.1",
     "less": "^4.1.1",
-    "less-watch-compiler": "^1.15.2"
+    "less-watch-compiler": "^1.15.2",
+    "typescript": "6.0.3"
   },
   "dependencies": {
     "gulp-concat": "^2.6.1",

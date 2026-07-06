@@ -36,3 +36,4 @@
 - src/helpers/validator.js:116 / `passwordFormat` 分岐に `return this.errorMessage;` が2行連続で重複(2行目は到達不能なデッドコード) / 項目0-3(T-06 読解中に発見)
 - package.json / 計画書 R-04 は eslint v10.6.0 想定だが npm 現行最新は eslint 9.39.4(globals 17.7.0)。exact ピンで固定。凍結ベースライン42件は計画書 §R-04 の想定内容(F-7/F-9/F-10/F-11 + 孤児の TargetLang×11/ListMenu×10 等)と完全一致したため版差の機能影響なし / 項目R-04
 - R-04時点の警告ベースライン: 321件(no-unused-vars 173, eqeqeq 114, no-var 34)。no-undef は error 扱いで42件を凍結ベースライン化(修正禁止・新規混入のみ fail)。== 系(F-6)・var(F-6)は警告として可視化のみ / 項目R-04
+- src/view_components/notification.js:? / `class Notification` が DOM グローバル `Notification`(lib.dom.d.ts)と TS2300 Duplicate identifier で衝突(checkJs:false でもトップレベル class 宣言はグローバル型として lib と衝突する。構文問題ではない)。計画書 R-05 の規則に従い tsconfig.json の `exclude` に本ファイルを追加して先へ進む。除外により当該1ファイルの構文ゲートは失われるが、他ファイルの構文ゲートと no-undef 床(R-04)は維持 / 項目R-05
