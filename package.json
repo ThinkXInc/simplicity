@@ -4,7 +4,8 @@
   "scripts": {
     "compile:css": "less-watch-compiler './less' './css' simplicity_default.less",
     "build:js": "gulp watch",
-    "test": "node --test 'test/**/*.test.js'"
+    "test": "node --test 'test/**/*.test.js'",
+    "check:manifest": "node scripts/check_manifest.js"
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",
