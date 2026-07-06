@@ -1,7 +1,9 @@
-# simplicity リファクタリング計画書 v1.4
+# simplicity リファクタリング計画書 v1.5
 
-作成日: 2026-07-03(v1.4: 2026-07-06 改訂)/ 対象リポジトリ: simplicity(コミット `master` HEAD時点)
+作成日: 2026-07-03(v1.5: 2026-07-06 改訂)/ 対象リポジトリ: simplicity(コミット `master` HEAD時点)
 実行環境の前提: Node.js 18以上(v22.22.2で検証済み)、git、npm が使用可能であること。
+
+v1.5 の変更点: **R-10 を取り消し**。実行者が着手時の対象確認で検出した通り、R-10 の前提(L3–4 の本番ホスト直書き)は計画作成時の事実誤認(`/*** … ***/` コメント内の Usage example を実コードと誤読)であり、実装は `AsyncTaskClientConfig` による消費側注入で目的を達成済みだった。§1.7 A-2 も精密化(トークン取得のフロントチャネル機構(実装 L107 の fetch)は事実だが、host/URL は注入であり直書きは無い)。R-11 の依存を R-09 に変更。他の作業項目・完了条件・凍結済みゴールデンに変更なし。
 
 v1.4 の変更点: 実行者が項目0-3で検出・実証したハーネス設計の欠陥を修正。旧指定の `runScripts:'outside-only'` + `w.eval(code)` では、間接 eval のレキシカル宣言(class/let/const)が当該 eval 呼び出し限りの宣言的環境に閉じ、後続の `evalInPage` から見えない(ES 仕様。グローバルへ漏れるのは sloppy の function/var のみ)。0-2 の load_bundle.js を、本番の消費形態(`<script src=simplicity.js>`)に忠実な `runScripts:'dangerously'` + script 要素注入へ差し替え、「evalInPage は自己完結(IIFE)で書く」規則と `{ presetGlobals }` 引数(T-08 用)を組み込んだ。作業項目・完了条件・凍結済みゴールデン(dist への正規表現抽出でありハーネス非依存)に変更なし。
 
@@ -113,7 +115,7 @@ v1.1 の変更点: 実コードに対する ESLint 実測(所要約0.6秒・64�
 | # | 接点 | 統合時の論点(今は触らない) |
 |---|---|---|
 | A-1 | `models/userbase.js` の `update()` が `/v1/users/update` を直書きで POST する | auth 統合後、プロフィール系はauthが真になるため、この URL・責務の見直しが要る |
-| A-2 | `async_task_client.js` はブラウザから `request-token` を取得する(フロントチャネルのトークンフロー) | auth の access_token とは別系統のタスク用トークンだが、統合時にプロトコル §7(b) の観点で認証方式(ローカルセッション連携)をレビューする |
+| A-2 | `async_task_client.js` はブラウザから `fetch(config.requestTokenURL)` でトークンを取得する(実装 L107。フロントチャネルのトークンフロー)。なお host/URL は `AsyncTaskClientConfig` による消費側注入であり、フレームワーク層への直書きは無い(v1.5 で精密化。R-10 取り消しの経緯参照) | auth の access_token とは別系統のタスク用トークンだが、統合時にプロトコル §7(b) の観点で認証方式(ローカルセッション連携)をレビューする |
 | A-3 | `verify_code_form.js` / `terms_scroll_view.js` はサインアップ UI 部品 | ログイン/サインアップ画面が auth サービスへ集約されると、**auth が simplicity の新しい消費者になる**(dist を vendoring)。本計画の完遂は auth 構築の前提になる |
 
 ---
@@ -580,30 +582,12 @@ declare const google: any; // Google Maps JS API(詳細型は将来 @types/googl
 - **依存:** R-08
 - **コミット:** `chore: normalize four filenames to snake_case`
 
-### R-10 直値の排除: `async_task_client.js` の本番ホスト直書き
+### R-10 【取り消し(v1.5)】直値の排除: `async_task_client.js` の本番ホスト直書き
 
-- **対象:** `src/helpers/async_task_client.js` L3–4
-- **問題:** 本番ホスト `quantz.sixths.ai:8001` がフレームワーク層に直書きされている。フレームワークは複数システムで共用されるため、消費側で上書き可能にすべき値。
-- **変更(デフォルトは現値のまま = 挙動保存):**
-
-変更前:
-```javascript
-const HOST = 'quantz.sixths.ai:8001'
-const RequestTokenURL = `https://${HOST}/api/request-token`
-```
-変更後:
-```javascript
-// 消費側は simplicity.js 読み込み前に window.SIMPLICITY_ASYNC_HOST を定義して上書きできる。
-const HOST = (typeof window !== 'undefined' && window.SIMPLICITY_ASYNC_HOST) || 'quantz.sixths.ai:8001'
-const RequestTokenURL = `https://${HOST}/api/request-token`
-```
-- **完了条件:**
-  1. 新規テスト `test/t08_async_host.test.js`: (a) 何も設定しない `loadBundle()` で `evalInPage('HOST')` が `'quantz.sixths.ai:8001'`、(b) `w.SIMPLICITY_ASYNC_HOST = 'example.test'` を `w.eval(code)` **より前**に設定するロード変種で `evalInPage('HOST')` が `'example.test'`(load_bundle.js にオプション引数 `{ presetGlobals }` を追加してよい。src には触れない)
-  2. `git diff src/` の差分が上記2行(+コメント1行)のみ
-  3. 全ゲート(build / test / lint / typecheck / check:manifest)exit 0、`CHECKSUMS.md` に `R-10  <新sha256>` 追記
-- **リスク/戻し方:** `git checkout -- src/helpers/async_task_client.js`
-- **依存:** R-09
-- **コミット:** `refactor: make async task host overridable, default unchanged`
+- **取り消しの経緯(記録として保持。実行者はこの項目を実施しない):**
+  本項目は計画作成時の事実誤認に基づいていた。`async_task_client.js` の L1–32 は `/*** … ***/` コメントブロック内の **Usage example** であり、`quantz.sixths.ai:8001` の出現はこのコメント内のみ。実コードにホスト直書きは存在しない。実装は `AsyncTaskClientConfig(taskHandlers, host, requestTokenURL)` により host/URL を**消費側から注入する設計が既に完成している**(本計画が目指した「上書き可能」は、より良い形で最初から達成済み)。旧完了条件 T-08(a) は実行時 `HOST` が未定義のため達成不可能。実行者(R-10 着手時の対象確認)が検出し、大原則3 に従い停止・報告した。
+- **処置:** 実施しない。`test/t08_async_host.test.js` は作らない。`CHECKSUMS.md` に R-10 の行は追記しない。findings.md に事実誤認の記録を1行残す。
+- **依存への影響:** R-11 の依存は R-09 に読み替え済み。R-12 の「R-01〜R-11」は「R-10 は取り消し」を含意する。
 
 ### R-11 `CLAUDE.md` の新設(規約の機械可読化)
 
@@ -647,7 +631,7 @@ const RequestTokenURL = `https://${HOST}/api/request-token`
 ```
 
 - **完了条件:** ファイルが上記内容で存在する。
-- **依存:** R-10(記載コマンドが全て実在すること)
+- **依存:** R-09(記載コマンドが全て実在すること)
 - **コミット:** `docs: add CLAUDE.md conventions`
 
 ### R-12 最終検証とタグ
@@ -696,11 +680,11 @@ const RequestTokenURL = `https://${HOST}/api/request-token`
 - R-01/R-02 は dist 不変(デッドエントリは `allowEmpty` により元々 no-op)→ sha 一致で機械証明可能。
 - R-03 の ALLOWLIST(13件)は R-01 完了後の孤児集合と一致。R-07 で1件、R-08 で10件を ALLOWLIST から除去する更新手順を各項目に内包済み(更新漏れは check:manifest の STALE 検出が exit 1 で捕捉)。
 - R-04 の globals は `gen_globals.js` が **lint 実行のたびに src から再生成**するため、R-06(クラス削除)・R-08(ファイル退避)・R-09(リネーム)の後も自動追随し、陳腐化しない。gen_globals は非行頭トップレベル宣言(F-8)に対応済みで、`Title` 等の偽陽性が出ないことを実測確認済み。
-- lint_gate のベースラインは `ファイル:行:識別子` で凍結するため、**行番号をずらす項目・エラーを含むファイルを動かす項目では再凍結が必要**。該当は R-06(controller の行シフト)と R-08(孤児10ファイルの退避)の2つで、両項目に「再凍結+diff が想定差分のみであることの確認」手順を内包済み。R-07(空ファイル・エントリなし)、R-09(リネーム4ファイルにベースラインエントリなし: `Cookies` は外部宣言済みでエラーにならない)、R-10(async_task_client にエントリなし)は再凍結不要であることを確認済み。
+- lint_gate のベースラインは `ファイル:行:識別子` で凍結するため、**行番号をずらす項目・エラーを含むファイルを動かす項目では再凍結が必要**。該当は R-06(controller の行シフト)と R-08(孤児10ファイルの退避)の2つで、両項目に「再凍結+diff が想定差分のみであることの確認」手順を内包済み。R-07(空ファイル・エントリなし)、R-09(リネーム4ファイルにベースラインエントリなし: `Cookies` は外部宣言済みでエラーにならない)、R-10 は取り消し済み(v1.5)。
 - R-06 は dist を変える最初の項目であり、それ以前にテスト(0-3)と全ゲート(R-02/R-04/R-05)が稼働済みという順序になっている。T-02 ゴールデンの更新手順(1エントリ削除のみ)を項目内に明記済み。
 - R-08 で src から識別子が消えても、退避対象は「バンドル対象コードから未参照」が選定条件そのものなので新規 `no-undef` は増えない(増えたら選定ミスとして戻す規則を項目内に明記済み)。
 - R-09 は gulpfile の配列位置を変えないため連結順不変 → `simplicity.js` の sha 一致で機械証明可能(`.map` のみ差分許容と明記済み)。
-- R-10 は dist を変える(2行)が、diff の目視確認と新テスト T-08 で挙動(デフォルト値不変+上書き可)を機械証明する。
+- R-10 は v1.5 で取り消し(事実誤認)。dist を変える項目は R-06 のみとなり、以降の台帳 sha は R-06 の値のまま R-12 まで不変であるべき。
 - 依存グラフに循環なし。全項目が「直前までの台帳 sha」または「テスト green」のどちらかで独立検証可能。
 
 ## 7. 実行者への指示文(このままコピペして渡すこと)
