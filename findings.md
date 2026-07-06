@@ -34,3 +34,5 @@
 - src/helpers/validator.js:181 / `_validateMaxLength` は `value.length` を読むため、maxLength バリデータに null を渡すと `TypeError: Cannot read properties of null (reading 'length')`(null ガードなし) / 項目0-3(T-06)
 - src/view_components/textfield.js:29 / `TextField` に対応する `TextFieldConfig` クラスがソースに存在せず、`new TextField(id, new TextFieldConfig())` は `ReferenceError: TextFieldConfig is not defined`。T-07 縮退規則により当該テストは typeof 確認のみに縮退 / 項目0-3(T-07)
 - src/helpers/validator.js:116 / `passwordFormat` 分岐に `return this.errorMessage;` が2行連続で重複(2行目は到達不能なデッドコード) / 項目0-3(T-06 読解中に発見)
+- package.json / 計画書 R-04 は eslint v10.6.0 想定だが npm 現行最新は eslint 9.39.4(globals 17.7.0)。exact ピンで固定。凍結ベースライン42件は計画書 §R-04 の想定内容(F-7/F-9/F-10/F-11 + 孤児の TargetLang×11/ListMenu×10 等)と完全一致したため版差の機能影響なし / 項目R-04
+- R-04時点の警告ベースライン: 321件(no-unused-vars 173, eqeqeq 114, no-var 34)。no-undef は error 扱いで42件を凍結ベースライン化(修正禁止・新規混入のみ fail)。== 系(F-6)・var(F-6)は警告として可視化のみ / 項目R-04

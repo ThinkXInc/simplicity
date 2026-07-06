@@ -5,13 +5,16 @@
     "compile:css": "less-watch-compiler './less' './css' simplicity_default.less",
     "build:js": "gulp watch",
     "test": "node --test 'test/**/*.test.js'",
-    "check:manifest": "node scripts/check_manifest.js"
+    "check:manifest": "node scripts/check_manifest.js",
+    "lint": "node scripts/gen_globals.js && node scripts/lint_gate.js"
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",
     "@babel/preset-env": "^7.15.6",
     "babel-loader": "^8.2.2",
+    "eslint": "9.39.4",
     "glob": "^10.3.3",
+    "globals": "17.7.0",
     "gulp": "^4.0.2",
     "jsdom": "27.0.1",
     "less": "^4.1.1",
