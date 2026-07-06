@@ -1,7 +1,9 @@
-# simplicity リファクタリング計画書 v1.5
+# simplicity リファクタリング計画書 v1.6
 
-作成日: 2026-07-03(v1.5: 2026-07-06 改訂)/ 対象リポジトリ: simplicity(コミット `master` HEAD時点)
+作成日: 2026-07-03(v1.6: 2026-07-06 改訂)/ 対象リポジトリ: simplicity(コミット `master` HEAD時点)
 実行環境の前提: Node.js 18以上(v22.22.2で検証済み)、git、npm が使用可能であること。
+
+v1.6 の変更点(セキュリティレビュー反映): (1) §1.2 レイヤ表に残っていた「本番ホスト直書きあり」の記述を訂正(R-10 取り消しとの自己矛盾の解消)。(2) load_bundle.js に Security note を追加(dangerously は repo-owned dist 専用・未信頼 PR×secrets CI での実行禁止・resources:'usable' 不使用)。(3) §5 に Security exception を追加(セキュリティ疑いは findings に流さず即停止・報告。exploit 手順や秘密値を記録に書かない)。(4) §1.7 に A-2 の consumer-side security contract と A-4(CSP/SRI/dist 整合)を追加。作業項目・完了条件に変更なし。
 
 v1.5 の変更点: **R-10 を取り消し**。実行者が着手時の対象確認で検出した通り、R-10 の前提(L3–4 の本番ホスト直書き)は計画作成時の事実誤認(`/*** … ***/` コメント内の Usage example を実コードと誤読)であり、実装は `AsyncTaskClientConfig` による消費側注入で目的を達成済みだった。§1.7 A-2 も精密化(トークン取得のフロントチャネル機構(実装 L107 の fetch)は事実だが、host/URL は注入であり直書きは無い)。R-11 の依存を R-09 に変更。他の作業項目・完了条件・凍結済みゴールデンに変更なし。
 
@@ -42,7 +44,7 @@ v1.1 の変更点: 実コードに対する ESLint 実測(所要約0.6秒・64�
 |---|---|---|---|
 | データ | `src/data/` | 静的データ | `countries.js`(ISO3166国リスト、1行の巨大const) |
 | 基盤 | `src/etc/` | ログ・アイコン | `debug_log.js`(`DEBUG=true`固定の`debuglog()`)、`svg_icons.js` |
-| ヘルパ | `src/helpers/` | 純ロジック・ブラウザAPI包装 | `http.js`(fetch包装)、`browser.js`(URL/history操作)、`validator.js`、`locale.js`(i18n)、`utils.js`、`async_task_client.js`(※本番ホスト直書きあり L3) |
+| ヘルパ | `src/helpers/` | 純ロジック・ブラウザAPI包装 | `http.js`(fetch包装)、`browser.js`(URL/history操作)、`validator.js`、`locale.js`(i18n)、`utils.js`、`async_task_client.js`(host/requestTokenURL は AsyncTaskClientConfig による消費側注入。v1.5 R-10 取り消し参照) |
 | モデル | `src/models/` | `userbase.js` |
 | 基底クラス | `src/view_component_bases/` | `ViewComponentConfig`/`ViewComponentBase`(全コンポーネントの親)、`FormComponentBase`(Cookie永続化)、`Page`、`LoadingBase`、`AlertMessageComponentBase` |
 | コンポーネント | `src/view_components/` | `TextField`、`TableView`、`ModalView`、`DropdownButton`、`Button`類、`PositionMap` 等 |
@@ -117,6 +119,15 @@ v1.1 の変更点: 実コードに対する ESLint 実測(所要約0.6秒・64�
 | A-1 | `models/userbase.js` の `update()` が `/v1/users/update` を直書きで POST する | auth 統合後、プロフィール系はauthが真になるため、この URL・責務の見直しが要る |
 | A-2 | `async_task_client.js` はブラウザから `fetch(config.requestTokenURL)` でトークンを取得する(実装 L107。フロントチャネルのトークンフロー)。なお host/URL は `AsyncTaskClientConfig` による消費側注入であり、フレームワーク層への直書きは無い(v1.5 で精密化。R-10 取り消しの経緯参照) | auth の access_token とは別系統のタスク用トークンだが、統合時にプロトコル §7(b) の観点で認証方式(ローカルセッション連携)をレビューする |
 | A-3 | `verify_code_form.js` / `terms_scroll_view.js` はサインアップ UI 部品 | ログイン/サインアップ画面が auth サービスへ集約されると、**auth が simplicity の新しい消費者になる**(dist を vendoring)。本計画の完遂は auth 構築の前提になる |
+| A-4 | 外部供給グローバル(`Cookies`=js-cookie、`google`=Maps API)と dist の配信は、消費側 HTML が信頼境界になる | 統合時レビュー: js-cookie は SRI 付与 or 自社配信 / Maps API key の referrer 制限 / CSP で script-src を絞る(inline は nonce/hash 方針を決める)/ vendoring された dist の sha256 が CHECKSUMS 台帳と一致することの確認 |
+
+**A-2 統合時の必須チェックリスト(consumer-side security contract。simplicity のコードは変えない — 消費側が保証する):**
+- host / requestTokenURL を query string・hash・localStorage・DOM 属性・ユーザー入力から決めない
+- requestTokenURL は same-origin または明示 allowlist に限定する
+- WebSocket は wss:// のみ許可(本番で ws:// を許可しない)
+- task token は短命・用途限定・ユーザー/セッション/タスク ID に束縛する
+- token を URL query に載せない。ログ・console・エラートラッカーに出さない
+- token endpoint の CSRF/Origin 方針を通常の session/auth と揃える
 
 ---
 
@@ -172,6 +183,13 @@ const path = require('path');
 // - 規則: evalInPage 内で作った const/let/class も呼び出し限りで消える。
 //   複数文のテストは必ず自己完結の IIFE で書くこと。例:
 //   evalInPage('(() => { const b = new Button("t", new ButtonConfig()); return b.constructor.name; })()')
+//   複数回の evalInPage にまたぐ状態が必要な場合だけ、明示的に window.__testState 等の
+//   window プロパティへ保存する(レキシカル束縛は呼び出しをまたいで残らない)。
+// Security note:
+//   runScripts:'dangerously' は repo-owned の dist/simplicity.js のみを実行する。
+//   ユーザー入力、外部URL、PR差分由来の未信頼 HTML/JS をここへ渡してはならない。
+//   secrets を持つ CI job では、未信頼 PR に対してこのテストを実行しない。
+//   resources:'usable' は使わない(ネットワークロードを必要にしない)。
 function loadBundle({ presetGlobals } = {}) {
     const dom = new JSDOM('<!doctype html><html><body></body></html>', {
         url: 'https://localhost/',
@@ -673,6 +691,7 @@ declare const google: any; // Google Maps JS API(詳細型は将来 @types/googl
 - 作業中に新たな問題(バグ疑い、デッドコード疑い、命名不統一など)を見つけた場合: **修正せず**、`findings.md` に「ファイルパス:行番号 / 事実 / 発見した項目ID」の形式で1行追記する。追記は現在作業中の項目のコミットに含めてよい。
 - 「事実」には解釈を書かない。例: 良い「L124 で MapPointer を new しているが MapPointer は dist に不在」/ 悪い「マップ機能が壊れている」。
 - findings.md は捨て場ではない。本計画完遂後の**バグ修正計画**(ワークスペースの docs/ROADMAP.md Phase 3)の入力であり、記録された各項目はそこで「修正/仕様として凍結/次期送り」に仕分けされ、修正はテストの床がある状態で一括実行される。
+- **Security exception(通常の findings 処理の唯一の例外):** credential/token 漏えい、XSS、CSRF、open redirect、認可バイパス、任意ホストへの token 送信、secrets のリポジトリ混入、CI secrets 露出、の疑いを発見した場合は、findings に流して先へ進まず**即停止して人間へ報告**する。公開リポジトリ・通常ログ・findings.md に exploit 手順・秘密値・実トークンを書かない(「§5 Security exception 該当・詳細は口頭/別経路」とだけ記す)。修正の可否と方法は人間が security fix として別途判断する。この例外は挙動保存の原則を変えない(通常バグは Phase 3、セキュリティ疑いは即停止、という分岐が増えるだけである)。
 
 ## 6. 計画のトレース検証(作成者による事前検証の記録)
 
@@ -701,7 +720,8 @@ declare const google: any; // Google Maps JS API(詳細型は将来 @types/googl
    完了条件を満たせない場合は、その項目の「戻し方」で変更を破棄し、
    何をどう試してどう失敗したかを報告して停止する。推測で先へ進まない。
 5. 計画に書かれていない変更は一切行わない。改善案・バグを見つけたら findings.md に
-   記録するだけにする(計画書 §5 の形式)。
+   記録するだけにする(計画書 §5 の形式)。ただしセキュリティ疑い(§5 Security
+   exception の列挙に該当)は findings に流さず即停止して報告する。
 6. dist/simplicity.js を手で編集しない。ビルドは常に npx gulp scripts で行う。
 7. すべての項目が完了したら、R-12 の最終検証結果(各コマンドの exit code と最終 sha256)と、
    findings.md の全内容を報告する。

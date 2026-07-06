@@ -15,11 +15,13 @@ const path = require('path');
 // - 規則: evalInPage 内で作った const/let/class も呼び出し限りで消える。
 //   複数文のテストは必ず自己完結の IIFE で書くこと。例:
 //   evalInPage('(() => { const b = new Button("t", new ButtonConfig()); return b.constructor.name; })()')
-// - 複数の evalInPage 呼び出しをまたいで状態を保持する必要がある場合だけ、明示的に
-//   window.__testState 等の window プロパティへ保存する(レキシカル束縛は呼び出しを
-//   またいで残らない)。
-// - runScripts:'dangerously' は信頼済みの自リポジトリ成果物(dist)専用。未信頼コードや、
-//   secrets を持つ CI 環境での未信頼 PR に対して実行しないこと。
+//   複数回の evalInPage にまたぐ状態が必要な場合だけ、明示的に window.__testState 等の
+//   window プロパティへ保存する(レキシカル束縛は呼び出しをまたいで残らない)。
+// Security note:
+//   runScripts:'dangerously' は repo-owned の dist/simplicity.js のみを実行する。
+//   ユーザー入力、外部URL、PR差分由来の未信頼 HTML/JS をここへ渡してはならない。
+//   secrets を持つ CI job では、未信頼 PR に対してこのテストを実行しない。
+//   resources:'usable' は使わない(ネットワークロードを必要にしない)。
 function loadBundle({ presetGlobals } = {}) {
     const dom = new JSDOM('<!doctype html><html><body></body></html>', {
         url: 'https://localhost/',
