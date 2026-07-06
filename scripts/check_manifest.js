@@ -5,18 +5,8 @@ const fs = require('fs');
 const path = require('path');
 
 const ALLOWLIST = new Set([
-    'src/pages/address_input_page.js',
-    'src/pages/select_options_page.js',
-    'src/view_component_bases/wrapper.js',
-    'src/view_components/content_table_view.js',
     'src/view_components/description.js',
-    'src/view_components/edit_content_view.js',
-    'src/view_components/map_balloon.js',
     'src/view_components/map_pointer.js',
-    'src/view_components/page_navigation_view.js',
-    'src/view_components/search_box.js',
-    'src/view_components/step_indicator.js',
-    'src/view_components/translate_results_table_view.js',
 ]);
 
 function walk(dir, out = []) {
