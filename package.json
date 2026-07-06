@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "compile:css": "less-watch-compiler './less' './css' simplicity_default.less",
-    "build:js": "gulp watch"
+    "build:js": "gulp watch",
+    "test": "node --test 'test/**/*.test.js'"
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",
@@ -11,6 +12,7 @@
     "babel-loader": "^8.2.2",
     "glob": "^10.3.3",
     "gulp": "^4.0.2",
+    "jsdom": "27.0.1",
     "less": "^4.1.1",
     "less-watch-compiler": "^1.15.2"
   },
