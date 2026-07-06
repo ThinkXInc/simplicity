@@ -28,3 +28,4 @@
 
 - refactor_plan.md:3 / ルート CLAUDE.md・docs/ROADMAP.md は計画書を `REFACTORING_PLAN.md` と呼ぶが実ファイル名は `refactor_plan.md`(内容は v1.2 で一致) / 項目0-1
 - refactor_plan.md:146 / 計画書指定の `"test": "node --test test/"` は本環境 node v23.7.0 で exit 1(`test/` をモジュールとして解決し MODULE_NOT_FOUND。計画書検証環境 node 22.22.2 では動作)。node 23 互換のため `"test": "node --test 'test/**/*.test.js'"` を採用(人間承認済み。src/dist 不変・挙動不変) / 項目0-2
+- test/helpers/load_bundle.js / 計画書 v1.3 の 0-2 ハーネス欠陥: 間接 eval では class/let/const のレキシカル束縛が eval 呼び出しをまたいで残らない(ES 仕様)。バンドルはほぼ class 宣言のため typeof 検証が全滅した。v1.4 で load_bundle.js を classic script 注入方式へ修正済み。 / 項目0-3(T-02 が検出)

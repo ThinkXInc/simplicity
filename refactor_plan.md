@@ -1,11 +1,15 @@
-# simplicity リファクタリング計画書 v1.2
+# simplicity リファクタリング計画書 v1.4
 
-作成日: 2026-07-03(v1.2: 2026-07-04 改訂)/ 対象リポジトリ: simplicity(コミット `master` HEAD時点)
+作成日: 2026-07-03(v1.4: 2026-07-06 改訂)/ 対象リポジトリ: simplicity(コミット `master` HEAD時点)
 実行環境の前提: Node.js 18以上(v22.22.2で検証済み)、git、npm が使用可能であること。
 
-v1.1 の変更点: 実コードに対する ESLint 実測(所要約0.6秒・64件検出)に基づき、R-04 を推測ベースから**実測ベースライン方式**に全面差し替え。潜在バグ F-7〜F-11 を発見済み事実として追加。TypeScript は「床」ではなく「任意の天井」と位置づけを明確化し、バージョンピン規則を追加(背景: TypeScript は現在 6.x→7.0(Go ネイティブ移植)への移行期にあり、7.0 で JS/JSDoc 型検査面が縮小される)。
+v1.4 の変更点: 実行者が項目0-3で検出・実証したハーネス設計の欠陥を修正。旧指定の `runScripts:'outside-only'` + `w.eval(code)` では、間接 eval のレキシカル宣言(class/let/const)が当該 eval 呼び出し限りの宣言的環境に閉じ、後続の `evalInPage` から見えない(ES 仕様。グローバルへ漏れるのは sloppy の function/var のみ)。0-2 の load_bundle.js を、本番の消費形態(`<script src=simplicity.js>`)に忠実な `runScripts:'dangerously'` + script 要素注入へ差し替え、「evalInPage は自己完結(IIFE)で書く」規則と `{ presetGlobals }` 引数(T-08 用)を組み込んだ。作業項目・完了条件・凍結済みゴールデン(dist への正規表現抽出でありハーネス非依存)に変更なし。
+
+v1.3 の変更点: findings.md の位置づけを明記(捨て場ではなく、両計画完遂後の「バグ修正計画」(ワークスペース ROADMAP Phase 3)への入力。修正はそこで一括実行される)。作業項目・完了条件に変更なし。
 
 v1.2 の変更点: ThinkX Auth プロトコル v1(PROTOCOL.md)確定を受け、simplicity 内の auth 接点3件を §1.7 に記録し、**auth 統合の準備工事を §4 で明示的に禁止**。作業項目・完了条件に変更なし(simplicity は auth 非依存であり、本計画の範囲は不変)。
+
+v1.1 の変更点: 実コードに対する ESLint 実測(所要約0.6秒・64件検出)に基づき、R-04 を推測ベースから**実測ベースライン方式**に全面差し替え。潜在バグ F-7〜F-11 を発見済み事実として追加。TypeScript は「床」ではなく「任意の天井」と位置づけを明確化し、バージョンピン規則を追加。
 
 ---
 
@@ -154,23 +158,33 @@ const { JSDOM } = require('jsdom');
 const fs = require('fs');
 const path = require('path');
 
-// 重要な罠: concat バンドル内のトップレベル class/const/let は
-// 「グローバル・レキシカル束縛」であり window のプロパティにならない。
-// したがって window.Button は undefined になる。検証は必ず
-// evalInPage('typeof Button') のように同一スクリプトスコープ内の
-// eval で行うこと。
-function loadBundle() {
+// ロード方式の根拠(v1.4 で修正済み):
+// - 本番の消費形態は <script src=simplicity.js>。classic script のトップレベル
+//   class/let/const は「レルムのグローバル・レキシカル環境」に永続束縛される
+//   (window のプロパティにはならない)。script 要素注入はこれに忠実。
+// - 旧方式 w.eval(code) の間接 eval では、レキシカル宣言は当該 eval 呼び出し限りの
+//   宣言的環境に閉じ、別の w.eval から見えない(ES 仕様)。バンドルはほぼ class
+//   宣言のため typeof 検証が全滅する。使用禁止。
+// - 検証は evalInPage('typeof Button') のような「式」で行う。w.Button では見えない
+//   (グローバル・レキシカル束縛は window プロパティではない)。
+// - 規則: evalInPage 内で作った const/let/class も呼び出し限りで消える。
+//   複数文のテストは必ず自己完結の IIFE で書くこと。例:
+//   evalInPage('(() => { const b = new Button("t", new ButtonConfig()); return b.constructor.name; })()')
+function loadBundle({ presetGlobals } = {}) {
     const dom = new JSDOM('<!doctype html><html><body></body></html>', {
         url: 'https://localhost/',
-        runScripts: 'outside-only',
+        runScripts: 'dangerously',
     });
     const w = dom.window;
-    // 外部ランタイム依存の最小スタブ(§1.3)
+    // 外部ランタイム依存の最小スタブ(§1.3)— 必ずスクリプト注入より前に設定する
     w.Cookies = { get: () => undefined, set: () => {}, remove: () => {} };
     w.google = { maps: { OverlayView: class {}, LatLng: class {} } };
+    if (presetGlobals) Object.assign(w, presetGlobals);   // T-08(R-10)等で使用
     const code = fs.readFileSync(
         path.join(__dirname, '..', '..', 'dist', 'simplicity.js'), 'utf8');
-    w.eval(code);
+    const script = w.document.createElement('script');
+    script.textContent = code;
+    w.document.body.appendChild(script);   // 挿入時に同期実行される
     const evalInPage = (expr) => w.eval(expr);
     return { dom, window: w, evalInPage };
 }
@@ -674,6 +688,7 @@ const RequestTokenURL = `https://${HOST}/api/request-token`
 
 - 作業中に新たな問題(バグ疑い、デッドコード疑い、命名不統一など)を見つけた場合: **修正せず**、`findings.md` に「ファイルパス:行番号 / 事実 / 発見した項目ID」の形式で1行追記する。追記は現在作業中の項目のコミットに含めてよい。
 - 「事実」には解釈を書かない。例: 良い「L124 で MapPointer を new しているが MapPointer は dist に不在」/ 悪い「マップ機能が壊れている」。
+- findings.md は捨て場ではない。本計画完遂後の**バグ修正計画**(ワークスペースの docs/ROADMAP.md Phase 3)の入力であり、記録された各項目はそこで「修正/仕様として凍結/次期送り」に仕分けされ、修正はテストの床がある状態で一括実行される。
 
 ## 6. 計画のトレース検証(作成者による事前検証の記録)
 
