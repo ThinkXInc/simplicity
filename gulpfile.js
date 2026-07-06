@@ -2,6 +2,7 @@ const gulp = require('gulp');
 const concat = require('gulp-concat');
 const sourcemaps = require('gulp-sourcemaps');
 const cssnano = require('gulp-cssnano');
+const fs = require('fs');
 
 const paths = {
     jsFiles: [
@@ -67,7 +68,11 @@ gulp.task('watch', function() {
 });
 
 gulp.task('scripts', function() {
-    return gulp.src(paths.jsFiles, { allowEmpty: true })
+    const missing = paths.jsFiles.filter(f => !fs.existsSync(f));
+    if (missing.length > 0) {
+        throw new Error('Manifest entries missing on disk:\n' + missing.join('\n'));
+    }
+    return gulp.src(paths.jsFiles)
         .pipe(sourcemaps.init())
         .pipe(concat(paths.jsOutputFile))
         .pipe(sourcemaps.write('.'))
