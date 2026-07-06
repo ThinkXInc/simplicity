@@ -47,32 +47,6 @@ class InputPageViewDataModel {
     }
 }
 
-class InputPageViewControllerConfig {
-    constructor({
-        dataModelClass = InputPageViewDataModel, // Default to a generic data model if not specified
-        url = '',
-        loading = false,
-        alertMessage = null, // Set up inside the constructor if null
-        defaultPageIndex = 0,
-        isAllPageShown = false,
-        isEnterButtonToNext = true,
-        isPageIndexInHash = false,
-        pageIndexKeyInHash = 'page',
-        preventDefaultPageControl = false
-    } = {}) {
-        this.dataModelClass = dataModelClass;
-        this.url = url;
-        this.loading = loading;
-        this.alertMessage = alertMessage;
-        this.defaultPageIndex = defaultPageIndex;
-        this.isAllPageShown = isAllPageShown;
-        this.isEnterButtonToNext = isEnterButtonToNext;
-        this.isPageIndexInHash = isPageIndexInHash;
-        this.pageIndexKeyInHash = pageIndexKeyInHash;
-        this.preventDefaultPageControl = preventDefaultPageControl;
-    }
-}
-
 class InputPageViewControllerProtocol {
 }
 

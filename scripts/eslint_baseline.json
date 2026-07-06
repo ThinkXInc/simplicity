@@ -40,5 +40,5 @@
   "src/view_components/position_map.js:379:Coordinate",
   "src/view_components/search_box.js:72:SearchBoxState",
   "src/view_components/translate_results_table_view.js:318:shouldAnimateCells",
-  "src/view_controllers/input_page_view_controller.js:271:Browswer"
+  "src/view_controllers/input_page_view_controller.js:245:Browswer"
 ]

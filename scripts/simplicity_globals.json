@@ -44,7 +44,6 @@
   "Http",
   "IndicatorAlignment",
   "InputPageViewController",
-  "InputPageViewControllerConfig",
   "InputPageViewControllerProtocol",
   "InputPageViewDataModel",
   "KeywordsField",

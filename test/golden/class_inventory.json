@@ -22,7 +22,6 @@
   "GradientViewLoader",
   "Http",
   "InputPageViewController",
-  "InputPageViewControllerConfig",
   "InputPageViewControllerProtocol",
   "InputPageViewDataModel",
   "KeywordsField",
