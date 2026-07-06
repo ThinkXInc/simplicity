@@ -29,3 +29,8 @@
 - refactor_plan.md:3 / ルート CLAUDE.md・docs/ROADMAP.md は計画書を `REFACTORING_PLAN.md` と呼ぶが実ファイル名は `refactor_plan.md`(内容は v1.2 で一致) / 項目0-1
 - refactor_plan.md:146 / 計画書指定の `"test": "node --test test/"` は本環境 node v23.7.0 で exit 1(`test/` をモジュールとして解決し MODULE_NOT_FOUND。計画書検証環境 node 22.22.2 では動作)。node 23 互換のため `"test": "node --test 'test/**/*.test.js'"` を採用(人間承認済み。src/dist 不変・挙動不変) / 項目0-2
 - test/helpers/load_bundle.js / 計画書 v1.3 の 0-2 ハーネス欠陥: 間接 eval では class/let/const のレキシカル束縛が eval 呼び出しをまたいで残らない(ES 仕様)。バンドルはほぼ class 宣言のため typeof 検証が全滅した。v1.4 で load_bundle.js を classic script 注入方式へ修正済み。 / 項目0-3(T-02 が検出)
+- src/helpers/validator.js:92 / `Validator.validate` の switch に `postal_code_format`(ValidationErrorType.postalCodeFormat)の case が無く、postalCodeFormat バリデータは全入力で常に null を返す(検証が実質無効) / 項目0-3(T-06)
+- src/helpers/validator.js:131 / `Validator.validate` の notCorresponding 分岐が未定義メソッド `this._validateNotCorrespond(value)` を呼ぶため、notCorresponding バリデータは全入力で `TypeError: this._validateNotCorrespond is not a function` になる / 項目0-3(T-06)
+- src/helpers/validator.js:181 / `_validateMaxLength` は `value.length` を読むため、maxLength バリデータに null を渡すと `TypeError: Cannot read properties of null (reading 'length')`(null ガードなし) / 項目0-3(T-06)
+- src/view_components/textfield.js:29 / `TextField` に対応する `TextFieldConfig` クラスがソースに存在せず、`new TextField(id, new TextFieldConfig())` は `ReferenceError: TextFieldConfig is not defined`。T-07 縮退規則により当該テストは typeof 確認のみに縮退 / 項目0-3(T-07)
+- src/helpers/validator.js:116 / `passwordFormat` 分岐に `return this.errorMessage;` が2行連続で重複(2行目は到達不能なデッドコード) / 項目0-3(T-06 読解中に発見)

@@ -1,0 +1,14 @@
+{
+  "nextButtonConfig_from_viewComponentConfig": {
+    "ok": true,
+    "value": true
+  },
+  "viewComponentConfig_from_itself": {
+    "ok": true,
+    "value": false
+  },
+  "plainClassA_from_viewComponentConfig": {
+    "ok": true,
+    "value": false
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "parseQueryStrings": {
+    "a1_bhello": {
+      "ok": true,
+      "value": "{\"a\":\"1\",\"b\":\"hello\"}"
+    },
+    "empty": {
+      "ok": true,
+      "value": "{}"
+    },
+    "dup_a": {
+      "ok": true,
+      "value": "{\"a\":\"2\"}"
+    },
+    "flag_only": {
+      "ok": true,
+      "value": "{\"flag\":\"\"}"
+    }
+  },
+  "getValueFromParams": {
+    "present_string": {
+      "ok": true,
+      "value": "1"
+    },
+    "absent_string": {
+      "ok": true
+    },
+    "present_number": {
+      "ok": true,
+      "value": null
+    },
+    "absent_number": {
+      "ok": true,
+      "value": null
+    },
+    "present_int": {
+      "ok": true,
+      "value": 42
+    },
+    "present_float": {
+      "ok": true,
+      "value": 3.14
+    }
+  },
+  "getValueFromSearchParams_emptyLocation": {
+    "any_string": {
+      "ok": true,
+      "value": null
+    }
+  }
+}

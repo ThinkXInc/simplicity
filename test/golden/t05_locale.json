@@ -1,0 +1,18 @@
+{
+  "greet_en": {
+    "ok": true,
+    "value": "Hello"
+  },
+  "greet_ja": {
+    "ok": true,
+    "value": "こんにちは"
+  },
+  "missing_key": {
+    "ok": false,
+    "error": "Error: Locale key \"nope\" not found in dictionary."
+  },
+  "missing_lang": {
+    "ok": false,
+    "error": "Error: Language \"de\" not found for key \"greet\" in dictionary."
+  }
+}

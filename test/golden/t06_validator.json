@@ -1,0 +1,576 @@
+{
+  "_inputLabels": [
+    "empty",
+    "null",
+    "a",
+    "200chars",
+    "email",
+    "digits5",
+    "Password1",
+    "tel",
+    "domain",
+    "100",
+    "3.14",
+    "notanemail"
+  ],
+  "required": {
+    "construct": {
+      "ok": true,
+      "value": "constructed"
+    },
+    "resultsByInput": [
+      {
+        "ok": true,
+        "value": "req"
+      },
+      {
+        "ok": true,
+        "value": "req"
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": null
+      }
+    ]
+  },
+  "maxLength": {
+    "construct": {
+      "ok": true,
+      "value": "constructed"
+    },
+    "resultsByInput": [
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": false,
+        "error": "TypeError: Cannot read properties of null (reading 'length')"
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": "max 5"
+      },
+      {
+        "ok": true,
+        "value": "max 5"
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": "max 5"
+      },
+      {
+        "ok": true,
+        "value": "max 5"
+      },
+      {
+        "ok": true,
+        "value": "max 5"
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": "max 5"
+      }
+    ]
+  },
+  "emailFormat": {
+    "construct": {
+      "ok": true,
+      "value": "constructed"
+    },
+    "resultsByInput": [
+      {
+        "ok": true,
+        "value": "email"
+      },
+      {
+        "ok": true,
+        "value": "email"
+      },
+      {
+        "ok": true,
+        "value": "email"
+      },
+      {
+        "ok": true,
+        "value": "email"
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": "email"
+      },
+      {
+        "ok": true,
+        "value": "email"
+      },
+      {
+        "ok": true,
+        "value": "email"
+      },
+      {
+        "ok": true,
+        "value": "email"
+      },
+      {
+        "ok": true,
+        "value": "email"
+      },
+      {
+        "ok": true,
+        "value": "email"
+      },
+      {
+        "ok": true,
+        "value": "email"
+      }
+    ]
+  },
+  "passwordFormat": {
+    "construct": {
+      "ok": true,
+      "value": "constructed"
+    },
+    "resultsByInput": [
+      {
+        "ok": true,
+        "value": "pw"
+      },
+      {
+        "ok": true,
+        "value": "pw"
+      },
+      {
+        "ok": true,
+        "value": "pw"
+      },
+      {
+        "ok": true,
+        "value": "pw"
+      },
+      {
+        "ok": true,
+        "value": "pw"
+      },
+      {
+        "ok": true,
+        "value": "pw"
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": "pw"
+      },
+      {
+        "ok": true,
+        "value": "pw"
+      },
+      {
+        "ok": true,
+        "value": "pw"
+      },
+      {
+        "ok": true,
+        "value": "pw"
+      },
+      {
+        "ok": true,
+        "value": "pw"
+      }
+    ]
+  },
+  "telFormat": {
+    "construct": {
+      "ok": true,
+      "value": "constructed"
+    },
+    "resultsByInput": [
+      {
+        "ok": true,
+        "value": "tel"
+      },
+      {
+        "ok": true,
+        "value": "tel"
+      },
+      {
+        "ok": true,
+        "value": "tel"
+      },
+      {
+        "ok": true,
+        "value": "tel"
+      },
+      {
+        "ok": true,
+        "value": "tel"
+      },
+      {
+        "ok": true,
+        "value": "tel"
+      },
+      {
+        "ok": true,
+        "value": "tel"
+      },
+      {
+        "ok": true,
+        "value": "tel"
+      },
+      {
+        "ok": true,
+        "value": "tel"
+      },
+      {
+        "ok": true,
+        "value": "tel"
+      },
+      {
+        "ok": true,
+        "value": "tel"
+      },
+      {
+        "ok": true,
+        "value": "tel"
+      }
+    ]
+  },
+  "postalCodeFormat": {
+    "construct": {
+      "ok": true,
+      "value": "constructed"
+    },
+    "resultsByInput": [
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": null
+      }
+    ]
+  },
+  "domainFormat": {
+    "construct": {
+      "ok": true,
+      "value": "constructed"
+    },
+    "resultsByInput": [
+      {
+        "ok": true,
+        "value": "domain"
+      },
+      {
+        "ok": true,
+        "value": "domain"
+      },
+      {
+        "ok": true,
+        "value": "domain"
+      },
+      {
+        "ok": true,
+        "value": "domain"
+      },
+      {
+        "ok": true,
+        "value": "domain"
+      },
+      {
+        "ok": true,
+        "value": "domain"
+      },
+      {
+        "ok": true,
+        "value": "domain"
+      },
+      {
+        "ok": true,
+        "value": "domain"
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": "domain"
+      },
+      {
+        "ok": true,
+        "value": "domain"
+      },
+      {
+        "ok": true,
+        "value": "domain"
+      }
+    ]
+  },
+  "positiveIntegerFormat": {
+    "construct": {
+      "ok": true,
+      "value": "constructed"
+    },
+    "resultsByInput": [
+      {
+        "ok": true,
+        "value": "posint 1 100"
+      },
+      {
+        "ok": true,
+        "value": "posint 1 100"
+      },
+      {
+        "ok": true,
+        "value": "posint 1 100"
+      },
+      {
+        "ok": true,
+        "value": "posint 1 100"
+      },
+      {
+        "ok": true,
+        "value": "posint 1 100"
+      },
+      {
+        "ok": true,
+        "value": "posint 1 100"
+      },
+      {
+        "ok": true,
+        "value": "posint 1 100"
+      },
+      {
+        "ok": true,
+        "value": "posint 1 100"
+      },
+      {
+        "ok": true,
+        "value": "posint 1 100"
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": "posint 1 100"
+      },
+      {
+        "ok": true,
+        "value": "posint 1 100"
+      }
+    ]
+  },
+  "positiveFloatFormat": {
+    "construct": {
+      "ok": true,
+      "value": "constructed"
+    },
+    "resultsByInput": [
+      {
+        "ok": true,
+        "value": "posfloat 0 100"
+      },
+      {
+        "ok": true,
+        "value": "posfloat 0 100"
+      },
+      {
+        "ok": true,
+        "value": "posfloat 0 100"
+      },
+      {
+        "ok": true,
+        "value": "posfloat 0 100"
+      },
+      {
+        "ok": true,
+        "value": "posfloat 0 100"
+      },
+      {
+        "ok": true,
+        "value": "posfloat 0 100"
+      },
+      {
+        "ok": true,
+        "value": "posfloat 0 100"
+      },
+      {
+        "ok": true,
+        "value": "posfloat 0 100"
+      },
+      {
+        "ok": true,
+        "value": "posfloat 0 100"
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": null
+      },
+      {
+        "ok": true,
+        "value": "posfloat 0 100"
+      }
+    ]
+  },
+  "notCorresponding": {
+    "construct": {
+      "ok": true,
+      "value": "constructed"
+    },
+    "resultsByInput": [
+      {
+        "ok": false,
+        "error": "TypeError: this._validateNotCorrespond is not a function"
+      },
+      {
+        "ok": false,
+        "error": "TypeError: this._validateNotCorrespond is not a function"
+      },
+      {
+        "ok": false,
+        "error": "TypeError: this._validateNotCorrespond is not a function"
+      },
+      {
+        "ok": false,
+        "error": "TypeError: this._validateNotCorrespond is not a function"
+      },
+      {
+        "ok": false,
+        "error": "TypeError: this._validateNotCorrespond is not a function"
+      },
+      {
+        "ok": false,
+        "error": "TypeError: this._validateNotCorrespond is not a function"
+      },
+      {
+        "ok": false,
+        "error": "TypeError: this._validateNotCorrespond is not a function"
+      },
+      {
+        "ok": false,
+        "error": "TypeError: this._validateNotCorrespond is not a function"
+      },
+      {
+        "ok": false,
+        "error": "TypeError: this._validateNotCorrespond is not a function"
+      },
+      {
+        "ok": false,
+        "error": "TypeError: this._validateNotCorrespond is not a function"
+      },
+      {
+        "ok": false,
+        "error": "TypeError: this._validateNotCorrespond is not a function"
+      },
+      {
+        "ok": false,
+        "error": "TypeError: this._validateNotCorrespond is not a function"
+      }
+    ]
+  }
+}

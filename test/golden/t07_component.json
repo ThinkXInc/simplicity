@@ -1,0 +1,38 @@
+{
+  "Button": {
+    "ok": true,
+    "value": {
+      "name": "Button",
+      "hasView": true,
+      "tag": "DIV"
+    }
+  },
+  "Title": {
+    "ok": true,
+    "value": {
+      "name": "Title",
+      "hasView": true,
+      "tag": "H2"
+    }
+  },
+  "NextButton": {
+    "ok": true,
+    "value": {
+      "name": "NextButton",
+      "hasView": true,
+      "tag": "DIV"
+    }
+  },
+  "BackButton": {
+    "ok": true,
+    "value": {
+      "name": "BackButton",
+      "hasView": true,
+      "tag": "DIV"
+    }
+  },
+  "TextField": {
+    "ok": false,
+    "error": "ReferenceError: TextFieldConfig is not defined"
+  }
+}
