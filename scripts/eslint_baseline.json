@@ -1,9 +1,4 @@
 [
-  "src/view_components/file_upload_view.js:295:state",
-  "src/view_components/file_upload_view.js:313:state",
-  "src/view_components/file_upload_view.js:528:currentCell",
-  "src/view_components/file_upload_view.js:529:currentCell",
-  "src/view_components/file_upload_view.js:531:currentCell",
   "src/view_components/position_map.js:165:component",
   "src/view_components/position_map.js:165:prefix",
   "src/view_components/position_map.js:166:component",

@@ -292,7 +292,7 @@
     set showingstate(showingstate) {
         this._showingstate = showingstate;
         this.controller.fileUploadViewStateChange(this, this._showingstate); // <-- protocol function call
-        switch (state) {
+        switch (showingstate) {
             case FileUploadViewShowingState.onhide:
                 console.log(`FileUploadView ${this.id} showing state changed -> onhide`);
                 break
@@ -310,7 +310,7 @@
     set uploadstate(uploadstate) {
         this._uploadstate = uploadstate;
         this.controller.fileUploadViewStateChange(this, this._uploadstate); // <-- protocol function call
-        switch (state) {
+        switch (uploadstate) {
             case FileUploadViewUploadState.onready:
                 break
         }
@@ -525,7 +525,7 @@
         console.log(document.getElementById(cell.id));
 
         console.log(`set event for ${cell.id}`);
-            currentCell = document.getElementById(cell.id);
+            const currentCell = document.getElementById(cell.id);
             currentCell.querySelector('.close-icon').addEventListener('click', e => {
                 console.log(`cell ${cell.id} clicked`);
                 currentCell.remove()
