@@ -9,3 +9,4 @@ BASELINE  7008d1ad9c9b3c8b3d40e11b5fc4d7debe8e949c9dfa9af24b93f9c229d9c7f6  dist
 R-06      d17dfaac3e15c51a4f350f0a0a84a16b5c86776ddf3a1144566d99328d05c4f6  dist/simplicity.js  (デッドクラス InputPageViewControllerConfig 削除)
 P3-S1     512a195b7dec1087b7977a43f39daacd6d6118b8186145542b332f09b1888bfa  dist/simplicity.js  (Browswer -> Browser typo 修正・F-7)
 P3-S2     d81fe6d83d874319c6caefcd2b6ecd859089620c4de52a72906effa9625aeb28  dist/simplicity.js  (postal case 追加 / maxLength null ガード / passwordFormat 重複行削除・T-06)
+P3-S3     9aef9307c415938989f9f6a5238b6f9616666195ed02bbb645d79165f3c32d33  dist/simplicity.js  (エラー経路のスコープ外変数 parentId 除去→$parent・F-9)

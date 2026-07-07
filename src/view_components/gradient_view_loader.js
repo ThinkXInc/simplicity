@@ -98,7 +98,7 @@ class GradientViewLoader {
     mount($parent) {
         // Check if $parent is null or not an instance of HTMLElement
         if (!$parent || !($parent instanceof HTMLElement)) {
-            console.error(`[GradintViewLoader ERROR] Could not find a parent element with id=${parentId} or the element is not a valid HTML element.`);
+            console.error(`[GradintViewLoader ERROR] Could not find a valid parent element (received: ${$parent}).`);
             return;
         }
     

@@ -60,7 +60,7 @@ class GradientLoadingBar {
     mount($parent) {
         // Check if $parent is null or not an instance of HTMLElement
         if (!$parent || !($parent instanceof HTMLElement)) {
-            console.error(`[ERROR] Could not find a parent element with id=${parentId} or the element is not a valid HTML element.`);
+            console.error(`[ERROR] Could not find a valid parent element (received: ${$parent}).`);
             return;
         }
     
