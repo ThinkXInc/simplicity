@@ -242,7 +242,7 @@ class InputPageViewController {
         window.addEventListener('hashchange', (event) => {
             console.log('hashchange event detected');
             console.log(`url changed. -> ${Browser.getRelativePath()}`)
-            const page = Browswer.getValueFromHash(this.pageIndexKeyInHash, 'int');
+            const page = Browser.getValueFromHash(this.pageIndexKeyInHash, 'int');
             _this.pageIndex = page;
         }, false);
 
