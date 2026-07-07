@@ -113,12 +113,17 @@ class Validator {
                 if (!this._validateFormat(value, RegexType.password)) {
                     debuglog(`validated: ${value} is invalid password format.`)
                     return this.errorMessage;
-                    return this.errorMessage;
                 }
                 break;
             case ValidationErrorType.telFormat:
                 if (!this._validateFormat(value, RegexType.tel)) {
                     debuglog(`validated: ${value} is invalid tel format.`)
+                    return this.errorMessage;
+                }
+                break;
+            case ValidationErrorType.postalCodeFormat:
+                if (!this._validateFormat(value, RegexType.postalcode)) {
+                    debuglog(`validated: ${value} is invalid postal code format.`)
                     return this.errorMessage;
                 }
                 break;
@@ -178,6 +183,10 @@ class Validator {
      * @return {boolean} - Whether or not the value's length is within the range.
      */
     _validateMaxLength(value) {
+        // null/undefined は「長さなし」= max 超過なしとして valid 扱い(null ガード。F-06/T-06)。
+        if (value === null || value === undefined) {
+            return true;
+        }
         return value.length <= this.maxLength;
     }
     

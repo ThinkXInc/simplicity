@@ -80,8 +80,8 @@
         "value": null
       },
       {
-        "ok": false,
-        "error": "TypeError: Cannot read properties of null (reading 'length')"
+        "ok": true,
+        "value": null
       },
       {
         "ok": true,
@@ -305,7 +305,11 @@
       },
       {
         "ok": true,
-        "value": null
+        "value": "postal"
+      },
+      {
+        "ok": true,
+        "value": "postal"
       },
       {
         "ok": true,
@@ -313,7 +317,7 @@
       },
       {
         "ok": true,
-        "value": null
+        "value": "postal"
       },
       {
         "ok": true,
@@ -321,7 +325,15 @@
       },
       {
         "ok": true,
-        "value": null
+        "value": "postal"
+      },
+      {
+        "ok": true,
+        "value": "postal"
+      },
+      {
+        "ok": true,
+        "value": "postal"
       },
       {
         "ok": true,
@@ -329,23 +341,11 @@
       },
       {
         "ok": true,
-        "value": null
+        "value": "postal"
       },
       {
         "ok": true,
-        "value": null
-      },
-      {
-        "ok": true,
-        "value": null
-      },
-      {
-        "ok": true,
-        "value": null
-      },
-      {
-        "ok": true,
-        "value": null
+        "value": "postal"
       }
     ]
   },
