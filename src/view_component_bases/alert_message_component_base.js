@@ -13,7 +13,7 @@ class AlertMessageConfig extends ViewComponentConfig {
  * @constructor
  * @param {string} id - The id for the new element.
  */
- class AlertMessageComponentBase extends ViewComponentBase {
+class AlertMessageComponentBase extends ViewComponentBase {
 
     constructor(id, config = new AlertMessageConfig()) {
         super(id, config);
@@ -62,7 +62,7 @@ class AlertMessageConfig extends ViewComponentConfig {
  * A protocol class for AlertMessage components.
  * This class defines the interface that AlertMessage components should implement.
  */
- class AlertMessageProtocol {
+class AlertMessageProtocol {
     /**
      * Protocol method to show a message. This method should be implemented in the classes 
      * that conform to this protocol.

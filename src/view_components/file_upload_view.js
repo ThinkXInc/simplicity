@@ -60,7 +60,7 @@
  * `</code>`
  * @param {string} id - The DOM id where this view is inserted.
  */
- class FileUploadTableViewCell {
+class FileUploadTableViewCell {
     id = null;
     __table_view_id__ = null;
     __index__ = null;
@@ -217,7 +217,7 @@
  * @param {string} dropTitle - drag & drop area title text
  * @param {string} uploadedFilesTableTitle - uploadFilesTable title
  */
- class FileUploadView extends ViewComponentBase {
+class FileUploadView extends ViewComponentBase {
     //__upload_file_table_title__ = `<h3 class=uploadedFilesTableTitle>$uploadedFilesTableTitle</h3>` 
     __acceptable_file_extensions__ = ['jpg', 'png', 'pdf', 'wav', 'aiff', 'mp3']
 
@@ -548,7 +548,7 @@
     }
 }
 
- class FileUploadViewProtocol {
+class FileUploadViewProtocol {
     /**
      * To be overridden in the ViewController. 
      * Called when the state of the FileUploadView changes.

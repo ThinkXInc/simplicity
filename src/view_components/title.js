@@ -17,7 +17,7 @@ class TitleConfig extends ViewComponentConfig {
  * @param {string} text - The text to display in the element.
  * @param {string} htmlTag - The type of HTML element to create (default is 'h2').
  */
- class Title extends ViewComponentBase {
+class Title extends ViewComponentBase {
 
     constructor(id, config = new TitleConfig()) {
         super(id, config);
