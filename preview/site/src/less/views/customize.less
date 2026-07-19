@@ -22,41 +22,41 @@ div.container.CustomizeContainer {
     min-height: 900px;
     overflow-y: hidden;
     div.CustomizeItems {
-        p.alertMessage {
+        p.spl-alertMessage {
             font-size: 0.8em;
             color: @alert-red;
             padding: 8px 0 0 16px;
         }
-        div.TextField {
-            div.inputOuter {
+        div.spl-TextField {
+            div.spl-inputOuter {
                 overflow: visible;
                 overflow-y: visible;
-                h6.title {
+                h6.spl-title {
 
                 }
-                div.inputWrapper {
+                div.spl-inputWrapper {
 
                 }
-                div.footer {
+                div.spl-footer {
                     height: 20px;
                     max-width: 100px;
-                    p.alertMessage {
+                    p.spl-alertMessage {
                         font-size: 0.75em;
                         padding: 0;
                     }
                 }
             }
         }
-        div.TextField.Incrementer {
+        div.spl-TextField.spl-Incrementer {
             width: max-content;
             margin-right: 10px;
-            div.inputOuter {
+            div.spl-inputOuter {
                 padding: 0;
-                h6.title {
+                h6.spl-title {
                     color: #fff;
                     font-size: 0.8em;
                 }
-                div.inputWrapper {
+                div.spl-inputWrapper {
                     width: 98px;
                     border: 1px solid #989898;
                     border-radius: 4px;
@@ -71,9 +71,9 @@ div.container.CustomizeContainer {
                         border-radius: 0;
                     }
                 }
-                div.inputAfter {
+                div.spl-inputAfter {
                     margin-left: 0 !important;
-                    div.incrementButton {
+                    div.spl-incrementButton {
                         width: 28px;
                         button {
                             img {
@@ -82,19 +82,19 @@ div.container.CustomizeContainer {
                         }
                     }
                 }
-                div.footer {
+                div.spl-footer {
                     padding: 4px 0 0 0;
                     font-size: 0.9em;
                     display: block;
-                    p.alertMessage {
+                    p.spl-alertMessage {
                         font-size: 0.75em;
                     }
                 }
             }
         }
-        div.TextField.Incrementer.alert {
-            div.inputOuter {
-                div.inputWrapper {
+        div.spl-TextField.spl-Incrementer.spl-alert {
+            div.spl-inputOuter {
+                div.spl-inputWrapper {
                     border: 1px solid @alert-red;
                     input {
                         border: none !important;
@@ -102,23 +102,23 @@ div.container.CustomizeContainer {
                 }
             }
         }
-        div.RadioButton.ButtonType {
+        div.spl-RadioButton.ButtonType {
             padding: 14px 14px 0 14px;
             padding-bottom: 14px;
             width: max-content;
-            div.inputOuter {
-                h6.title {
+            div.spl-inputOuter {
+                h6.spl-title {
                     -webkit-font-smoothing: antialiased;
                     color: #fff;
                     font-size: 0.8em;
                     margin-bottom: 10px;
                 }
-                div.inputWrapper {
+                div.spl-inputWrapper {
                     display: flex;
                     flex-direction: row;
                     align-items: center;
                     padding-left: 7px;
-                    div.item {
+                    div.spl-item {
                         cursor: pointer;
                         display: flex;
                         flex-direction: row;
@@ -127,7 +127,7 @@ div.container.CustomizeContainer {
                         input[type=radio] {
                             cursor: pointer;
                         }
-                        span.checkbox {
+                        span.spl-checkbox {
                             display: block;
                             width: 20px;
                             height: 20px;
@@ -141,25 +141,25 @@ div.container.CustomizeContainer {
                             color: #fff;
                         }
                     }
-                    div.item.checked {
-                        span.checkbox {
+                    div.spl-item.spl-checked {
+                        span.spl-checkbox {
                             background-color: #005275;
                             border: 1px solid #2b89ae;
                         }
                     }
-                    div.item:not(.checked):hover {
-                        span.checkbox {
+                    div.spl-item:not(.spl-checked):hover {
+                        span.spl-checkbox {
                             background-color: #ababab;
                         }
 
                     }
-                    div.inputAfter {
+                    div.spl-inputAfter {
 
                     }
                 }
-                div.footer {
+                div.spl-footer {
                     padding: 0;
-                    p.alertMessage {
+                    p.spl-alertMessage {
                         font-size: 0.75em;
                     }
                 }
@@ -168,7 +168,7 @@ div.container.CustomizeContainer {
         }
         div.CustomizeItemWrapper {
             padding: 14px 14px 0px 14px;
-            h4.subtitle {
+            h4.spl-subtitle {
                 color: #fff;
                 font-size: 0.8em;
                 margin-bottom: 10px;
@@ -177,7 +177,7 @@ div.container.CustomizeContainer {
 
         // ButtonSize, BalloonSize
         div.ButtonSizeWrapper, div.BalloonSizeWrapper {
-            h4.subtitle {
+            h4.spl-subtitle {
             }
             div.ButtonSizeForms, div.BalloonSizeForms {
                 display: flex;
@@ -187,26 +187,26 @@ div.container.CustomizeContainer {
                 padding-left: 5px;
                 div.ButtonWidthForm, div.ButtonHeightForm, div.BalloonWidthForm, div.BalloonHeightForm {
                     position: relative;
-                    div.inputOuter {
-                        h6.title {
+                    div.spl-inputOuter {
+                        h6.spl-title {
                             margin-bottom: 11px;
                         }
-                        div.inputWrapper {
+                        div.spl-inputWrapper {
                             input {
 
                             }
-                            div.inputAfter {
-                                div.incrementButton {
+                            div.spl-inputAfter {
+                                div.spl-incrementButton {
                                     button {
 
                                     }
                                 }
                             }
                         }
-                        div.footer {
+                        div.spl-footer {
 
                         }
-                        span.unit {
+                        span.spl-unit {
                             position: absolute;
                             top: 46px;
                             left: 107px;
@@ -224,7 +224,7 @@ div.container.CustomizeContainer {
         // ButtonColor
         div.ButtonColorWrapper {
             padding-bottom: 14px;
-            h4.subtitle {
+            h4.spl-subtitle {
 
             }
             div.ButtonColorPicker {
@@ -241,16 +241,16 @@ div.container.CustomizeContainer {
         // ButtonFontSize
         div.ButtonFontSizeWrapper {
             div.FontSizeForm {
-                div.inputOuter {
+                div.spl-inputOuter {
                     padding: 0;
                     overflow-y: visible;
                     border: none;
-                    h6.title {
+                    h6.spl-title {
                         color: #fff;
                         font-size: 0.8em;
                         margin: 0 0 10px 0;
                     }
-                    div.inputWrapper {
+                    div.spl-inputWrapper {
                         width: max-content;
                         padding-left: 7px;
                         input {
@@ -263,21 +263,21 @@ div.container.CustomizeContainer {
                             margin: 0;
                             margin-right: 14px;
                         }
-                        div.inputAfter {
+                        div.spl-inputAfter {
                             margin-left: 0px;
-                            span.unit {
+                            span.spl-unit {
                                 color: #fff;
                                 font-size: 0.8em;
                             }
                         }
                     }
-                    div.footer {
+                    div.spl-footer {
                         justify-content: start;
                         padding: 5px 0;
                         max-width: 230px;
                         gap: 0;
                         padding: 0;
-                        p.alertMessage {
+                        p.spl-alertMessage {
                             padding-left: 7px;
                             padding-top: 2px;
                         }
@@ -294,41 +294,41 @@ div.CustomizeItems div.ModelSelectWrapper, div.CustomizeItems div.ResponseModeWr
         margin-bottom: 12px;
     }
 
-    h4.subtitle {
+    h4.spl-subtitle {
 
     }
-    div#ModelSelectDropdown.DropdownButton, div#ResponseModeDropdown.DropdownButton {
+    div#ModelSelectDropdown.spl-DropdownButton, div#ResponseModeDropdown.spl-DropdownButton {
         &#ResponseModeDropdown {
             margin-bottom: 10px;
         }
-        &.alert {
-            div.DropdownButtonClickable {
+        &.spl-alert {
+            div.spl-DropdownButtonClickable {
                 border: 1px solid @alert-red;
-                h6.description {
+                h6.spl-description {
                     color: @alert-red;
                 }
             }
         }
 
-        div.DropdownButtonClickable {
-            h6.description {
+        div.spl-DropdownButtonClickable {
+            h6.spl-description {
             }
-            span.title {
+            span.spl-title {
                 color: #fff;
                 font-size: 13px;
             }
-            img.downarrow {
+            img.spl-downarrow {
             }
-            div.footer {
+            div.spl-footer {
                 padding: 0;
-                p.alertMessage {
+                p.spl-alertMessage {
                     color: @alert-red;
                 }
             }
         }
-        ul.listmenu {
+        ul.spl-listmenu {
             max-width: 300px;
-            li.listitem {
+            li.spl-listitem {
                 font-size: 14px;
                 &:first-child {
                     border-radius: 15px 15px 0 0; /* Top-left and top-right corners */
@@ -338,7 +338,7 @@ div.CustomizeItems div.ModelSelectWrapper, div.CustomizeItems div.ResponseModeWr
                     border-radius: 0 0 15px 15px; /* Bottom-left and bottom-right corners */
                 }
             }
-            li.listitem:hover {
+            li.spl-listitem:hover {
             }
         }
     }
@@ -449,7 +449,7 @@ div.CustomizePreview {
                 visibility: visible;
                 animation: fadeIn 0.3s @ease forwards; /* Smooth fade-in effect */
             }
-            span.tooltip.fade-out {
+            span.tooltip.spl-fade-out {
                 animation: fadeOut 0.5s @ease forwards; /* Smooth fade-out effect */
                 transition: visibility 0s linear 0.3s; /* Delay hiding the tooltip until fade-out completes */
             }
@@ -473,78 +473,78 @@ div.CustomizePreview {
     // Customize Items
     div.container.CustomizeContainer {
         div.CustomizeItems {
-            p.alertMessage {
+            p.spl-alertMessage {
             }
-            div.TextField {
-                div.inputOuter {
-                    h6.title {
+            div.spl-TextField {
+                div.spl-inputOuter {
+                    h6.spl-title {
                     }
-                    div.inputWrapper {
+                    div.spl-inputWrapper {
                     }
-                    div.footer {
-                        p.alertMessage {
+                    div.spl-footer {
+                        p.spl-alertMessage {
                         }
                     }
                 }
             }
-            div.TextField.Incrementer {
-                div.inputOuter {
-                    h6.title {
+            div.spl-TextField.spl-Incrementer {
+                div.spl-inputOuter {
+                    h6.spl-title {
                     }
-                    div.inputWrapper {
+                    div.spl-inputWrapper {
                         input {
                         }
                     }
-                    div.inputAfter {
-                        div.incrementButton {
+                    div.spl-inputAfter {
+                        div.spl-incrementButton {
                             button {
                                 img {
                                 }
                             }
                         }
                     }
-                    div.footer {
-                        p.alertMessage {
+                    div.spl-footer {
+                        p.spl-alertMessage {
                         }
                     }
                 }
             }
-            div.TextField.Incrementer.alert {
-                div.inputOuter {
-                    div.inputWrapper {
+            div.spl-TextField.spl-Incrementer.spl-alert {
+                div.spl-inputOuter {
+                    div.spl-inputWrapper {
                         input {
                         }
                     }
                 }
             }
-            div.RadioButton.ButtonType {
+            div.spl-RadioButton.ButtonType {
                 padding: 14px 10px 14px 10px;
-                div.inputOuter {
-                    h6.title {
+                div.spl-inputOuter {
+                    h6.spl-title {
                     }
-                    div.inputWrapper {
-                        div.item {
+                    div.spl-inputWrapper {
+                        div.spl-item {
                             input[type=radio] {
                             }
-                            span.checkbox {
+                            span.spl-checkbox {
                             }
                             label {
                             }
                         }
-                        div.item.checked {
-                            span.checkbox {
+                        div.spl-item.spl-checked {
+                            span.spl-checkbox {
                             }
                         }
-                        div.item:not(.checked):hover {
-                            span.checkbox {
+                        div.spl-item:not(.spl-checked):hover {
+                            span.spl-checkbox {
                             }
                         }
-                        div.inputAfter {
+                        div.spl-inputAfter {
 
                         }
                     }
-                    div.footer {
-                        p.alertMessage {
+                    div.spl-footer {
+                        p.spl-alertMessage {
                         }
                     }
                 }
@@ -552,32 +552,32 @@ div.CustomizePreview {
             }
             div.CustomizeItemWrapper {
                 padding: 14px 10px 0px 10px;
-                h4.subtitle {
+                h4.spl-subtitle {
                 }
             }
 
             // ButtonSize, BalloonSize
             div.ButtonSizeWrapper, div.BalloonSizeWrapper {
-                h4.subtitle {
+                h4.spl-subtitle {
                 }
                 div.ButtonSizeForms, div.BalloonSizeForms {
                     div.ButtonWidthForm, div.ButtonHeightForm, div.BalloonWidthForm, div.BalloonHeightForm {
-                        div.inputOuter {
-                            h6.title {
+                        div.spl-inputOuter {
+                            h6.spl-title {
                             }
-                            div.inputWrapper {
+                            div.spl-inputWrapper {
                                 input {
                                 }
-                                div.inputAfter {
-                                    div.incrementButton {
+                                div.spl-inputAfter {
+                                    div.spl-incrementButton {
                                         button {
                                         }
                                     }
                                 }
                             }
-                            div.footer {
+                            div.spl-footer {
                             }
-                            span.unit {
+                            span.spl-unit {
                            }
 
                         }
@@ -590,7 +590,7 @@ div.CustomizePreview {
             div.ButtonColorWrapper {
                 padding-left: 10px;
                 padding-right: 10px;
-                h4.subtitle {
+                h4.spl-subtitle {
 
                 }
                 div.ButtonColorPicker {
@@ -606,19 +606,19 @@ div.CustomizePreview {
                 padding-left: 10px;
                 padding-right: 10px;
                 div.FontSizeForm {
-                    div.inputOuter {
-                        h6.title {
+                    div.spl-inputOuter {
+                        h6.spl-title {
                         }
-                        div.inputWrapper {
+                        div.spl-inputWrapper {
                             input {
                             }
-                            div.inputAfter {
-                                span.unit {
+                            div.spl-inputAfter {
+                                span.spl-unit {
                                 }
                             }
                         }
-                        div.footer {
-                            p.alertMessage {
+                        div.spl-footer {
+                            p.spl-alertMessage {
                             }
                         }
                     }
@@ -647,7 +647,7 @@ div.CustomizePreview {
                 }
                 span.tooltip.visible {
                 }
-                span.tooltip.fade-out {
+                span.tooltip.spl-fade-out {
                 }
                 img.CopyButton:hover + span.tooltip {
                 }

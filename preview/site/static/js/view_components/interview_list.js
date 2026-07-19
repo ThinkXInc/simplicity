@@ -49,7 +49,7 @@ class InterviewListCell extends TableViewCell {
         this.$isChecked = document.createElement('div');
         this.$isChecked.classList.add('isChecked');
         if (this.isChecked) {
-            this.$isChecked.classList.add('hide');
+            this.$isChecked.classList.add('spl-hide');
         }
         this.$header.style.position = 'relative';
         this.$header.appendChild(this.$isChecked);
@@ -63,9 +63,9 @@ class InterviewListCell extends TableViewCell {
     set isChecked(value) {
         this._isChecked = value;
         if (value == true) {
-            this.$isChecked.classList.add('hide');
+            this.$isChecked.classList.add('spl-hide');
         } else {
-            this.$isChecked.classList.remove('hide');
+            this.$isChecked.classList.remove('spl-hide');
         }
     }
 
@@ -324,7 +324,7 @@ class InterviewList extends TableView {
         this.$createNew.appendChild(this.$plusIcon);
 
         this.$title = document.createElement('h4');
-        this.$title.classList.add('title');
+        this.$title.classList.add('spl-title');
         this.$title.textContent = this.createNewButtonTitle;
         this.$createNew.appendChild(this.$title);
 

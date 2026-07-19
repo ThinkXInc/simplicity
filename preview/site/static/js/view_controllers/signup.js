@@ -149,7 +149,7 @@ class Signup {
         const $leftline = document.createElement('span');
         $leftline.classList.add('line')
         const $or = document.createElement('p')
-        $or.classList.add('or')
+        $or.classList.add('spl-or')
         $or.textContent = locale.get('accounts_email_separator_or', lang);
         const $rightline = document.createElement('span');
         $rightline.classList.add('line')
@@ -160,12 +160,12 @@ class Signup {
         this.appendLogo(this.pageView, pageIndex);
 
         const $emailPageTitle = document.createElement('h3');
-        $emailPageTitle.classList.add('title');
+        $emailPageTitle.classList.add('spl-title');
         $emailPageTitle.classList.add('email');
         $emailPageTitle.textContent = locale.get('signup_email_title', lang);
 
         const $emailPageSubtitle = document.createElement('p');
-        $emailPageSubtitle.classList.add('subtitle');
+        $emailPageSubtitle.classList.add('spl-subtitle');
         $emailPageSubtitle.classList.add('email');
         $emailPageSubtitle.textContent = locale.get('accounts_email_subtitle', lang);
         console.warn(this.locale)
@@ -241,7 +241,7 @@ class Signup {
             labelText: this.locale.get('nextbutton', lang),
             loaderSrc: '/img/button-loader.svg'
         });
-        emailPageNextButton.$button.classList.add('nextButton');
+        emailPageNextButton.$button.classList.add('spl-nextButton');
 
         const $signInLink = document.createElement('a');
         $signInLink.classList.add('signInLink');
@@ -496,12 +496,12 @@ class Signup {
         this.appendLogo(this.pageView, pageIndex);
 
         const $verifyCodePageTitle = document.createElement('h3');
-        $verifyCodePageTitle.classList.add('title');
+        $verifyCodePageTitle.classList.add('spl-title');
         $verifyCodePageTitle.classList.add('veirifyCode');
         $verifyCodePageTitle.textContent = locale.get('signup_verify_code_title', lang);
 
         const $verifyCodePageSubtitle = document.createElement('p');
-        $verifyCodePageSubtitle.classList.add('subtitle');
+        $verifyCodePageSubtitle.classList.add('spl-subtitle');
         $verifyCodePageSubtitle.classList.add('verifycode');
         $verifyCodePageSubtitle.textContent = locale.get('signup_verify_code_subtitle', lang);
         console.warn(this.locale)
@@ -518,7 +518,7 @@ class Signup {
             labelText: this.locale.get('nextbutton', lang),
             loaderSrc: '/img/button-loader.svg'
         });
-        verifyCodePageNextButton.$button.classList.add('nextButton');
+        verifyCodePageNextButton.$button.classList.add('spl-nextButton');
 
         const $verifyCodePageAlert = document.createElement('p');
         $verifyCodePageAlert.id = 'verifyCodePageAlert';
@@ -658,7 +658,7 @@ class Signup {
             labelText: this.locale.get('nextbutton', lang),
             loaderSrc: '/img/button-loader.svg'
         });
-        verifiedPageNextButton.$button.classList.add('nextButton');
+        verifiedPageNextButton.$button.classList.add('spl-nextButton');
 
         const $verifiedPageAlert = document.createElement('p');
         $verifiedPageAlert.id = 'verifiedPageAlert';
@@ -700,12 +700,12 @@ class Signup {
         this.$backOrigin = $back;
 
         const $originPageTitle = document.createElement('h3');
-        $originPageTitle.classList.add('title');
+        $originPageTitle.classList.add('spl-title');
         $originPageTitle.classList.add('veirifyCode');
         $originPageTitle.textContent = locale.get('signup_origin_title', lang);
 
         const $originPageSubtitle = document.createElement('p');
-        $originPageSubtitle.classList.add('subtitle');
+        $originPageSubtitle.classList.add('spl-subtitle');
         $originPageSubtitle.classList.add('verifycode');
         $originPageSubtitle.textContent = locale.get('signup_origin_subtitle', lang);
 
@@ -753,7 +753,7 @@ class Signup {
             labelText: this.locale.get('nextbutton', lang),
             loaderSrc: '/img/button-loader.svg'
         });
-        originPageNextButton.$button.classList.add('nextButton');
+        originPageNextButton.$button.classList.add('spl-nextButton');
 
         const $originPageAlert = document.createElement('p');
         $originPageAlert.id = 'originPageAlert';
@@ -788,17 +788,17 @@ class Signup {
                     case DomainType.public:
                         debuglog('domain type: public')
                         _this.$explanationText.textContent = locale.get('signup_origin_explanation_public_domain', lang)
-                        _this.$explanationText.classList.remove('alert');
+                        _this.$explanationText.classList.remove('spl-alert');
                         break
                     case DomainType.original:
                         debuglog('domain type: original')
                         _this.$explanationText.textContent = locale.get('signup_origin_explanation_original_domain', lang)
-                        _this.$explanationText.classList.remove('alert');
+                        _this.$explanationText.classList.remove('spl-alert');
                         break
                     case DomainType.others:
                         debuglog('domain type: others')
                         _this.$explanationText.textContent = locale.get('signup_origin_explanation_others_domain', lang);
-                        _this.$explanationText.classList.add('alert');
+                        _this.$explanationText.classList.add('spl-alert');
                         break
                     default:
                         console.warn('Unknown domain type.')
@@ -920,11 +920,11 @@ class Signup {
         this.$backCard = $back;
 
         const $cardPageTitle = document.createElement('h3');
-        $cardPageTitle.classList.add('title');
+        $cardPageTitle.classList.add('spl-title');
         $cardPageTitle.textContent = locale.get('signup_card_title', lang);
 
         const $cardPageSubtitle = document.createElement('p');
-        $cardPageSubtitle.classList.add('subtitle');
+        $cardPageSubtitle.classList.add('spl-subtitle');
         $cardPageSubtitle.textContent = locale.get('signup_card_subtitle', lang);
 
         const $cardInputView = document.createElement('div');
@@ -932,7 +932,7 @@ class Signup {
         $cardInputView.classList.add('CardInputView');
 
         const $loading = document.createElement('img');
-        $loading.classList.add('loading');
+        $loading.classList.add('spl-loading');
         $loading.src = '/img/loading.svg'
 
         const cardPageNextButton = new LoadButton({
@@ -940,7 +940,7 @@ class Signup {
             labelText: this.locale.get('nextbutton', lang),
             loaderSrc: '/img/button-loader.svg'
         });
-        cardPageNextButton.$button.classList.add('nextButton');
+        cardPageNextButton.$button.classList.add('spl-nextButton');
 
         const $cardPageAlert = document.createElement('p');
         $cardPageAlert.id = 'cardPageAlert';
@@ -1046,11 +1046,11 @@ class Signup {
         this.$backLimit = $back;
 
         const $limitPageTitle = document.createElement('h3');
-        $limitPageTitle.classList.add('title');
+        $limitPageTitle.classList.add('spl-title');
         $limitPageTitle.textContent = locale.get('signup_limit_title', lang);
 
         const $limitPageSubtitle = document.createElement('p');
-        $limitPageSubtitle.classList.add('subtitle');
+        $limitPageSubtitle.classList.add('spl-subtitle');
         $limitPageSubtitle.textContent = locale.get('signup_limit_subtitle', lang);
 
         const $container = document.createElement('div');
@@ -1126,7 +1126,7 @@ class Signup {
             labelText: this.locale.get('nextbutton', lang),
             loaderSrc: '/img/button-loader.svg'
         });
-        limitPageNextButton.$button.classList.add('nextButton');
+        limitPageNextButton.$button.classList.add('spl-nextButton');
 
         const $limitPageAlert = document.createElement('p');
         $limitPageAlert.id = 'limitPageAlert';
@@ -1237,7 +1237,7 @@ class Signup {
         this.$backTerms = $back;
 
         const $termsTitle = document.createElement('h4');
-        $termsTitle.classList.add('title');
+        $termsTitle.classList.add('spl-title');
         $termsTitle.textContent = locale.get('signup_terms_title', lang);
 
         const termsScrollView = new TermsScrollView({
@@ -1251,7 +1251,7 @@ class Signup {
             labelText: this.locale.get('signup_terms_next_button', lang),
             loaderSrc: '/img/button-loader.svg'
         });
-        termsPageNextButton.$button.classList.add('nextButton');
+        termsPageNextButton.$button.classList.add('spl-nextButton');
         this.termsPageNextButton = termsPageNextButton;
         this.termsPageNextButton.disable(true);
 
@@ -1317,7 +1317,7 @@ class Signup {
             labelText: this.locale.get('completebutton', lang),
             loaderSrc: '/img/button-loader.svg'
         });
-        completePageNextButton.$button.classList.add('nextButton');
+        completePageNextButton.$button.classList.add('spl-nextButton');
 
         this.completePageNextButton = completePageNextButton;
 

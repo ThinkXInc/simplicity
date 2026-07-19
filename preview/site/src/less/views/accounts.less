@@ -16,7 +16,7 @@
     //background: linear-gradient(15deg, #101c5c, #2373a7);
     background: linear-gradient(15deg, #1e455f, #5224a3);
     //background: linear-gradient(15deg, #26075e, #2373a7);
-    .PageView {
+    .spl-PageView {
         background-color: #fff;
         display: block;
         width: 75%;
@@ -29,7 +29,7 @@
         //box-shadow: 0 5px 15px #c6c6c6;
         overflow: hidden;
         padding: 24px 28px;
-        .PageViewContainer {
+        .spl-PageViewContainer {
             img.back {
                 width: 39px;
                 padding: 0px 18px 18px 0;
@@ -45,13 +45,13 @@
                     width: 108px;
                 }
             }
-            h3.title {
+            h3.spl-title {
                 font-size: 1.6em;
                 color: @title;
                 margin-bottom: 8px;
                 text-align: center;
             }
-            p.subtitle {
+            p.spl-subtitle {
                 font-size: 0.9em;
                 color: @subtitle;
                 margin-bottom: 23px;
@@ -73,21 +73,21 @@
                         height: 0px;
                         border-bottom: 1px solid #e5e5e5;
                     }
-                    p.or {
+                    p.spl-or {
                         font-size: 0.8em;
                         color: #aaa;
                         margin: 0px 10px;
                         width: max-content;
                     }
                 }
-                div.TextField {
+                div.spl-TextField {
                     width: 70%;
-                    div.inputOuter {
+                    div.spl-inputOuter {
                         border: none;
-                        h6.title {
+                        h6.spl-title {
 
                         }
-                        div.inputWrapper {
+                        div.spl-inputWrapper {
                             input {
                                 font-size: 1em;
                                 margin: 0;
@@ -100,34 +100,34 @@
                                 font-size: 0.9em;
                                 color: #b7b7b7;
                             }
-                            div.inputAfter {
+                            div.spl-inputAfter {
 
                             }
                         }
-                        div.footer {
-                            div.left {
+                        div.spl-footer {
+                            div.spl-left {
 
                             }
-                            div.middle {
+                            div.spl-middle {
 
                             }
-                            div.right {
+                            div.spl-right {
 
                             }
-                            p.alertMessage {
+                            p.spl-alertMessage {
                                 font-size: 0.8em;
                             }
                         }
                     }
                 }
-                div.TextField.alert{
-                    div.inputWrapper {
+                div.spl-TextField.spl-alert{
+                    div.spl-inputWrapper {
                         input {
                             border: 1px solid @alert-red !important;
                         }
                     }
                 }
-                button.nextButton, button.backToTopButton {
+                button.spl-nextButton, button.backToTopButton {
                     margin-top: 18px;
                     background: #000;
                     border-radius: 3px;
@@ -147,7 +147,7 @@
 }
 
 #signup, #signin {
-    div.PageViewContainer.EmailPage {
+    div.spl-PageViewContainer.EmailPage {
         div.container {
             a.signInLink {
                 cursor: pointer;
@@ -166,9 +166,9 @@
 }
 
 #signup, #signin {
-    div.PageViewContainer.VerifyCodePage {
+    div.spl-PageViewContainer.VerifyCodePage {
         div.container {
-            div.VerifyCodeForm {
+            div.spl-VerifyCodeForm {
                 margin: 20px 0;
             }
         }
@@ -176,7 +176,7 @@
 }
 
 #signup, #signin {
-    div.PageViewContainer.VerifiedPage {
+    div.spl-PageViewContainer.VerifiedPage {
         div.container {
             img.icon {
                 margin-top: 40px;
@@ -214,7 +214,7 @@
 }
 
 #signup, #signin {
-    div.PageViewContainer.OriginPage {
+    div.spl-PageViewContainer.OriginPage {
         div.container {
             div.originWrapper {
                 display: flex;
@@ -225,17 +225,17 @@
                 div.OriginForm {
                     width: 43%;
                     margin-right: 25px;
-                    div.inputOuter {
+                    div.spl-inputOuter {
                         // FIXME: default font size is somehow large
-                        h6.title {
+                        h6.spl-title {
                             color: #3d3d3d;
                             font-weight: 700;
                             font-size: 12px;
                             margin-bottom: 7px;
                         }
-                        div.footer {
+                        div.spl-footer {
                             margin-top: 4px;
-                            p.alertMessage {
+                            p.spl-alertMessage {
                                 font-size: 11px;
                             }
                         }
@@ -257,7 +257,7 @@
                         font-weight: 600;
                         color: #2d2d2d;
                     }
-                    p.alert {
+                    p.spl-alert {
                         color: @alert-red;
                     }
                 }
@@ -267,7 +267,7 @@
 }
 
 #signup, #signin {
-    div.PageViewContainer.CardPage {
+    div.spl-PageViewContainer.CardPage {
         max-height: 640px;
         overflow-y: auto;
         div.container {
@@ -275,7 +275,7 @@
                 padding: 0 60px;
                 width: 100%;
                 margin-bottom: 15px;
-                img.loading {
+                img.spl-loading {
                     width: 60px;
                     padding: 50px 0px 100px 0;
                     margin: 0 auto;
@@ -290,7 +290,7 @@
 }
 
 #signup, #signin {
-    div.PageViewContainer.LimitPage {
+    div.spl-PageViewContainer.LimitPage {
         div.container {
             padding: 28px 114px;
             div.line1 {
@@ -304,8 +304,8 @@
                 }
                 div.LimitForm {
                     width: 150px;
-                    div.inputOuter {
-                        div.inputWrapper {
+                    div.spl-inputOuter {
+                        div.spl-inputWrapper {
                             border: 1px solid #dfdfdf;
                             border-radius: 4px;
                             box-shadow: 0 1px 3px #f1f1f1;
@@ -317,8 +317,8 @@
                                 margin: 0;
                             }
                         }
-                        div.inputAfter {
-                            div.incrementButton {
+                        div.spl-inputAfter {
+                            div.spl-incrementButton {
                                 width: 28px;
                                 button {
                                     img {
@@ -327,8 +327,8 @@
                                 }
                             }
                         }
-                        div.footer {
-                            p.alertMessage {
+                        div.spl-footer {
+                            p.spl-alertMessage {
                                 font-size: 0.75em;
                             }
                         }
@@ -372,19 +372,19 @@
 }
 
 #signup, #signin {
-    div.PageViewContainer.TermsPage {
-        h4.title {
+    div.spl-PageViewContainer.TermsPage {
+        h4.spl-title {
             font-weight: 700;
             margin-bottom: 31px;
         }
-        div.TermsScrollView {
+        div.spl-TermsScrollView {
             margin-bottom: 30px;
         }
     }
 }
 
 #signup, #signin {
-    div.PageViewContainer.CompletePage {
+    div.spl-PageViewContainer.CompletePage {
         div.container {
             padding: 44px 31px;
             img.icon {
@@ -401,8 +401,8 @@
                 color: #8f8f8f;
             }
         }
-        button.nextButton {
-            span.LoadButtonLabel {
+        button.spl-nextButton {
+            span.spl-LoadButtonLabel {
                 width: 200px;
             }
         }
@@ -410,7 +410,7 @@
 }
 
 #signup, #signin {
-    div.PageViewContainer.RestrictedPage {
+    div.spl-PageViewContainer.RestrictedPage {
         div.container {
             h4.restrictedMessage {
                 white-space: pre-wrap;
@@ -423,8 +423,8 @@
 }
 
 #signup, #signin {
-    div.PageViewContainer.SentPage,
-    div.PageViewContainer.DonePage {
+    div.spl-PageViewContainer.SentPage,
+    div.spl-PageViewContainer.DonePage {
         div.container {
             padding: 34px 31px;
             img.icon {
@@ -441,8 +441,8 @@
                 color: #8f8f8f;
             }
         }
-        button.nextButton {
-            span.LoadButtonLabel {
+        button.spl-nextButton {
+            span.spl-LoadButtonLabel {
                 width: 150px;
             }
         }
@@ -450,7 +450,7 @@
 }
 
 #signup, #signin {
-    div.PageViewContainer.EmailPage.LoginPage {
+    div.spl-PageViewContainer.EmailPage.LoginPage {
         div.container {
             p.passwordForgotLink {
                 cursor: pointer;
@@ -469,14 +469,14 @@
 }
 
 #signup, #signin {
-    div.PageViewContainer.ResetPage {
+    div.spl-PageViewContainer.ResetPage {
         div.container {
         }
     }
 }
 
 #signup, #signin {
-    div.PageViewContainer {
+    div.spl-PageViewContainer {
         .btn-loading() {
             transition: 
                 width 0.2s @ease,
@@ -493,7 +493,7 @@
             //border-radius: 30px !important;
             //color: transparent !important;
         }
-        button.btn-loading.load {
+        button.btn-loading.spl-load {
             background-color: #aaa !important;
             //height: 6px !important;
         }
@@ -502,50 +502,50 @@
 
 @media (max-width: @smartphone-width) {
     #signup, #signin {
-        .PageView {
-            .PageViewContainer {
+        .spl-PageView {
+            .spl-PageViewContainer {
                 img.back:hover {
                 }
                 div.logoContainer {
                     img.logo {
                     }
                 }
-                h3.title {
+                h3.spl-title {
                 }
-                p.subtitle {
+                p.spl-subtitle {
                     padding: 0 0;
                 }
                 div.container {
                     div.separator {
                         span.line {
                         }
-                        p.or {
+                        p.spl-or {
                         }
                     }
-                    div.TextField {
+                    div.spl-TextField {
                         width: 100%;
-                        div.inputOuter {
-                            div.inputWrapper {
+                        div.spl-inputOuter {
+                            div.spl-inputWrapper {
                                 input {
                                 }
                                 input::placeholder {
                                 }
-                                div.inputAfter {
+                                div.spl-inputAfter {
                                 }
                             }
-                            div.footer {
-                                p.alertMessage {
+                            div.spl-footer {
+                                p.spl-alertMessage {
                                 }
                             }
                         }
                     }
-                    div.TextField.alert {
-                        div.inputWrapper {
+                    div.spl-TextField.spl-alert {
+                        div.spl-inputWrapper {
                             input {
                             }
                         }
                     }
-                    button.nextButton {
+                    button.spl-nextButton {
                     }
                     p.pageAlert {
                     }
@@ -554,7 +554,7 @@
         }
     }
 
-    div.PageViewContainer.EmailPage, div.PageViewContainer.ForgotPage, div.PageViewContainer.ResetPage {
+    div.spl-PageViewContainer.EmailPage, div.spl-PageViewContainer.ForgotPage, div.spl-PageViewContainer.ResetPage {
         div.container {
             #emailForm, #passwordForm, #passwordConfirmForm, #forgotForm, #passwordResetForm, #passwordResetConfirmForm {
                 width: 100%;
@@ -562,14 +562,14 @@
         }
     }
 
-    div.PageViewContainer.VerifyCodePage {
+    div.spl-PageViewContainer.VerifyCodePage {
         div.container {
-            div.VerifyCodeForm {
+            div.spl-VerifyCodeForm {
             }
         }
     }
 
-    div.PageViewContainer.VerifiedPage {
+    div.spl-PageViewContainer.VerifiedPage {
         div.container {
             img.icon {
             }
@@ -589,7 +589,7 @@
         }
     }
 
-    div.PageViewContainer.OriginPage {
+    div.spl-PageViewContainer.OriginPage {
         div.container {
             div.originWrapper {
                 flex-direction: column;
@@ -598,12 +598,12 @@
                     width: 100%;
                     margin-right: 0;
                     margin-bottom: 27px;
-                    div.inputOuter {
+                    div.spl-inputOuter {
                         padding: 0;
-                        h6.title {
+                        h6.spl-title {
                         }
-                        div.footer {
-                            p.alertMessage {
+                        div.spl-footer {
+                            p.spl-alertMessage {
                             }
                         }
                     }
@@ -614,18 +614,18 @@
                     }
                     p {
                     }
-                    p.alert {
+                    p.spl-alert {
                     }
                 }
             }
         }
     }
 
-    div.PageViewContainer.CardPage {
+    div.spl-PageViewContainer.CardPage {
         div.container {
             div.CardInputView {
                 padding: 0;
-                img.loading {
+                img.spl-loading {
                 }
             }
             img.stripeLogo {
@@ -633,7 +633,7 @@
         }
     }
 
-    div.PageViewContainer.LimitPage {
+    div.spl-PageViewContainer.LimitPage {
         div.container {
             padding: 0px 0;
             div.line1 {
@@ -645,22 +645,22 @@
                 div.LimitForm {
                     flex: 2;
                     margin-right: 4px;
-                    div.inputOuter {
+                    div.spl-inputOuter {
                         padding: 4px 0 4px 0px;
-                        div.inputWrapper {
+                        div.spl-inputWrapper {
                             input {
                             }
                         }
-                        div.inputAfter {
-                            div.incrementButton {
+                        div.spl-inputAfter {
+                            div.spl-incrementButton {
                                 button {
                                     img {
                                     }
                                 }
                             }
                         }
-                        div.footer {
-                            p.alertMessage {
+                        div.spl-footer {
+                            p.spl-alertMessage {
                             }
                         }
                     }
@@ -683,13 +683,13 @@
         }
     }
 
-    div.PageViewContainer.TermsPage {
-        h4.title {
+    div.spl-PageViewContainer.TermsPage {
+        h4.spl-title {
         }
-        div.TermsScrollView {
-            div.termsViewContainer {
+        div.spl-TermsScrollView {
+            div.spl-termsViewContainer {
                 width: 100%;
-                div.termsView {
+                div.spl-termsView {
                     div.terms {
                         padding: 10px;
                     }
@@ -698,7 +698,7 @@
         }
     }
 
-    div.PageViewContainer.CompletePage {
+    div.spl-PageViewContainer.CompletePage {
         div.container {
             padding: 19px 0px;
             img.icon {
@@ -709,14 +709,14 @@
             p {
             }
         }
-        button.nextButton {
-            span.LoadButtonLabel {
+        button.spl-nextButton {
+            span.spl-LoadButtonLabel {
             }
         }
     }
 
-    div.PageViewContainer.SentPage,
-    div.PageViewContainer.DonePage {
+    div.spl-PageViewContainer.SentPage,
+    div.spl-PageViewContainer.DonePage {
         div.container {
             img.icon {
             }
@@ -725,28 +725,28 @@
             p {
             }
         }
-        button.nextButton {
-            span.LoadButtonLabel {
+        button.spl-nextButton {
+            span.spl-LoadButtonLabel {
             }
         }
     }
 
-    div.PageViewContainer.EmailPage.LoginPage {
+    div.spl-PageViewContainer.EmailPage.LoginPage {
         div.container {
             p.passwordForgotLink:hover {
             }
         }
     }
 
-    div.PageViewContainer.ResetPage {
+    div.spl-PageViewContainer.ResetPage {
         div.container {
         }
     }
 
-    div.PageViewContainer {
+    div.spl-PageViewContainer {
         button.btn-loading:hover {
         }
-        button.btn-loading.load {
+        button.btn-loading.spl-load {
         }
     }
 }

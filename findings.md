@@ -174,6 +174,15 @@
   **ギャラリースクショが ST-3 凍結 golden と画素一致(maxDiffPixels 0)= 知覚不変の機械証明**。
   dist sha 9c606cd51587fbdcb8cef6e203ac4c7f250c0052849ce0381dcc8f9471101c67。
   site fixture 4ページのスクショは quantz 側資産が旧名のため過渡的に不一致(ST-7 で復帰) / ST-6
+- ST-7 適用の記録(2026-07-19) / site fixture へ同写像を機械適用: less 40ファイル 1121置換・
+  js 28ファイル 113置換・templates 7ファイル 5置換(class 属性)。手動確認リストは全件
+  「改名しない」と裁定(quantz のデータフィールド名 'title'/'keywords'/'text'・イベント名
+  'selected'・id 文字列 'VerifyCodeForm'・pressText 既定値)。ゲート: 旧名 grep 0
+  (less/js。templates の残存4件は inline script の console.error というコードの誤検知で
+  対象外、代わりに html モード dry-run 0 = 冪等で判定)+ site smoke 4/4 +
+  **スクショ回帰 5/5 全て ST-3 凍結 golden と画素一致(gallery+site 4ページ・
+  maxDiffPixels 0)= 改名の知覚不変が全面で機械証明**。追随キットは
+  migration/apply_rename.js + ADOPTION.md として完成(quantz-web への適用は ST-R まで実施しない)/ ST-7
 - /Users/K00TSUKA/Sources/quantz-web:master / ローカル master は eab6fd049b2c69c7578b8be288245be5c961902d、ローカル保存 ref origin/master は計画対象 99a9488714b94e227ecec54340df031419c5d1e2。計画書 §5.1 の「clone は ff 追随済み」と不一致。quantz-web 書き込み禁止のため checkout/pull は行わず、git grep/show origin/master で対象ツリーを読み取る / ST-0
 - refactor_plan.md:3 / ルート CLAUDE.md・docs/ROADMAP.md は計画書を `REFACTORING_PLAN.md` と呼ぶが実ファイル名は `refactor_plan.md`(内容は v1.2 で一致) / 項目0-1
 - refactor_plan.md:146 / 計画書指定の `"test": "node --test test/"` は本環境 node v23.7.0 で exit 1(`test/` をモジュールとして解決し MODULE_NOT_FOUND。計画書検証環境 node 22.22.2 では動作)。node 23 互換のため `"test": "node --test 'test/**/*.test.js'"` を採用(人間承認済み。src/dist 不変・挙動不変) / 項目0-2

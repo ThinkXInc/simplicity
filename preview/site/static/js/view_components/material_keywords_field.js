@@ -111,7 +111,7 @@ class MaterialKeywordsField extends KeywordsField {
 
         // Create the 'keywordsFieldLoader' div
         const $loader = document.createElement('div');
-        $loader.className = 'loader keywordsFieldLoader';
+        $loader.className = 'spl-loader keywordsFieldLoader';
 
         // Create the 'elements' ul
         const $elements = document.createElement('ul');

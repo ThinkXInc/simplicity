@@ -1102,7 +1102,7 @@ class InterviewCreateView {
         }
 
         if (this.$message) {
-            this.$message.classList.remove('alert', 'success');
+            this.$message.classList.remove('spl-alert', 'spl-success');
             this.$message.textContent = '';
         } else {
             console.error(`InterviewCreateView.$message not exist.`)
@@ -1112,7 +1112,7 @@ class InterviewCreateView {
             (res) => {
                 const { code, message } = res;
                 console.log(`[${code} success] ${message}`);
-                this.$message.classList.add('success');
+                this.$message.classList.add('spl-success');
                 this.$message.textContent = message;
 
                 this.interviewId = res.id;
@@ -1139,7 +1139,7 @@ class InterviewCreateView {
             (res) => {
                 const { code, message } = res;
                 console.log(`[${code} success] ${message}`);
-                this.$message.classList.add('success');
+                this.$message.classList.add('spl-success');
                 this.$message.textContent = message;
             },
             (error) => {
@@ -1185,19 +1185,19 @@ class InterviewCreateView {
                                 const guideSubIndex = parseInt(stepMatchGuide[2], 10);
                                 this.guidelineForms[stepIndex][guideSubIndex]?.alert(message);
                             } else if (message) {
-                                $message.classList.add('alert');
+                                $message.classList.add('spl-alert');
                                 $message.textContent = message;
                             }
                             break;
                     }
                 });
             } else if (message) {
-                $message.classList.add('alert');
+                $message.classList.add('spl-alert');
                 $message.textContent = message;
             }
         } else {
             console.error(error);
-            $message.classList.add('alert');
+            $message.classList.add('spl-alert');
             $message.textContent = 'An unexpected error occurred.';
         }
     }

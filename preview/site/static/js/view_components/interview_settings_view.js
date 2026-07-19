@@ -59,8 +59,8 @@ class InterviewSettingsModalView extends ModalView {
 
         const $message = document.createElement('p');
         $message.id = 'InterviewSettingsModalViewMessage';
-        $message.classList.add('message');
-        this.$view.querySelector('.modalViewFooter').prepend($message);
+        $message.classList.add('spl-message');
+        this.$view.querySelector('.spl-modalViewFooter').prepend($message);
         this.$message = $message;
         
         console.warn(this.interviewId)
@@ -108,7 +108,7 @@ class InterviewSettingsModalView extends ModalView {
     
         // Add labels and separators
         const $labelResults = document.createElement('span');
-        $labelResults.classList.add('label', 'results');
+        $labelResults.classList.add('spl-label', 'results');
         $labelResults.textContent = this.locale.get('interview_settings_results_label', this.lang);
         this.$resultsViewContainer.appendChild($labelResults);
     
@@ -128,7 +128,7 @@ class InterviewSettingsModalView extends ModalView {
         this.interviewResults.fetchAndUpdate({ limit: 10 });
     
         const $labelCustomize = document.createElement('span');
-        $labelCustomize.classList.add('label', 'customize');
+        $labelCustomize.classList.add('spl-label', 'customize');
         $labelCustomize.textContent = this.locale.get('interview_settings_customize_label', this.lang);
         this.$resultsViewContainer.appendChild($labelCustomize);
     

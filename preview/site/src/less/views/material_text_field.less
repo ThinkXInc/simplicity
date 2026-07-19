@@ -25,7 +25,7 @@ div.MaterialTextField {
     width: 100%;
     .border-radius(@radius: 5px);
 
-    div.inputOuter {
+    div.spl-inputOuter {
         display: flex;
         flex-direction: column;
         background: @input-field-bg;
@@ -49,21 +49,21 @@ div.MaterialTextField {
             color: @input-field-placeholder;
         }
 
-        div.footer {
+        div.spl-footer {
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
 
-            div.left {
+            div.spl-left {
                 flex-grow: 2; /* This will push the middle div closer to the right div */
-                span.indicator {
+                span.spl-indicator {
                     // Styles for indicator here
                 }
             }
 
-            div.middle {
-                span.message {
+            div.spl-middle {
+                span.spl-message {
                     font-size: 0.9em;
                     margin: 0 0 0 10px;
                     &.notice {
@@ -73,17 +73,17 @@ div.MaterialTextField {
                         color: @input-field-message;
                     }
                 }
-                span.message.alertMessage {
+                span.spl-message.spl-alertMessage {
                     color: @alert-red;
                 }
             }
 
-            div.right {
+            div.spl-right {
                 display: flex;
                 flex-direction: row;
                 align-items: center;
 
-                span.counter {
+                span.spl-counter {
                     font-size: 0.9em;
                     margin: 0 0 0 10px;
                     &.notice {
@@ -107,11 +107,11 @@ div.MaterialTextField {
                         width: 100%; /* Make the SVG take full width of the button */
                         height: 100%; /* Make the SVG take full height of the button */
                         display: block; /* Ensure the SVG is block-level within the button */
-                        .arrow {
+                        .spl-arrow {
                             fill: @enterbutton-arrow;
                             stroke: @enterbutton-arrow;
                         }
-                        .bg {
+                        .spl-bg {
                             fill: @enterbutton-bg;
                             stroke: @enterbutton-bg;
                         }
@@ -123,15 +123,15 @@ div.MaterialTextField {
                     //transform: rotate(-90deg); // TODO: scale
                 }
 
-                button.enterButton.clicked {
+                button.enterButton.spl-clicked {
                     .scale(0.80);
                 }
 
-                p.press {
+                p.spl-press {
                     font-size: 0.8em;
                     color: @input-field-press-label;
                 }
-                p.press strong {
+                p.spl-press strong {
                     margin-left: 5px;
                 }
             }
@@ -140,22 +140,22 @@ div.MaterialTextField {
 
     // onDisable
     &.onDisable {
-        div.inputOuter {
+        div.spl-inputOuter {
             border: 1px solid @input-outer-border-disable;
             textarea.textform {
                 color: @input-field-text-disable;
             }
-            div.footer {
-                div.right {
+            div.spl-footer {
+                div.spl-right {
                     button.enterButton {
                         pointer-events: none;
                         cursor: not-allowed;
                         svg.enterButtonSVG {
-                            .arrow {
+                            .spl-arrow {
                                 fill: @enterbutton-arrow-disable;
                                 stroke: @enterbutton-arrow-disable;
                             }
-                            .bg {
+                            .spl-bg {
                                 fill: @enterbutton-bg-disable;
                                 stroke: @enterbutton-bg-disable
                             }
@@ -167,8 +167,8 @@ div.MaterialTextField {
     }
 
     // onFocus
-    &.focus {
-        div.inputOuter {
+    &.spl-focus {
+        div.spl-inputOuter {
             border: 1px solid @input-outer-border-focus;
             .box-shadow();
         }
@@ -176,19 +176,19 @@ div.MaterialTextField {
     }
 
     // alert
-    &.alert {
-        div.inputOuter {
-            div.footer {
-                div.middle {
-                    span.message {
+    &.spl-alert {
+        div.spl-inputOuter {
+            div.spl-footer {
+                div.spl-middle {
+                    span.spl-message {
                         display: none;
                     }
-                    p.alertMessage {
+                    p.spl-alertMessage {
                         color: @alert-red;
                     }
                 }
-                div.right {
-                    span.counter {
+                div.spl-right {
+                    span.spl-counter {
                         color: @alert-red;
                    }
                 }

@@ -68,8 +68,8 @@ div#ProgramView {
         height: 100%;
         // NOTE: don't set padding.
         // Reset default styles for TextField
-        div.TextField {
-            div.inputOuter {
+        div.spl-TextField {
+            div.spl-inputOuter {
                 background: transparent;
                 border: 1px solid var(--program-textfield-border);;
                 transition: 
@@ -79,7 +79,7 @@ div#ProgramView {
                 &:focus-within {
                     //border: 1px solid #6eb1c7;//#7e7e7e;
                     //background-color: #e3ebed;
-                    div.inputWrapper {
+                    div.spl-inputWrapper {
                         input {
                             color: var(--program-input-text);// #3195b6;
                         }
@@ -89,7 +89,7 @@ div#ProgramView {
                     color: #fff;// #fafafa;
                     background-color: #4b4b4b;// #ebebeb;
                 }
-                div.inputWrapper input {
+                div.spl-inputWrapper input {
                     margin: 0;
                     padding: 0 5px;
                     border-radius: 7px;
@@ -102,24 +102,24 @@ div#ProgramView {
                         font-weight: 300;
                     }
                 }
-                div.footer {
+                div.spl-footer {
                     padding: 0;
-                    &.alert {
-                        p.alertMessage {
+                    &.spl-alert {
+                        p.spl-alertMessage {
                             color: var(--program-alert-red)
                         }
                     }
                 }
             }
-            &.alert {
-                div.inputOuter {
-                    h6.title {
+            &.spl-alert {
+                div.spl-inputOuter {
+                    h6.spl-title {
                         color: var(--program-alert-red)
                     }
-                    div.footer {
+                    div.spl-footer {
                         background-color: transparent;
-                        div.middle {
-                            p.alertMessage {
+                        div.spl-middle {
+                            p.spl-alertMessage {
                                 font-size: 11px;
                                 color: var(--program-alert-red)
                             }
@@ -144,14 +144,14 @@ div#ProgramView {
                 min-width: 380px;
                 max-width: 400px;
                 margin-right: 30px;
-                div.TextField {
-                    div.inputOuter {
+                div.spl-TextField {
+                    div.spl-inputOuter {
                         border: none;
                         border-bottom: 1px solid var(--program-text-field-border);
-                        h6.title {
+                        h6.spl-title {
                             font-size: 10px;
                         }
-                        div.inputWrapper input {
+                        div.spl-inputWrapper input {
                             color: var(--program-input-text);
                             padding: 7px 0px;
                             font-size: 23px;
@@ -167,7 +167,7 @@ div#ProgramView {
                 flex-direction: row;
                 align-items: center;
                 display: flex;
-                &.alert {
+                &.spl-alert {
                     border-color: var(--program-alert-red);
                     span.voiceSetName, span.voiceSetLabel {
                         color: var(--program-alert-red);
@@ -193,7 +193,7 @@ div#ProgramView {
                     color: #aaa;
                 }
             }
-            div.LoadingMessage {
+            div.spl-LoadingMessage {
                 max-width: 346px;
                 height: 21px;
                 padding: 5px 13px;
@@ -239,13 +239,13 @@ div#ProgramView {
                                 }
                                 div.stepContent {
                                     border-color: ~"var(--program-step-color-@{type})";
-                                    div.taskTypeWrapper div.DropdownButton div.DropdownButtonClickable {
+                                    div.taskTypeWrapper div.spl-DropdownButton div.spl-DropdownButtonClickable {
                                         background-color: ~"var(--program-step-bg-@{type})";
                                     }
                                     &:hover {
                                         border-color: ~"var(--program-step-color-@{type})";
                                     }
-                                    div.configItemWrapper div.TextField div.inputOuter {
+                                    div.configItemWrapper div.spl-TextField div.spl-inputOuter {
                                         &:hover {
                                             border-color: ~"var(--program-step-color-@{type})";
                                         }
@@ -301,9 +301,9 @@ div#ProgramView {
                                     margin-bottom: 6px;
                                     color: var(--program-text-label);
                                 }
-                                div.TextField {
-                                    div.inputOuter {
-                                        div.inputWrapper {
+                                div.spl-TextField {
+                                    div.spl-inputOuter {
+                                        div.spl-inputWrapper {
                                             input {
                                                 font-size: 14px;
                                                 color: var(--program-input-text)
@@ -311,12 +311,12 @@ div#ProgramView {
                                         }
                                     }
                                 }
-                                div.DropdownButton {
-                                    div.DropdownButtonClickable {
-                                        h6.description {
+                                div.spl-DropdownButton {
+                                    div.spl-DropdownButtonClickable {
+                                        h6.spl-description {
 
                                         }
-                                        span.title {
+                                        span.spl-title {
                                             font-weight: 200;
                                             color: var(--program-input-text)
                                         }
@@ -328,9 +328,9 @@ div#ProgramView {
                                 margin-top: 0;
                                 flex-direction: row;
                                 justify-content: end;
-                                div.DropdownButton {
+                                div.spl-DropdownButton {
                                     width: 200px;
-                                    ul.listmenu {
+                                    ul.spl-listmenu {
                                         width: 200px;
                                     }
                                 }
@@ -341,8 +341,8 @@ div#ProgramView {
                             }
 
                             div.remarkWrapper {
-                                div.TextField {
-                                    .inputWrapper input {
+                                div.spl-TextField {
+                                    .spl-inputWrapper input {
                                         border-radius: 5px;
                                         font-weight: 600;
                                         width: 100%;
@@ -355,8 +355,8 @@ div#ProgramView {
                                 span.goalLabel {
                                 }
 
-                                div.TextField {
-                                    .inputWrapper input {
+                                div.spl-TextField {
+                                    .spl-inputWrapper input {
                                         width: 100%;
                                         box-sizing: border-box;
                                     }
@@ -416,10 +416,10 @@ div#ProgramView {
                                                 font-size: 13px;
                                             }
 
-                                            div.TextField {
+                                            div.spl-TextField {
                                                 flex: 1;
 
-                                                .inputWrapper input {
+                                                .spl-inputWrapper input {
                                                     width: 100%;
                                                     box-sizing: border-box;
                                                 }
@@ -445,14 +445,14 @@ div#ProgramView {
                                     span.maxTurnsLabel {
                                     }
 
-                                    div.TextField {
+                                    div.spl-TextField {
                                         display: flex;
                                         align-items: center;
-                                        div.inputOuter {
+                                        div.spl-inputOuter {
                                             border: none;
                                             background: none;
                                             background-color: transparent;
-                                            div.inputWrapper {
+                                            div.spl-inputWrapper {
                                                 flex: 1;
                                                 position: relative;
                                                 border: 1px solid var(--program-textfield-border);
@@ -462,7 +462,7 @@ div#ProgramView {
                                                     box-sizing: border-box;
                                                     background: none;
                                                 }
-                                                div.incrementButton {
+                                                div.spl-incrementButton {
                                                     position: absolute;
                                                     right: 0;
                                                     top: 50%;
@@ -488,16 +488,16 @@ div#ProgramView {
                                                 }
                                             }
                                         }
-                                        &.alert {
-                                            div.inputOuter {
-                                                div.inputWrapper {
+                                        &.spl-alert {
+                                            div.spl-inputOuter {
+                                                div.spl-inputWrapper {
                                                     input {
                                                         color: @alert-red;
                                                     }
                                                 }
-                                                div.footer {
-                                                    div.middle {
-                                                        p.alertMessage {
+                                                div.spl-footer {
+                                                    div.spl-middle {
+                                                        p.spl-alertMessage {
                                                             font-size: 11px;
                                                             color: @alert-red;
                                                         }
@@ -509,7 +509,7 @@ div#ProgramView {
                                 }
 
                                 div.responseModeWrapper {
-                                    div.DropdownButton {
+                                    div.spl-DropdownButton {
                                         width: 200px;
                                     }
                                 }
@@ -519,12 +519,12 @@ div#ProgramView {
                                         span.referenceTypeLabel.configItemLabel {
 
                                         }
-                                        div.DropdownButton {
-                                            div.DropdownButtonClickable {
-                                                h6.description {
+                                        div.spl-DropdownButton {
+                                            div.spl-DropdownButtonClickable {
+                                                h6.spl-description {
 
                                                 }
-                                                span.title {
+                                                span.spl-title {
                                                     font-weight: 200;
                                                 }
                                             }
@@ -535,12 +535,12 @@ div#ProgramView {
                                         span.referencesLabel {
 
                                         }
-                                        div.DropdownButton {
-                                            div.DropdownButtonClickable {
-                                                h6.description {
+                                        div.spl-DropdownButton {
+                                            div.spl-DropdownButtonClickable {
+                                                h6.spl-description {
 
                                                 }
-                                                span.title {
+                                                span.spl-title {
 
                                                 }
                                             }
@@ -555,7 +555,7 @@ div#ProgramView {
                         margin-top: 0px;
                         display: flex;
                         justify-content: center;
-                        &.disable {
+                        &.spl-disable {
                             margin-top: 20px;
                             img.addStepButton {
                                 display: none;
@@ -577,8 +577,8 @@ div#ProgramView {
                         span.endLabel {
                         }
 
-                        div.TextField {
-                            .inputWrapper input {
+                        div.spl-TextField {
+                            .spl-inputWrapper input {
                                 border-radius: 7px;
                                 font-size: 19px;
                                 font-weight: 600;
@@ -668,14 +668,14 @@ div#ProgramView div.ProgramViewContainer ul.stepList li.stepContainer {
         z-index: 10; // So tools hover above step content
         ul.menu {
             padding: 9px 0 0 0;
-            li.item {
+            li.spl-item {
                 span.tooltip {
                     font-size: 11px;
                 }
             }
         }
 
-        &.show {
+        &.spl-show {
             opacity: 1;
             visibility: visible;
             transform: tranlateY(0%);
@@ -704,21 +704,21 @@ div#ProgramView div.ProgramViewContainer ul.stepList li.stepContainer {
 @media (max-width: @smartphone-width) {
     div#ProgramView {
         div.ProgramViewContainer {
-            div.TextField {
-                div.inputOuter {
-                    div.inputWrapper {
+            div.spl-TextField {
+                div.spl-inputOuter {
+                    div.spl-inputWrapper {
                         input {
                         }
                     }
-                    .footer {
+                    .spl-footer {
                     }
                 }
             }
-            div.TextField.alert {
-                div.inputOuter {
-                    div.footer {
-                        div.middle {
-                            p.alertMessage {
+            div.spl-TextField.spl-alert {
+                div.spl-inputOuter {
+                    div.spl-footer {
+                        div.spl-middle {
+                            p.spl-alertMessage {
                             }
                         }
                     }
@@ -730,9 +730,9 @@ div#ProgramView div.ProgramViewContainer ul.stepList li.stepContainer {
             div.goalWrapper,
             div.maxTurnsWrapper,
             div.endContainer {
-                div.TextField {
-                    div.inputOuter {
-                        div.inputWrapper {
+                div.spl-TextField {
+                    div.spl-inputOuter {
+                        div.spl-inputWrapper {
                             input {
                             }
                         }
@@ -750,11 +750,11 @@ div#ProgramView div.ProgramViewContainer ul.stepList li.stepContainer {
             span.endLabel {
             }
             div.titleContainer {
-                div.TextField {
-                    div.inputOuter {
-                        h6.title {
+                div.spl-TextField {
+                    div.spl-inputOuter {
+                        h6.spl-title {
                         }
-                        div.inputWrapper {
+                        div.spl-inputWrapper {
                             input {
                             }
                         }
@@ -762,12 +762,12 @@ div#ProgramView div.ProgramViewContainer ul.stepList li.stepContainer {
                 }
             }
             //div.introductionContainer {
-            //    div.TextField {
-            //        .inputWrapper {
+            //    div.spl-TextField {
+            //        .spl-inputWrapper {
             //            input {
             //            }
             //        }
-            //        .footer {
+            //        .spl-footer {
             //        }
             //    }
             //}
@@ -789,8 +789,8 @@ div#ProgramView div.ProgramViewContainer ul.stepList li.stepContainer {
                     div.maxTurnsWrapper {
                     }
                     div.remarkWrapper {
-                        div.TextField {
-                            .inputWrapper {
+                        div.spl-TextField {
+                            .spl-inputWrapper {
                                 input {
                                 }
                             }
@@ -803,8 +803,8 @@ div#ProgramView div.ProgramViewContainer ul.stepList li.stepContainer {
                             div.instructionWrapper {
                                 span.index {
                                 }
-                                div.TextField {
-                                    .inputWrapper {
+                                div.spl-TextField {
+                                    .spl-inputWrapper {
                                         input {
                                         }
                                     }
@@ -830,8 +830,8 @@ div#ProgramView div.ProgramViewContainer ul.stepList li.stepContainer {
                         div.goalWrapper {
                             span.goalLabel {
                             }
-                            div.TextField {
-                                .inputWrapper {
+                            div.spl-TextField {
+                                .spl-inputWrapper {
                                     input {
                                     }
                                 }
@@ -840,12 +840,12 @@ div#ProgramView div.ProgramViewContainer ul.stepList li.stepContainer {
                         div.maxTurnsWrapper {
                             span.maxTurnsLabel {
                             }
-                            div.TextField {
-                                div.inputOuter {
-                                    div.inputWrapper {
+                            div.spl-TextField {
+                                div.spl-inputOuter {
+                                    div.spl-inputWrapper {
                                         input {
                                         }
-                                        div.incrementButton {
+                                        div.spl-incrementButton {
                                             button {
                                                 img {
                                                 }
@@ -853,15 +853,15 @@ div#ProgramView div.ProgramViewContainer ul.stepList li.stepContainer {
                                         }
                                     }
                                 }
-                                &.alert {
-                                    div.inputOuter {
-                                        div.inputWrapper {
+                                &.spl-alert {
+                                    div.spl-inputOuter {
+                                        div.spl-inputWrapper {
                                             input {
                                             }
                                         }
-                                        div.footer {
-                                            div.middle {
-                                                p.alertMessage {
+                                        div.spl-footer {
+                                            div.spl-middle {
+                                                p.spl-alertMessage {
                                                 }
                                             }
                                         }
@@ -879,8 +879,8 @@ div#ProgramView div.ProgramViewContainer ul.stepList li.stepContainer {
             div.endContainer {
                 span.endLabel {
                 }
-                div.TextField {
-                    .inputWrapper {
+                div.spl-TextField {
+                    .spl-inputWrapper {
                         input {
                         }
                     }

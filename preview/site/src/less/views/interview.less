@@ -152,7 +152,7 @@ div.MeetingView {
                     span.messageContainer {
                         display: block;
                         text-align: left;
-                        p.message {
+                        p.spl-message {
                             display: inline;
                             font-size: 14px;
                         }
@@ -164,7 +164,7 @@ div.MeetingView {
                             color: #A5A5A5;
                         }
                         span.messageContainer {
-                            p.message {
+                            p.spl-message {
                                 color: #A5A5A5;
                                 //color: #000;
                             }
@@ -176,7 +176,7 @@ div.MeetingView {
                             color: #368fe8;
                         }
                         span.messageContainer {
-                            p.message {
+                            p.spl-message {
                                 color: #368fe8;
                             }
                         }
@@ -187,7 +187,7 @@ div.MeetingView {
                             color: #8a8a8a;
                         }
                         span.messageContainer {
-                            p.message {
+                            p.spl-message {
                                 color: #8a8a8a;
                             }
                         }
@@ -210,16 +210,16 @@ div.MeetingView {
     }
 }
 
-div#MeetingStartDialogueModalView.ModalView {
+div#MeetingStartDialogueModalView.spl-ModalView {
     display: block;
     
-    div.bg {
+    div.spl-bg {
         background-color: rgba(0, 0, 0, 0.5) !important;
     }
 
-    div.window {
+    div.spl-window {
 
-        div.contentWrapper {
+        div.spl-contentWrapper {
             background-color: #2e2e2e;
             padding: 16px 16px 1px 16px;
             border-top: 1px solid #424040;
@@ -227,19 +227,19 @@ div#MeetingStartDialogueModalView.ModalView {
             border-right: 1px solid #424040;
             border-bottom: none;
  
-            h3.ModalViewTitle {
+            h3.spl-ModalViewTitle {
                 font-size: 18px;
                 color: #cdcdcd;
             }
 
-            div#MeetingStartDialogueModalViewMainContent.mainContent {
+            div#MeetingStartDialogueModalViewMainContent.spl-mainContent {
                 
-                div.TextField.nameField,
-                div.TextField.emailField {
+                div.spl-TextField.nameField,
+                div.spl-TextField.emailField {
                     
-                    div.inputOuter {
+                    div.spl-inputOuter {
                         border: none;
-                        div.inputWrapper {
+                        div.spl-inputWrapper {
                             background-color: #3f3f3f;
                             font-size: 1em;
                             margin: 0;
@@ -265,40 +265,40 @@ div#MeetingStartDialogueModalView.ModalView {
                                 color: #b7b7b7;
                             }
                         }
-                        div.inputAfter {
+                        div.spl-inputAfter {
                             margin-left: 20px;
                         }
-                        div.modalViewFooter {
+                        div.spl-modalViewFooter {
                             background-color: transparent;
                             padding: 0;
-                            div.left {
-                                span.indicator {
+                            div.spl-left {
+                                span.spl-indicator {
                                 }
                             }
-                            div.middle {
-                                span.message {
+                            div.spl-middle {
+                                span.spl-message {
                                 }
                             }
-                            div.right {
+                            div.spl-right {
                             }
-                            p.alertMessage {
+                            p.spl-alertMessage {
                                 font-size: 0.8em;
                                 color: #ffa0a0;
                             }
                         }
                     }
                 }
-                div.TextField.nameField {
+                div.spl-TextField.nameField {
                     margin-bottom: 15px;                                
                 }
             }
 
-            div.ModalViewAlert {
+            div.spl-ModalViewAlert {
                 
             }
         }
 
-        div.modalViewFooter {
+        div.spl-modalViewFooter {
             background-color: #2e2e2e;
             padding: 4px 16px 16px 16px;
             border-bottom: 1px solid #424040;
@@ -307,7 +307,7 @@ div#MeetingStartDialogueModalView.ModalView {
             border-top: none;
  
             
-            button.doneButton {
+            button.spl-doneButton {
                 background-color: #3a3a3a;
                 color: #fff;
                 border: 1px solid #656565;
@@ -325,29 +325,29 @@ div#MeetingStartDialogueModalView.ModalView {
     }
 }
 
-div#MeetingLeaveModalView.ModalView {
-    div.bg {
+div#MeetingLeaveModalView.spl-ModalView {
+    div.spl-bg {
     }
-    div.window {
-        div.contentWrapper {
-            h3.ModalViewTitle {
+    div.spl-window {
+        div.spl-contentWrapper {
+            h3.spl-ModalViewTitle {
                 font-size: 19px;
             }
-            div.mainContent {
+            div.spl-mainContent {
             }
-            div.ModalViewAlert {
+            div.spl-ModalViewAlert {
             }
         }
     
-        div.footer.modalViewFooter {
-            button.cancelButton {
+        div.spl-footer.spl-modalViewFooter {
+            button.spl-cancelButton {
                 margin-right: 10px;
                 &:hover {
                     //color: #fff;
                 }
             }
     
-            button.doneButton {
+            button.spl-doneButton {
                 //background-color: #610000;
                 //border: 1px solid #6e1b1b;
                 &:hover {
@@ -412,7 +412,7 @@ div#MeetingLeaveModalView.ModalView {
                         span.speaker {
                         }
                         span.messageContainer {
-                            p.message {
+                            p.spl-message {
                             }
                         }
                     }
@@ -425,69 +425,69 @@ div#MeetingLeaveModalView.ModalView {
         }
     }
     
-    div#MeetingStartDialogueModalView.ModalView {
-        div.bg {
+    div#MeetingStartDialogueModalView.spl-ModalView {
+        div.spl-bg {
         }
-        div.window {
+        div.spl-window {
             width: 92vw;
-            div.contentWrapper {
-                h3.ModalViewTitle {
+            div.spl-contentWrapper {
+                h3.spl-ModalViewTitle {
                 }
-                div#MeetingStartDialogueModalViewMainContent.mainContent {
-                    div.TextField.nameField,
-                    div.TextField.emailField {
-                        div.inputOuter {
-                            div.inputWrapper {
+                div#MeetingStartDialogueModalViewMainContent.spl-mainContent {
+                    div.spl-TextField.nameField,
+                    div.spl-TextField.emailField {
+                        div.spl-inputOuter {
+                            div.spl-inputWrapper {
                                 input {
                                     &::placeholder {
                                     }
                                 }
                             }
-                            div.inputAfter {
+                            div.spl-inputAfter {
                             }
-                            div.footer {
-                                div.left {
-                                    span.indicator {
+                            div.spl-footer {
+                                div.spl-left {
+                                    span.spl-indicator {
                                     }
                                 }
-                                div.middle {
-                                    span.message {
+                                div.spl-middle {
+                                    span.spl-message {
                                     }
                                 }
-                                div.right {
+                                div.spl-right {
                                 }
-                                p.alertMessage {
+                                p.spl-alertMessage {
                                 }
                             }
                         }
                     }
                 }
-                div.ModalViewAlert {
+                div.spl-ModalViewAlert {
                 }
             }
-            div.footer.modalViewFooter {
-                button.doneButton {
+            div.spl-footer.spl-modalViewFooter {
+                button.spl-doneButton {
                 }
             }
         }
     }
     
-    div#MeetingLeaveModalView.ModalView {
-        div.bg {
+    div#MeetingLeaveModalView.spl-ModalView {
+        div.spl-bg {
         }
-        div.window {
-            div.contentWrapper {
-                h3.ModalViewTitle {
+        div.spl-window {
+            div.spl-contentWrapper {
+                h3.spl-ModalViewTitle {
                 }
-                div.mainContent {
+                div.spl-mainContent {
                 }
-                div.ModalViewAlert {
+                div.spl-ModalViewAlert {
                 }
             }
-            div.footer.modalViewFooter {
-                button.cancelButton {
+            div.spl-footer.spl-modalViewFooter {
+                button.spl-cancelButton {
                 }
-                button.doneButton {
+                button.spl-doneButton {
                 }
             }
         }

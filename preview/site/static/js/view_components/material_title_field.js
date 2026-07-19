@@ -72,7 +72,7 @@ class MaterialTitleField extends TextField {
         // Create done button
         const $doneButton = document.createElement('button');
         $doneButton.id = 'DoneButton';
-        $doneButton.className = 'doneButton';
+        $doneButton.className = 'spl-doneButton';
         $doneButton.innerHTML = SVGIcons.doneIconSVG;
         debuglog("doneIconSVG: ", SVGIcons.doneIconSVG);
         this.$doneButton = $doneButton;
@@ -81,7 +81,7 @@ class MaterialTitleField extends TextField {
         // Create cancel button
         const $cancelButton = document.createElement('button');
         $cancelButton.id = 'CancelButton';
-        $cancelButton.className = 'cancelButton';
+        $cancelButton.className = 'spl-cancelButton';
         $cancelButton.innerHTML = SVGIcons.cancelIconSVG;
         debuglog("cancelIconSVG: ", SVGIcons.cancelIconSVG);
         this.$cancelButton = $cancelButton;
@@ -109,12 +109,12 @@ class MaterialTitleField extends TextField {
             this.$editButton.addEventListener('mousedown', () => {
                 debuglog(`${_this.id} mousedown`);
                 // Add 'clicked' class
-                _this.$editButton.classList.add('clicked');
+                _this.$editButton.classList.add('spl-clicked');
             })
             this.$editButton.addEventListener('mouseup', () => {
                 debuglog(`${_this.id} mouseup`);
                 // Remove 'clicked' class
-                _this.$editButton.classList.remove('clicked');
+                _this.$editButton.classList.remove('spl-clicked');
             })
         } else {
             console.warn('The element $editButton was not found.');
@@ -155,12 +155,12 @@ class MaterialTitleField extends TextField {
             this.$doneButton.addEventListener('mousedown', () => {
                 debuglog(`${_this.id} mousedown`);
                 // Add 'clicked' class
-                _this.$doneButton.classList.add('clicked');
+                _this.$doneButton.classList.add('spl-clicked');
             })
             this.$doneButton.addEventListener('mouseup', () => {
                 debuglog(`${_this.id} mouseup`);
                 // Remove 'clicked' class
-                _this.$doneButton.classList.remove('clicked');
+                _this.$doneButton.classList.remove('spl-clicked');
             })
         } else {
             console.warn('The element $doneButton was not found.');
@@ -178,12 +178,12 @@ class MaterialTitleField extends TextField {
             this.$cancelButton.addEventListener('mousedown', () => {
                 debuglog(`${_this.id} mousedown`);
                 // Add 'clicked' class
-                _this.$cancelButton.classList.add('clicked');
+                _this.$cancelButton.classList.add('spl-clicked');
             })
             this.$cancelButton.addEventListener('mouseup', () => {
                 debuglog(`${_this.id} mouseup`);
                 // Remove 'clicked' class
-                _this.$cancelButton.classList.remove('clicked');
+                _this.$cancelButton.classList.remove('spl-clicked');
             })
         } else {
             console.warn('The element $cancelButton was not found.');

@@ -278,7 +278,7 @@ class MaterialList extends TableView {
         this.$createNew.appendChild(this.$plusIcon);
 
         this.$title = document.createElement('h4');
-        this.$title.classList.add('title');
+        this.$title.classList.add('spl-title');
         this.$title.textContent = this.createNewButtonTitle;
         this.$createNew.appendChild(this.$title);
 

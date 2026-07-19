@@ -36,11 +36,11 @@ class InterviewLinkView {
 
         $copyButton.addEventListener('mouseenter', () => {
             $toolTip.classList.add('visible');
-            $toolTip.classList.remove('fade-out');
+            $toolTip.classList.remove('spl-fade-out');
         });
 
         $copyButton.addEventListener('mouseleave', () => {
-            $toolTip.classList.add('fade-out');
+            $toolTip.classList.add('spl-fade-out');
         });
 
         $copyButton.addEventListener('click', () => {
@@ -48,9 +48,9 @@ class InterviewLinkView {
                 $toolTip.textContent = this.locale.get("interview_create_url_copy_done_tooltip", this.lang);
                 $toolTip.classList.add('copied');
                 setTimeout(() => {
-                    $toolTip.classList.add('fade-out');
+                    $toolTip.classList.add('spl-fade-out');
                     setTimeout(() => {
-                        $toolTip.classList.remove('visible', 'fade-out', 'copied');
+                        $toolTip.classList.remove('visible', 'spl-fade-out', 'copied');
                         $toolTip.textContent = this.locale.get("interview_create_url_copy_tooltip", this.lang);
                     }, 1000);
                 }, 2000);

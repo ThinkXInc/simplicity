@@ -239,12 +239,12 @@ section#InterviewTop div#technology {
             justify-content: space-between;
             align-items: flex-start;
     
-            div.left {
+            div.spl-left {
                 width: 50%;
                 min-width: 200px;
                 margin-right: 40px;
     
-                p.text {
+                p.spl-text {
                     padding: 3px 0;
                     margin: 0;
                     color: #000;
@@ -252,7 +252,7 @@ section#InterviewTop div#technology {
                 }
             }
     
-            div.right {
+            div.spl-right {
                 display: flex;
                 justify-content: space-around;
                 align-items: center;
@@ -261,7 +261,7 @@ section#InterviewTop div#technology {
         }
     }
 }
-section#InterviewTop div#technology div.container div.content-wrapper div.right {
+section#InterviewTop div#technology div.container div.content-wrapper div.spl-right {
     @left-bar-target: 20px;
     @right-bar-target: 180px;
     flex-direction: column;
@@ -345,7 +345,7 @@ section#InterviewTop div#technology div.container div.content-wrapper div.right 
             }
         }
 
-        &.show {
+        &.spl-show {
             div.chart-ghraph {
                 span.left-bar {
                     height: @left-bar-target;
@@ -387,7 +387,7 @@ section#InterviewTop div#technology div.container div.content-wrapper div.right 
             flex-direction: column;
             align-items: center;
 
-            div.label {
+            div.spl-label {
                 margin-bottom: 12px;
                 span.chart-left-price,
                 span.chart-right-price {
@@ -449,7 +449,7 @@ section#InterviewTop div#needs {
             overflow: visible;
             cursor: pointer;
 
-            h4.title {
+            h4.spl-title {
                 //font-size: 18px;
                 font-size: 27px;
                 font-weight: 600;
@@ -625,36 +625,36 @@ section#InterviewTop div#steps {
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                span.label, .title {
+                span.spl-label, .spl-title {
                     text-align: center;
                 }
-                span.label {
+                span.spl-label {
                     margin-bottom: 10px;
                     font-size: 17px;
                     color: #989898;
                     font-weight: 500;
                 }
-                span.title {
+                span.spl-title {
                     font-size: 18px;
                     font-weight: 300;
                     color: #989898;
                 }
                 &.highlight {
-                    span.label {
+                    span.spl-label {
                         color: #3784b0;
                         background-color: #9dcae3;
                         border-radius: 7px;
                         padding: 2px 10px;
                         font-weight: 600;
                     }
-                    span.title {
+                    span.spl-title {
                         color: #3784b0;
                         font-weight: 600;
                     }
                 }
             }
         }
-        div.indicator {
+        div.spl-indicator {
             position: relative;
             width: 100%;
             height: 6px;
@@ -680,11 +680,11 @@ section#InterviewTop div#steps {
                 align-items: center;
                 padding: 50px 16px;
 
-                &.show {
+                &.spl-show {
                     display: flex;
                 }
 
-                div.header {
+                div.spl-header {
                     display: flex;
                     flex-direction: column;
                     align-items: center;
@@ -709,13 +709,13 @@ section#InterviewTop div#steps {
                     padding: 5px 20px;
                     display: flex;
                     flex-direction: row;
-                    div.left {
+                    div.spl-left {
                         padding: 62px 0;
                         video {
                             width: 48vw;
                         }
                     }
-                    div.right {
+                    div.spl-right {
                         display: flex;
                         flex-direction: column;
                         align-items: center;
@@ -728,7 +728,7 @@ section#InterviewTop div#steps {
                 }
                 &.two.test {
                     background-color: #1a1a1a;
-                    div.header {
+                    div.spl-header {
                         h2.step-copy {
                             color: #fff;
                         }
@@ -779,7 +779,7 @@ section#InterviewTop div#steps {
                 &.three.send {
                     background-color: #fff;
                     min-height: 80vh;
-                    div.header {
+                    div.spl-header {
                         h2.step-copy {
                         }
                     }
@@ -908,7 +908,7 @@ section#InterviewTop div#steps {
                 &.four.result {
                     background-color: #333333;
                     min-height: 85vh;
-                    div.header {
+                    div.spl-header {
                         h2.step-copy {
                             color: #fff;
                         }
@@ -960,33 +960,33 @@ section#InterviewTop div#CreateInterviewDemo {
         height: max-content !important;
         div.InterviewCreateViewContainer {
             height: max-content !important;
-            div.TextField {
-                div.inputOuter {
-                    h6.title {}
-                    div.inputWrapper {
+            div.spl-TextField {
+                div.spl-inputOuter {
+                    h6.spl-title {}
+                    div.spl-inputWrapper {
                         input.titleform {}
-                        div.inputAfter {}
+                        div.spl-inputAfter {}
                     }
-                    div.footer {
-                        div.left {
+                    div.spl-footer {
+                        div.spl-left {
                             padding: 0 !important;
-                            span.indicator {}
+                            span.spl-indicator {}
                         }
-                        div.middle {
-                            span.message {}
+                        div.spl-middle {
+                            span.spl-message {}
                         }
-                        div.right {}
+                        div.spl-right {}
                     }
                 }
             }
             div.titleContainer {
                 display: none;
-                div#titleForm.TextField.titleForm {
+                div#titleForm.spl-TextField.titleForm {
                 }
             }
             //div.introductionContainer {
             //    span.introductionLabel {}
-            //    div#introductionForm.TextField.introductionForm {
+            //    div#introductionForm.spl-TextField.introductionForm {
             //    }
             //}
             div.stepContainer {
@@ -1001,7 +1001,7 @@ section#InterviewTop div#CreateInterviewDemo {
             }
             div.endContainer {
                 span.endLabel {}
-                div#endForm.TextField.endForm {
+                div#endForm.spl-TextField.endForm {
                 }
             }
         }
@@ -1014,7 +1014,7 @@ section#InterviewTop div#CreateInterviewDemo {
         font-weight: bold;
         color: #333;
         text-align: center;
-        &.alert {
+        &.spl-alert {
             color: @alert-red;
         }
     }
@@ -1138,12 +1138,12 @@ section#InterviewTop div#register {
             }
             div.content-wrapper {
                 flex-direction: column;
-                div.left {
+                div.spl-left {
                     width: 100%;
-                    p.text {
+                    p.spl-text {
                     }
                 }
-                div.right {
+                div.spl-right {
                     flex-direction: column;
                     align-items: start;
                     div#chart {
@@ -1166,7 +1166,7 @@ section#InterviewTop div#register {
             flex-direction: column;
             div.part {
                 margin-bottom: 80px;
-                h4.title {
+                h4.spl-title {
                     margin-bottom: 20px;
                 }
                 div.box {
@@ -1194,15 +1194,15 @@ section#InterviewTop div#register {
                     flex: auto;
                     height: 97px;
                     padding: 7px 11px;
-                    span.label {
+                    span.spl-label {
                         font-size: 12px;
                     }
-                    span.title {
+                    span.spl-title {
                         font-size: 13px;
                     }
                 }
             }
-            div.indicator {
+            div.spl-indicator {
                 span.bar {
                 }
             }
@@ -1214,7 +1214,7 @@ section#InterviewTop div#register {
                     padding: 15px 15px;
                     position: relative;    
                     overflow: hidden;
-                    div.header {
+                    div.spl-header {
                         h2.step-copy {
                             font-size: 26px;
                             margin: 10px 0 13px 0;
@@ -1238,22 +1238,22 @@ section#InterviewTop div#register {
                         }
                     }
                     div.content {
-                        div.left {
+                        div.spl-left {
                             video {
                             }
                         }
-                        div.right {
+                        div.spl-right {
                         }
                     }
                     &.one.create {
                         div.video-background-sp {
                             opacity: 0.05;
                         }
-                        div.header {
+                        div.spl-header {
 
                         }
                         div.content {
-                            div.left {
+                            div.spl-left {
                                 display: none;
                             }
                         }
@@ -1266,15 +1266,15 @@ section#InterviewTop div#register {
                                 width: 219%;
                             }
                         }
-                        div.header {
+                        div.spl-header {
                             h2.step-copy {
                             }
                         }
                         div.content {
-                            div.left {
+                            div.spl-left {
                                 display: none;
                             }
-                            div.right {
+                            div.spl-right {
                                 button.run-meeting {
                                     margin-top: 100px;
                                     p {
@@ -1316,7 +1316,7 @@ section#InterviewTop div#register {
                         }
                     }
                     &.four.result {
-                        div.header {
+                        div.spl-header {
                             h2.step-copy {
                             }
                         }

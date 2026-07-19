@@ -10,8 +10,8 @@ div#InterviewCreateView {
         height: 100vh;
 
         // Reset default styles for TextField
-        div.TextField {
-            div.inputOuter {
+        div.spl-TextField {
+            div.spl-inputOuter {
                 background: #f4f4f4;
                 border: 1px solid #dfdfdf;
                 transition: 
@@ -21,7 +21,7 @@ div#InterviewCreateView {
                 &:focus-within {
                     border: 1px solid #6eb1c7;//#7e7e7e;
                     background-color: #e3ebed;
-                    div.inputWrapper {
+                    div.spl-inputWrapper {
                         input {
                             color: #3195b6;
                         }
@@ -31,7 +31,7 @@ div#InterviewCreateView {
                     color: #fafafa;
                     background-color: #ebebeb;
                 }
-                div.inputWrapper input {
+                div.spl-inputWrapper input {
                     margin: 0;
                     padding: 0 5px;
                     border-radius: 7px;
@@ -40,18 +40,18 @@ div#InterviewCreateView {
                     transition: 
                         color 0.3s @cubic-bezier1;
                 }
-                .footer {
+                .spl-footer {
                     padding: 0;
                 }
             }
         }
-        div.TextField.alert {
-            div.inputOuter {
+        div.spl-TextField.spl-alert {
+            div.spl-inputOuter {
                 border: 1px solid #8c1111;
-                div.footer {
+                div.spl-footer {
                     background-color: transparent;
-                    div.middle {
-                        p.alertMessage {
+                    div.spl-middle {
+                        p.spl-alertMessage {
                             font-size: 11px;
                             color: @alert-red;
                         }
@@ -63,12 +63,12 @@ div#InterviewCreateView {
         div.titleContainer {
             margin-bottom: 34px;
 
-            div.TextField {
-                div.inputOuter {
-                    h6.title {
+            div.spl-TextField {
+                div.spl-inputOuter {
+                    h6.spl-title {
                         font-size: 10px;
                     }
-                    div.inputWrapper input {
+                    div.spl-inputWrapper input {
                         padding: 7px 0px;
                         font-size: 16px;
                         margin: 0;
@@ -129,21 +129,21 @@ div#InterviewCreateView {
                         font-size: 11px;
                         margin-bottom: 6px;
                     }
-                    div.TextField {
-                        div.inputOuter {
-                            div.inputWrapper {
+                    div.spl-TextField {
+                        div.spl-inputOuter {
+                            div.spl-inputWrapper {
                                 input {
                                     font-size: 14px;
                                 }
                             }
                         }
                     }
-                    div.DropdownButton {
-                        div.DropdownButtonClickable {
-                            h6.description {
+                    div.spl-DropdownButton {
+                        div.spl-DropdownButtonClickable {
+                            h6.spl-description {
 
                             }
-                            span.title {
+                            span.spl-title {
                                 font-weight: 200;
                             }
                         }
@@ -154,9 +154,9 @@ div#InterviewCreateView {
                     margin-top: 0;
                     flex-direction: row;
                     justify-content: end;
-                    div.DropdownButton {
+                    div.spl-DropdownButton {
                         width: 200px;
-                        ul.listmenu {
+                        ul.spl-listmenu {
                             width: 200px;
                         }
                     }
@@ -167,8 +167,8 @@ div#InterviewCreateView {
                 }
 
                 div.remarkWrapper {
-                    div.TextField {
-                        .inputWrapper input {
+                    div.spl-TextField {
+                        .spl-inputWrapper input {
                             border-radius: 5px;
                             font-weight: 600;
                             width: 100%;
@@ -181,8 +181,8 @@ div#InterviewCreateView {
                     span.goalLabel {
                     }
 
-                    div.TextField {
-                        .inputWrapper input {
+                    div.spl-TextField {
+                        .spl-inputWrapper input {
                             width: 100%;
                             box-sizing: border-box;
                         }
@@ -245,10 +245,10 @@ div#InterviewCreateView {
                                     font-size: 13px;
                                 }
 
-                                div.TextField {
+                                div.spl-TextField {
                                     flex: 1;
 
-                                    .inputWrapper input {
+                                    .spl-inputWrapper input {
                                         width: 100%;
                                         box-sizing: border-box;
                                     }
@@ -274,20 +274,20 @@ div#InterviewCreateView {
                         span.maxTurnsLabel {
                         }
 
-                        div.TextField {
+                        div.spl-TextField {
                             display: flex;
                             align-items: center;
-                            div.inputOuter {
+                            div.spl-inputOuter {
                                 border: none;
                                 background: none;
-                                div.inputWrapper {
+                                div.spl-inputWrapper {
                                     flex: 1;
                                     position: relative;
                                     input {
                                         width: 100%;
                                         box-sizing: border-box;
                                     }
-                                    div.incrementButton {
+                                    div.spl-incrementButton {
                                         position: absolute;
                                         right: 0;
                                         top: 50%;
@@ -313,16 +313,16 @@ div#InterviewCreateView {
                                     }
                                 }
                             }
-                            &.alert {
-                                div.inputOuter {
-                                    div.inputWrapper {
+                            &.spl-alert {
+                                div.spl-inputOuter {
+                                    div.spl-inputWrapper {
                                         input {
                                             color: @alert-red;
                                         }
                                     }
-                                    div.footer {
-                                        div.middle {
-                                            p.alertMessage {
+                                    div.spl-footer {
+                                        div.spl-middle {
+                                            p.spl-alertMessage {
                                                 font-size: 11px;
                                                 color: @alert-red;
                                             }
@@ -334,7 +334,7 @@ div#InterviewCreateView {
                     }
 
                     div.responseModeWrapper {
-                        div.DropdownButton {
+                        div.spl-DropdownButton {
                             width: 200px;
                         }
                     }
@@ -344,12 +344,12 @@ div#InterviewCreateView {
                             span.referenceTypeLabel.configItemLabel {
 
                             }
-                            div.DropdownButton {
-                                div.DropdownButtonClickable {
-                                    h6.description {
+                            div.spl-DropdownButton {
+                                div.spl-DropdownButtonClickable {
+                                    h6.spl-description {
 
                                     }
-                                    span.title {
+                                    span.spl-title {
                                         font-weight: 200;
                                     }
                                 }
@@ -360,12 +360,12 @@ div#InterviewCreateView {
                             span.referencesLabel {
 
                             }
-                            div.DropdownButton {
-                                div.DropdownButtonClickable {
-                                    h6.description {
+                            div.spl-DropdownButton {
+                                div.spl-DropdownButtonClickable {
+                                    h6.spl-description {
 
                                     }
-                                    span.title {
+                                    span.spl-title {
 
                                     }
                                 }
@@ -380,7 +380,7 @@ div#InterviewCreateView {
             margin-top: 0px;
             display: flex;
             justify-content: center;
-            &.disable {
+            &.spl-disable {
                 margin-top: 20px;
                 img.addStepButton {
                     display: none;
@@ -402,8 +402,8 @@ div#InterviewCreateView {
             span.endLabel {
             }
 
-            div.TextField {
-                .inputWrapper input {
+            div.spl-TextField {
+                .spl-inputWrapper input {
                     border-radius: 7px;
                     font-size: 19px;
                     font-weight: 600;
@@ -424,21 +424,21 @@ div#InterviewCreateView {
 @media (max-width: @smartphone-width) {
     div#InterviewCreateView {
         div.InterviewCreateViewContainer {
-            div.TextField {
-                div.inputOuter {
-                    div.inputWrapper {
+            div.spl-TextField {
+                div.spl-inputOuter {
+                    div.spl-inputWrapper {
                         input {
                         }
                     }
-                    .footer {
+                    .spl-footer {
                     }
                 }
             }
-            div.TextField.alert {
-                div.inputOuter {
-                    div.footer {
-                        div.middle {
-                            p.alertMessage {
+            div.spl-TextField.spl-alert {
+                div.spl-inputOuter {
+                    div.spl-footer {
+                        div.spl-middle {
+                            p.spl-alertMessage {
                             }
                         }
                     }
@@ -450,9 +450,9 @@ div#InterviewCreateView {
             div.goalWrapper,
             div.maxTurnsWrapper,
             div.endContainer {
-                div.TextField {
-                    div.inputOuter {
-                        div.inputWrapper {
+                div.spl-TextField {
+                    div.spl-inputOuter {
+                        div.spl-inputWrapper {
                             input {
                             }
                         }
@@ -470,11 +470,11 @@ div#InterviewCreateView {
             span.endLabel {
             }
             div.titleContainer {
-                div.TextField {
-                    div.inputOuter {
-                        h6.title {
+                div.spl-TextField {
+                    div.spl-inputOuter {
+                        h6.spl-title {
                         }
-                        div.inputWrapper {
+                        div.spl-inputWrapper {
                             input {
                             }
                         }
@@ -482,12 +482,12 @@ div#InterviewCreateView {
                 }
             }
             //div.introductionContainer {
-            //    div.TextField {
-            //        .inputWrapper {
+            //    div.spl-TextField {
+            //        .spl-inputWrapper {
             //            input {
             //            }
             //        }
-            //        .footer {
+            //        .spl-footer {
             //        }
             //    }
             //}
@@ -509,8 +509,8 @@ div#InterviewCreateView {
                     div.maxTurnsWrapper {
                     }
                     div.remarkWrapper {
-                        div.TextField {
-                            .inputWrapper {
+                        div.spl-TextField {
+                            .spl-inputWrapper {
                                 input {
                                 }
                             }
@@ -523,8 +523,8 @@ div#InterviewCreateView {
                             div.instructionWrapper {
                                 span.index {
                                 }
-                                div.TextField {
-                                    .inputWrapper {
+                                div.spl-TextField {
+                                    .spl-inputWrapper {
                                         input {
                                         }
                                     }
@@ -550,8 +550,8 @@ div#InterviewCreateView {
                         div.goalWrapper {
                             span.goalLabel {
                             }
-                            div.TextField {
-                                .inputWrapper {
+                            div.spl-TextField {
+                                .spl-inputWrapper {
                                     input {
                                     }
                                 }
@@ -560,12 +560,12 @@ div#InterviewCreateView {
                         div.maxTurnsWrapper {
                             span.maxTurnsLabel {
                             }
-                            div.TextField {
-                                div.inputOuter {
-                                    div.inputWrapper {
+                            div.spl-TextField {
+                                div.spl-inputOuter {
+                                    div.spl-inputWrapper {
                                         input {
                                         }
-                                        div.incrementButton {
+                                        div.spl-incrementButton {
                                             button {
                                                 img {
                                                 }
@@ -573,15 +573,15 @@ div#InterviewCreateView {
                                         }
                                     }
                                 }
-                                &.alert {
-                                    div.inputOuter {
-                                        div.inputWrapper {
+                                &.spl-alert {
+                                    div.spl-inputOuter {
+                                        div.spl-inputWrapper {
                                             input {
                                             }
                                         }
-                                        div.footer {
-                                            div.middle {
-                                                p.alertMessage {
+                                        div.spl-footer {
+                                            div.spl-middle {
+                                                p.spl-alertMessage {
                                                 }
                                             }
                                         }
@@ -599,8 +599,8 @@ div#InterviewCreateView {
             div.endContainer {
                 span.endLabel {
                 }
-                div.TextField {
-                    .inputWrapper {
+                div.spl-TextField {
+                    .spl-inputWrapper {
                         input {
                         }
                     }

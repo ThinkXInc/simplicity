@@ -43,17 +43,17 @@ class InterviewResultPreview {
     
         // Header section
         const $headerDiv = document.createElement('div');
-        $headerDiv.classList.add('header');
+        $headerDiv.classList.add('spl-header');
     
         // Info container
         const $infoDiv = document.createElement('div');
-        $infoDiv.classList.add('info');
+        $infoDiv.classList.add('spl-info');
     
         // Name
         const $nameP = document.createElement('span');
         $nameP.classList.add('infoItem');
         const $nameLabelSpan = document.createElement('span');
-        $nameLabelSpan.classList.add('label');
+        $nameLabelSpan.classList.add('spl-label');
         $nameLabelSpan.textContent = `${labels.name}`;
         const $nameSpan = document.createElement('span');
         $nameSpan.classList.add('value');
@@ -66,7 +66,7 @@ class InterviewResultPreview {
         const $emailP = document.createElement('span');
         $emailP.classList.add('infoItem');
         const $emailLabelSpan = document.createElement('span');
-        $emailLabelSpan.classList.add('label');
+        $emailLabelSpan.classList.add('spl-label');
         $emailLabelSpan.textContent = `${labels.email}`;
         const $emailSpan = document.createElement('span');
         $emailSpan.classList.add('value');
@@ -79,7 +79,7 @@ class InterviewResultPreview {
         const $dateP = document.createElement('span');
         $dateP.classList.add('infoItem');
         const $dateLabelSpan = document.createElement('span');
-        $dateLabelSpan.classList.add('label');
+        $dateLabelSpan.classList.add('spl-label');
         $dateLabelSpan.textContent = `${labels.date}`;
         const $dateSpan = document.createElement('span');
         $dateSpan.classList.add('value');
@@ -106,7 +106,7 @@ class InterviewResultPreview {
             $event.classList.add('event');
     
             const $messageP = document.createElement('p');
-            $messageP.classList.add('message');
+            $messageP.classList.add('spl-message');
     
             const $speakerSpan = document.createElement('span');
             $speakerSpan.classList.add('speaker', `${event.speaker}Speaker`);

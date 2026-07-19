@@ -143,7 +143,7 @@ class MaterialSampleAnswerView extends ViewComponentBase {
         const $answerIcon = document.createElement('img');
         $answerIcon.className = 'answerIcon';
         const $answerTitle = document.createElement('h6');
-        $answerTitle.className = 'title';
+        $answerTitle.className = 'spl-title';
         $answerTitle.textContent = answerViewTitle;
         
         $answerTitleWrapper.appendChild($answerIcon);
@@ -164,7 +164,7 @@ class MaterialSampleAnswerView extends ViewComponentBase {
         const $reviewIcon = document.createElement('img');
         $reviewIcon.className = 'reviewIcon';
         const $reviewTitle = document.createElement('h6');
-        $reviewTitle.className = 'title';
+        $reviewTitle.className = 'spl-title';
         $reviewTitle.textContent = reviewViewTitle;
         
         $reviewTitleWrapper.appendChild($reviewIcon);

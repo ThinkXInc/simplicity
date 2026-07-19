@@ -93,8 +93,8 @@ pre {
 
 input[type="radio"] {vertical-align: text-bottom;}
 input[type="checkbox"] {vertical-align: bottom;}
-.ie7 input[type="checkbox"] {vertical-align: baseline;}
-.ie6 input {vertical-align: text-bottom;}
+.spl-ie7 input[type="checkbox"] {vertical-align: baseline;}
+.spl-ie6 input {vertical-align: text-bottom;}
 input[type="color"] {
 	-webkit-appearance: none;
 	border: none;
@@ -125,7 +125,7 @@ sub {bottom: -0.25em;}
 pre, code, kbd, samp {font-family: monospace, sans-serif;}
 
 /* hand cursor on clickable elements */
-.clickable,
+.spl-clickable,
 label,
 input[type=button],
 input[type=submit],
@@ -160,12 +160,12 @@ button:focus {
 }
 
 /* scale images in IE7 more attractively */
-.ie7 img {-ms-interpolation-mode: bicubic;}
+.spl-ie7 img {-ms-interpolation-mode: bicubic;}
 
 /* prevent BG image flicker upon hover
    (commented out as usage is rare, and the filter syntax messes with some pre-processors)
-.ie6 html {filter: expression(document.execCommand("BackgroundImageCache", false, true));}
+.spl-ie6 html {filter: expression(document.execCommand("BackgroundImageCache", false, true));}
 */
 
 /* let's clear some floats */
-.clearfix:after { content: " "; display: block; clear: both; }
+.spl-clearfix:after { content: " "; display: block; clear: both; }

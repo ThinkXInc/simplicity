@@ -66,7 +66,7 @@
 
 // ListContainer
 
-div#InterviewListContainer div.TableView.interviewList div.tableViewContainer {
+div#InterviewListContainer div.spl-TableView.interviewList div.spl-tableViewContainer {
     height: calc(100vh - 0px);
     ::-webkit-scrollbar {
         width: 7px;
@@ -85,8 +85,8 @@ div#InterviewListContainer div.TableView.interviewList div.tableViewContainer {
 }
 
 div#InterviewListContainer {
-    div.TableView.interviewList {
-        div.tableViewContainer {
+    div.spl-TableView.interviewList {
+        div.spl-tableViewContainer {
             div.interviewListHeader {
                 display: none;
                 div.leftContainer {
@@ -124,7 +124,7 @@ div#InterviewListContainer {
                     transition: transform 0.3s @cubic-bezier1;
                 }
             
-                h4.title {
+                h4.spl-title {
                     font-size: 14px;
                     color: #fff;
                     transition: 
@@ -134,55 +134,55 @@ div#InterviewListContainer {
 
                 &:hover {
                     background-color: #46565f;
-                    h4.title {
+                    h4.spl-title {
                         color: #d9d9d9;
                     }
                     img.plusIcon {
                     }
                 }
             }
-            div.tableView.interviewListTableView {
-                ul.tableListView.interviewListListView {
-                    li.TableViewCell.tableViewCell.interviewListCell {
+            div.spl-tableView.interviewListTableView {
+                ul.spl-tableListView.interviewListListView {
+                    li.spl-TableViewCell.spl-tableViewCell.interviewListCell {
                         transition: background-color 0.3s @cubic-bezier1;
                         min-height: 78px;
                         &:hover {
                             background-color: #f0f0f0;
                         }
-                        &.selected {
+                        &.spl-selected {
                             background-color: #eaeaea;
                         }
-                        div.contentWrapper {
-                            div.header {
-                                span.label {
+                        div.spl-contentWrapper {
+                            div.spl-header {
+                                span.spl-label {
                                     background-color: #ededed;
                                     color: #686868;
                                 }
-                                h6.title {
+                                h6.spl-title {
                                     margin-bottom: 10px;
                                 }
                             }
-                            div.body {
-                                p.text {
+                            div.spl-body {
+                                p.spl-text {
                                     // Styles here
                                 }
                             }
-                            div.footer {
+                            div.spl-footer {
                                 // Styles here
                             }
                         }
-                        div.buttonContainer.right {
+                        div.spl-buttonContainer.spl-right {
                             button {
-                                svg.deleteIconSVG {
+                                svg.spl-deleteIconSVG {
                                     // Styles here
                                 }
                             }
                         }
                     }
                 }
-                div.gradientViewIndicator.TableViewGradientLoader {
-                    div.indicator-container {
-                        div.indicator-wrapper {
+                div.spl-gradientViewIndicator.TableViewGradientLoader {
+                    div.spl-indicator-container {
+                        div.spl-indicator-wrapper {
                             svg {
                                 // Styles here
                             }
@@ -201,7 +201,7 @@ div#InterviewResultsViewContainer {
     div.InterviewResultsView {
         width: 100%;
         margin: 0;
-        div.tableViewContainer {
+        div.spl-tableViewContainer {
             border: none;
             border-right: 1px solid #e8e8e8;
         }
@@ -216,10 +216,10 @@ div#InterviewResultPreview {
     padding: 25px 0px;
     width: 100%;
 
-    div.header {
+    div.spl-header {
         border-bottom: 1px solid #eaeaea;
 
-        div.info {
+        div.spl-info {
             padding: 0 33px 20px 33px;
             min-width: 400px;
             font-weight: 600;
@@ -230,7 +230,7 @@ div#InterviewResultPreview {
                 margin: 0 0 5px 0;
                 display: flex;
 
-                span.label {
+                span.spl-label {
                     margin-right: 20px;
                     display: inline-block;
                     width: 52px;
@@ -255,7 +255,7 @@ div#InterviewResultPreview {
             li.event {
                 font-size: 15px;
 
-                p.message {
+                p.spl-message {
                     padding-bottom: 10px;
                     margin: 0;
 
@@ -356,7 +356,7 @@ div#InterviewResultPreview {
         div#InterviewListContainer {
             width: 100%;
             margin-top: 50px;
-            div#InterviewList.TableView {
+            div#InterviewList.spl-TableView {
 
             }
         }
@@ -386,8 +386,8 @@ div#InterviewResultPreview {
 
     // ListContainer
     div#InterviewListContainer {
-        div.TableView.interviewList {
-            div.tableViewContainer {
+        div.spl-TableView.interviewList {
+            div.spl-tableViewContainer {
                 div.interviewListHeader {
                     div.leftContainer {
                         h1.interviewListHeaderTitle {
@@ -403,37 +403,37 @@ div#InterviewResultPreview {
                 div.createNew {
                     img.plusIcon {
                     }
-                    h4.title {
+                    h4.spl-title {
                     }
                 }
-                div.tableView.interviewListTableView {
-                    ul.tableListView.interviewListListView {
-                        li.TableViewCell.tableViewCell.interviewListCell {
-                            div.contentWrapper {
-                                div.header {
-                                    span.label {
+                div.spl-tableView.interviewListTableView {
+                    ul.spl-tableListView.interviewListListView {
+                        li.spl-TableViewCell.spl-tableViewCell.interviewListCell {
+                            div.spl-contentWrapper {
+                                div.spl-header {
+                                    span.spl-label {
                                     }
-                                    h6.title {
-                                    }
-                                }
-                                div.body {
-                                    p.text {
+                                    h6.spl-title {
                                     }
                                 }
-                                div.footer {
+                                div.spl-body {
+                                    p.spl-text {
+                                    }
+                                }
+                                div.spl-footer {
                                 }
                             }
-                            div.buttonContainer.right {
+                            div.spl-buttonContainer.spl-right {
                                 button {
-                                    svg.deleteIconSVG {
+                                    svg.spl-deleteIconSVG {
                                     }
                                 }
                             }
                         }
                     }
-                    div.gradientViewIndicator.TableViewGradientLoader {
-                        div.indicator-container {
-                            div.indicator-wrapper {
+                    div.spl-gradientViewIndicator.TableViewGradientLoader {
+                        div.spl-indicator-container {
+                            div.spl-indicator-wrapper {
                                 svg {
                                 }
                             }
@@ -447,17 +447,17 @@ div#InterviewResultPreview {
     // ResultsView
     div#InterviewResultsViewContainer {
         div.InterviewResultsView {
-            div.tableViewContainer {
+            div.spl-tableViewContainer {
             }
         }
     }
 
     // ResultPreview
     div#InterviewResultPreview {
-        div.header {
-            div.info {
+        div.spl-header {
+            div.spl-info {
                 span.infoItem {
-                    span.label {
+                    span.spl-label {
                     }
                     span.value {
                     }
@@ -467,7 +467,7 @@ div#InterviewResultPreview {
         div.eventsWrapper {
             ul.events {
                 li.event {
-                    p.message {
+                    p.spl-message {
                         span.speaker {
                         }
                         span.messageText {

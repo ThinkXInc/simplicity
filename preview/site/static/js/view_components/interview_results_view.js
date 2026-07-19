@@ -90,7 +90,7 @@ class InterviewResultCell extends TableViewCell {
         this.$isChecked = document.createElement('div');
         this.$isChecked.classList.add('isChecked');
         if (this.isChecked) {
-            this.$isChecked.classList.add('hide');
+            this.$isChecked.classList.add('spl-hide');
         }
         this.$header.style.position = 'relative';
         this.$header.appendChild(this.$isChecked);
@@ -104,9 +104,9 @@ class InterviewResultCell extends TableViewCell {
     set isChecked(value) {
         this._isChecked = value;
         if (value == true) {
-            this.$isChecked.classList.add('hide');
+            this.$isChecked.classList.add('spl-hide');
         } else {
-            this.$isChecked.classList.remove('hide');
+            this.$isChecked.classList.remove('spl-hide');
         }
     }
 
@@ -212,20 +212,20 @@ class InterviewResults extends TableView {
         this.$messageContainer = document.createElement('div');
         this.$messageContainer.classList.add('messageContainer', 'hidden'); // 'hidden' is the default class
         this.$message = document.createElement('p');
-        this.$message.classList.add('message');
+        this.$message.classList.add('spl-message');
         this.$messageContainer.appendChild(this.$message);
         this.$view.appendChild(this.$messageContainer);
     }
 
     showMessage(text, type = 'normal') {
         this.$message.textContent = text;
-        this.$messageContainer.classList.remove('hidden', 'normal', 'alert');
+        this.$messageContainer.classList.remove('hidden', 'normal', 'spl-alert');
         this.$messageContainer.classList.add(type);
     }
 
     hideMessage() {
         this.$messageContainer.classList.add('hidden');
-        this.$messageContainer.classList.remove('normal', 'alert');
+        this.$messageContainer.classList.remove('normal', 'spl-alert');
     }
 
     createMoreView() {

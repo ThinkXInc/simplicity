@@ -112,7 +112,7 @@ const materialTextFieldCustomEventTextSubmit = 'textSubmit';
         // If count exceeds the max length, alert it
         if (count > this.maxTextLength) {
             this.alert(this.maxTextLengthAlertMessage);
-            this.$textField.classList.add('alert');
+            this.$textField.classList.add('spl-alert');
             return
         }
  
@@ -307,11 +307,11 @@ const materialTextFieldCustomEventTextSubmit = 'textSubmit';
 
         // Create wrapping spans
         const $leftSpan = document.createElement('div');
-        $leftSpan.className = 'left';
+        $leftSpan.className = 'spl-left';
         const $middleSpan = document.createElement('div');
-        $middleSpan.className = 'middle';
+        $middleSpan.className = 'spl-middle';
         const $rightSpan = document.createElement('div');
-        $rightSpan.className = 'right';
+        $rightSpan.className = 'spl-right';
 
         // Append elements to corresponding spans
         if (this.$indicator) {
@@ -363,12 +363,12 @@ const materialTextFieldCustomEventTextSubmit = 'textSubmit';
             });
             this.$enterButton.addEventListener('mousedown', () => {
                 debuglog(`${_this.id} mousedown`);
-                _this.$enterButton.classList.add('clicked');
+                _this.$enterButton.classList.add('spl-clicked');
 
             })
             this.$enterButton.addEventListener('mouseup', () => {
                 debuglog(`${_this.id} mouseup`);
-                _this.$enterButton.classList.remove('clicked');
+                _this.$enterButton.classList.remove('spl-clicked');
             })
 
         } else {
@@ -383,16 +383,16 @@ const materialTextFieldCustomEventTextSubmit = 'textSubmit';
      * @param {String} message 
      */
     _appendAlertMessage(alertMessageId, message) {
-        const $footer = this.$textField.querySelector('.footer');
+        const $footer = this.$textField.querySelector('.spl-footer');
         
         // Look for the span with class "message" to place the alert message
-        const $messageSpan = $footer.querySelector('.middle .message');
+        const $messageSpan = $footer.querySelector('.spl-middle .spl-message');
         
         // If the span exists, update its content
         if ($messageSpan) {
             $messageSpan.innerText = message;
             $messageSpan.id = alertMessageId;
-            $messageSpan.classList.add('alertMessage'); // If you want the span to have this class
+            $messageSpan.classList.add('spl-alertMessage'); // If you want the span to have this class
         } else {
             console.warn('The message span is not present in the footer.');
         }
@@ -403,18 +403,18 @@ const materialTextFieldCustomEventTextSubmit = 'textSubmit';
      * @param {String} alertMessageId 
      */
     _removeAlertMessage(alertMessageId) {
-        const $footer = this.$textField.querySelector('.footer');
+        const $footer = this.$textField.querySelector('.spl-footer');
         
         // Look for the span with class "message" which has the alert message
-        const $messageSpan = $footer.querySelector('.middle .message');
+        const $messageSpan = $footer.querySelector('.spl-middle .spl-message');
     
         // Check if the span exists and matches the provided ID
         if ($messageSpan && $messageSpan.id === alertMessageId) {
             $messageSpan.innerText = ''; // Clear the message
             $messageSpan.id = ''; // Clear the id attribute
-            $messageSpan.classList.remove('alertMessage'); // Remove the alertMessage class
+            $messageSpan.classList.remove('spl-alertMessage'); // Remove the alertMessage class
         
-            this.$textField.classList.remove('alert');
+            this.$textField.classList.remove('spl-alert');
         } else {
             console.warn('The alert message with specified ID is not present in the footer.');
         }

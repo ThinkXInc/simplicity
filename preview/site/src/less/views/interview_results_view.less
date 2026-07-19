@@ -1,8 +1,8 @@
 div#InterviewResultsView {
-    div.tableViewContainer {
-        div.tableView {
-            ul.tableListView {
-                li.TableViewCell.tableViewCell {
+    div.spl-tableViewContainer {
+        div.spl-tableView {
+            ul.spl-tableListView {
+                li.spl-TableViewCell.spl-tableViewCell {
                     border: none;
                     &:not(:last-child) {
                         //border-bottom: 1px solid #fafafa;
@@ -15,10 +15,10 @@ div#InterviewResultsView {
 }
 
 div#InterviewResultsViewHome {
-    div.tableViewContainer {
-        div.tableView {
-            ul.tableListView {
-                li.TableViewCell.tableViewCell {
+    div.spl-tableViewContainer {
+        div.spl-tableView {
+            ul.spl-tableListView {
+                li.spl-TableViewCell.spl-tableViewCell {
                     border-bottom: 1px solid #e8e8e8;
                 }
             }
@@ -27,7 +27,7 @@ div#InterviewResultsViewHome {
 }
 
 div#InterviewResultsView, div#InterviewResultsViewHome, div.InterviewResultsView {
-    div.tableViewContainer {
+    div.spl-tableViewContainer {
         border: 1px solid #e8e8e8;
         div.interviewResultsHeader {
             div.container {
@@ -38,16 +38,16 @@ div#InterviewResultsView, div#InterviewResultsViewHome, div.InterviewResultsView
             }
         }
 
-        div.tableView {
-            ul.tableListView {
-                li.TableViewCell.tableViewCell {
+        div.spl-tableView {
+            ul.spl-tableListView {
+                li.spl-TableViewCell.spl-tableViewCell {
                     position: relative;
                     background-color: #fff;
                     padding: 0;
                     transition: 
                         background-color 0.3s @cubic-bezier1;
 
-                    &.selected {
+                    &.spl-selected {
                         background-color:#deeaee;
                     }
                     &:hover {
@@ -63,47 +63,47 @@ div#InterviewResultsView, div#InterviewResultsViewHome, div.InterviewResultsView
                         height: 5px;
                         background-color: #ff1bb0;// #1b8fff;// #2379cc; /* Or any color you prefer */
                         border-radius: 50%;
-                        &.hide {
+                        &.spl-hide {
                             display: none;
                         }
                     }
 
-                    div.contentWrapper {
+                    div.spl-contentWrapper {
                         height: 100%;
                         background: none;
                         border: none;
                         padding: 10px 17px;
                         overflow-y: auto;
 
-                        div.header {
-                            span.label {
+                        div.spl-header {
+                            span.spl-label {
                                 background: none;
                                 font-weight: 400;
                                 font-size: 12px;
                                 color: #747474;
                             }
-                            h6.title {
+                            h6.spl-title {
                                 font-size: 14px;
                                 font-weight: 500;
                             }
                         }
-                        div.body {
-                            p.text {
+                        div.spl-body {
+                            p.spl-text {
                                 font-size: 11px;
                                 color: #9a9a9a;
                             }
                         }
-                        div.footer {
+                        div.spl-footer {
                             background-color: none;
                             margin: 0;
                             padding: 0;
                         }
                     }
-                    div.buttonContainer.right {
+                    div.spl-buttonContainer.spl-right {
                         display: none;
                         button {
-                            svg#DeleteIconSVG.deleteIconSVG {
-                                .path {
+                            svg#DeleteIconSVG.spl-deleteIconSVG {
+                                .spl-path {
                                     fill: #FFFFFF;
                                 }
                             }
@@ -111,10 +111,10 @@ div#InterviewResultsView, div#InterviewResultsViewHome, div.InterviewResultsView
                     }
                 }
             }
-            div#TableViewGradientLoader.gradientViewIndicator.TableViewGradientLoader {
+            div#TableViewGradientLoader.spl-gradientViewIndicator.TableViewGradientLoader {
                 display: none;
-                div.indicator-container {
-                    div.indicator-wrapper {
+                div.spl-indicator-container {
+                    div.spl-indicator-wrapper {
                         svg {
                         }
                     }
@@ -128,21 +128,21 @@ div#InterviewResultsView, div#InterviewResultsViewHome, div.InterviewResultsView
         justify-content: center;
         align-items: center;
         height: 43px;
-        p.message {
+        p.spl-message {
             font-size: 12px;
         }
         &.hidden {
             display: none;
         }
-        &.alert {
+        &.spl-alert {
             display: flex;
-            p.message {
+            p.spl-message {
                 color: @alert-red;
             }
         }
         &.normal {
             display: flex;
-            p.message {
+            p.spl-message {
                 color: #444;
             }
         }
@@ -181,39 +181,39 @@ div#InterviewResultsView, div#InterviewResultsViewHome, div.InterviewResultsView
 
 @media (max-width: @smartphone-width) {
     div#InterviewResultsView {
-        div.tableViewContainer {
-            div.tableView {
-                ul.tableListView {
-                    li.TableViewCell.tableViewCell {
+        div.spl-tableViewContainer {
+            div.spl-tableView {
+                ul.spl-tableListView {
+                    li.spl-TableViewCell.spl-tableViewCell {
                         div.isChecked {
                         }
-                        div.contentWrapper {
-                            div.header {
-                                span.label {
+                        div.spl-contentWrapper {
+                            div.spl-header {
+                                span.spl-label {
                                 }
-                                h6.title {
-                                }
-                            }
-                            div.body {
-                                p.text {
+                                h6.spl-title {
                                 }
                             }
-                            div.footer {
+                            div.spl-body {
+                                p.spl-text {
+                                }
+                            }
+                            div.spl-footer {
                             }
                         }
-                        div.buttonContainer.right {
+                        div.spl-buttonContainer.spl-right {
                             button {
-                                svg#DeleteIconSVG.deleteIconSVG {
-                                    .path {
+                                svg#DeleteIconSVG.spl-deleteIconSVG {
+                                    .spl-path {
                                     }
                                 }
                             }
                         }
                     }
                 }
-                div#TableViewGradientLoader.gradientViewIndicator.TableViewGradientLoader {
-                    div.indicator-container {
-                        div.indicator-wrapper {
+                div#TableViewGradientLoader.spl-gradientViewIndicator.TableViewGradientLoader {
+                    div.spl-indicator-container {
+                        div.spl-indicator-wrapper {
                             svg {
                             }
                         }
@@ -224,10 +224,10 @@ div#InterviewResultsView, div#InterviewResultsViewHome, div.InterviewResultsView
     }
     
     div#InterviewResultsViewHome {
-        div.tableViewContainer {
-            div.tableView {
-                ul.tableListView {
-                    li.TableViewCell.tableViewCell {
+        div.spl-tableViewContainer {
+            div.spl-tableView {
+                ul.spl-tableListView {
+                    li.spl-TableViewCell.spl-tableViewCell {
                     }
                 }
             }
@@ -235,7 +235,7 @@ div#InterviewResultsView, div#InterviewResultsViewHome, div.InterviewResultsView
     }
     
     div#InterviewResultsView, div#InterviewResultsViewHome, div.InterviewResultsView {
-        div.tableViewContainer {
+        div.spl-tableViewContainer {
             div.interviewResultsHeader {
                 div.container {
                     h1.interviewResultsHeaderTitle {
@@ -244,15 +244,15 @@ div#InterviewResultsView, div#InterviewResultsViewHome, div.InterviewResultsView
                     }
                 }
             }
-            div.tableView {
-                ul.tableListView {
-                    li.TableViewCell.tableViewCell {
+            div.spl-tableView {
+                ul.spl-tableListView {
+                    li.spl-TableViewCell.spl-tableViewCell {
                     }
                 }
             }
         }
         div.messageContainer {
-            p.message {
+            p.spl-message {
             }
         }
         div.moreContainer {

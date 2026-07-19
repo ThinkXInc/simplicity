@@ -81,7 +81,7 @@ class CustomizeView {
 
     createCustomizePage() {
         const $customizeAlert = document.createElement('p');
-        $customizeAlert.classList.add('alertMessage');
+        $customizeAlert.classList.add('spl-alertMessage');
 
         const $items = document.createElement('div');
         $items.classList.add('CustomizeItems');
@@ -260,7 +260,7 @@ class CustomizeView {
         $wrapper.classList.add('CustomizeItemWrapper');
 
         const $buttonSizeTitle = document.createElement('h4');
-        $buttonSizeTitle.classList.add('subtitle');
+        $buttonSizeTitle.classList.add('spl-subtitle');
         $buttonSizeTitle.textContent = this.locale.get('settings_customize_button_size_title', this.lang)
 
         const min = 40;
@@ -347,7 +347,7 @@ class CustomizeView {
         $wrapper.classList.add('CustomizeItemWrapper');
 
         const $buttonColorTitle = document.createElement('h4');
-        $buttonColorTitle.classList.add('subtitle');
+        $buttonColorTitle.classList.add('spl-subtitle');
         $buttonColorTitle.textContent = this.locale.get('settings_customize_button_color_title', this.lang)
 
         const buttonColorPicker = new ColorPicker({
@@ -409,7 +409,7 @@ class CustomizeView {
         $wrapper.classList.add('CustomizeItemWrapper');
 
         const $balloonSizeTitle = document.createElement('h4');
-        $balloonSizeTitle.classList.add('subtitle');
+        $balloonSizeTitle.classList.add('spl-subtitle');
         $balloonSizeTitle.textContent = this.locale.get('settings_customize_balloon_size_title', this.lang)
 
         const min = 1;
@@ -528,11 +528,11 @@ class CustomizeView {
 
         $copyButton.addEventListener('mouseenter', () => {
             $toolTip.classList.add('visible');
-            $toolTip.classList.remove('fade-out');
+            $toolTip.classList.remove('spl-fade-out');
         });
 
         $copyButton.addEventListener('mouseleave', () => {
-            $toolTip.classList.add('fade-out');
+            $toolTip.classList.add('spl-fade-out');
         });
 
         $copyButton.addEventListener('click', () => {
@@ -540,9 +540,9 @@ class CustomizeView {
                 $toolTip.textContent = this.locale.get("settings_preview_code_copy_done_tooltip", this.lang);
                 $toolTip.classList.add('copied');
                 setTimeout(() => {
-                    $toolTip.classList.add('fade-out');
+                    $toolTip.classList.add('spl-fade-out');
                     setTimeout(() => {
-                        $toolTip.classList.remove('visible', 'fade-out', 'copied');
+                        $toolTip.classList.remove('visible', 'spl-fade-out', 'copied');
                         $toolTip.textContent = this.locale.get("settings_preview_code_copy_tooltip", this.lang);
                     }, 1000);
                 }, 2000);
@@ -730,7 +730,7 @@ class CustomizeView {
         $wrapper.classList.add('CustomizeItemWrapper');
 
         const $title = document.createElement('h4');
-        $title.classList.add('subtitle');
+        $title.classList.add('spl-subtitle');
         $title.textContent = this.locale.get('settings_model_select_title', this.lang)
         $wrapper.appendChild($title)
 
@@ -818,7 +818,7 @@ class CustomizeView {
         $wrapper.classList.add('CustomizeItemWrapper');
     
         const $title = document.createElement('h4');
-        $title.classList.add('subtitle');
+        $title.classList.add('spl-subtitle');
         $title.textContent = this.locale.get('basic_configs_response_mode_title', this.lang);
         $wrapper.appendChild($title);
     

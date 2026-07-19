@@ -48,7 +48,7 @@
 
 // header
 //#top{
-//    div.header {
+//    div.spl-header {
 //        display: flex;
 //        align-items: center;
 //        justify-content: space-between;
@@ -56,7 +56,7 @@
 //        padding: 10px 20px;
 //        color: @white;
 //    
-//        div.left {
+//        div.spl-left {
 //            display: flex;
 //            flex-direction: row;
 //            align-items: center;
@@ -75,7 +75,7 @@
 //                padding-top: 0.5em;
 //            }
 //        }
-//        div.right {
+//        div.spl-right {
 //            display: flex;
 //            flex-direction: row;
 //            align-items: center;
@@ -167,7 +167,7 @@
         padding: 20px 0 24px 0;
         min-height: 84vh;
 
-        div.left {
+        div.spl-left {
             padding: 100px 20px 100px 20px;
             width: 100%;
             //width: 100%;
@@ -186,7 +186,7 @@
                     font-size: 0.9em;
                     margin: 0 0 5px 0;
                 }
-                h1.title {
+                h1.spl-title {
                     font-size: 60px;
                     line-height: 1em;
                     color: @black;
@@ -195,7 +195,7 @@
                     margin: 25px 0 16px 0;
                     line-height: 1.3em;
                 }
-                h2.subtitle {
+                h2.spl-subtitle {
                     color: #323232;
                     font-size: 20px;
                     font-weight: 400;
@@ -326,25 +326,25 @@
             display: flex;
             flex-direction: column;
             margin-right: 13px;
-            div.RadioButton.ButtonType {
+            div.spl-RadioButton.ButtonType {
                 padding: 14px 14px 0 14px;
                 padding-bottom: 14px;
                 width: max-content;
                 color: #999;
-                div.inputOuter {
-                    h6.title {
+                div.spl-inputOuter {
+                    h6.spl-title {
                         -webkit-font-smoothing: antialiased;
                         color: #aaa;
                         font-size: 0.8em;
                         margin-bottom: 10px;
                     }
-                    div.inputWrapper {
+                    div.spl-inputWrapper {
                         cursor: pointer;
                         display: flex;
                         flex-direction: row;
                         align-items: center;
                         padding-left: 7px;
-                        div.item {
+                        div.spl-item {
                             cursor: pointer;
                             display: flex;
                             flex-direction: row;
@@ -353,7 +353,7 @@
                             input[type=radio] {
                                 cursor: pointer;
                             }
-                            span.checkbox {
+                            span.spl-checkbox {
                                 display: block;
                                 width: 20px;
                                 height: 20px;
@@ -367,25 +367,25 @@
                                 color: #999;
                             }
                         }
-                        div.item.checked {
-                            span.checkbox {
+                        div.spl-item.spl-checked {
+                            span.spl-checkbox {
                                 background-color: #005275;
                                 border: 1px solid #2b89ae;
                             }
                         }
-                        div.item:not(.checked):hover {
-                            span.checkbox {
+                        div.spl-item:not(.spl-checked):hover {
+                            span.spl-checkbox {
                                 background-color: #ababab;
                             }
 
                         }
-                        div.inputAfter {
+                        div.spl-inputAfter {
 
                         }
                     }
-                    div.footer {
+                    div.spl-footer {
                         padding: 0;
-                        p.alertMessage {
+                        p.spl-alertMessage {
                             font-size: 0.75em;
                         }
                     }
@@ -398,7 +398,7 @@
                     div.QBTN-button-loader {
                         //display: none;
                     }
-                    div.QBTN-button-loader.show {
+                    div.QBTN-button-loader.spl-show {
                         display: block;
                     }
                     div.QBTN-button-loader.B {
@@ -723,7 +723,7 @@
 
 
 // footer
-#top div.footer {
+#top div.spl-footer {
     display: flex;
     justify-content: flex-end; // Aligns the footer content to the right
     align-items: center;
@@ -767,24 +767,24 @@
 
 @media (min-width: @tablet-width) {
     #top {
-        .header .main-header, .header .sales-catch {
+        .spl-header .main-header, .spl-header .sales-catch {
             display: block; // Show text blocks on larger screens
         }
 
-        div.header {
-            div.left {
+        div.spl-header {
+            div.spl-left {
                 h3.header-copy {
                     margin-right: 10px;
                 }
             }
-            div.right {
+            div.spl-right {
 
             }
         }
         div.main-container {
             div.main-content {
                 padding: 20px 20px 24px 20px;
-                div.left {
+                div.spl-left {
                     div.main-copy {
                         padding: 20px 20px 0 20px;
                     }
@@ -828,15 +828,15 @@
 
 @media (max-width: @smartphone-width) {
     #top {
-        div.header {
-            div.left {
+        div.spl-header {
+            div.spl-left {
                 h3.header-copy {
                 }
                 h5.sales-catch {
                     display: none;
                 }
             }
-            div.right {
+            div.spl-right {
                 button.try-button {
                 }
             }
@@ -845,13 +845,13 @@
         div.main-container {
             div.main-content {
 
-                div.left, div.demo {
+                div.spl-left, div.demo {
                 }
 
-                div.left {
+                div.spl-left {
                     padding: 0px 20px 0px 20px;
                     div.main-copy {
-                        h1.title {
+                        h1.spl-title {
                             font-size: 36px;
 
                         }
@@ -866,7 +866,7 @@
                 div.demo {
                     div.demo-container {
                         div.demo-view-interface {
-                            div.RadioButton.ButtonType {
+                            div.spl-RadioButton.ButtonType {
                             }
                             div.btn-main {
                                 div.demo-button-container {
@@ -909,7 +909,7 @@
             }
         }
 
-        div.footer {
+        div.spl-footer {
             padding: 17px 17px;
 
             div.footer-content {

@@ -129,7 +129,7 @@ class Signin {
         const $leftline = document.createElement('span');
         $leftline.classList.add('line')
         const $or = document.createElement('p')
-        $or.classList.add('or')
+        $or.classList.add('spl-or')
         $or.textContent = locale.get('accounts_email_separator_or', lang);
         const $rightline = document.createElement('span');
         $rightline.classList.add('line')
@@ -138,12 +138,12 @@ class Signin {
         $separator.appendChild($rightline);
 
         const $emailPageTitle = document.createElement('h3');
-        $emailPageTitle.classList.add('title');
+        $emailPageTitle.classList.add('spl-title');
         $emailPageTitle.classList.add('email');
         $emailPageTitle.textContent = locale.get('signin_email_title', lang);
 
         const $emailPageSubtitle = document.createElement('p');
-        $emailPageSubtitle.classList.add('subtitle');
+        $emailPageSubtitle.classList.add('spl-subtitle');
         $emailPageSubtitle.classList.add('email');
         $emailPageSubtitle.textContent = locale.get('accounts_email_subtitle', lang);
         console.warn(this.locale)
@@ -202,7 +202,7 @@ class Signin {
             labelText: this.locale.get('nextbutton', lang),
             loaderSrc: '/img/button-loader.svg'
         });
-        emailPageNextButton.$button.classList.add('nextButton');
+        emailPageNextButton.$button.classList.add('spl-nextButton');
 
         const $emailPageAlert = document.createElement('p');
         $emailPageAlert.id = 'emailPageAlert';
@@ -430,12 +430,12 @@ class Signin {
         this.$backForgot = $back;
 
         const $forgotPageTitle = document.createElement('h3');
-        $forgotPageTitle.classList.add('title');
+        $forgotPageTitle.classList.add('spl-title');
         $forgotPageTitle.classList.add('forgot');
         $forgotPageTitle.textContent = locale.get('signin_forgot_title', lang);
 
         const $forgotPageSubtitle = document.createElement('p');
-        $forgotPageSubtitle.classList.add('subtitle');
+        $forgotPageSubtitle.classList.add('spl-subtitle');
         $forgotPageSubtitle.classList.add('forgot');
         $forgotPageSubtitle.textContent = locale.get('signin_forgot_subtitle', lang);
         console.warn(this.locale)
@@ -469,7 +469,7 @@ class Signin {
             labelText: this.locale.get('sendbutton', lang),
             loaderSrc: '/img/button-loader.svg'
         });
-        forgotPageNextButton.$button.classList.add('nextButton');
+        forgotPageNextButton.$button.classList.add('spl-nextButton');
 
         const $forgotPageAlert = document.createElement('p');
         $forgotPageAlert.id = 'forgotPageAlert';
@@ -605,7 +605,7 @@ class Signin {
         this.pageView.pages[pageIndex].container.classList.add('ResetPage');
 
         const $resetPageTitle = document.createElement('h3');
-        $resetPageTitle.classList.add('title');
+        $resetPageTitle.classList.add('spl-title');
         $resetPageTitle.classList.add('reset');
         $resetPageTitle.textContent = locale.get('signin_reset_title', lang);
 
@@ -615,7 +615,7 @@ class Signin {
         this.$backReset = $back;
 
         const $resetPageSubtitle = document.createElement('p');
-        $resetPageSubtitle.classList.add('subtitle');
+        $resetPageSubtitle.classList.add('spl-subtitle');
         $resetPageSubtitle.classList.add('reset');
         $resetPageSubtitle.textContent = locale.get('signin_reset_subtitle', lang);
         console.warn(this.locale)
@@ -668,7 +668,7 @@ class Signin {
             labelText: this.locale.get('nextbutton', lang),
             loaderSrc: '/img/button-loader.svg'
         });
-        resetPageNextButton.$button.classList.add('nextButton');
+        resetPageNextButton.$button.classList.add('spl-nextButton');
 
         const $resetPageAlert = document.createElement('p');
         $resetPageAlert.id = 'resetPageAlert';

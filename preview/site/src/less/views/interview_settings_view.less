@@ -3,31 +3,31 @@
 
 // ModalView
 div#InterviewSettingsModalView {
-    div.bg {
+    div.spl-bg {
         background-color: rgb(22 22 22 / 50%) !important;
     }
-    div.window {
+    div.spl-window {
         max-width: 850px;
-        div.contentWrapper {
+        div.spl-contentWrapper {
             height: 80vh;
             //background-color: #2e2e2e;
             border-bottom: 1px solid #e4e4e4;
             overflow-y: scroll;
-            h3.ModalViewTitle {
+            h3.spl-ModalViewTitle {
 
             }
         }
 
-        div.modalViewFooter {
+        div.spl-modalViewFooter {
             height: 63px;
-            p.message {
+            p.spl-message {
                 width: 100%;
                 font-size: 14px;
             }
-            p.alert {
+            p.spl-alert {
                 color: @alert-red;
             }
-            p.success {
+            p.spl-success {
                 color: #000;
             }
             button {
@@ -35,10 +35,10 @@ div#InterviewSettingsModalView {
                 width: 110px;
                 margin-left: 10px;
                 border-radius: 26px;
-                &.cancelButton {
+                &.spl-cancelButton {
 
                 }
-                &.doneButton {
+                &.spl-doneButton {
                     &:hover {
                         background-color: #465458;
                         border: 1px solid #4d4d4d;
@@ -54,7 +54,7 @@ div#InterviewSettingsModalViewMainContent {
 
     }
 
-    span.label {
+    span.spl-label {
         font-size: 12px;
         font-weight: 700;
         color: #747474;
@@ -80,27 +80,27 @@ div#InterviewSettingsModalViewMainContent {
 @media (max-width: @smartphone-width) {
     // ModalView
     div#InterviewSettingsModalView {
-        div.bg {
+        div.spl-bg {
         }
-        div.window {
+        div.spl-window {
             left: 49%;
             width: 90%;
-            div.contentWrapper {
+            div.spl-contentWrapper {
                 overflow-x: hidden;
-                h3.ModalViewTitle {
+                h3.spl-ModalViewTitle {
                 }
             }
-            div.modalViewFooter {
-                p.message {
+            div.spl-modalViewFooter {
+                p.spl-message {
                 }
-                p.alert {
+                p.spl-alert {
                 }
-                p.success {
+                p.spl-success {
                 }
                 button {
-                    &.cancelButton {
+                    &.spl-cancelButton {
                     }
-                    &.doneButton {
+                    &.spl-doneButton {
                     }
                 }
             }
@@ -110,7 +110,7 @@ div#InterviewSettingsModalViewMainContent {
     div#InterviewSettingsModalViewMainContent {
         div.InterviewLinkView {
         }
-        span.label {
+        span.spl-label {
         }
         span.separator {
         }

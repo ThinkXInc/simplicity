@@ -26,18 +26,18 @@ div.MaterialSampleQuestionField {
 
     width: 100%;
 
-    div.inputOuter {
+    div.spl-inputOuter {
         display: flex;
         align-items: center;
         flex-direction: column;
         border: none;
         //border-bottom: 1px solid #8d8d8d;
 
-        div.inputWrapper {
+        div.spl-inputWrapper {
             display: flex;
             flex-direction: row;
             width: 100%;
-            h6.title {
+            h6.spl-title {
                 color: @title;
                 width: 73px;
                 margin-right: 5px;
@@ -63,8 +63,8 @@ div.MaterialSampleQuestionField {
                 font-weight: 100;
                 color: @input-field-placeholder;
             }
-            div.inputAfter {
-                button.doneButton {
+            div.spl-inputAfter {
+                button.spl-doneButton {
                     .transitionAll(1.0s);
 
                     svg {
@@ -81,27 +81,27 @@ div.MaterialSampleQuestionField {
                         }
                     }
                 }
-                button.doneButton.clicked {
+                button.spl-doneButton.spl-clicked {
                     .scale(0.80);
                 }
             }
         }
 
-        div.footer {
+        div.spl-footer {
             width: 100%;
             display: flex;
             padding-top: 5px;
             margin-left: 139px;
-            p.alertMessage {
+            p.spl-alertMessage {
                 color: @alert-red;
                 font-size: 0.8rem;
             }
         }
     }
 
-    div.gradientViewIndicator {
-        div.indicator-container {
-            div.indicator-wrapper {
+    div.spl-gradientViewIndicator {
+        div.spl-indicator-container {
+            div.spl-indicator-wrapper {
                 padding: 6px 0 6px 0;  // this value should be correspond with the inputOuter display height
                 svg {
 
@@ -111,12 +111,12 @@ div.MaterialSampleQuestionField {
 
     }
 }
-div.MaterialSampleQuestionField.edited {
+div.MaterialSampleQuestionField.spl-edited {
     @input-field-text-edited: #a6a587;
     @input-bottom-border-edited: #a6a587;
-    div.inputOuter {
-        div.inputWrapper {
-            h6.title {
+    div.spl-inputOuter {
+        div.spl-inputWrapper {
+            h6.spl-title {
             }
             input.questionform {
                 color: @input-field-text-edited;
@@ -141,10 +141,10 @@ div.MaterialSampleQuestionField.onDisplay {
         button.editButton {
             display: inline-block;
         }
-        button.doneButton {
+        button.spl-doneButton {
             display: none;
         }
-        button.cancelButton {
+        button.spl-cancelButton {
             display: none;
         }
     }
@@ -152,16 +152,16 @@ div.MaterialSampleQuestionField.onDisplay {
 div.MaterialSampleQuestionField.onEdit {
     @input-field-bg-edit: #373737;
 
-    div.inputOuter {
+    div.spl-inputOuter {
         background-color: @input-field-bg-edit;
         div.iconBox {
             button.editButton {
                 display: none;
             }
-            button.doneButton {
+            button.spl-doneButton {
                 display: inline-block;
             }
-            button.cancelButton {
+            button.spl-cancelButton {
                 display: inline-block;
             }
         }
@@ -170,17 +170,17 @@ div.MaterialSampleQuestionField.onEdit {
 div.MaterialSampleQuestionField.onDisable {
     @icon-disable: #cacaca;
 
-    div.inputOuter {
+    div.spl-inputOuter {
         input.titleform {
             pointer-events: none;  // Prevents all interactions with the element
             opacity: 0.6;
         }
         div.iconBox {
-            button.editButton, button.doneButton, button.cancelButton {
+            button.editButton, button.spl-doneButton, button.spl-cancelButton {
                 pointer-events: none;  // Prevents all interactions with the button
                 opacity: 0.6;
-                svg.editIconSVG:hover, svg.doneIconSVG:hover, svg.cancelIconSVG:hover {
-                    .cls-1, .cls-2 {
+                svg.editIconSVG:hover, svg.doneIconSVG:hover, svg.spl-cancelIconSVG:hover {
+                    .spl-cls-1, .spl-cls-2 {
                         stroke: @icon-disable;
                     }
                 }
@@ -189,13 +189,13 @@ div.MaterialSampleQuestionField.onDisable {
     }
 }
 
-div.TextField.alert {
+div.spl-TextField.spl-alert {
     @alert-red: #c88f8f;
 
-    div.inputOuter {
-        div.footer {
-            div.right {
-                span.counter {
+    div.spl-inputOuter {
+        div.spl-footer {
+            div.spl-right {
+                span.spl-counter {
                     color: @alert-red;
                }
             }

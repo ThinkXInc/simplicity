@@ -3,33 +3,33 @@
 @smartphone-width: 480px;
 
 #SettingsModalView {
-    div.bg {
+    div.spl-bg {
         background-color: rgba(0, 0, 0, 0.5) !important;
         //background-color: rgba(255, 255, 255, 0.65) !important;
     }
-    div.window {
+    div.spl-window {
         width: 83%;
         z-index: 9999;
         max-width: 934px;
         //max-width: 800px;
         border-radius: 18px;
         border: 1px solid #494949;
-        div.contentWrapper {
+        div.spl-contentWrapper {
             height: 87vh;
             background-color: #2e2e2e;
             border-bottom: 1px solid #4f4f4f;
             overflow-y: scroll;
-            h3.ModalViewTitle {
+            h3.spl-ModalViewTitle {
                 margin-bottom: 38px;
                 font-size: 1em;
                 color: #fff;
             }
-            p.mainContent {
+            p.spl-mainContent {
             }
         }
-        div.modalViewFooter {
+        div.spl-modalViewFooter {
             background-color: #2e2e2e;
-            button.cancelButton {
+            button.spl-cancelButton {
                 background-color: #2a2a2a;
                 color: #c3c3c3;
                 border: 1px solid #656565;
@@ -37,7 +37,7 @@
                 padding: 8px 21px;
                 border-radius: 26px;
             }
-            button.doneButton {
+            button.spl-doneButton {
                 display: none;
                 transition: all 0.3s @cubic-bezier1;
             }
@@ -53,7 +53,7 @@
 @alert-red: #c97c7c;
 
 #SettingsModalViewMainContent {
-    div.PageView {
+    div.spl-PageView {
         box-shadow: none;
         position: relative;
         top: initial;
@@ -62,9 +62,9 @@
         overflow-x: hidden;
         overflow-y: hidden;
 
-        div.PageViewContainer {
+        div.spl-PageViewContainer {
 
-            h3.title {
+            h3.spl-title {
                 font-size: 1em;
                 color: #fff;
                 margin-bottom: 7px;
@@ -72,13 +72,13 @@
                 border-bottom: 1px solid #515151;
             }
             div.container {
-                div.TextField {
-                    div.inputOuter {
+                div.spl-TextField {
+                    div.spl-inputOuter {
                         border: none;
-                        h6.title {
+                        h6.spl-title {
 
                         }
-                        div.inputWrapper {
+                        div.spl-inputWrapper {
                             input {
                                 max-width: 35%;
                                 background-color: #fff;
@@ -92,42 +92,42 @@
                                 font-size: 0.9em;
                                 color: #b7b7b7;
                             }
-                            div.inputAfter {
+                            div.spl-inputAfter {
                                 margin-left: 20px;
                             }
                         }
-                        div.footer {
-                            div.left {
+                        div.spl-footer {
+                            div.spl-left {
 
                             }
-                            div.middle {
+                            div.spl-middle {
 
                             }
-                            div.right {
+                            div.spl-right {
 
                             }
-                            p.alertMessage {
+                            p.spl-alertMessage {
                                 font-size: 0.8em;
                             }
                         }
                     }
                 }
-                div.TextField.alert{
-                    div.inputOuter {
-                        h6.title {
+                div.spl-TextField.spl-alert{
+                    div.spl-inputOuter {
+                        h6.spl-title {
                             color: @alert-red !important;
                         }
-                        div.inputWrapper {
+                        div.spl-inputWrapper {
                             input {
                                 border: 1px solid @alert-red !important;
                             }
                         }
-                        div.inputAfter {
+                        div.spl-inputAfter {
 
                         }
-                        div.footer {
-                            div.left {
-                                p.alertMessage {
+                        div.spl-footer {
+                            div.spl-left {
+                                p.spl-alertMessage {
                                     color: @alert-red !important;
                                 }
                             }
@@ -141,18 +141,18 @@
 
 // Basic Settings
 #SettingsModalViewMainContent {
-    div.PageView {
-        div.PageViewContainer.BasicPage {
+    div.spl-PageView {
+        div.spl-PageViewContainer.BasicPage {
             margin-bottom: 31px;
             div.OriginForm, div.EmailForm {
-                div.inputOuter {
+                div.spl-inputOuter {
                     border: none;
                 
-                    h6.title {
+                    h6.spl-title {
                         color: #fff;
                         font-size: 0.8em;
                     }
-                    div.inputWrapper {
+                    div.spl-inputWrapper {
                         display: flex;
                         align-items: center;
                         flex-direction: row;
@@ -167,7 +167,7 @@
                         padding: 10px 10px 10px 12px;
                         width: 271px;
                     }
-                    div.inputAfter {
+                    div.spl-inputAfter {
                         display: flex;
                         align-items: center;
                         img.VerifiedIcon {
@@ -204,11 +204,11 @@
                             width: 49px;
                             height: 26px;
                         }
-                        button.ResendButton.LoadButton {
+                        button.ResendButton.spl-LoadButton {
                             margin-left: 25px;
                             width: 117px;
                             height: 34px;
-                            span.LoadButtonLabel {
+                            span.spl-LoadButtonLabel {
                                 width: 100px;
                             }
                         }
@@ -228,13 +228,13 @@
                             margin-left: 22px;
                         }
                     }
-                    div.footer {
+                    div.spl-footer {
                         justify-content: flex-start !important;
                         padding: 5px 0px 0 0 !important;
                         font-size: 0.8em;
                         height: 20px;
-                        div.left {
-                            p.alertMessage {
+                        div.spl-left {
+                            p.spl-alertMessage {
                                 font-size: 0.7em;
                                 color: @alert-red;
                             }
@@ -244,16 +244,16 @@
             }
 
             div.OriginForm.pending, div.EmailForm.pending {
-                div.inputOuter {
-                    h6.title {
+                div.spl-inputOuter {
+                    h6.spl-title {
                         color: @alert-red;
                     }
                 }
             }
 
-            div.OriginForm.alert, div.EmailForm.alert {
+            div.OriginForm.spl-alert, div.EmailForm.spl-alert {
                 margin-top: 0;
-                div.inputOuter {
+                div.spl-inputOuter {
                     input {
                         border: 1px solid #8c1111;
                     }
@@ -261,8 +261,8 @@
             }
 
             div.OriginForm {
-                div.inputOuter {
-                    div.inputAfter {
+                div.spl-inputOuter {
+                    div.spl-inputAfter {
                         button.SubmitButton {
                             margin-left: 18px;
                         }
@@ -277,15 +277,15 @@
                     font-size: 0.8em;
                     margin-bottom: 10px;
                 }
-                div.VerifyCodeForm {
+                div.spl-VerifyCodeForm {
                     background-color: #3e3e3e;
                     width: 291px;
                     padding: 10px 15px;
                     margin-bottom: 20px;
-                    //div.verifyCodeFormContainer {
+                    //div.spl-verifyCodeFormContainer {
                     //    width: 19vw !important;
                     //    min-width: 195px !important;
-                    //    input.verifyInput {
+                    //    input.spl-verifyInput {
                     //        width: 35px !important;
                     //        height: 35px !important;
                     //    }
@@ -299,10 +299,10 @@
 
 // Billing Settings
 #SettingsModalViewMainContent {
-    div.PageView {
-        div.PageViewContainer.BillingPage {
+    div.spl-PageView {
+        div.spl-PageViewContainer.BillingPage {
             div.container, div.CardInputViewContainer {
-                button.LoadButton {
+                button.spl-LoadButton {
                     height: 37px;
                     border-radius: 4px;
                     background-color: transparent;
@@ -313,26 +313,26 @@
                         border 0.2s @ease,
                         background-color 0.2s @ease;
 
-                    span.LoadButtonLabel {
+                    span.spl-LoadButtonLabel {
                         width: max-content;
                         font-size: 0.7em;
                     }
                 }
-                button.LoadButton:hover {
+                button.spl-LoadButton:hover {
                     background: #b1b1b1;
                     border: 1px solid #202020;
                 }
             }
             div.container {
                 padding: 14px 14px 0 14px;
-                h4.subtitle {
+                h4.spl-subtitle {
                     color: #fff;
                     font-size: 0.8em;
                     font-weight: 400;
                     margin: 2px 0 14px 3px;
                     -webkit-font-smoothing: antialiased;
                 }
-                div.wrapper {
+                div.spl-wrapper {
                     display: flex;
                     flex-direction: row;
                     align-items: center;
@@ -354,11 +354,11 @@
                         margin-left: 13px;
                         margin-right: 13px;
                     }
-                    p.message {
+                    p.spl-message {
                         font-size: 0.8em;
                         color: #fff;
                     }
-                    p.message.alert {
+                    p.spl-message.spl-alert {
                         color: @alert-red;
                     }
                 }
@@ -374,7 +374,7 @@
                 padding: 0 20px 20px 20px;
                 div.CardInputView {
                     margin-top: 20px;
-                    img.loading {
+                    img.spl-loading {
                         svg circle {
                             fill: #ff4500; /* Changes fill color to orange-red, for example */
                         }
@@ -391,7 +391,7 @@
             }
             div.LimitContainer {
                 margin-top: 17px;
-                h4.subtitle {
+                h4.spl-subtitle {
                     color: #fff;
                     margin: 2px 0 7px 0px;
                 }
@@ -410,9 +410,9 @@
                     div.LimitForm {
                         width: max-content;
                         margin-right: 10px;
-                        div.inputOuter {
+                        div.spl-inputOuter {
                             padding: 0;
-                            div.inputWrapper {
+                            div.spl-inputWrapper {
                                 width: 102px;
                                 border: 1px solid #989898;
                                 border-radius: 4px;
@@ -427,9 +427,9 @@
                                     border-radius: 0;
                                 }
                             }
-                            div.inputAfter {
+                            div.spl-inputAfter {
                                 margin-left: 0 !important;
-                                div.incrementButton {
+                                div.spl-incrementButton {
                                     width: 28px;
                                     button {
                                         img {
@@ -438,19 +438,19 @@
                                     }
                                 }
                             }
-                            div.footer {
+                            div.spl-footer {
                                 padding: 4px 0 0 0;
                                 font-size: 0.9em;
                                 display: block;
-                                p.alertMessage {
+                                p.spl-alertMessage {
                                     font-size: 0.75em;
                                 }
                             }
                         }
                     }
-                    div.LimitForm.alert {
-                        div.inputOuter {
-                            div.inputWrapper {
+                    div.LimitForm.spl-alert {
+                        div.spl-inputOuter {
+                            div.spl-inputWrapper {
                                 border: 1px solid @alert-red;
                                 input {
                                     border: none !important;
@@ -507,10 +507,10 @@
 
 // Customize Container
 #SettingsModalViewMainContent {
-    div.PageView {
-        div.PageViewContainer.CustomizePage {
+    div.spl-PageView {
+        div.spl-PageViewContainer.CustomizePage {
             margin-top: 46px;
-            h3.title {
+            h3.spl-title {
             }
             div.container.CustomizeContainer {
                 display: flex;
@@ -529,20 +529,20 @@
 
 @media (max-width: @smartphone-width) {
     #SettingsModalView {
-        div.bg {
+        div.spl-bg {
         }
-        div.window {
+        div.spl-window {
             width: 94%;
-            div.contentWrapper {
-                h3.ModalViewTitle {
+            div.spl-contentWrapper {
+                h3.spl-ModalViewTitle {
                 }
-                p.mainContent {
+                p.spl-mainContent {
                 }
             }
-            div.modalViewFooter {
-                button.cancelButton {
+            div.spl-modalViewFooter {
+                button.spl-cancelButton {
                 }
-                button.doneButton {
+                button.spl-doneButton {
                 }
             }
         }
@@ -551,60 +551,60 @@
 
     // Basic
     #SettingsModalViewMainContent {
-        div.PageView {
-            div.PageViewContainer {
-                h3.title {
+        div.spl-PageView {
+            div.spl-PageViewContainer {
+                h3.spl-title {
                 }
                 div.container {
                     padding: 17px 0;
-                    div.TextField {
-                        div.inputOuter {
+                    div.spl-TextField {
+                        div.spl-inputOuter {
                             padding: 10px 10px 5px 10px;
-                            h6.title {
+                            h6.spl-title {
     
                             }
-                            div.inputWrapper {
+                            div.spl-inputWrapper {
                                 input {
                                     max-width: 65%;
                                 }
                                 input::placeholder {
                                 }
-                                div.inputAfter {
+                                div.spl-inputAfter {
                                     margin-left: 11px;
                                     span.explanation {
                                         margin-left: 11px;
                                     }
                                 }
                             }
-                            div.footer {
-                                div.left {
+                            div.spl-footer {
+                                div.spl-left {
     
                                 }
-                                div.middle {
+                                div.spl-middle {
     
                                 }
-                                div.right {
+                                div.spl-right {
     
                                 }
-                                p.alertMessage {
+                                p.spl-alertMessage {
                                 }
                             }
                         }
                     }
-                    div.TextField.alert{
-                        div.inputOuter {
-                            h6.title {
+                    div.spl-TextField.spl-alert{
+                        div.spl-inputOuter {
+                            h6.spl-title {
                             }
-                            div.inputWrapper {
+                            div.spl-inputWrapper {
                                 input {
                                 }
                             }
-                            div.inputAfter {
+                            div.spl-inputAfter {
     
                             }
-                            div.footer {
-                                div.left {
-                                    p.alertMessage {
+                            div.spl-footer {
+                                div.spl-left {
+                                    p.spl-alertMessage {
                                     }
                                 }
                             }
@@ -617,21 +617,21 @@
 
     // Billing
     #SettingsModalViewMainContent {
-        div.PageView {
-            div.PageViewContainer.BillingPage {
+        div.spl-PageView {
+            div.spl-PageViewContainer.BillingPage {
                 div.container, div.CardInputViewContainer {
-                    button.LoadButton {
-                       span.LoadButtonLabel {
+                    button.spl-LoadButton {
+                       span.spl-LoadButtonLabel {
                         }
                     }
-                    button.LoadButton:hover {
+                    button.spl-LoadButton:hover {
                     }
                 }
                 div.container {
                     padding: 20px 10px 0 10px;
-                    h4.subtitle {
+                    h4.spl-subtitle {
                     }
-                    div.wrapper {
+                    div.spl-wrapper {
                         button.UpdateCardButton {
                         }
                         .CardLoader {
@@ -641,15 +641,15 @@
                         span.Last4 {
                             margin-right: 0;
                         }
-                        p.message {
+                        p.spl-message {
                         }
-                        p.message.alert {
+                        p.spl-message.spl-alert {
                         }
                     }
                 }
                 div.CardInputViewContainer {
                     div.CardInputView {
-                        img.loading {
+                        img.spl-loading {
                             svg circle {
                             }
     
@@ -662,7 +662,7 @@
                 }
                 div.LimitContainer {
                     padding: 14px 10px 0 10px;
-                    h4.subtitle {
+                    h4.spl-subtitle {
                     }
                     div.LimitLine1 {
                         padding-left: 0;
@@ -673,28 +673,28 @@
                         }
                         div.LimitForm {
                             margin-right: 0;
-                            div.inputOuter {
-                                div.inputWrapper {
+                            div.spl-inputOuter {
+                                div.spl-inputWrapper {
                                     input {
                                     }
                                 }
-                                div.inputAfter {
-                                    div.incrementButton {
+                                div.spl-inputAfter {
+                                    div.spl-incrementButton {
                                         button {
                                             img {
                                             }
                                         }
                                     }
                                 }
-                                div.footer {
-                                    p.alertMessage {
+                                div.spl-footer {
+                                    p.spl-alertMessage {
                                     }
                                 }
                             }
                         }
-                        div.LimitForm.alert {
-                            div.inputOuter {
-                                div.inputWrapper {
+                        div.LimitForm.spl-alert {
+                            div.spl-inputOuter {
+                                div.spl-inputWrapper {
                                     input {
                                     }
                                 }

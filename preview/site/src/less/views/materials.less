@@ -34,7 +34,7 @@
     height: calc(100vh - 53px);
 }
 
-#MainContent.materials div.MaterialList.TableView {
+#MainContent.materials div.MaterialList.spl-TableView {
     @material-list-header-bg: #282828;
     @material-list-header-title: #596772;
     @material-list-count: #fcfdfd;
@@ -74,7 +74,7 @@
       background-color: @scrollbar-thumb;
     }
 
-    div.tableViewContainer {
+    div.spl-tableViewContainer {
         // Styles for the overall container
         display: flex;
         flex-direction: column;
@@ -136,7 +136,7 @@
                 margin-right: 10px; // Added for some space between the icon and label
             }
 
-            h4.title {
+            h4.spl-title {
                 font-size: 14px;
                 //color: @create-new-title;
                 color: #e3e3e3;
@@ -148,23 +148,23 @@
         div.createNew:hover {
             border: 1px solid #c4c4c4;
             background-color: #555555;
-            h4.title {
+            h4.spl-title {
                 color: #fff;
             }
         }
 
-        div.tableView {
+        div.spl-tableView {
             flex: 1;
             overflow-y: auto;
 
-            ul.tableListView {
+            ul.spl-tableListView {
                 list-style-type: none;
                 margin: 0;
                 padding: 0;
                 display: flex;
                 flex-direction: column;
 
-                li.tableViewCell {
+                li.spl-tableViewCell {
                     // Base styles for each cell
                     cursor: pointer;
                     padding: 16px 20px; // Added padding for each material
@@ -172,49 +172,49 @@
                     border-bottom: 1px solid @material-border;
                     .transitionAll();
 
-                    div.contentWrapper {
-                        div.header {
-                            span.label {
+                    div.spl-contentWrapper {
+                        div.spl-header {
+                            span.spl-label {
                                 display: none;
                             }
-                            h6.title {
+                            h6.spl-title {
                                 font-size: 1em; 
                                 color: @material-title;
                             }
                         }
-                        div.body {
-                            p.text {
+                        div.spl-body {
+                            p.spl-text {
                                 font-size: .8em;
                                 color: @material-text;
                                 margin-top: 7px;
                             }
                         }
-                        div.footer {
+                        div.spl-footer {
                             display: none;
                         }
                     }
                 }
 
-                li.tableViewCell.selected {
+                li.spl-tableViewCell.spl-selected {
                     background-color: @material-bg-selected;
 
-                    div.buttonContainer.right {
+                    div.spl-buttonContainer.spl-right {
                         background: linear-gradient(to left, @material-bg-selected, @material-bg-selected 77%, transparent);
                     }
-                    div.buttonContainer.left {
+                    div.spl-buttonContainer.spl-left {
                         background: linear-gradient(to right, @material-bg-selected, @material-bg-selected 77%, transparent);
                     }
                 }
 
-                li.tableViewCell:hover {
+                li.spl-tableViewCell:hover {
                     background-color: @material-bg-highlight;
-                    div.header {
-                        h6.title {
+                    div.spl-header {
+                        h6.spl-title {
                             color: @material-title-highlight;
                         }
                     }
-                    div.body {
-                        p.text {
+                    div.spl-body {
+                        p.spl-text {
                             color: @material-text-highlight;
                         }
                     }
@@ -222,7 +222,7 @@
             }
         }
 
-        div.tableViewFooter {
+        div.spl-tableViewFooter {
             @footer-border-top: #e5e5e5;
             // Styles for the table footer
             display: flex;
@@ -255,15 +255,15 @@
     overflow-y: auto;
     background-color: @material-create-view-bg;
 
-    div.inputPageViewContainer {
+    div.spl-inputPageViewContainer {
         width: 85%;
 
-        div.inputPageViewPages {
+        div.spl-inputPageViewPages {
             display: flex;
             flex-direction: column;
             justify-content: center; // Vertically center children
 
-            div.inputPageViewPage {
+            div.spl-inputPageViewPage {
                 display: flex;
                 flex-direction: column;
                 align-items: center; // Horizontally center children
@@ -290,11 +290,11 @@
             //}
         }
 
-        div.MaterialCreateView__AlertMessage.AlertMessage {
+        div.MaterialCreateView__AlertMessage.spl-AlertMessage {
             display: flex;
             flex-direction: column;
 
-            p.AlertMessage__message {
+            p.spl-AlertMessage__message {
                 display: none;
                 // Add additional styles for the AlertMessage__message here
             }
@@ -329,9 +329,9 @@
         position: relative;
     }
 
-    #MainContent.materials div.MaterialList.TableView {
+    #MainContent.materials div.MaterialList.spl-TableView {
         width: 100%;
-        div.tableView {
+        div.spl-tableView {
             flex: none !important;
             overflow-y: hidden !important;
             height: 100% !important;
@@ -357,16 +357,16 @@
                 width: 17px;
             }
         }
-        div.inputPageViewContainer {
+        div.spl-inputPageViewContainer {
             width: 100%;
             padding: 0 22px;
-            div.inputPageViewPages {
+            div.spl-inputPageViewPages {
                 div.MaterialCreatePage {
                     div.MaterialTitleField.visible {
                         margin-top: 10px;
                     }
                     div.MaterialTextField {
-                        div.inputOuter textarea.textform {
+                        div.spl-inputOuter textarea.textform {
                             height: 126px;
                             padding: 8px 8px 24px 8px;
                         }
@@ -413,21 +413,21 @@
     @done-button-text-hover: #fff;
 
     // Styles for the modal's background
-    div.bg {
+    div.spl-bg {
     }
 
     // Styles for the modal's main window
-    div.window {
+    div.spl-window {
 
         // Styles for the modal's content wrapper
-        div.contentWrapper {
+        div.spl-contentWrapper {
             background-color: @content-wrapper-bg;
 
-            h3.title {
+            h3.spl-title {
                 color: @title-color;
             }
 
-            p.mainContent {
+            p.spl-mainContent {
                 color: @text-color;
                 span.materialTitle {
                     font-weight: bold;
@@ -436,10 +436,10 @@
         }
 
         // Styles for the modal's footer
-        div.footer {
+        div.spl-footer {
             background-color: @footer-bg;
 
-            button.cancelButton {
+            button.spl-cancelButton {
                 border: 1px solid @cancel-button-border;
                 background-color: @cancel-button-bg;
                 color: @cancel-button-text;
@@ -448,7 +448,7 @@
                     color: @cancel-button-text-hover;
                 }
             }
-            button.doneButton {
+            button.spl-doneButton {
                 border: 1px solid @done-button-border;
                 background-color: @done-button-bg;
                 color: @done-button-text;

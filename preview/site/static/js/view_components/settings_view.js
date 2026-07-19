@@ -158,7 +158,7 @@ class SettingsView {
         this.pageView.pages[pageIndex].container.classList.add('BasicPage');
 
         const $basicPageTitle = document.createElement('h3');
-        $basicPageTitle.classList.add('title');
+        $basicPageTitle.classList.add('spl-title');
         $basicPageTitle.classList.add('basic');
         $basicPageTitle.textContent = locale.get('settings_basic_page_title', lang);
 
@@ -478,7 +478,7 @@ class SettingsView {
         this.pageView.pages[pageIndex].container.classList.add('BillingPage');
 
         const $billingPageTitle = document.createElement('h3');
-        $billingPageTitle.classList.add('title');
+        $billingPageTitle.classList.add('spl-title');
         $billingPageTitle.classList.add('billing');
         $billingPageTitle.textContent = locale.get('settings_billing_page_title', lang);
 
@@ -489,14 +489,14 @@ class SettingsView {
         $cardContainer.classList.add('CardContainer');
 
         const $cardTitle = document.createElement('h4');
-        $cardTitle.classList.add('subtitle');
+        $cardTitle.classList.add('spl-subtitle');
         $cardTitle.textContent = locale.get('settings_billing_card_title', lang)
 
         const $cardWrapper = document.createElement('div');
-        $cardWrapper.classList.add('wrapper');
+        $cardWrapper.classList.add('spl-wrapper');
 
         const $message = document.createElement('p');
-        $message.classList.add('message');
+        $message.classList.add('spl-message');
 
         const updateCardButton = new LoadButton({
             id: 'UpdateCardButton',
@@ -548,7 +548,7 @@ class SettingsView {
         $limitContainer.classList.add('container');
 
         const $limitTitle = document.createElement('h4');
-        $limitTitle.classList.add('subtitle');
+        $limitTitle.classList.add('spl-subtitle');
         $limitTitle.textContent = locale.get('settings_billing_limit_title', lang)
 
         const min = 1;
@@ -637,13 +637,13 @@ class SettingsView {
 
         const { status, cardBrand, last4, message } = await this.checkPaymentMethod();
         if (!status && message) {
-            this.$message.classList.add('alert');
+            this.$message.classList.add('spl-alert');
             this.$message.textContent = message;
         }
         switch(status) {
             case "card_declined":
                 this.$message.textContent = this.locale.get("settings_payment_method_card_declined", lang)
-                this.$message.classList.add('alert');
+                this.$message.classList.add('spl-alert');
                 this.updateCardButton.$view.style.display = 'none';
                 this.$cardLogo.src = this.cardBrandImage(cardBrand);
                 this.$last4.textContent = `**** **** **** ${last4}`;
@@ -663,7 +663,7 @@ class SettingsView {
                 break
             case "no_customer_id":
                 this.$message.textContent = this.locale.get("settings_payment_method_no_customer_id", lang)
-                this.$message.classList.add('alert');
+                this.$message.classList.add('spl-alert');
                 this.updateCardButton.$view.style.display = 'none';
                 this.$cardLogo.style.display = 'none';
                 this.$last4.style.display = 'none';
@@ -673,7 +673,7 @@ class SettingsView {
                 break
             case "no_payment_method_id":
                 this.$message.textContent = this.locale.get("settings_payment_method_payment_method_invalid", lang)
-                this.$message.classList.add('alert');
+                this.$message.classList.add('spl-alert');
                 this.updateCardButton.$view.style.display = 'none';
                 this.$cardLogo.style.display = 'none';
                 this.$last4.style.display = 'none';
@@ -701,7 +701,7 @@ class SettingsView {
         })
 
         const $loading = document.createElement('img');
-        $loading.classList.add('loading');
+        $loading.classList.add('spl-loading');
         $loading.src = '/img/loading-white.svg'
  
         const submitCardButton = new LoadButton({
