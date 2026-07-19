@@ -246,7 +246,7 @@ class FileUploadView extends ViewComponentBase {
         title, subtitle, orTitle, browseButtonTitle, dropTitle,
         uploadedFilesTableTitle
     ) {
-        super(id, 'div');
+        super(id, new ViewComponentConfig());
 
         // set 
         this.id = id;

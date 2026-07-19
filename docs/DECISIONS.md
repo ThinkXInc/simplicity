@@ -46,3 +46,4 @@
 | D-39 | **CSSクラス移行台帳はトップレベルの `style_class_inventory/` に置く** | テスト資産ではなく、スタイル移行の機械入力であることをパスから判別できるようにするため | `style_plan.md` v1.3 ST-0 |
 | D-40 | **クラス台帳の説明は `docs/STYLE_CLASS_INVENTORY.md`、site fixtureの設計は `docs/SITE_FIXTURE.md` を正本とする** | 引き継ぎに必要な人間向け文書を発見しやすい場所に置くため | `style_plan.md` v1.3 ST-0/ST-2 |
 | D-41 | **SimplicityのDOM、CSSクラスの大小文字、呼び出し形式を判断するときは、quantz-webのアプリケーションコードに書かれた実際の使い方を正とする** | quantz-webが指すSimplicityのGit版ではなく、消費側のJS・LESS・テンプレートが実運用上の契約を表すため | `style_plan.md` v1.3 大原則2 / ST-1〜ST-7 |
+| D-42 | **SingleTextInputPage / LastNameFirstNamePage は今後使わないとみなし、src修理をしない**(quantz-webに実利用が無いコンポーネントは「もう使わない」と判断してよい。削除はしない)。**FileUploadView は今後使うため修理対象**(未使用・動作実績なしだが保持)。**PositionMap / MapPointer は CityWalk(別アプリ)で使用の可能性があり、扱いは将来判断** | オーナー裁定 2026-07-19(FileUploadView 使用の裁定は同日追記) | findings.md(裁定原文)/ ギャラリー表示 |

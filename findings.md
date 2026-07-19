@@ -91,6 +91,31 @@
   凍結ゴールデン(test/golden/gallery_css_match.json)と完全一致」へ拡張
   (2026-07-19 オーナー承認の読み替え。空集合も正解になりうる — 死んだCSSの存在が根拠)。
   ゴールデン更新は `--update` 明示時のみ / ST-1
+- オーナー裁定の記録(2026-07-19) /
+  instruction: 「SingleTextInputPage / LastNameFirstNamePage Quanz-webでは確か使っていないと
+  思うが、これらはおそらくもう使うことがない。quanz-webで使ってなかったら、もう使わないと
+  思っていい。」「FileUploadView これは一度もまだ使われたことがない。しかも私が書いたのでは
+  ない。だから動作を一度も見たことがない。」→(D-42 起草への訂正)「FileUploadView は使う」
+  「PositionMap と MapPointer については、別のCityWalkというアプリケーションで使っている
+  可能性がある。」 /
+  interpretation: SingleTextInputPage・LastNameFirstNamePage は修理せず凍結(削除もしない)。
+  FileUploadView は使う予定のため構築可能へ修理。PositionMap・MapPointer は破棄・修理とも
+  保留(CityWalk 実利用の確認まで)。 /
+  context: ST-1 監査で3コンポーネントの構築不能を報告し、修理か次期送りかを質問した回答。
+  D-42 に転記済み / ST-1
+- オーナー目視結果(2026-07-19) / InputPageViewController の次へ・前へ・全ページ表示は動作。
+  全体は概ね動作するが「デフォルトのスタイルがあるとすれば、うまく適用されていないように
+  見える場所がかなりある」。後者は本監査で確定した死んだCSS(ul/li ブロック)と
+  コンポーネント固有規則の不在(gallery_css_match.json が対象別に記録: RadioButton・
+  GradientLoadingBar・FileUploadView 等は要素セレクタのみにマッチ)と整合する / ST-1目視
+- src/view_components/file_upload_view.js:250 / D-42(FileUploadView は使う)に基づき
+  `super(id, 'div')` → `super(id, new ViewComponentConfig())` へ最小修理し構築可能化。
+  htmlTag は FileUploadView 自身の _setElements が上書きするため config 既定値で挙動不変。
+  dist sha ae735c01916fe3697d03833432e93b70258426425ada3bec4fbd21d319e0a06f。
+  生成DOMにマッチする live CSS は要素セレクタのみ(fileUploadView 固有の規則は無し) / ST-1
+- src/view_components/text_field.js:369 / `isCancelButton: true` は `cancelButtonPlace` が
+  constructor 引数に存在しないため `places[undefined].appendChild` で TypeError(構築不能)。
+  ギャラリーの TextField バリエーションは Done ボタンのみ表示 / ST-1
 - /Users/K00TSUKA/Sources/quantz-web:master / ローカル master は eab6fd049b2c69c7578b8be288245be5c961902d、ローカル保存 ref origin/master は計画対象 99a9488714b94e227ecec54340df031419c5d1e2。計画書 §5.1 の「clone は ff 追随済み」と不一致。quantz-web 書き込み禁止のため checkout/pull は行わず、git grep/show origin/master で対象ツリーを読み取る / ST-0
 - refactor_plan.md:3 / ルート CLAUDE.md・docs/ROADMAP.md は計画書を `REFACTORING_PLAN.md` と呼ぶが実ファイル名は `refactor_plan.md`(内容は v1.2 で一致) / 項目0-1
 - refactor_plan.md:146 / 計画書指定の `"test": "node --test test/"` は本環境 node v23.7.0 で exit 1(`test/` をモジュールとして解決し MODULE_NOT_FOUND。計画書検証環境 node 22.22.2 では動作)。node 23 互換のため `"test": "node --test 'test/**/*.test.js'"` を採用(人間承認済み。src/dist 不変・挙動不変) / 項目0-2

@@ -134,15 +134,27 @@
     "*",
     "article",
     "body div",
+    "button",
+    "div.TextField.Incrementer div.inputOuter div.inputAfter div.incrementButton",
+    "div.TextField.Incrementer div.inputOuter div.inputAfter div.incrementButton button img",
+    "div.TextField.Incrementer div.inputOuter div.inputWrapper",
+    "div.TextField.Incrementer div.inputOuter div.inputWrapper input",
     "div.TextField:not(.Incrementer) div.inputOuter",
     "div.TextField:not(.Incrementer) div.inputOuter div.inputWrapper",
     "div.TextField:not(.Incrementer) div.inputOuter div.inputWrapper input",
+    "div.TextField:not(.Incrementer) div.inputOuter div.inputWrapper textarea",
     "div.TextField:not(.Incrementer) div.inputOuter h6.title",
+    "div.TextField:not(.Incrementer) div.inputOuter p.alertMessage",
     "div.TextField:not(.Incrementer) div.inputOuter span.counter",
+    "div.TextField:not(.Incrementer).alert div.inputOuter",
+    "div.TextField:not(.Incrementer).alert div.inputOuter h6.title",
     "h3",
     "h6",
+    "img",
     "input",
-    "span"
+    "p",
+    "span",
+    "textarea"
   ],
   "TableView": [
     "*",
@@ -231,8 +243,15 @@
   "FileUploadView": [
     "*",
     "article",
+    "body div",
     "h3",
-    "p"
+    "h5",
+    "img",
+    "input",
+    "input[type=file]",
+    "label",
+    "p",
+    "span"
   ],
   "FileUploadTableViewCell": [
     "*",

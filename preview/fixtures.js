@@ -64,17 +64,68 @@ card(basic, 'TermsScrollView', termsScrollView.$view);
 
 const forms = document.getElementById('form-components');
 
-const textField = new TextField({
-  id: 'gallery-text',
-  fieldName: 'name',
-  title: 'Name',
-  placeholder: 'Simplicity',
-  defaultValue: 'Example',
+// TextField は表示オプションが多いため、主要バリエーションを実APIで一通り並べる
+// (オーナー指示 2026-07-19)。cookie 系はスクショ決定性のため全カードで無効化する。
+const textFieldBase = {
   shouldTrackLocalChangeInCookie: false,
   isDefaultValueRestoredFromCookie: false,
   cookieExclude: true
+};
+const textFieldCard = (label, options, setup) => {
+  const instance = new TextField({ ...textFieldBase, ...options });
+  const section = card(forms, 'TextField', instance.$view);
+  section.querySelector('h3').textContent = `TextField — ${label}`;
+  if (setup) setup(instance);
+  return instance;
+};
+
+textFieldCard('基本(counter 既定表示)', {
+  id: 'gallery-text', fieldName: 'name', title: 'Name',
+  placeholder: 'Simplicity', defaultValue: 'Example', maxTextLength: 40
 });
-card(forms, 'TextField', textField.$view);
+textFieldCard('counter 非表示', {
+  id: 'gallery-text-nocounter', fieldName: 'name_nocounter', title: 'No counter',
+  placeholder: 'Simplicity', isCounter: false
+});
+textFieldCard('複数行(入力で下に伸びる)', {
+  id: 'gallery-text-multiline', fieldName: 'message', title: 'Message',
+  type: TextFieldType.multiplelines, initRows: 2, verticalFlex: true,
+  maxTextLength: 500,
+  defaultValue: '複数行のテキストフィールド。入力が増えると下方向に伸びる。\n2行目のテキスト。\n3行目のテキスト。'
+});
+textFieldCard('単位付き(unitPlace: inputOuter)', {
+  id: 'gallery-text-unit', fieldName: 'button_width', title: 'Button width',
+  hasUnit: true, unit: 'px', unitPlace: TextFieldPlaceTo.inputOuter,
+  defaultValue: '120', isCounter: false
+});
+textFieldCard('Incrementer(上下ボタン)', {
+  id: 'gallery-text-incrementer', fieldName: 'font_size', title: 'Font size',
+  defaultValue: '14', isCounter: false,
+  isIncrementer: true, incrementButtonPlace: TextFieldPlaceTo.inputAfter,
+  incrementUpImgSrc: '/img/up.svg', incrementDownImgSrc: '/img/down.svg'
+});
+textFieldCard('パスワード', {
+  id: 'gallery-text-password', fieldName: 'password', title: 'Password',
+  passwordMode: true, defaultValue: 'secret123', isCounter: false
+});
+textFieldCard('エラー表示(required を validate)', {
+  id: 'gallery-text-error', fieldName: 'required_field', title: 'Required field',
+  placeholder: '未入力のままエラー表示', isCounter: false,
+  validators: [new Validator({
+    errorType: ValidationErrorType.required,
+    errorMessage: 'This field is required'
+  })]
+}, (instance) => { instance.validate(); });
+textFieldCard('無効化(disableInteractions)', {
+  id: 'gallery-text-disabled', fieldName: 'disabled_field', title: 'Disabled',
+  defaultValue: 'Cannot edit', isCounter: false
+}, (instance) => { instance.disableInteractions(true); });
+// isCancelButton: true は cancelButtonPlace が constructor 引数に無く TypeError(findings)。
+textFieldCard('Done ボタン', {
+  id: 'gallery-text-done', fieldName: 'done_field', title: 'With done button',
+  defaultValue: 'Editable', isCounter: false,
+  isDoneButton: true
+});
 
 const keywordsField = new KeywordsField({
   id: 'gallery-keywords',
@@ -225,8 +276,17 @@ modalCard.appendChild(modalOpenButton);
 
 const uploads = document.getElementById('upload-components');
 
-placeholderCard(uploads, 'FileUploadView',
-  '現HEADでは構築不能(constructor が ViewComponentBase に旧シグネチャ super(id, "div") を渡し throw。findings 参照)');
+card(uploads, 'FileUploadView', '<div id="gallery-file-upload"></div>');
+new FileUploadView(
+  'gallery-file-upload',
+  ['pdf', 'png'],
+  'Upload files',
+  'Drop your file here',
+  'or',
+  'Browse',
+  'Drop here',
+  'Uploaded files'
+);
 
 // FileUploadTableViewCell: <ul class=fileUploadTableViewCell id={tableViewId}> が前提(classdesc)。
 // 状態は実 API(content / state setter)で 待機・アップロード中・完了 を表現する。
