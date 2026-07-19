@@ -1,0 +1,33 @@
+:root {
+  color: #222;
+  background: #f3f5f7;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body { margin: 0; }
+.galleryHeader { display: flex; justify-content: space-between; gap: 2rem; padding: 2rem; color: white; background: #263646; }
+.galleryHeader h1 { margin: .2rem 0; }
+.galleryEyebrow { margin: 0; color: #9ed0ff; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; }
+.themePlaceholder { align-self: center; }
+.themePlaceholder select { display: block; margin-top: .4rem; }
+#gallery { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
+.gallerySection { margin-bottom: 1.5rem; padding: 1.25rem; border: 1px solid #d9dee3; border-radius: 10px; background: white; }
+.gallerySection > h2 { margin-top: 0; }
+.galleryGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
+.galleryCard { min-width: 0; padding: 1rem; border: 1px solid #d9dee3; border-radius: 8px; background: #fafbfc; }
+.galleryCard h3 { margin-top: 0; font: 600 .82rem ui-monospace, monospace; color: #46596b; }
+.galleryStage { position: relative; min-height: 230px; overflow: hidden; padding: 1rem; border: 1px dashed #8a9baa; }
+.galleryActions { display: flex; gap: .5rem; margin-top: 1rem; }
+.galleryActions button { padding: .55rem .9rem; }
+.fixturePage { min-height: 120px; padding: 1rem; background: #f7f9fb; }
+.fixtureUpload { display: grid; grid-template-columns: 2rem 1fr auto; gap: .75rem; align-items: center; }
+.fixtureProgress { height: .45rem; overflow: hidden; border-radius: 1rem; background: #dce2e7; }
+.fixtureProgress > span { display: block; height: 100%; background: #3987c9; }
+.fixtureError .fixtureProgress > span { background: #c94d4d; }
+.dragArea { position: relative; height: 180px; overflow: hidden; border: 1px dashed #9aa8b5; }
+.dragHandle { width: 110px; padding: 1rem; color: white; background: #3979aa; border-radius: 6px; text-align: center; }
+.fixtureMap { height: 180px; position: relative; background: linear-gradient(135deg, #d9e8d0, #d8e4ec); }
+.fixturePin { position: absolute; left: 48%; top: 40%; font-size: 2rem; }
+.fixtureStatus { display: inline-block; padding: .25rem .5rem; border-radius: 1rem; background: #e4ebf1; }
+.fixtureModal { padding: 1rem; border: 1px solid #8796a3; box-shadow: 0 8px 24px #26364622; background: white; }
+@media (max-width: 700px) { .galleryHeader { display: block; } .themePlaceholder { display: block; margin-top: 1rem; } }

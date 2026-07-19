@@ -6,6 +6,8 @@
     "build:js": "gulp watch",
     "test": "node --test 'test/**/*.test.js'",
     "check:manifest": "node scripts/check_manifest.js",
+    "check:gallery": "node scripts/check_gallery_coverage.js",
+    "preview:gallery": "python3 -m http.server 8000",
     "lint": "node scripts/gen_globals.js && node scripts/lint_gate.js",
     "typecheck": "tsc --noEmit"
   },

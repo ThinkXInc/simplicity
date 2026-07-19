@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Simplicity component gallery</title>
+  <link rel="stylesheet" href="../dist/simplicity_default.css">
+  <link rel="stylesheet" href="./gallery.css">
+  <script>
+    window.google = window.google || { maps: { OverlayView: class {} } };
+  </script>
+</head>
+<body>
+  <header class="galleryHeader">
+    <div>
+      <p class="galleryEyebrow">Simplicity style refactor oracle</p>
+      <h1>Component gallery</h1>
+      <p>現行のdistを使い、UI部品と主要な状態を一画面で確認する。</p>
+    </div>
+    <label class="themePlaceholder">Theme
+      <select disabled title="ST-10で有効化する">
+        <option>Default (ST-10で切替対応)</option>
+      </select>
+    </label>
+  </header>
+
+  <main id="gallery">
+    <section class="gallerySection">
+      <h2>基本表示・操作</h2>
+      <div class="galleryGrid" id="basic-components"></div>
+    </section>
+
+    <section class="gallerySection">
+      <h2>入力・選択</h2>
+      <div class="galleryGrid" id="form-components"></div>
+    </section>
+
+    <section class="gallerySection">
+      <h2>Page / PageView / input controllers</h2>
+      <p>3ページを実際に切り替え、ページコンテナと入力フローを確認する。</p>
+      <div class="galleryStage" id="page-components"></div>
+    </section>
+
+    <section class="gallerySection">
+      <h2>Table・Dropdown・Modal</h2>
+      <div class="galleryGrid" id="collection-components"></div>
+    </section>
+
+    <section class="gallerySection">
+      <h2>File upload states</h2>
+      <div class="galleryGrid" id="upload-components"></div>
+    </section>
+
+    <section class="gallerySection">
+      <h2>Loading・notification・alert</h2>
+      <div class="galleryGrid" id="feedback-components"></div>
+    </section>
+
+    <section class="gallerySection">
+      <h2>Position・drag</h2>
+      <p>地図API自体は読み込まず、PositionMapの操作面とDraggableの挙動を固定fixtureで確認する。</p>
+      <div class="galleryGrid" id="position-components"></div>
+    </section>
+  </main>
+
+  <script src="../dist/simplicity.js"></script>
+  <script src="./fixtures.js"></script>
+</body>
+</html>
