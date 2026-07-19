@@ -1,0 +1,46 @@
+<header id="VerticalHeader">
+  <div class="upper">
+    <div class="logo-wrapper">
+      <a href="/v1/{{ lang }}/home">
+        <img class="logo" src="/img/logo.png" srcset="/img/logo/white@2x.png" alt="Quantz Logo">
+      </a>
+    </div>
+    <ul class="menu">
+      <li class="create item">
+        <a href="/{{ lang }}/create">
+          <img id="interviewIcon" class="interviewIcon icon" src="/img/vertical_menu/conversation-flow-icon.svg" alt="Interview">
+          {# NOTE: locale_dictをここに渡すのが難しいので変数を直接使う #}
+          <span class="menuTitle">{{ header_create_menu_title }}</span>
+          <span class="tooltip">{{ header_create_menu_title }}</span> {#折り畳んだらアイコンだけにしてツールチップを出す#}
+        </a>
+      </li>
+      <li class="materials item highlight">
+        <a href="/{{ lang }}/materials">
+          <img id="knowledgeIcon" class="knowledgeIcon icon" src="/img/vertical_menu/knowledge-icon.svg" alt="Knowledges">
+          <span class="tooltip">{{ header_knowledge_menu_title }}</span>
+        </a>
+      </li>
+      <li class="meetings item">
+        <a href="/v1/{{ lang }}/interviews">
+          <img id="interviewIcon" class="meetingsIcon icon" src="/img/vertical_menu/interview-icon.svg" alt="Interview">
+          <span class="tooltip">{{ header_interviews_menu_title }}</span>
+        </a>
+      </li>
+
+    </ul>
+  </div>
+  <div class="bottom">
+    <ul class="menu">
+      <li class="logout item">
+        <a href="/v1/{{ lang }}/logout">
+          <img id="logoutIcon" class="logoutIcon icon" src="/img/vertical_header/logout-icon.svg" alt="Logout Icon">
+        </a>
+        <span class="tooltip">{{ header_logout_menu_title }}</span>
+      </li>
+      <li class="settings item">
+        <img id="settingsIcon" class="settingsIcon icon" src="/img/vertical_header/settings-icon.svg" alt="Settings Icon">
+        <span class="tooltip">{{ header_settings_menu_title }}</span>
+      </li>
+    </ul>
+  </div>
+</header>

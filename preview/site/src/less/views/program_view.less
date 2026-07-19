@@ -1,0 +1,892 @@
+@cubic-bezier1: cubic-bezier(.65,0,.34,1);
+@cubic-bezier2: cubic-bezier(.4, 0, .2, 1);
+
+body {
+    --program-bg: #fff;
+    --large-box-box-shadow: 2px 5px 16px rgba(0, 0, 0, 0.2);
+    --program-input-text: #333;
+    --program-input-placeholder: #d5d5d5;
+    --program-textfield-border: #dfdfdf;
+    --program-alert-red: #8c1111;      // Override for dark
+    --program-text-field-border: #dfdfdf;
+    --program-text-label: #2e2e2e;
+    --program-text-title: #d5d5d5;
+    --program-tools-bg: #484848;
+    --program-tools-border: #5e5c5c;
+    --program-step-bg: #2e2e2e;
+}
+body.dark {
+    --program-bg: #2e2e2e;
+    --large-box-box-shadow: 2px 5px 16px rgba(0, 0, 0, 0.2);
+    --program-input-text: #fff;
+    --program-input-placeholder: #d5d5d5;
+    --program-textfield-border: #7e7e7e;
+    --program-alert-red: #f0bcbc;      // Override for dark
+    --program-text-field-border: #7e7e7e;
+    --program-text-label: #adadad;
+    --program-text-title: #d5d5d5;
+    --program-tools-bg: #484848;
+    --program-tools-border: #5e5c5c;
+    --program-step-bg: #2e2e2e;
+
+    --program-test-button-color: #32d6ff;
+}
+
+body {
+    --program-step-color-free: #d1c96a;
+    --program-step-bg-free: #3b3600;
+
+    --program-step-color-question: #876ad1;
+    --program-step-bg-question: #210768;
+
+    --program-step-color-greeting: #ef5656;
+    --program-step-bg-greeting: #450404;
+
+    --program-step-color-explanation: #196d2b;
+    --program-step-bg-explanation: #00310a;
+
+    --program-step-color-test: #1c6cc7;
+    --program-step-bg-test: #02264e;
+
+    --program-step-color-consulting: #32d6ff;
+    --program-step-bg-consulting: #033f4e;
+
+
+
+}
+
+ 
+
+div#ProgramView {
+    position: relative;
+    height: calc(100vh - 69px);
+    width: calc(100vw - 60px);
+
+    div.ProgramViewContainer {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        // NOTE: don't set padding.
+        // Reset default styles for TextField
+        div.TextField {
+            div.inputOuter {
+                background: transparent;
+                border: 1px solid var(--program-textfield-border);;
+                transition: 
+                    border 0.3s @cubic-bezier1,
+                    color 0.3s @cubic-bezier1,
+                    background-color 0.3s @cubic-bezier1;
+                &:focus-within {
+                    //border: 1px solid #6eb1c7;//#7e7e7e;
+                    //background-color: #e3ebed;
+                    div.inputWrapper {
+                        input {
+                            color: var(--program-input-text);// #3195b6;
+                        }
+                    }
+                }
+                &:hover {
+                    color: #fff;// #fafafa;
+                    background-color: #4b4b4b;// #ebebeb;
+                }
+                div.inputWrapper input {
+                    margin: 0;
+                    padding: 0 5px;
+                    border-radius: 7px;
+                    width: 100%;
+                    height: 30px;
+                    transition: 
+                        color 0.3s @cubic-bezier1;
+                    &::placeholder {
+                        color: #777777;
+                        font-weight: 300;
+                    }
+                }
+                div.footer {
+                    padding: 0;
+                    &.alert {
+                        p.alertMessage {
+                            color: var(--program-alert-red)
+                        }
+                    }
+                }
+            }
+            &.alert {
+                div.inputOuter {
+                    h6.title {
+                        color: var(--program-alert-red)
+                    }
+                    div.footer {
+                        background-color: transparent;
+                        div.middle {
+                            p.alertMessage {
+                                font-size: 11px;
+                                color: var(--program-alert-red)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        div.headerContainer {
+            width: 100%;
+            padding: 20px 0 0 20px;
+            position: fixed;
+            margin-bottom: 34px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            z-index: 100;
+
+            div.titleContainer {
+                min-width: 380px;
+                max-width: 400px;
+                margin-right: 30px;
+                div.TextField {
+                    div.inputOuter {
+                        border: none;
+                        border-bottom: 1px solid var(--program-text-field-border);
+                        h6.title {
+                            font-size: 10px;
+                        }
+                        div.inputWrapper input {
+                            color: var(--program-input-text);
+                            padding: 7px 0px;
+                            font-size: 23px;
+                            margin: 0;
+                            width: 100%;
+                            box-sizing: border-box;
+                        }
+                    }
+                }
+            }
+            div.voiceSetContainer {
+                .smallPanel(#494949, none);
+                flex-direction: row;
+                align-items: center;
+                display: flex;
+                &.alert {
+                    border-color: var(--program-alert-red);
+                    span.voiceSetName, span.voiceSetLabel {
+                        color: var(--program-alert-red);
+                    }
+                }
+
+                span.voiceSetLabel {
+                    font-size: 12px;
+                    font-weight: 200;
+                    color: #b5b5b5;
+                    margin-right: 10px;
+                }
+
+                span.voiceSetName {
+                    color: #b5b5b5;
+                    font-size: 12px;
+                    margin-right: 21px;
+                }
+                button.changeVoiceSetButton {
+                    .button1();
+                    padding: 3px 13px;
+                    font-size: 12px;
+                    color: #aaa;
+                }
+            }
+            div.LoadingMessage {
+                max-width: 346px;
+                height: 21px;
+                padding: 5px 13px;
+                font-size: 11px;
+                margin-left: 63px;
+                text-align: left;
+            }
+        }
+
+        div.backgroundContainer {
+            width: 5000px;
+            height: 5000px;
+            //width: 100%;
+            //height: 100%;
+            div.mainContainer {
+                width: 5000px;
+                height: 5000px;
+ 
+                position: relative;
+                // Hide arrow containers if not needed
+                div.stepArrowContainer,
+                div.endArrowContainer {
+                    display: none;
+                }
+
+                // Step container styling
+                ul.stepList {
+                    padding: 43px 43px;
+
+                    li.stepContainer {
+                        cursor: pointer;
+                        max-width: 700px;
+                        margin-right: 153px;
+                        width: 700px;
+                        margin-bottom: 6px;
+                        box-shadow: var(--large-box-box-shadow);
+                        //margin-bottom: 35px;
+
+                        .step(@type) {
+                            &.@{type} {
+                                h3.stepTitle {
+                                    color: ~"var(--program-step-color-@{type})"
+                                }
+                                div.stepContent {
+                                    border-color: ~"var(--program-step-color-@{type})";
+                                    div.taskTypeWrapper div.DropdownButton div.DropdownButtonClickable {
+                                        background-color: ~"var(--program-step-bg-@{type})";
+                                    }
+                                    &:hover {
+                                        border-color: ~"var(--program-step-color-@{type})";
+                                    }
+                                    div.configItemWrapper div.TextField div.inputOuter {
+                                        &:hover {
+                                            border-color: ~"var(--program-step-color-@{type})";
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        .step(greeting);
+                        .step(question);
+                        .step(free);
+                        .step(consulting);  
+                        .step(explanation);
+                        .step(test);
+
+                        h3.stepTitle {
+                            position: absolute;
+                            top: 0;
+                            left: 8%;
+                            transform: translate(-50%, -50%);
+                            background-color: transparent;
+                            padding: 6px 10px;
+                            font-size: 11px;
+                            color: var(--program-text-label);
+
+                            &::before {
+                                content: '';
+                                position: absolute;
+                                top: 50%;
+                                left: 50%;
+                                transform: translate(-50%, -50%);
+                                width: 95%;
+                                height: 3px;
+                                background-color: var(--program-bg);
+                                z-index: -1;
+                            }
+                        }
+
+                        div.stepContent {
+                            .largePanel(#ccc, var(--program-step-bg), #333);
+                            border: 1px solid #ccc;
+                            border-radius: 10px;
+                            padding: 20px 20px;
+                            z-index: 900;
+
+                            div.configItemWrapper {
+                                margin-top: 10px;
+                                display: flex;
+                                flex-direction: column;
+                                span.configItemLabel {
+                                    font-weight: bold;
+                                    display: block;
+                                    font-size: 11px;
+                                    margin-bottom: 6px;
+                                    color: var(--program-text-label);
+                                }
+                                div.TextField {
+                                    div.inputOuter {
+                                        div.inputWrapper {
+                                            input {
+                                                font-size: 14px;
+                                                color: var(--program-input-text)
+                                            }
+                                        }
+                                    }
+                                }
+                                div.DropdownButton {
+                                    div.DropdownButtonClickable {
+                                        h6.description {
+
+                                        }
+                                        span.title {
+                                            font-weight: 200;
+                                            color: var(--program-input-text)
+                                        }
+                                    }
+                                }
+                            }
+
+                            div.taskTypeWrapper {
+                                margin-top: 0;
+                                flex-direction: row;
+                                justify-content: end;
+                                div.DropdownButton {
+                                    width: 200px;
+                                    ul.listmenu {
+                                        width: 200px;
+                                    }
+                                }
+                            }
+
+                            div.topicWrapper {
+                                margin-top: 0;
+                            }
+
+                            div.remarkWrapper {
+                                div.TextField {
+                                    .inputWrapper input {
+                                        border-radius: 5px;
+                                        font-weight: 600;
+                                        width: 100%;
+                                        box-sizing: border-box;
+                                    }
+                                }
+                            }
+
+                            div.goalWrapper {
+                                span.goalLabel {
+                                }
+
+                                div.TextField {
+                                    .inputWrapper input {
+                                        width: 100%;
+                                        box-sizing: border-box;
+                                    }
+                                }
+                            }
+
+                            div.detailsWrapper {
+                                span.moreDetail {
+                                    cursor: pointer;
+                                    display: flex;
+                                    align-items: center;
+                                    margin-top: 13px;
+                                    img.moreDetailArrow {
+                                        transition: transform 0.3s;
+                                        margin-right: 5px;
+                                        width: 13px;
+                                    }
+                                    p.moreDetailLabel {
+                                        color: var(--program-text-label) !important;
+                                        font-size: 11px;
+                                    }
+                                    &.rotated img.moreDetailArrow {
+                                        transform: rotate(180deg);
+                                        transition: transform 0.7s cubic-bezier(0.4, 0.0, 0.2, 1);
+                                    }
+                                }
+
+                                div.hiddenContent {
+                                    overflow: hidden;
+                                    max-height: 0;
+                                    transition: 
+                                        padding 0.5s cubic-bezier(0.4, 0.0, 0.2, 1),
+                                        max-height 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+
+                                    &.expanded {
+                                        max-height: 1000px; // Adjust as needed
+                                        padding: 10px 0;
+                                    }
+
+
+                                    div.guidelinesWrapper {
+                                        span.guidelinesLabel {
+                                        }
+
+                                        div.instructionWrapper {
+                                            display: flex;
+                                            align-items: center;
+                                            margin-bottom: 2px;
+
+                                            span.index {
+                                                display: inline-block;
+                                                background-color: #e2e2e2;
+                                                color: #fff;
+                                                border-radius: 5px;
+                                                padding: 2px 8px;
+                                                margin-right: 9px;
+                                                font-size: 13px;
+                                            }
+
+                                            div.TextField {
+                                                flex: 1;
+
+                                                .inputWrapper input {
+                                                    width: 100%;
+                                                    box-sizing: border-box;
+                                                }
+                                            }
+                                        }
+                                        div.addGuidelineButtonContainer {
+                                            display: flex;
+                                            justify-content: center;
+                                            //justify-content: left;
+                                            //margin-left: 1px;
+                                            margin-top: 5px;
+
+                                            img.addGuidelineButton {
+                                                cursor: pointer;
+                                                width: 20px;
+                                                height: 20px;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                div.maxTurnsWrapper {
+                                    span.maxTurnsLabel {
+                                    }
+
+                                    div.TextField {
+                                        display: flex;
+                                        align-items: center;
+                                        div.inputOuter {
+                                            border: none;
+                                            background: none;
+                                            background-color: transparent;
+                                            div.inputWrapper {
+                                                flex: 1;
+                                                position: relative;
+                                                border: 1px solid var(--program-textfield-border);
+                                                box-shadow: none;
+                                                input {
+                                                    width: 100%;
+                                                    box-sizing: border-box;
+                                                    background: none;
+                                                }
+                                                div.incrementButton {
+                                                    position: absolute;
+                                                    right: 0;
+                                                    top: 50%;
+                                                    transform: translateY(-50%);
+                                                    display: flex;
+                                                    flex-direction: column;
+
+                                                    button {
+                                                        background: none;
+                                                        border: none;
+                                                        cursor: pointer;
+                                                        padding: 0;
+
+                                                        &:focus {
+                                                            outline: none;
+                                                        }
+
+                                                        img {
+                                                            width: 10px;
+                                                            height: 10px;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        &.alert {
+                                            div.inputOuter {
+                                                div.inputWrapper {
+                                                    input {
+                                                        color: @alert-red;
+                                                    }
+                                                }
+                                                div.footer {
+                                                    div.middle {
+                                                        p.alertMessage {
+                                                            font-size: 11px;
+                                                            color: @alert-red;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                div.responseModeWrapper {
+                                    div.DropdownButton {
+                                        width: 200px;
+                                    }
+                                }
+
+                                div.referenceWrapper.configItemWrapper {
+                                    div.referenceTypeContainer {
+                                        span.referenceTypeLabel.configItemLabel {
+
+                                        }
+                                        div.DropdownButton {
+                                            div.DropdownButtonClickable {
+                                                h6.description {
+
+                                                }
+                                                span.title {
+                                                    font-weight: 200;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    div.referencesContainer {
+                                        margin-top: 10px;
+                                        span.referencesLabel {
+
+                                        }
+                                        div.DropdownButton {
+                                            div.DropdownButtonClickable {
+                                                h6.description {
+
+                                                }
+                                                span.title {
+
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    div.addStepButtonContainer {
+                        margin-top: 0px;
+                        display: flex;
+                        justify-content: center;
+                        &.disable {
+                            margin-top: 20px;
+                            img.addStepButton {
+                                display: none;
+                            }
+                        }
+                        &.enable {
+                            img.addStepButton {
+                                display: flex;
+                                width: 24px;
+                                height: 24px;
+                                cursor: pointer;
+                            }
+                        }
+                    }
+        
+                    // End container styling
+                    div.endContainer {
+                        margin-top: 20px;
+                        span.endLabel {
+                        }
+
+                        div.TextField {
+                            .inputWrapper input {
+                                border-radius: 7px;
+                                font-size: 19px;
+                                font-weight: 600;
+                                width: 100%;
+                                box-sizing: border-box;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+div#ProgramView div.ProgramViewContainer {
+    div.testView {
+        position: fixed;
+        right: 44px;
+        bottom: 28px;
+        width: 100px;       // For now, fixed width
+        height: 100px;      // For now, fixed height
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        z-index: 999;       // Ensure it's above other elements
+        div.QBTN-button-container.QBTN-TYPE-Default div.QBTN-button-control div.QBTN-locale div.QBTN-selector {
+            top: -256px;
+            left: -10px;
+            border-color: var(--program-test-button-color);
+            color: var(--program-test-button-color)
+        }
+        div.QBTN-button-container.QBTN-TYPE-Default div.QBTN-button-component {
+            border-color: var(--program-test-button-color);
+        }
+        div.QBTN-button-container.QBTN-TYPE-Default button.QBTN-button.QBTN-start div#QBTN-button-component-0 {
+            border-color: var(--program-test-button-color);
+            background: var(--program-test-button-color);
+        }
+        div.QBTN-button-container.QBTN-TYPE-Default button.QBTN-button.QBTN-start div#QBTN-button-component-1 {
+            border-color: var(--program-test-button-color);
+        }
+        div.QBTN-button-container.QBTN-TYPE-Default button.QBTN-button.QBTN-start div#QBTN-button-component-2 {
+            border-color: var(--program-test-button-color);
+        }
+        div.QBTN-button-container.QBTN-TYPE-Default button.QBTN-button.QBTN-start div#QBTN-button-component-3 {
+            border-color: var(--program-test-button-color);
+        }
+        div.QBTN-button-container.QBTN-TYPE-Default div.QBTN-button-text-container div.QBTN-button-text {
+            color: var(--program-test-button-color);
+        }
+        div.QBTN-button-container.QBTN-TYPE-Default div.QBTN-button-control div.QBTN-locale-button {
+            height: 17px;
+            border-color: var(--program-test-button-color);
+        }
+        div.QBTN-button-container.QBTN-TYPE-Default div.QBTN-button-control div.QBTN-locale div.QBTN-selector p:hover {
+            background-color: var(--program-test-button-color);
+            opacity: 0.2;
+        }
+
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────
+// TOOLS
+// ─────────────────────────────────────────────────────────────────
+
+div#ProgramView div.ProgramViewContainer ul.stepList li.stepContainer {
+    position: relative; // Ensure absolute-positioned .tools stays in the top-right corner
+    div.ProgramTools {
+        .menu();
+        width: 53px;
+        background-color: var(--program-tools-bg);
+        border-radius: 8px;
+        position: absolute;
+        top: 0;
+        right: -9px;
+        opacity: 0;
+        visibility: hidden;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        border: 1px solid var(--program-tools-border);
+        transition:
+            opacity 0.3s @cubic-bezier1,
+            visibility 0.3s @cubic-bezier1,
+            transform 0.3s @cubic-bezier1;
+        transform: translateX(100%) translateY(-5%);
+        z-index: 10; // So tools hover above step content
+        ul.menu {
+            padding: 9px 0 0 0;
+            li.item {
+                span.tooltip {
+                    font-size: 11px;
+                }
+            }
+        }
+
+        &.show {
+            opacity: 1;
+            visibility: visible;
+            transform: tranlateY(0%);
+            transform: translateX(100%);
+        }
+
+
+
+        div.toolsWrapper {
+            width: 100%;
+            position: relative;
+        }
+    }
+ }
+// ─────────────────────────────────────────────────────────────────
+// END TOOLS
+// ─────────────────────────────────────────────────────────────────
+
+
+@tablet-width: 768px;
+@smartphone-width: 480px;
+
+@media (min-width: @tablet-width) {
+}
+
+@media (max-width: @smartphone-width) {
+    div#ProgramView {
+        div.ProgramViewContainer {
+            div.TextField {
+                div.inputOuter {
+                    div.inputWrapper {
+                        input {
+                        }
+                    }
+                    .footer {
+                    }
+                }
+            }
+            div.TextField.alert {
+                div.inputOuter {
+                    div.footer {
+                        div.middle {
+                            p.alertMessage {
+                            }
+                        }
+                    }
+                }
+            }
+            //div.introductionContainer,
+            div.remarkWrapper,
+            div.detailsWrapper,
+            div.goalWrapper,
+            div.maxTurnsWrapper,
+            div.endContainer {
+                div.TextField {
+                    div.inputOuter {
+                        div.inputWrapper {
+                            input {
+                            }
+                        }
+                    }
+                }
+            }
+            div.stepArrowContainer,
+            div.endArrowContainer {
+            }
+            //span.introductionLabel,
+            span.remarkLabel,
+            span.goalLabel,
+            span.maxTurnsLabel,
+            span.guidelinesLabel,
+            span.endLabel {
+            }
+            div.titleContainer {
+                div.TextField {
+                    div.inputOuter {
+                        h6.title {
+                        }
+                        div.inputWrapper {
+                            input {
+                            }
+                        }
+                    }
+                }
+            }
+            //div.introductionContainer {
+            //    div.TextField {
+            //        .inputWrapper {
+            //            input {
+            //            }
+            //        }
+            //        .footer {
+            //        }
+            //    }
+            //}
+            div.stepContainer {
+                h3.stepTitle {
+                    &::before {
+                    }
+                }
+                div.stepContent {
+                    div.remarkAndRemoveWrapper {
+                        div.remarkWrapper {
+                        }
+                        img.removeStepButton {
+                        }
+                    }
+                    div.topicWrapper,
+                    div.remarkWrapper,
+                    div.goalWrapper,
+                    div.maxTurnsWrapper {
+                    }
+                    div.remarkWrapper {
+                        div.TextField {
+                            .inputWrapper {
+                                input {
+                                }
+                            }
+                        }
+                    }
+                    div.detailsWrapper {
+                        span.guidelinesLabel {
+                        }
+                        div.guidelines {
+                            div.instructionWrapper {
+                                span.index {
+                                }
+                                div.TextField {
+                                    .inputWrapper {
+                                        input {
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        div.addGuidelineButtonContainer {
+                            img.addGuidelineButton {
+                            }
+                        }
+                    }
+                    span.moreDetail {
+                        img.moreDetailArrow {
+                        }
+                        p.moreDetailLabel {
+                        }
+                    }
+                    div.hiddenContent {
+                        div.topicWrapper,
+                        div.goalWrapper,
+                        div.maxTurnsWrapper {
+                        }
+                        div.goalWrapper {
+                            span.goalLabel {
+                            }
+                            div.TextField {
+                                .inputWrapper {
+                                    input {
+                                    }
+                                }
+                            }
+                        }
+                        div.maxTurnsWrapper {
+                            span.maxTurnsLabel {
+                            }
+                            div.TextField {
+                                div.inputOuter {
+                                    div.inputWrapper {
+                                        input {
+                                        }
+                                        div.incrementButton {
+                                            button {
+                                                img {
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                &.alert {
+                                    div.inputOuter {
+                                        div.inputWrapper {
+                                            input {
+                                            }
+                                        }
+                                        div.footer {
+                                            div.middle {
+                                                p.alertMessage {
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            div.addStepButtonContainer {
+                img.addStepButton {
+                }
+            }
+            div.endContainer {
+                span.endLabel {
+                }
+                div.TextField {
+                    .inputWrapper {
+                        input {
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}

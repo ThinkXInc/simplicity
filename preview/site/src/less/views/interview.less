@@ -1,0 +1,496 @@
+@cubic-bezier1: cubic-bezier(.65,0,.34,1);
+@open-chatview-duration: 0.3s;
+
+div.MeetingView {
+    .QBTN-balloon-container {
+        display: none !important;
+    }
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 100vh;
+
+    &.openChatView {
+        div.LeftContainer {
+            width: calc(100% - 300px);
+        }
+        div.ChatView {
+            width: 300px;
+        }
+    }
+
+    div.LeftContainer {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        background-color: #252525;
+        transition: width @open-chatview-duration @cubic-bezier1;
+
+        div.VideoContainer {
+            display: flex;
+            flex-direction: column;
+            padding: 30px 30px 30px 62px;
+            height: 100%;
+
+            div.InterviewerView {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                background-color: black;
+                padding: 10px;
+                position: relative;
+                margin-bottom: 18px;
+                transition: box-shadow 0.1s @cubic-bezier1;
+                width: 600px;
+                height: 340px;
+
+                video {
+                    background-color: black;
+                    width: 100%;  /* Set width to 100% of parent */
+                    height: 100%;  /* Set height to 100% of parent */
+                }
+
+                div.NameLabel {
+                    position: absolute;
+                    color: #000;
+                    bottom: 0;
+                    left: 0;
+                    background-color: white;
+                    padding: 2px 3px;
+                    font-size: 10px;
+                }
+            }
+
+            div.SelfViewContainer {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                position: relative;
+
+                div.NameLabel {
+                    position: absolute;
+                    color: #000;
+                    bottom: 0;
+                    left: 0;
+                    background-color: white;
+                    padding: 2px 3px;
+                    font-size: 10px;
+                }
+                video.SelfView {
+                    object-fit: cover;
+                    margin-right: 59px;
+                    transition: box-shadow 0.1s @cubic-bezier1;
+                    background-color: black;
+                    width: 600px;
+                    height: 340px;
+                }
+
+                div.QBTN-balloon-container {
+                    //display: none;
+                    top: -553px !important;
+                    left: 377px !important;
+                    div.QBTN-balloon-rect {
+                        width: 423px !important;
+                        height: 92vh !important;
+                    }
+                }
+            }
+
+        }
+
+        div.SignalMonitor {
+            height: 80px;
+            width: 100%; // Ensure it fills the parent container
+            background: #2e2e2e;
+            canvas {
+                width: 100% !important;
+                height: 100% !important;
+            }
+        }
+    }
+
+    div.ChatView {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        /* background-color: #f1f1f1; */
+        background-color: #202020;
+        overflow: hidden; // Hide content when width is 0
+        width: 0;
+        transition: width @open-chatview-duration @cubic-bezier1; // Animate width change
+
+        div.ChatLog {
+            height: 100%;
+
+            ul.ChatLogMessageList {
+                height: calc(100% - 50px); /* Subtract ChatLogFooter height */
+                overflow-y: auto;
+                //background-color: #fff;
+                background-color: #3b3b3b;
+                margin: 0;
+                padding: 10px 5px;
+    
+                li.messageItem {
+                    padding: 5px 10px;
+                    display: flex;
+                    align-items: baseline;
+    
+                    span.speaker {
+                        font-weight: bold;
+                        margin-right: 5px;
+                        font-size: 9px;
+                        font-weight: 700;
+                        width: 47px;
+                        min-width: 47px;
+                        max-width: 47px;
+                        text-align: left;
+                        word-wrap: break-word;
+                    }
+    
+                    span.messageContainer {
+                        display: block;
+                        text-align: left;
+                        p.message {
+                            display: inline;
+                            font-size: 14px;
+                        }
+                    }
+    
+                    /* Speaker color styles */
+                    &.user {
+                        span.speaker {
+                            color: #A5A5A5;
+                        }
+                        span.messageContainer {
+                            p.message {
+                                color: #A5A5A5;
+                                //color: #000;
+                            }
+                        }
+                    }
+    
+                    &.system {
+                        span.speaker {
+                            color: #368fe8;
+                        }
+                        span.messageContainer {
+                            p.message {
+                                color: #368fe8;
+                            }
+                        }
+                    }
+    
+                    &.announce {
+                        span.speaker {
+                            color: #8a8a8a;
+                        }
+                        span.messageContainer {
+                            p.message {
+                                color: #8a8a8a;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    
+        div.ChatLogFooter {
+            height: 50px; /* Set the desired fixed height */
+            background-color: #232323;
+            padding: 10px;
+            box-sizing: border-box;
+    
+            div.ChatLogAnnotation {
+                font-size: 11px;
+                color: #888888;
+            }
+        }
+    }
+}
+
+div#MeetingStartDialogueModalView.ModalView {
+    display: block;
+    
+    div.bg {
+        background-color: rgba(0, 0, 0, 0.5) !important;
+    }
+
+    div.window {
+
+        div.contentWrapper {
+            background-color: #2e2e2e;
+            padding: 16px 16px 1px 16px;
+            border-top: 1px solid #424040;
+            border-left: 1px solid #424040;
+            border-right: 1px solid #424040;
+            border-bottom: none;
+ 
+            h3.ModalViewTitle {
+                font-size: 18px;
+                color: #cdcdcd;
+            }
+
+            div#MeetingStartDialogueModalViewMainContent.mainContent {
+                
+                div.TextField.nameField,
+                div.TextField.emailField {
+                    
+                    div.inputOuter {
+                        border: none;
+                        div.inputWrapper {
+                            background-color: #3f3f3f;
+                            font-size: 1em;
+                            margin: 0;
+                            border: 1px solid #5a5a5a;
+                            padding: 8px;
+                            border-radius: 4px;
+                            transition: border-color 0.3s @cubic-bezier1, background-color 0.3s @cubic-bezier1;
+
+                            &:focus-within {
+                                border-color: #bebebe;
+                            }
+
+                            &:hover {
+                                background-color: lighten(#4e4e4e, 10%);
+                            }
+                        }
+                        input {
+                            margin: 0;
+                            height: 38px;
+                            color: #fff;
+                            &::placeholder {
+                                font-size: 0.9em;
+                                color: #b7b7b7;
+                            }
+                        }
+                        div.inputAfter {
+                            margin-left: 20px;
+                        }
+                        div.modalViewFooter {
+                            background-color: transparent;
+                            padding: 0;
+                            div.left {
+                                span.indicator {
+                                }
+                            }
+                            div.middle {
+                                span.message {
+                                }
+                            }
+                            div.right {
+                            }
+                            p.alertMessage {
+                                font-size: 0.8em;
+                                color: #ffa0a0;
+                            }
+                        }
+                    }
+                }
+                div.TextField.nameField {
+                    margin-bottom: 15px;                                
+                }
+            }
+
+            div.ModalViewAlert {
+                
+            }
+        }
+
+        div.modalViewFooter {
+            background-color: #2e2e2e;
+            padding: 4px 16px 16px 16px;
+            border-bottom: 1px solid #424040;
+            border-left: 1px solid #424040;
+            border-right: 1px solid #424040;
+            border-top: none;
+ 
+            
+            button.doneButton {
+                background-color: #3a3a3a;
+                color: #fff;
+                border: 1px solid #656565;
+                font-size: 0.9em;
+                padding: 8px 10px;
+                transition: all 0.4s @cubic-bezier1;
+    
+                &:hover {
+                    border: 1px solid #404040;
+                    color: #656565;
+                    background-color: #454545;
+                }
+            }
+        }
+    }
+}
+
+div#MeetingLeaveModalView.ModalView {
+    div.bg {
+    }
+    div.window {
+        div.contentWrapper {
+            h3.ModalViewTitle {
+                font-size: 19px;
+            }
+            div.mainContent {
+            }
+            div.ModalViewAlert {
+            }
+        }
+    
+        div.footer.modalViewFooter {
+            button.cancelButton {
+                margin-right: 10px;
+                &:hover {
+                    //color: #fff;
+                }
+            }
+    
+            button.doneButton {
+                //background-color: #610000;
+                //border: 1px solid #6e1b1b;
+                &:hover {
+                    background-color: #5b0000;
+                    border: 1px solid #721414;
+                    //color: #fff;
+                }
+            }
+        }
+    }
+}
+
+@tablet-width: 768px;
+@smartphone-width: 480px;
+
+@media (min-width: @tablet-width) {
+}
+
+@media (max-width: @smartphone-width) {
+    div.MeetingView {
+        .QBTN-balloon-container {
+        }
+        div.LeftContainer {
+            div.VideoContainer {
+                padding: 30px 10px 30px 10px;
+                div.InterviewerView {
+                    width: 95vw;
+                    height: 191px;
+                    video {
+                    }
+                    div.NameLabel {
+                    }
+                }
+                div.SelfViewContainer {
+                    flex-direction: column;
+                    div.NameLabel {
+                        bottom: 103px;
+                        left: 11px;
+                    }
+                    video.SelfView {
+                        width: 95vw;
+                        height: 191px;
+                        margin-right: 0px;
+                        margin-bottom: 52px;
+                    }
+                    div.QBTN-balloon-container {
+                        div.QBTN-balloon-rect {
+                        }
+                    }
+                }
+            }
+            div.SignalMonitor {
+                canvas {
+                }
+            }
+        }
+        div.ChatView {
+            display: none;
+            div.ChatLog {
+                ul.ChatLogMessageList {
+                    li.messageItem {
+                        span.speaker {
+                        }
+                        span.messageContainer {
+                            p.message {
+                            }
+                        }
+                    }
+                }
+            }
+            div.ChatLogFooter {
+                div.ChatLogAnnotation {
+                }
+            }
+        }
+    }
+    
+    div#MeetingStartDialogueModalView.ModalView {
+        div.bg {
+        }
+        div.window {
+            width: 92vw;
+            div.contentWrapper {
+                h3.ModalViewTitle {
+                }
+                div#MeetingStartDialogueModalViewMainContent.mainContent {
+                    div.TextField.nameField,
+                    div.TextField.emailField {
+                        div.inputOuter {
+                            div.inputWrapper {
+                                input {
+                                    &::placeholder {
+                                    }
+                                }
+                            }
+                            div.inputAfter {
+                            }
+                            div.footer {
+                                div.left {
+                                    span.indicator {
+                                    }
+                                }
+                                div.middle {
+                                    span.message {
+                                    }
+                                }
+                                div.right {
+                                }
+                                p.alertMessage {
+                                }
+                            }
+                        }
+                    }
+                }
+                div.ModalViewAlert {
+                }
+            }
+            div.footer.modalViewFooter {
+                button.doneButton {
+                }
+            }
+        }
+    }
+    
+    div#MeetingLeaveModalView.ModalView {
+        div.bg {
+        }
+        div.window {
+            div.contentWrapper {
+                h3.ModalViewTitle {
+                }
+                div.mainContent {
+                }
+                div.ModalViewAlert {
+                }
+            }
+            div.footer.modalViewFooter {
+                button.cancelButton {
+                }
+                button.doneButton {
+                }
+            }
+        }
+    }
+
+}

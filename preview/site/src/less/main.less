@@ -1,0 +1,95 @@
+@charset 'UTF-8';
+// main.less
+
+// general
+@import 'general/reset.less';
+@import 'general/mixin.less';
+@import 'general/effects.less';
+@import 'general/colorscheme.less';
+@import 'tools/ripple_button.less';
+
+// common
+@import 'common/common.less';
+@import 'common/header.less';
+@import 'common/footer.less';
+@import 'common/lang_selector.less';
+
+// top
+@import 'top/top.less';
+@import 'top/interview_top.less';
+@import 'top/corporate_footer.less';
+
+// terms ans privacy
+@import 'terms_and_privacy/terms_and_privacy.less';
+
+// errors
+@import 'errors/error_pages.less';
+
+// headers
+@import 'views/studio_header.less';
+@import 'views/vertical_menu.less';
+@import 'views/vertical_header.less';
+
+// app views
+@import 'views/studio.less';
+@import 'views/accounts.less';
+@import 'views/create.less';
+@import 'views/materials.less';
+@import 'views/settings.less';
+@import 'views/customize.less';
+@import 'views/interviews_home.less';
+@import 'views/interview_settings_view.less';
+@import 'views/interview_link_view.less';
+@import 'views/create_start_view.less';
+@import 'views/voiceset_select_view.less';
+@import 'views/program_view.less';
+@import 'views/interview_create_view.less';  // will deprecate
+@import 'views/interview_results_view.less';
+@import 'views/interview.less';
+
+// sample_sites
+@import 'sample_sites/sample_sites.less';
+
+// develop
+@import 'develop/build-type-c.less';
+
+@font-face {
+  font-family: "GeosansLight";
+  src: url('/fonts/GeosansLight.ttf?-b7qzp2') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+.cf:before,
+.cf:after {
+    content: " ";
+    display: table;
+}
+.cf:after {
+    clear: both;
+}
+.cf {
+    *zoom: 1;
+}
+
+::-webkit-scrollbar {
+    width: @scrollbar-width;
+}
+  
+::-webkit-scrollbar-button {
+  background-color: #525252;
+}
+ 
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: none;
+  background-color: @scrollbar-track;
+}
+ 
+::-webkit-scrollbar-thumb {
+  background-color: @scrollbar-thumb;
+}
+
+// ----- body
+body {
+  font-family: sans-serif, 'Roboto';
+  margin: 0;
+}

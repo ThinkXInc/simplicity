@@ -1,0 +1,23 @@
+{
+  "user": {
+    "_id": "preview-user-0001",
+    "email": "preview@example.com",
+    "is_email_verified": true,
+    "verified_emails": ["preview@example.com"],
+    "suspended_email": null,
+    "origin": "https://example.com",
+    "origin_type": "web",
+    "is_origin_verified": true,
+    "usage_limit": 50,
+    "customize": {
+      "button_type": "Default",
+      "button_color": "#3979aa",
+      "button_width": 120,
+      "button_height": 48,
+      "font_size": 14,
+      "balloon_width": 320,
+      "balloon_height": 420,
+      "operator_name": "Preview Operator"
+    }
+  }
+}

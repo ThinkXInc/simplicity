@@ -1,0 +1,6 @@
+{
+  "basic_config": {
+    "interaction_model_id": "default",
+    "response_mode": "text"
+  }
+}

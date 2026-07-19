@@ -1,0 +1,917 @@
+class CustomizeView {
+    constructor({ user, lang, locale }) {
+        this.user = user;
+        this.lang = lang;
+        this.locale = locale;
+
+        this.$customizeContainer = document.createElement('div');
+        this.$customizeContainer.classList.add('CustomizeContainer', 'container');
+
+        this.showLoader();
+
+        this.viewReady = new Promise((resolve, reject) => {
+            this._viewReadyResolver = resolve;
+            this._viewReadyRejecter = reject;
+        });
+
+        this.getBasicConfig();
+
+        //this.createCustomizePage();
+        //this.handleEventCustomizePage();
+    }
+
+    getBasicConfig() {
+        Http.get(`/v1/${this.lang}/basic_config`,
+            (res) => {
+                const { basic_config, interaction_models } = res;
+                this.basicConfig = basic_config;
+                this.interactionModels = interaction_models;
+
+                this.hideLoader();
+
+                this.createCustomizePage();
+                this.handleEventCustomizePage();
+
+                this._viewReadyResolver();
+            },
+            (error) => {
+                console.error("Failed to get basic config data:", error);
+                // Optionally handle error (display a message, retry, etc.)
+                // For now, we'll hide the loader and maybe show an error.
+                this.hideLoader();
+                //const $errorAlert = document.createElement('p');
+                //$errorAlert.classList.add('alertMessage');
+                //$errorAlert.textContent = this.locale.get('basic_configs_get_fail', this.lang);
+                //this.$customizeContainer.appendChild($errorAlert);
+
+                // Reject the promise if needed
+                this._viewReadyRejecter(error);
+            }
+        );
+    }
+
+    showLoader() {
+        const loader = new GradientViewLoader({
+            id: 'CustomizeViewGradientLoader',
+            numIndicator: 3,
+            individualHeight: 7,
+            spaceBetween: 10,
+            animationDelay: 10,
+            defaultShift: 10,
+            shiftAmount: -20,
+            rx: 2,
+            ry: 2,
+        });
+
+        this.loader = loader;
+        this.$customizeContainer.appendChild(this.loader.$view);
+        this.loader.$view.style.display = 'flex';
+    }
+
+    hideLoader() {
+        if (this.loader && this.loader.$view) {
+            this.loader.$view.style.display = 'none';
+        } else {
+        }
+    }
+
+    mount($parent) {
+        $parent.appendChild(this.$customizeContainer);
+    }
+
+    createCustomizePage() {
+        const $customizeAlert = document.createElement('p');
+        $customizeAlert.classList.add('alertMessage');
+
+        const $items = document.createElement('div');
+        $items.classList.add('CustomizeItems');
+
+        const $preview = document.createElement('div');
+        $preview.classList.add('CustomizePreview');
+
+        // Add your item creation methods here
+        this.$customizeAlert = $customizeAlert;
+
+        this.createButtonTypeView($items);
+        this.createModelSelectView($items);
+        this.createResponseModeView($items);
+        this.createButtonSizeView($items);
+        this.createButtonColorView($items);
+        this.createButtonFontSizeView($items);
+        this.createButtonBalloonSizeView($items);
+
+        $items.appendChild($customizeAlert);
+        this.$customizeContainer.appendChild($items);
+
+        this.createPreviewView($preview);
+        this.createCodeView($preview);
+
+        this.$customizeContainer.appendChild($preview);
+        this.$view = this.$customizeContainer;
+
+        this.updateQuantzButton();
+        this.updateCodeView();
+    }
+
+    handleEventCustomizePage() {
+        const _this = this;
+
+        // Button Type
+        this.buttonTypeSelector.$view.addEventListener('valuechanged', (e) => {
+            e.preventDefault();
+            const {newValue} = e.detail;
+            console.warn(`button type: ${newValue}`)
+            this.submitCustomize({'button_type': newValue})
+        })
+        // Button Size
+        this.buttonWidthForm.$view.addEventListener('textchanged', (e)=> {
+            e.preventDefault();
+            const {newValue} = e.detail;
+            console.warn(`button width: ${newValue}`)
+            if(!this.buttonWidthForm.validate()) {
+                this.submitCustomize({'button_width': Number(newValue)})
+            }
+
+        })
+        this.buttonHeightForm.$view.addEventListener('textchanged', (e)=> {
+            e.preventDefault();
+            const {newValue} = e.detail;
+            console.warn(`button height: ${newValue}`)
+            if(!this.buttonHeightForm.validate()) {
+                this.submitCustomize({'button_height': Number(newValue)})
+            }
+        })
+        // Button Color
+        this.buttonColorPicker.$view.addEventListener('valuechanged', (e)=> {
+            e.preventDefault();
+            const {newValue} = e.detail;
+            console.warn(`button color: ${newValue}`)
+            this.submitCustomize({'button_color': newValue})
+
+        })
+        // Font Size
+        this.fontSizeForm.$view.addEventListener('textchanged', (e)=> {
+            e.preventDefault();
+            const {newValue} = e.detail;
+            const parsedFontSize = parseFloat(newValue);
+            console.warn(`font size: ${parsedFontSize}`)
+            if(!this.fontSizeForm.validate()) {
+                this.submitCustomize({'font_size': parsedFontSize.toFixed(2)}) // NOTE: string (javascript convert float 11.0 to int 11 automatically) 
+            }
+        })
+        // Balloon Size
+        this.balloonWidthForm.$view.addEventListener('textchanged', (e)=> {
+            e.preventDefault();
+            const {newValue} = e.detail;
+            console.warn(`balloon width: ${newValue}`)
+            if(!this.balloonWidthForm.validate()) {
+                this.submitCustomize({'balloon_width': Number(newValue)})
+            }
+        })
+        this.balloonHeightForm.$view.addEventListener('textchanged', (e)=> {
+            e.preventDefault();
+            const {newValue} = e.detail;
+            console.warn(`balloon height: ${newValue}`)
+            if(!this.balloonHeightForm.validate()) {
+                this.submitCustomize({'balloon_height': newValue})
+            }
+        })
+
+        // Handler for interaction model selection
+        this.selectInteractionModel.$view.addEventListener('selected', (e) => {
+            e.preventDefault();
+            const { value: selectedValue } = e.detail;
+            console.log(`Selected interaction model value: ${selectedValue}`);
+        
+            // Clear any existing alerts first
+            this.selectInteractionModel.alert(false);
+
+            // Call API to update basic config
+            Http.post(`/v1/${this.lang}/basic_config/update`, 
+                { 'interaction_model_id': selectedValue },
+                (res) => {
+                    const { code, message } = res;
+                    console.log(`[${code} success] ${message}`);
+                    this.updateCodeView();
+                },
+                (error) => {
+                    // If error has a known format:
+                    if (error && error.code) {
+                        const { errors, message } = error;
+                        if (errors && errors.length > 0) {
+                            // If there are field-specific errors:
+                            errors.forEach(errorObj => {
+                                const { field_name, message } = errorObj;
+                                if (field_name === 'interaction_model_id') {
+                                    this.selectInteractionModel.alert(message);
+                                }
+                            });
+                        } else if (message) {
+                            // General error message
+                            this.selectInteractionModel.alert(message);
+                        }
+                    } else {
+                        console.error(error);
+                        // Show a generic error alert if no structured error
+                        this.selectInteractionModel.alert("An unexpected error occurred.");
+                    }
+                }
+            );
+        });
+    }
+
+    // === The following methods are extracted from the original code ===
+    // createOperatorNameView() { ... }
+    // createFirstMessageView() { ... }
+    createButtonTypeView($items) {
+        const buttonTypeSelector = new RadioButton({
+            id: "ButtonType",
+            fieldName: "button_type",
+            hasTitle: true,
+    
+            defaultValue: this.user.customize.button_type || 'Default',
+    
+            title: this.locale.get("settings_customize_button_type_title", this.lang),
+            items: [
+                //new RadioButtonItem({
+                //    value: "A",
+                //    name: this.locale.get("settings_customize_button_type_item_A", this.lang)
+                //}),
+                //new RadioButtonItem({
+                //    value: "B",
+                //    name: this.locale.get("settings_customize_button_type_item_B", this.lang)
+                //}),
+                // Add the new Type C
+                new RadioButtonItem({
+                    value: "Default",
+                    name: this.locale.get("settings_customize_button_type_item_Default", this.lang)
+                }),
+            ]
+        });
+    
+        $items.appendChild(buttonTypeSelector.$view);
+        this.buttonTypeSelector = buttonTypeSelector;
+    }
+    
+
+    createButtonSizeView($items) {
+        const $wrapper = document.createElement('div');
+        $wrapper.classList.add('ButtonSizeWrapper');
+        $wrapper.classList.add('CustomizeItemWrapper');
+
+        const $buttonSizeTitle = document.createElement('h4');
+        $buttonSizeTitle.classList.add('subtitle');
+        $buttonSizeTitle.textContent = this.locale.get('settings_customize_button_size_title', this.lang)
+
+        const min = 40;
+        const max = 2000;
+ 
+        const buttonWidthForm = new TextField({
+            id: 'ButtonWidthForm',
+            fieldName: 'button_width',
+            validators: [
+                new Validator({
+                    errorType: ValidationErrorType.required,
+                    errorMessage: locale.get(ValidationErrorType.required, this.lang)
+                }),
+                new Validator({
+                    errorType: ValidationErrorType.positiveIntegerFormat,
+                    errorMessage: this.locale.get(ValidationErrorType.positiveIntegerFormat, this.lang),
+                    min: min,
+                    max: max
+                })
+            ],
+            defaultValue: String(this.user.customize.button_width),
+            hasTitle: true,
+            title: this.locale.get('settings_customize_button_width_title', this.lang),
+            hasUnit: true,
+            unit: "px",
+            unitPlace: TextFieldPlaceTo.inputOuter,
+            placeholder: this.locale.get('settings_customize_button_height_placeholder', this.lang),
+            isCounter: false,
+            isIncrementer: true,
+            incrementButtonPlace: TextFieldPlaceTo.inputAfter,
+            incrementUpImgSrc: '/img/up.svg',
+            incrementDownImgSrc: '/img/down.svg',
+        });
+
+        const buttonHeightForm = new TextField({
+            id: 'ButtonHeightForm',
+            fieldName: 'button_height',
+            validators: [
+                new Validator({
+                    errorType: ValidationErrorType.required,
+                    errorMessage: locale.get(ValidationErrorType.required, this.lang)
+                }),
+                new Validator({
+                    errorType: ValidationErrorType.positiveIntegerFormat,
+                    errorMessage: this.locale.get(ValidationErrorType.positiveIntegerFormat, this.lang),
+                    min: min,
+                    max: max
+                })
+            ],
+            defaultValue: String(this.user.customize.button_height),
+            hasTitle: true,
+            title: this.locale.get('settings_customize_button_height_title', this.lang),
+            hasUnit: true,
+            unit: "px",
+            unitPlace: TextFieldPlaceTo.inputOuter,
+            placeholder: this.locale.get('settings_customize_button_height_placeholder', this.lang),
+            isCounter: false,
+            isIncrementer: true,
+            incrementButtonPlace: TextFieldPlaceTo.inputAfter,
+            incrementUpImgSrc: '/img/up.svg',
+            incrementDownImgSrc: '/img/down.svg',
+        });
+
+        const $forms = document.createElement('div');
+        $forms.classList.add('ButtonSizeForms');
+        $forms.classList.add('SizeForms');
+
+        $forms.appendChild(buttonWidthForm.$view);
+        $forms.appendChild(buttonHeightForm.$view);
+
+        $wrapper.appendChild($buttonSizeTitle);
+        $wrapper.appendChild($forms);
+
+        $items.appendChild($wrapper);
+
+        this.buttonWidthForm = buttonWidthForm;
+        this.buttonHeightForm = buttonHeightForm;
+
+    }
+
+    createButtonColorView($items) {
+        const $wrapper = document.createElement('div');
+        $wrapper.classList.add('ButtonColorWrapper');
+        $wrapper.classList.add('CustomizeItemWrapper');
+
+        const $buttonColorTitle = document.createElement('h4');
+        $buttonColorTitle.classList.add('subtitle');
+        $buttonColorTitle.textContent = this.locale.get('settings_customize_button_color_title', this.lang)
+
+        const buttonColorPicker = new ColorPicker({
+            id: "ButtonColorPicker",
+            defaultColor: this.user.customize.button_color
+        })
+
+        $wrapper.appendChild($buttonColorTitle);
+        $wrapper.appendChild(buttonColorPicker.$view);
+
+        $items.appendChild($wrapper);
+
+        this.buttonColorPicker = buttonColorPicker;
+ 
+    }
+
+    createButtonFontSizeView($items) {
+        const $wrapper = document.createElement('div');
+        $wrapper.classList.add('ButtonFontSizeWrapper');
+        $wrapper.classList.add('CustomizeItemWrapper');
+
+        const min = "0.0";
+        const max = "100.0";
+        const fontSizeForm = new TextField({
+            id: 'FontSizeForm',
+            fieldName: 'font_size',
+            validators: [
+                new Validator({
+                    errorType: ValidationErrorType.required,
+                    errorMessage: locale.get(ValidationErrorType.required, this.lang)
+                }),
+                new Validator({
+                    errorType: ValidationErrorType.positiveFloatFormat,
+                    errorMessage: this.locale.get(ValidationErrorType.positiveFloatFormat, this.lang),
+                    min: min,
+                    max: max
+                })
+            ],
+            defaultValue: String(this.user.customize.font_size),
+            hasTitle: true,
+            title: this.locale.get('settings_customize_font_size_title', this.lang),
+            hasUnit: true,
+            unit: this.locale.get('settings_customize_px_unit', this.lang),
+            placeholder: this.locale.get('settings_customize_font_size_placeholder', this.lang),
+            isCounter: false,
+        });
+
+        $wrapper.appendChild(fontSizeForm.$view);
+
+        $items.appendChild($wrapper);
+
+        this.fontSizeForm = fontSizeForm;
+ 
+    }
+
+    createButtonBalloonSizeView($items) {
+        const $wrapper = document.createElement('div');
+        $wrapper.classList.add('BalloonSizeWrapper');
+        $wrapper.classList.add('CustomizeItemWrapper');
+
+        const $balloonSizeTitle = document.createElement('h4');
+        $balloonSizeTitle.classList.add('subtitle');
+        $balloonSizeTitle.textContent = this.locale.get('settings_customize_balloon_size_title', this.lang)
+
+        const min = 1;
+        const max = 100;
+ 
+        const balloonWidthForm = new TextField({
+            id: 'BalloonWidthForm',
+            fieldName: 'balloon_width',
+            validators: [
+                new Validator({
+                    errorType: ValidationErrorType.required,
+                    errorMessage: locale.get(ValidationErrorType.required, this.lang)
+                }),
+                new Validator({
+                    errorType: ValidationErrorType.positiveIntegerFormat,
+                    errorMessage: this.locale.get(ValidationErrorType.positiveIntegerFormat, this.lang),
+                    min: min,
+                    max: max
+                })
+            ],
+            defaultValue: String(this.user.customize.balloon_width),
+            hasTitle: true,
+            title: this.locale.get('settings_customize_balloon_width_title', this.lang),
+            hasUnit: true,
+            unit: "vw",
+            unitPlace: TextFieldPlaceTo.inputOuter,
+            placeholder: this.locale.get('settings_customize_balloon_height_placeholder', this.lang),
+            isCounter: false,
+            isIncrementer: true,
+            incrementButtonPlace: TextFieldPlaceTo.inputAfter,
+            incrementUpImgSrc: '/img/up.svg',
+            incrementDownImgSrc: '/img/down.svg',
+        });
+
+        const balloonHeightForm = new TextField({
+            id: 'BalloonHeightForm',
+            fieldName: 'balloon_height',
+            validators: [
+                new Validator({
+                    errorType: ValidationErrorType.required,
+                    errorMessage: locale.get(ValidationErrorType.required, this.lang)
+                }),
+                new Validator({
+                    errorType: ValidationErrorType.positiveIntegerFormat,
+                    errorMessage: this.locale.get(ValidationErrorType.positiveIntegerFormat, this.lang),
+                    min: min,
+                    max: max
+                })
+            ],
+            defaultValue: String(this.user.customize.balloon_height),
+            hasTitle: true,
+            title: this.locale.get('settings_customize_balloon_height_title', this.lang),
+            hasUnit: true,
+            unit: "vh",
+            unitPlace: TextFieldPlaceTo.inputOuter,
+            placeholder: this.locale.get('settings_customize_balloon_height_placeholder', this.lang),
+            isCounter: false,
+            isIncrementer: true,
+            incrementButtonPlace: TextFieldPlaceTo.inputAfter,
+            incrementUpImgSrc: '/img/up.svg',
+            incrementDownImgSrc: '/img/down.svg',
+        });
+
+
+        const $forms = document.createElement('div');
+        $forms.classList.add('BalloonSizeForms');
+        $forms.classList.add('SizeForms');
+
+        $forms.appendChild(balloonWidthForm.$view);
+        $forms.appendChild(balloonHeightForm.$view);
+
+        $wrapper.appendChild($balloonSizeTitle);
+        $wrapper.appendChild($forms);
+
+        $items.appendChild($wrapper);
+
+        this.balloonWidthForm = balloonWidthForm;
+        this.balloonHeightForm = balloonHeightForm;
+
+    }
+
+    createPreviewView($preview) {
+        const $previewWrapper = document.createElement('div');
+        $previewWrapper.classList.add('PreviewWrapper');
+
+        // FIXME: not work
+        //const script = document.createElement('script');
+        //script.src = "https://quantz.thinkxinc.com/js/dist/quantz-button.min.js";
+        //$previewWrapper.appendChild(script);
+    
+        this.$previewWrapper = $previewWrapper;
+        $preview.appendChild($previewWrapper);
+ 
+    }
+
+    createCodeView($preview) {
+        const $codeViewWrapper = document.createElement('div');
+        $codeViewWrapper.classList.add('CodeViewWrapper');
+
+        const $codeView = document.createElement('pre');
+        $codeView.classList.add('CodeView');
+
+        const $code = document.createElement('code');
+        $code.id = 'QBTN-code';
+        $code.textContent = this.generateCodeSnippet(); // Generate initial code snippet
+        $code.classList.add('language-javascript');
+    
+        // Create the copy button
+        const $copyButton = document.createElement('img');
+        $copyButton.src = '/img/copy-icon.svg';
+        $copyButton.classList.add('CopyButton');
+
+        const $toolTip = document.createElement('span');
+        $toolTip.classList.add('tooltip');
+        $toolTip.textContent = this.locale.get("settings_preview_code_copy_tooltip", this.lang);
+
+        $copyButton.addEventListener('mouseenter', () => {
+            $toolTip.classList.add('visible');
+            $toolTip.classList.remove('fade-out');
+        });
+
+        $copyButton.addEventListener('mouseleave', () => {
+            $toolTip.classList.add('fade-out');
+        });
+
+        $copyButton.addEventListener('click', () => {
+            navigator.clipboard.writeText($code.textContent).then(() => {
+                $toolTip.textContent = this.locale.get("settings_preview_code_copy_done_tooltip", this.lang);
+                $toolTip.classList.add('copied');
+                setTimeout(() => {
+                    $toolTip.classList.add('fade-out');
+                    setTimeout(() => {
+                        $toolTip.classList.remove('visible', 'fade-out', 'copied');
+                        $toolTip.textContent = this.locale.get("settings_preview_code_copy_tooltip", this.lang);
+                    }, 1000);
+                }, 2000);
+            }, err => {
+                console.error('Failed to copy text: ', err);
+            });
+        });
+
+        $codeView.appendChild($code);
+        $codeView.appendChild($copyButton);
+        $codeView.appendChild($toolTip);
+        $codeViewWrapper.appendChild($codeView);
+
+        $preview.appendChild($codeViewWrapper);
+
+        this.$codeView = $codeView;
+        this.$code = $code;
+    }
+
+    updateQuantzButton() {
+        const buttonKey = `QBTN-preview`;//`QBTN-${this.user._id}`;
+        console.log(`[updateQuantzButton] Find quantz button with key ${buttonKey}`);
+
+        let $buttonLoader = document.querySelector(`[data-button-key='${buttonKey}']`);
+
+        if (!$buttonLoader) {
+            console.log(`[updateQuantzButton] Create new button loader.`)
+            $buttonLoader = document.createElement('div');
+            $buttonLoader.classList.add('QBTN-button-loader');
+            $buttonLoader.setAttribute('data-button-key', buttonKey);
+            $buttonLoader.setAttribute('data-publisher-id', `${this.user._id}`);
+
+            $buttonLoader.setAttribute('data-model-id', this.selectInteractionModel._selectedValue || 'default');
+
+            const configString = this.configStringFromLatestValues();
+            $buttonLoader.setAttribute('data-quantz-config', configString);
+
+            // Once DOM is appended, the addition is observed by script and setup starts
+            this.$previewWrapper.appendChild($buttonLoader)
+
+        } else {
+            // FIXME: response doubles if not removed
+            console.log(`[updateQuantzButton] remove old button loader.`, $buttonLoader)
+            $buttonLoader.remove()
+            console.log(`[updateQuantzButton] Create new button loader.`)
+            $buttonLoader = document.createElement('div');
+            $buttonLoader.classList.add('QBTN-button-loader');
+            $buttonLoader.setAttribute('data-button-key', buttonKey);
+            $buttonLoader.setAttribute('data-publisher-id', `${this.user._id}`);
+            $buttonLoader.setAttribute('data-model-id', this.selectInteractionModel._selectedValue || 'default');
+            const configString = this.configStringFromLatestValues();
+            $buttonLoader.setAttribute('data-quantz-config', configString);
+            this.$previewWrapper.appendChild($buttonLoader)
+
+            // FIXME: if we explicitly call initializeButton since it is called automatically when node added
+            //        and event duplicates and response doubles
+            //const configString = this.configStringFromLatestValues();
+            //$buttonLoader.setAttribute('data-quantz-config', configString);
+            //Quantz.initializeButton({$buttonLoader: $buttonLoader});
+        }
+    }
+
+    configStringFromLatestValues() {
+        const configString = JSON.stringify({
+            buttonType: this.buttonTypeSelector.value,
+            iconSize: 30,
+            fontSize: Number(this.fontSizeForm.value),
+            buttonWidth: Number(this.buttonWidthForm.value),
+            buttonHeight: Number(this.buttonHeightForm.value),
+            buttonColor: this.buttonColorPicker.value,
+            borderRadius: 20,
+            displayLocale: true,
+            balloonRectWidth: `${this.balloonWidthForm.value}vw`,
+            balloonRectHeight: `${this.balloonHeightForm.value}vh`,
+            defaultLang: this.lang,
+            modelId: this.selectInteractionModel._selectedValue || 'default',
+            responseMode: 0
+        });
+        return configString
+    }
+
+    generateCodeSnippet() {
+        const scriptCode = `<script src="https://quantz.thinkxinc.com/js/dist/quantz-button.min.js"></script>`;
+
+        const config = JSON.stringify({
+            buttonType: this.buttonTypeSelector.value,
+            iconSize: 30,
+            fontSize: Number(this.fontSizeForm.value),
+            buttonWidth: Number(this.buttonWidthForm.value),
+            buttonHeight: Number(this.buttonHeightForm.value),
+            buttonColor: this.buttonColorPicker.value,
+            borderRadius: 20,
+            displayLocale: true,
+            balloonRectWidth: `${this.balloonWidthForm.value}vw`,
+            balloonRectHeight: `${this.balloonHeightForm.value}vh`,
+            defaultLang: this.lang,
+            modelId: this.selectInteractionModel._selectedValue || 'default',
+            responseMode: 0  // FAST
+        });
+    
+        const loaderCode = `<div class="QBTN-button-loader" data-publisher-id="${this.user._id}" data-quantz-config='${config}'></div>`;
+        return `${scriptCode}${loaderCode}`
+    }
+
+    updateCodeView() {
+        if (this.$code) {
+            this.$code.remove();
+
+            const $code = document.createElement('code');
+            $code.id = 'QBTN-code';
+            $code.textContent = this.generateCodeSnippet(); // Generate initial code snippet
+            $code.classList.add('language-html');
+            $code.textContent = this.generateCodeSnippet();
+
+            this.$codeView.appendChild($code)
+            this.$code = $code;
+
+            hljs.highlightElement(this.$code);
+        }
+    }
+
+    submitCustomize(updates) {
+        const _this = this;
+        //this.clearAllCustomizeAlert();
+        Http.post(`/v1/${this.lang}/users/update/customize`, updates,
+            (res) => {
+                const { code, message } = res;
+                console.log(`[${code} success] ${message}`);
+                this.updateQuantzButton();
+                this.updateCodeView();
+            },
+            (error) => {
+                if (error && error.code) {
+                    console.log(`[error] code:${error.code} reason:${error.reason}`);
+                    const { errors, message } = error; 
+                    if (errors) {
+                        errors.forEach(errorObj => {
+                            const {field_name, message} = errorObj;
+                            switch (field_name) {
+                                case 'button_type':
+                                    this.buttonTypeSelector.alert(message);
+                                    break;
+                                case 'button_width':
+                                    this.buttonWidthForm.alert(message);
+                                    break;
+                                case 'button_height':
+                                    this.buttonHeightForm.alert(message);
+                                    break;
+                                case 'font_size':
+                                    this.fontSizeForm.alert(message);
+                                    break;
+                                case 'balloon_width':
+                                    this.balloonWidthForm.alert(message);
+                                    break;
+                                case 'balloon_height':
+                                    this.balloonHeightForm.alert(message);
+                                    break;
+                            }
+                        });
+                    } else if (message) {
+                        _this.$customizeAlert.textContent = message;
+                    }
+                } else {
+                    console.error(error);
+                }
+            },
+            () => {
+            }
+        );
+    }
+
+    clearAllCustomizeAlert() {
+        this.buttonTypeSelector.alert(false);
+        this.buttonWidthForm.alert(false);
+        this.buttonHeightForm.alert(false);
+        this.fontSizeForm.alert(false);
+        this.balloonWidthForm.alert(false);
+        this.balloonHeightForm.alert(false);
+        this.$customizeAlert.textContent = "";
+    }
+
+    createModelSelectView($items) {
+        const $wrapper = document.createElement('div');
+        $wrapper.classList.add('ModelSelectWrapper');
+        $wrapper.classList.add('CustomizeItemWrapper');
+
+        const $title = document.createElement('h4');
+        $title.classList.add('subtitle');
+        $title.textContent = this.locale.get('settings_model_select_title', this.lang)
+        $wrapper.appendChild($title)
+
+        let listMenuItems = [
+            new ListItem({title: this.locale.get('settings_default_model_title', this.lang), value: 'default'})
+        ]
+        console.error(this.interactionModels)
+        this.interactionModels.forEach((d)=> {
+            listMenuItems.push(new ListItem({title: d.title, value: d.id}))
+        })
+       
+        this.selectInteractionModel = new DropdownButton({
+            id: 'ModelSelectDropdown',
+            fieldName: 'model',
+            title: '',  // Initially blank, will be set after
+            description: this.locale.get('settings_model_select_title', this.lang),
+            type: DropdownMenuType.list,
+            position: DropdownMenuDisplayPositionType.bottomover,
+            items: listMenuItems,
+            htmlTag: 'div',
+            validators: [new Validator({
+                errorType: ValidationErrorType.required,
+                errorMessage: this.locale.get(ValidationErrorType.required, this.lang)
+            })]
+        });
+        this.selectInteractionModel.$view.addEventListener('selected', (e)=> {
+            e.preventDefault();
+            const { value: selectedValue } = e.detail;
+            console.log(`Selected interaction model value: ${selectedValue}`);
+    
+            // Clear any existing alerts first
+            this.selectInteractionModel.alert(false);
+    
+            // Call API to update basic config with the selected interaction_model_id
+            Http.post(`/v1/${this.lang}/basic_config/update`, 
+                { 'interaction_model_id': selectedValue },
+                //{ 'interaction_model_id': selectedValue === "default" ? null : selectedValue },
+                (res) => {
+                    const { code, message } = res;
+                    console.log(`[${code} success] ${message}`);
+                    // Optionally update something in the UI if needed
+                },
+                (error) => {
+                    // If error has a known format:
+                    if (error && error.code) {
+                        const { errors, message } = error;
+                        if (errors && errors.length > 0) {
+                            // Field-specific errors
+                            errors.forEach(errorObj => {
+                                const { field_name, message } = errorObj;
+                                if (field_name === 'interaction_model_id') {
+                                    this.selectInteractionModel.alert(message);
+                                }
+                            });
+                        } else if (message) {
+                            // General error message
+                            this.selectInteractionModel.alert(message);
+                        }
+                    } else {
+                        console.error(error);
+                        // Show a generic error alert if no structured error
+                        this.selectInteractionModel.alert("An unexpected error occurred.");
+                    }
+                }
+            );
+
+        })
+        const defaultSelectedValue = this.basicConfig.interaction_model_id ? this.basicConfig.interaction_model_id : 'default';
+        const defaultItem = listMenuItems.find(item => item.value === defaultSelectedValue);
+        if (defaultItem) {
+            this.selectInteractionModel._selectedValue = defaultSelectedValue;
+            this.selectInteractionModel._setTitle(defaultItem.title);
+        }
+        $wrapper.appendChild(this.selectInteractionModel.$view);
+        $items.appendChild($wrapper)
+    }
+
+    /*
+    Response Mode
+    */
+
+    createResponseModeView($items) {
+        const $wrapper = document.createElement('div');
+        $wrapper.classList.add('ResponseModeWrapper');
+        $wrapper.classList.add('CustomizeItemWrapper');
+    
+        const $title = document.createElement('h4');
+        $title.classList.add('subtitle');
+        $title.textContent = this.locale.get('basic_configs_response_mode_title', this.lang);
+        $wrapper.appendChild($title);
+    
+        const responseModeItems = [
+            new ListItem({
+                title: this.locale.get('basic_configs_response_mode_tempo_oriented', this.lang),
+                value: 0
+            }),
+            new ListItem({
+                title: this.locale.get('basic_configs_response_mode_normal', this.lang),
+                value: 1
+            }),
+            new ListItem({
+                title: this.locale.get('basic_configs_response_mode_careful_listening', this.lang),
+                value: 2
+            }),
+            new ListItem({
+                title: this.locale.get('basic_configs_response_mode_wait_manual_submit', this.lang),
+                value: 3
+            })
+        ];
+    
+        this.selectResponseMode = new DropdownButton({
+            id: 'ResponseModeDropdown',
+            fieldName: 'response_mode',
+            title: '', // Will be set after we determine the default
+            description: this.locale.get('customize_select_response_mode_title', this.lang),
+            type: DropdownMenuType.list,
+            position: DropdownMenuDisplayPositionType.bottomover,
+            items: responseModeItems,
+            htmlTag: 'div',
+            validators: [new Validator({
+                errorType: ValidationErrorType.required,
+                errorMessage: this.locale.get(ValidationErrorType.required, this.lang)
+            })]
+        });
+    
+        // Set the default selected value based on basicConfig.response_mode
+        const defaultMode = typeof this.basicConfig.response_mode === 'number' 
+                            ? this.basicConfig.response_mode 
+                            : 0; // fallback to 0 if not set
+    
+        const defaultItem = responseModeItems.find(item => item.value === defaultMode);
+        if (defaultItem) {
+            this.selectResponseMode._selectedValue = defaultMode;
+            this.selectResponseMode._setTitle(defaultItem.title);
+        }
+    
+        $wrapper.appendChild(this.selectResponseMode.$view);
+        $items.appendChild($wrapper);
+
+        // Handler for response mode selection
+        this.selectResponseMode.$view.addEventListener('selected', (e) => {
+            e.preventDefault();
+            const { value: selectedValue } = e.detail;
+            console.log(`Selected response mode: ${selectedValue}`);
+        
+            // Clear any existing alerts first
+            this.selectResponseMode.alert(false);
+        
+            // Call API to update basic config with the selected response_mode
+            Http.post(`/v1/${this.lang}/basic_config/update`, 
+                { 'response_mode': selectedValue },
+                (res) => {
+                    const { code, message } = res;
+                    console.log(`[${code} success] ${message}`);
+                    // Optionally update something in the UI if needed
+                },
+                (error) => {
+                    // If error has a known format:
+                    if (error && error.code) {
+                        const { errors, message } = error;
+                        if (errors && errors.length > 0) {
+                            // Field-specific errors
+                            errors.forEach(errorObj => {
+                                const { field_name, message } = errorObj;
+                                if (field_name === 'response_mode') {
+                                    this.selectResponseMode.alert(message);
+                                }
+                            });
+                        } else if (message) {
+                            // General error message
+                            this.selectResponseMode.alert(message);
+                        }
+                    } else {
+                        console.error(error);
+                        // Show a generic error alert if no structured error
+                        this.selectResponseMode.alert("An unexpected error occurred.");
+                    }
+                }
+            );
+        });
+
+    }
+
+}

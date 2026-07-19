@@ -1,0 +1,20 @@
+{
+  "materials": [
+    {
+      "_id": "preview-material-0001",
+      "title": "会社概要ドキュメント",
+      "text": "ThinkX の会社概要。所在地・沿革・事業内容を説明する固定 fixture テキスト。"
+    },
+    {
+      "_id": "preview-material-0002",
+      "title": "製品 FAQ",
+      "text": "よくある質問と回答のドキュメント。返品ポリシーとサポート窓口を含む。"
+    },
+    {
+      "_id": "preview-material-0003",
+      "title": "利用ガイド",
+      "text": "サービスの初期設定手順。アカウント作成からウィジェット設置まで。"
+    }
+  ],
+  "count": 3
+}

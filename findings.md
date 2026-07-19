@@ -116,6 +116,21 @@
 - src/view_components/text_field.js:369 / `isCancelButton: true` は `cancelButtonPlace` が
   constructor 引数に存在しないため `places[undefined].appendChild` で TypeError(構築不能)。
   ギャラリーの TextField バリエーションは Done ボタンのみ表示 / ST-1
+- preview/gallery.html / Incrementer の上下ボタン等が参照する画像(/img/up.svg /img/down.svg
+  /img/button-loader.svg 等)は quantz-web 側資産のためギャラリーでは 404(表示されない)。
+  オーナー確認済み・問題なしと裁定(2026-07-19)。ST-2 の site fixture では実資産を抽出する / ST-1目視
+- quantz-web templates/main/materials.html / `material_keywords_field.js` の script タグが2重
+  (実テンプレート由来)。2回目の読み込みが class 再宣言の SyntaxError になる現行バグで、
+  実ブラウザでも console に出る。site fixture は忠実に再現し、scripts/check_site_fixture.js は
+  既知エラーとして明示許容している。ST-R の追随時に quantz-web 側で重複タグ削除を推奨 / ST-2
+- preview/site/ / 参照はあるが quantz-web の git に存在しない資産: js/libs/anime.min.js
+  (スタブ配置。抽出JSに anime() の消費なし)・css/darkmoss.min.css(空スタブ)・
+  fonts/GeosansLight.ttf(404・フォールバックフォント)・img 1件(MANIFEST.md に列挙)。
+  本番はビルド/手動配置で供給されている模様 / ST-2
+- docs/SITE_FIXTURE.md の対象画面「Billing設定」/ 独立ページではなく materials.html
+  (/v1/<lang>/home)内の SettingsModalView として描画される(fetch /v1/<lang>/user と
+  /v1/<lang>/payments/method/status に fixture 応答を用意)。対象画面表はこのページ内での
+  確認として読む / ST-2
 - /Users/K00TSUKA/Sources/quantz-web:master / ローカル master は eab6fd049b2c69c7578b8be288245be5c961902d、ローカル保存 ref origin/master は計画対象 99a9488714b94e227ecec54340df031419c5d1e2。計画書 §5.1 の「clone は ff 追随済み」と不一致。quantz-web 書き込み禁止のため checkout/pull は行わず、git grep/show origin/master で対象ツリーを読み取る / ST-0
 - refactor_plan.md:3 / ルート CLAUDE.md・docs/ROADMAP.md は計画書を `REFACTORING_PLAN.md` と呼ぶが実ファイル名は `refactor_plan.md`(内容は v1.2 で一致) / 項目0-1
 - refactor_plan.md:146 / 計画書指定の `"test": "node --test test/"` は本環境 node v23.7.0 で exit 1(`test/` をモジュールとして解決し MODULE_NOT_FOUND。計画書検証環境 node 22.22.2 では動作)。node 23 互換のため `"test": "node --test 'test/**/*.test.js'"` を採用(人間承認済み。src/dist 不変・挙動不変) / 項目0-2

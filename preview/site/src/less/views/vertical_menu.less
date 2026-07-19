@@ -1,0 +1,224 @@
+@cubic-bezier1: cubic-bezier(.65,0,.34,1);
+
+#VerticalMenu {
+    width: 221px;
+    min-width: 236px;
+    padding: 0 17px;
+    height: 100vh;
+    background-color: #1c1c1c;// #383838;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    justify-content: space-between;
+    z-index: 99;
+    div.upper {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: baseline;
+    }
+    div.bottom {
+        width: 100%;
+    }
+  
+    div.logo-wrapper {
+        padding: 8px 17px;
+        img.logo {
+            cursor: pointer;
+            margin-top: 8px; // adjust this value as needed
+            width: 27px;
+        }
+    }
+    div.upper {
+        width: 100%;
+
+        button.createNew { // Styles for the "Add new material" section
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            height: 46px;
+            margin: 6px auto;
+            //width: 95%;
+            //width: 54%; // Create
+            width: 68%; // Start Creating
+            border: 1px solid #888888;
+            border-radius: 27px;
+            margin-bottom: 62px;
+
+            transition: 
+                border 0.2s @cubic-bezier1,
+                background-color 0.2s @cubic-bezier1; /* Smooth transition */
+
+            img.plusIcon {
+                width: 16px;
+                margin-right: 10px; // Added for some space between the icon and label
+            }
+
+            h4.title {
+                font-size: 14px;
+                //color: @create-new-title;
+                color: #e3e3e3;
+                transition: 
+                    color 0.2s @cubic-bezier1; /* Smooth transition */
+            }
+
+        }
+        button.createNew:hover {
+            border: 1px solid #c4c4c4;
+            background-color: #555555;
+            h4.title {
+                color: #fff;
+            }
+        }
+
+        ul.menu {
+            li.item {
+                padding: 0 17px 0 17px;
+                //margin-bottom: 6px;
+                margin-bottom: 25px;
+            }
+            img.stepArrow {
+                width: 21px;
+                //margin-bottom: 10px;
+                margin-bottom: 23px;
+            }
+        }
+    }
+    div.bottom {
+        width: 100%;
+        ul.menu {
+            li.item {
+                padding: 0px 17px;
+            }
+        }
+    }
+
+    ul.menu {
+        width: 100%;
+        margin-top: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 26px 0 0 0;
+
+        li.item {
+            cursor: pointer;
+            width: 100%;
+            height: 45px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center; // Center the item horizontally
+            position: relative; /* Position relative for the tooltip */
+            background-color: transparent; /* Default background */
+            border-radius: 2px;
+            transition: 
+                border-radius 0.2s @cubic-bezier1,
+                background-color 0.2s @cubic-bezier1; /* Smooth transition */
+
+            &.highlight {
+                background-color: #303030;
+                border-radius: 16px;
+            }
+
+            a {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+            }
+            img.icon {
+                width: 19px;
+                margin-right: 17px;
+            }
+            span.menuTitle {
+                font-size: 12px;
+                color: #b3b3b3;//#fff;
+            }
+            span.tooltip {
+                position: absolute;
+                top: 50%;
+                left: 102%;
+                font-size: 0.9em;
+                transform: translateY(-50%);
+                background-color: black;
+                color: white;
+                padding: 5px 10px;
+                white-space: nowrap;
+                opacity: 0;
+                visibility: hidden;
+                transition: 
+                    opacity 0.3s @cubic-bezier1, visibility 0.3s @cubic-bezier1;
+                border-radius: 3px; /* Optional: Adds rounded corners to the tooltip */
+                box-shadow: 2px 2px 5px rgba(0,0,0,0.2); /* Optional: Adds a slight shadow for better visibility */
+            }
+        }
+        li.item:hover {
+            background-color: #727272;
+            border-radius: 0px;
+            span.menuTitle {
+                color: #fff;
+            }
+            span.tooltip {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+        li.logout {
+            img.logoutIcon {
+            }
+        }
+        li.settings {
+            img.settingsIcon {
+
+            }
+        }
+    }
+}
+
+@media (max-width: @smartphone-width) {
+    #VerticalMenu {
+        width: 100%;
+        height: 50px;
+        flex-direction: row;
+        padding: 3px 10px;
+        position: fixed;
+        z-index: 2;
+        box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.1);
+        div.upper {
+            flex-direction: row;
+            img.logo {
+                width: 32px;
+                margin-top: 0;
+                margin-right: 20px;
+            }
+            ul.menu {
+                flex-direction: row;
+                margin-bottom: 0;
+                justify-content: flex-end;
+                padding: 0;
+                li.item {
+                    width: 40px;
+                }
+                li.item.logout {
+                    margin-right: 8px;
+                }
+            }
+        }
+        div.bottom {
+            ul.menu {
+                flex-direction: row;
+                margin-bottom: 0;
+                padding: 0;
+                justify-content: flex-end;
+                li.item {
+                    width: 40px;
+                }
+                li.item.logout {
+                    margin-right: 8px;
+                }
+            }
+        }
+    }
+}

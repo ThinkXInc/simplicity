@@ -1,0 +1,38 @@
+{% extends "general/common.html" %}
+{% block content %}
+<section id="signup">
+</section>
+<script>
+{
+    const lang = "{{ lang }}"
+    const langName = "{{ lang_name }}"
+
+    const freeCall = "{{ free_call }}"
+    const unitPrice = "{{ unit_price }}"
+    const generalCreditPerResponse = "{{ general_credit_per_response }}"
+    const interviewCreditPerResponse = "{{ interview_credit_per_response }}"
+
+    const localeDict = {{ locale_json | safe }};
+    if (!localeDict) {
+        console.error('locale_json not received.');
+    }
+    const locale = new Locale(localeDict);
+
+    console.log(locale);
+
+    window.locale = locale;
+    window.lang = lang;
+    window.langName = langName;
+
+    window.freeCall = parseInt(freeCall);
+    window.unitPrice = parseFloat(unitPrice);
+    window.generalCreditPerResponse = parseInt(generalCreditPerResponse);
+    window.interviewCreditPerResponse = parseInt(interviewCreditPerResponse);
+}
+</script>
+<script src="/stubs/stripe.js"></script>
+<script src="/stubs/gsi_client.js" async defer></script>
+<script src=/js/helpers/googleoauth.js></script>
+<script src=/js/view_components/card_input.js></script>
+<script src=/js/view_controllers/signup.js></script>
+{% endblock %}

@@ -1,0 +1,19 @@
+{
+  "interviews": [
+    {
+      "id": "preview-interview-0001",
+      "title": "ユーザーインタビュー(第1回)",
+      "introduction": "新機能の使い勝手について尋ねる固定 fixture。",
+      "client_ids": ["client-a", "client-b", "client-c"],
+      "is_result_checked": true
+    },
+    {
+      "id": "preview-interview-0002",
+      "title": "解約理由ヒアリング",
+      "introduction": "解約検討ユーザーへのヒアリング fixture。",
+      "client_ids": ["client-d"],
+      "is_result_checked": false
+    }
+  ],
+  "count": 2
+}

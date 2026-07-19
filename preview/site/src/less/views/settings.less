@@ -1,0 +1,730 @@
+@tablet-width: 768px;
+@cubic-bezier1: cubic-bezier(.65,0,.34,1);
+@smartphone-width: 480px;
+
+#SettingsModalView {
+    div.bg {
+        background-color: rgba(0, 0, 0, 0.5) !important;
+        //background-color: rgba(255, 255, 255, 0.65) !important;
+    }
+    div.window {
+        width: 83%;
+        z-index: 9999;
+        max-width: 934px;
+        //max-width: 800px;
+        border-radius: 18px;
+        border: 1px solid #494949;
+        div.contentWrapper {
+            height: 87vh;
+            background-color: #2e2e2e;
+            border-bottom: 1px solid #4f4f4f;
+            overflow-y: scroll;
+            h3.ModalViewTitle {
+                margin-bottom: 38px;
+                font-size: 1em;
+                color: #fff;
+            }
+            p.mainContent {
+            }
+        }
+        div.modalViewFooter {
+            background-color: #2e2e2e;
+            button.cancelButton {
+                background-color: #2a2a2a;
+                color: #c3c3c3;
+                border: 1px solid #656565;
+                font-size: 0.9em;
+                padding: 8px 21px;
+                border-radius: 26px;
+            }
+            button.doneButton {
+                display: none;
+                transition: all 0.3s @cubic-bezier1;
+            }
+            button:hover {
+                background-color: #2a2a2a;
+                color: #fff;
+
+            }
+        }
+    }
+}
+
+@alert-red: #c97c7c;
+
+#SettingsModalViewMainContent {
+    div.PageView {
+        box-shadow: none;
+        position: relative;
+        top: initial;
+        left: initial;
+        transform: initial;
+        overflow-x: hidden;
+        overflow-y: hidden;
+
+        div.PageViewContainer {
+
+            h3.title {
+                font-size: 1em;
+                color: #fff;
+                margin-bottom: 7px;
+                padding: 0 0 2px 9px;
+                border-bottom: 1px solid #515151;
+            }
+            div.container {
+                div.TextField {
+                    div.inputOuter {
+                        border: none;
+                        h6.title {
+
+                        }
+                        div.inputWrapper {
+                            input {
+                                max-width: 35%;
+                                background-color: #fff;
+                                font-size: 1em;
+                                margin: 0;
+                                border: 1px solid #bdbdbd;
+                                padding: 8px;
+                                border-radius: 4px;
+                            }
+                            input::placeholder {
+                                font-size: 0.9em;
+                                color: #b7b7b7;
+                            }
+                            div.inputAfter {
+                                margin-left: 20px;
+                            }
+                        }
+                        div.footer {
+                            div.left {
+
+                            }
+                            div.middle {
+
+                            }
+                            div.right {
+
+                            }
+                            p.alertMessage {
+                                font-size: 0.8em;
+                            }
+                        }
+                    }
+                }
+                div.TextField.alert{
+                    div.inputOuter {
+                        h6.title {
+                            color: @alert-red !important;
+                        }
+                        div.inputWrapper {
+                            input {
+                                border: 1px solid @alert-red !important;
+                            }
+                        }
+                        div.inputAfter {
+
+                        }
+                        div.footer {
+                            div.left {
+                                p.alertMessage {
+                                    color: @alert-red !important;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Basic Settings
+#SettingsModalViewMainContent {
+    div.PageView {
+        div.PageViewContainer.BasicPage {
+            margin-bottom: 31px;
+            div.OriginForm, div.EmailForm {
+                div.inputOuter {
+                    border: none;
+                
+                    h6.title {
+                        color: #fff;
+                        font-size: 0.8em;
+                    }
+                    div.inputWrapper {
+                        display: flex;
+                        align-items: center;
+                        flex-direction: row;
+                        justify-content: flex-start;
+                        margin-top: 11px;
+                    }
+                    input[type=text] {
+                        font-size: 1em;
+                        margin: 0 6px 0 0;
+                        border: 1px solid #999;
+                        border-radius: 2px;
+                        padding: 10px 10px 10px 12px;
+                        width: 271px;
+                    }
+                    div.inputAfter {
+                        display: flex;
+                        align-items: center;
+                        img.VerifiedIcon {
+                            width: 24px;
+                            flex-shrink: 0;
+                        }
+                        span.pending {
+                            display: flex;
+                            align-items: center;
+                            color: @alert-red;
+                            font-size: 0.8em;
+                            font-weight: 700;
+                            flex-shrink: 0;
+                        }
+                        button.SubmitButton, button.ResendButton {
+                            background: transparent;
+                            border: 1px solid #7e7e7e;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            border-radius: 2px;
+                            cursor: pointer;
+                            margin-left: 8px;
+                            color: #fff;
+                            font-size: 0.7em;
+                            flex-shrink: 0;
+                            transition: 
+                                box-shadow 0.3s @ease,
+                                background-color 0.2s @ease;
+                        }
+                        button.SubmitButton {
+                            background: #373737;
+                            border: 1px solid #ccc;
+                            width: 49px;
+                            height: 26px;
+                        }
+                        button.ResendButton.LoadButton {
+                            margin-left: 25px;
+                            width: 117px;
+                            height: 34px;
+                            span.LoadButtonLabel {
+                                width: 100px;
+                            }
+                        }
+                        button.ResendButton:hover {
+                            background: #5a5a5a; /* Darker gray on hover */
+                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+                        }
+                        button.SubmitButton:hover {
+                            background: #5a5a5a; /* Darker gray on hover */
+                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+                        }
+                        span.explanation {
+                            color: #fff;
+                            display: flex;
+                            align-items: center;
+                            font-size: 0.7em;
+                            margin-left: 22px;
+                        }
+                    }
+                    div.footer {
+                        justify-content: flex-start !important;
+                        padding: 5px 0px 0 0 !important;
+                        font-size: 0.8em;
+                        height: 20px;
+                        div.left {
+                            p.alertMessage {
+                                font-size: 0.7em;
+                                color: @alert-red;
+                            }
+                        }
+                    }
+                }
+            }
+
+            div.OriginForm.pending, div.EmailForm.pending {
+                div.inputOuter {
+                    h6.title {
+                        color: @alert-red;
+                    }
+                }
+            }
+
+            div.OriginForm.alert, div.EmailForm.alert {
+                margin-top: 0;
+                div.inputOuter {
+                    input {
+                        border: 1px solid #8c1111;
+                    }
+                }
+            }
+
+            div.OriginForm {
+                div.inputOuter {
+                    div.inputAfter {
+                        button.SubmitButton {
+                            margin-left: 18px;
+                        }
+                    }
+                }
+            }
+
+            div.VerifyContainer {
+                padding: 0 0 0 14px;
+                h5 {
+                    color: #a4a4a4;
+                    font-size: 0.8em;
+                    margin-bottom: 10px;
+                }
+                div.VerifyCodeForm {
+                    background-color: #3e3e3e;
+                    width: 291px;
+                    padding: 10px 15px;
+                    margin-bottom: 20px;
+                    //div.verifyCodeFormContainer {
+                    //    width: 19vw !important;
+                    //    min-width: 195px !important;
+                    //    input.verifyInput {
+                    //        width: 35px !important;
+                    //        height: 35px !important;
+                    //    }
+                    //}
+                }
+            }
+
+        }
+    }
+}
+
+// Billing Settings
+#SettingsModalViewMainContent {
+    div.PageView {
+        div.PageViewContainer.BillingPage {
+            div.container, div.CardInputViewContainer {
+                button.LoadButton {
+                    height: 37px;
+                    border-radius: 4px;
+                    background-color: transparent;
+                    color: #fff;
+                    flex-shrink: 0;
+                    transition: 
+                        box-shadow 0.3s @ease,
+                        border 0.2s @ease,
+                        background-color 0.2s @ease;
+
+                    span.LoadButtonLabel {
+                        width: max-content;
+                        font-size: 0.7em;
+                    }
+                }
+                button.LoadButton:hover {
+                    background: #b1b1b1;
+                    border: 1px solid #202020;
+                }
+            }
+            div.container {
+                padding: 14px 14px 0 14px;
+                h4.subtitle {
+                    color: #fff;
+                    font-size: 0.8em;
+                    font-weight: 400;
+                    margin: 2px 0 14px 3px;
+                    -webkit-font-smoothing: antialiased;
+                }
+                div.wrapper {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    button.UpdateCardButton {
+                        margin-right: 20px;
+                    }
+                    .CardLoader {
+                        //max-width: 225px;
+                        //width: 50% !important;
+                        max-width: 180px !important;
+                    }
+                    img.CardLogo {
+                        width: 29px;
+                    }
+                    span.Last4 {
+                        color: #fff;
+                        font-size: 0.8em;
+                        font-weight: 100;
+                        margin-left: 13px;
+                        margin-right: 13px;
+                    }
+                    p.message {
+                        font-size: 0.8em;
+                        color: #fff;
+                    }
+                    p.message.alert {
+                        color: @alert-red;
+                    }
+                }
+            }
+            div.CardInputViewContainer {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                background-color: #454545;
+                max-width: 378px;
+                margin-top: 18px;
+                border-radius: 3px;
+                padding: 0 20px 20px 20px;
+                div.CardInputView {
+                    margin-top: 20px;
+                    img.loading {
+                        svg circle {
+                            fill: #ff4500; /* Changes fill color to orange-red, for example */
+                        }
+
+                    }
+                }
+                button.SubmitCardButton {
+                    margin-top: 13px;
+                }
+                p.CardInputViewAlert {
+                    font-size: 0.8em;
+                    color: @alert-red;
+                }
+            }
+            div.LimitContainer {
+                margin-top: 17px;
+                h4.subtitle {
+                    color: #fff;
+                    margin: 2px 0 7px 0px;
+                }
+                div.LimitLine1 {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    padding-left: 5px;
+                    span.max {
+                        margin-right: 11px;
+                        min-width: 33px;
+                        text-align: center;
+                        font-size: 0.9em;
+                        color: #bababa;
+                    }
+                    div.LimitForm {
+                        width: max-content;
+                        margin-right: 10px;
+                        div.inputOuter {
+                            padding: 0;
+                            div.inputWrapper {
+                                width: 102px;
+                                border: 1px solid #989898;
+                                border-radius: 4px;
+                                box-shadow: 0 1px 3px #393939;
+                                input {
+                                    height: 41px;
+                                    border: none;
+                                    max-width: 75px;
+                                    font-size: 1em;
+                                    margin: 0;
+                                    border: none;
+                                    border-radius: 0;
+                                }
+                            }
+                            div.inputAfter {
+                                margin-left: 0 !important;
+                                div.incrementButton {
+                                    width: 28px;
+                                    button {
+                                        img {
+                                            width: 13px;
+                                        }
+                                    }
+                                }
+                            }
+                            div.footer {
+                                padding: 4px 0 0 0;
+                                font-size: 0.9em;
+                                display: block;
+                                p.alertMessage {
+                                    font-size: 0.75em;
+                                }
+                            }
+                        }
+                    }
+                    div.LimitForm.alert {
+                        div.inputOuter {
+                            div.inputWrapper {
+                                border: 1px solid @alert-red;
+                                input {
+                                    border: none !important;
+                                }
+                            }
+                        }
+                    }
+                    span.maxDesc {
+                        min-width: 44px;
+                        text-align: center;
+                        font-size: 0.8em;
+                        color: #bababa;
+                        margin-right: 23px;
+                    }
+                    span.maxCharge {
+                        color: #fff;
+                        font-size: 0.8em;
+                        margin-right: 24px;
+                    }
+                    span.maxEstimatedUsage {
+                        font-size: 1em;
+                        font-weight: 500;
+                        color: #208ab4;
+                        font-size: 1em;
+                    }
+                }
+                div.line2 {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                    width: 100%;
+                    margin-top: 25px;
+                    background-color: #fafafa;
+                    padding: 12px 18px;
+                    border-radius: 5px;
+
+                }
+                div.LimitLine2 {
+                    span.maxCharge {
+
+                    }
+                    span.maxEstimatedUsage {
+
+                    }
+                }
+                p.LmitAlert {
+                }
+            }
+        }
+    }
+}
+
+
+// Customize Container
+#SettingsModalViewMainContent {
+    div.PageView {
+        div.PageViewContainer.CustomizePage {
+            margin-top: 46px;
+            h3.title {
+            }
+            div.container.CustomizeContainer {
+                display: flex;
+                flex-direction: row;
+                align-items: flex-start;
+            }
+        }
+    }
+}
+
+// Customize Items
+// -> customize.less
+
+@media (min-width: @tablet-width) {
+}
+
+@media (max-width: @smartphone-width) {
+    #SettingsModalView {
+        div.bg {
+        }
+        div.window {
+            width: 94%;
+            div.contentWrapper {
+                h3.ModalViewTitle {
+                }
+                p.mainContent {
+                }
+            }
+            div.modalViewFooter {
+                button.cancelButton {
+                }
+                button.doneButton {
+                }
+            }
+        }
+    }
+
+
+    // Basic
+    #SettingsModalViewMainContent {
+        div.PageView {
+            div.PageViewContainer {
+                h3.title {
+                }
+                div.container {
+                    padding: 17px 0;
+                    div.TextField {
+                        div.inputOuter {
+                            padding: 10px 10px 5px 10px;
+                            h6.title {
+    
+                            }
+                            div.inputWrapper {
+                                input {
+                                    max-width: 65%;
+                                }
+                                input::placeholder {
+                                }
+                                div.inputAfter {
+                                    margin-left: 11px;
+                                    span.explanation {
+                                        margin-left: 11px;
+                                    }
+                                }
+                            }
+                            div.footer {
+                                div.left {
+    
+                                }
+                                div.middle {
+    
+                                }
+                                div.right {
+    
+                                }
+                                p.alertMessage {
+                                }
+                            }
+                        }
+                    }
+                    div.TextField.alert{
+                        div.inputOuter {
+                            h6.title {
+                            }
+                            div.inputWrapper {
+                                input {
+                                }
+                            }
+                            div.inputAfter {
+    
+                            }
+                            div.footer {
+                                div.left {
+                                    p.alertMessage {
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Billing
+    #SettingsModalViewMainContent {
+        div.PageView {
+            div.PageViewContainer.BillingPage {
+                div.container, div.CardInputViewContainer {
+                    button.LoadButton {
+                       span.LoadButtonLabel {
+                        }
+                    }
+                    button.LoadButton:hover {
+                    }
+                }
+                div.container {
+                    padding: 20px 10px 0 10px;
+                    h4.subtitle {
+                    }
+                    div.wrapper {
+                        button.UpdateCardButton {
+                        }
+                        .CardLoader {
+                        }
+                        img.CardLogo {
+                        }
+                        span.Last4 {
+                            margin-right: 0;
+                        }
+                        p.message {
+                        }
+                        p.message.alert {
+                        }
+                    }
+                }
+                div.CardInputViewContainer {
+                    div.CardInputView {
+                        img.loading {
+                            svg circle {
+                            }
+    
+                        }
+                    }
+                    button.SubmitCardButton {
+                    }
+                    p.CardInputViewAlert {
+                    }
+                }
+                div.LimitContainer {
+                    padding: 14px 10px 0 10px;
+                    h4.subtitle {
+                    }
+                    div.LimitLine1 {
+                        padding-left: 0;
+                        margin-top: 22px;
+                        span.max {
+                            margin-right: 5px;
+                            font-size: 0.8em;
+                        }
+                        div.LimitForm {
+                            margin-right: 0;
+                            div.inputOuter {
+                                div.inputWrapper {
+                                    input {
+                                    }
+                                }
+                                div.inputAfter {
+                                    div.incrementButton {
+                                        button {
+                                            img {
+                                            }
+                                        }
+                                    }
+                                }
+                                div.footer {
+                                    p.alertMessage {
+                                    }
+                                }
+                            }
+                        }
+                        div.LimitForm.alert {
+                            div.inputOuter {
+                                div.inputWrapper {
+                                    input {
+                                    }
+                                }
+                            }
+                        }
+                        span.maxDesc {
+                            margin-right: 0;
+                        }
+                        span.maxCharge {
+                            font-size: 0.6em;
+                            margin-right: 2px;
+                        }
+                        span.maxEstimatedUsage {
+                       }
+                    }
+                    div.line2 {
+                    }
+                    div.LimitLine2 {
+                        span.maxCharge {
+    
+                        }
+                        span.maxEstimatedUsage {
+    
+                        }
+                    }
+                    p.LmitAlert {
+                    }
+                }
+            }
+        }
+    }
+}
+ 

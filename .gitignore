@@ -1,6 +1,9 @@
-js/
-css/
+/js/
+/css/
 dist/
 node_modules/
 package-lock.json
 .DS_Store
+preview/site/venv/
+preview/site/static/css/main.css
+__pycache__/

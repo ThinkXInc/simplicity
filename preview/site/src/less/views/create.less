@@ -1,0 +1,208 @@
+@cubic-bezier1: cubic-bezier(.65,0,.34,1);
+@cubic-bezier2: cubic-bezier(.4, 0, .2, 1);
+@alert-red: #8c1111;
+
+body {
+    --create-text-standard: #fff;
+    --create-text-dark: #a2a2a2;
+    --voiceset-label-bg-blue: #01BFD8;
+    --voiceset-label-bg-green:  #27AE60;
+    --voiceset-label-bg-yellow: #F2C94C;
+    --voiceset-label-bg-red:    #EB5757;
+    --voiceset-label-bg-purple: #9B51E0;
+}
+
+div#MainContent.CreateViewMainContent {
+    background-color: #000;
+}
+
+section#MainContent.CreateViewMainContent {
+    width: 100%;
+}
+
+div#CreatePageView {
+    width: 100%;
+    height: 100%;
+
+
+    button.commonV1Large {
+        color: #fff;
+        padding: 16px 33px;
+        border: 1px solid #6b6b6b;
+        border-radius: 34px;
+        background: rgb(94 94 94 / 40%);
+
+        transition: 
+            color 0.2s @cubic-bezier1,
+            background 0.2s @cubic-bezier1,
+            border 0.2s @cubic-bezier1;
+
+        &.action {
+            .fadeScaleDown2;
+            span {
+                opacity: 0;
+            }
+        }
+        &:hover {
+            background: rgba(110, 110, 110, 0.5);
+            border: 1px solid #bebebe;
+            span.tooltip {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+    }
+
+    button.commonV1Small {
+        font-size: 12px;
+        color: #a6a6a6;
+        border: 1px solid #a6a6a6;
+        background: rgb(94 94 94 / 40%);
+        padding: 7px 15px;
+        border-radius: 5px;
+        transition: 
+            background 0.2s @cubic-bezier1,
+            color 0.2s @cubic-bezier1,
+            border 0.2s @cubic-bezier1,
+            box-shadow 0.2s @cubic-bezier1;
+
+        &.action {
+            .fadeScaleDown2;
+            span {
+                opacity: 0;
+            }
+        }
+        &:hover {
+            background: rgba(110, 110, 110, 0.5);
+            border: 1px solid #bebebe;
+            span.tooltip {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+    }
+
+    button.commonV2Small {
+        font-size: 12px;
+        color: #a6a6a6;
+        border: 1px solid #a6a6a6;
+        background: rgb(94 94 94 / 40%);
+        padding: 7px 15px;
+        border-radius: 5px;
+        transition: 
+            background 0.2s @cubic-bezier1,
+            color 0.2s @cubic-bezier1,
+            border 0.2s @cubic-bezier1,
+            box-shadow 0.2s @cubic-bezier1;
+
+        &.action {
+            .fadeScaleDown2;
+            span {
+                opacity: 0;
+            }
+        }
+        &:hover {
+            background: rgba(110, 110, 110, 0.5);
+            border: 1px solid #bebebe;
+            span.tooltip {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+    }
+
+    div.PageViewContainer {
+        display: flex;
+        height: 100%;
+
+        /****************************************
+         * Start Page
+         ****************************************/
+        div.StartPageWrapper {
+        }
+
+        /****************************************
+         * Voice Page
+         ****************************************/
+        div.VoicePageWrapper {
+        }
+
+        /****************************************
+         * Program Page
+         ****************************************/
+        div.ProgramPageWrapper {
+        }
+    }
+}
+
+div#DeleteInteractionModelModal {
+    div.bg {
+
+    }
+    div.window {
+        h3.ModalViewTitle {
+            font-size: 14px;
+        }
+        div.modalViewFooter {
+            button.doneButton {
+                border-color: #c40000;
+                background-color: #960000;
+                &:hover {
+                    border-color: #c06161;
+                    background-color: #d30a0a;
+                }
+            }
+        }
+    }
+}
+
+
+@smartphone-width: 480px;
+
+@media (max-width: @smartphone-width) {
+    div#CreatePageView {
+        div.PageViewContainer {
+
+            div.StartPageWrapper {
+                button.StartPageButton {
+                }
+            }
+
+            div.VoicePageWrapper {
+                div.VoiceGroupList {
+                    div.VoiceGroup {
+                        div.VoiceGroupWrapper {
+                            div.VoiceOptionsWrapper {
+                                div.VoiceOptions {
+                                    div.VoiceOption {
+                                        button.PlayButton {
+                                            img {
+                                            }
+                                        }
+                                        span.name {
+                                        }
+                                        ul.categories {
+                                            li.category {
+                                            }
+                                        }
+                                    }
+                                }
+                                div.locale {
+                                }
+                            }
+                            div.buttonWrapper {
+                                button.SelectButton {
+                                    span {
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            div.ProgramPageWrapper {
+            }
+        }
+    }
+}

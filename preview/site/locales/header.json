@@ -1,0 +1,164 @@
+{
+    "header_catchcopy": {
+        "en": "A programable real-time voice conversational AI agent studio.",
+        "ja": "プログラム可能なカスタムリアルタイム音声対話エージェントスタジオ。",
+        "zh": "",
+        "fr": "",
+        "es": "",
+        "ar": "",
+        "ru": ""
+    },
+    "header_try_button": {
+        "en": "Create your first voice AI agent",
+        "ja": "あなたの最初の音声対話AIを作成",
+        "zh": "创建你的第一个语音AI代理",
+        "fr": "Créez votre premier agent IA vocale",
+        "es": "Crea tu primer agente de IA de voz",
+        "ar": "أنشئ وكيلك الأول للذكاء الاصطناعي الصوتي",
+        "ru": "Создайте своего первого голосового ИИ-агента"
+    },
+    "header_signin_tooltip": {
+        "en": "Sign In",
+        "ja": "ログイン",
+        "zh": "登录",
+        "fr": "Connexion",
+        "es": "Iniciar sesión",
+        "ar": "تسجيل الدخول",
+        "ru": "Вход"
+    },
+    "header_settings_menu_title": {
+        "en": "Settings",
+        "ja": "設定",
+        "zh": "设置",
+        "fr": "Paramètres",
+        "es": "Configuración",
+        "ar": "الإعدادات",
+        "ru": "Настройки"
+    },
+    "header_logout_menu_title": {
+        "en": "Log out",
+        "ja": "ログアウト",
+        "zh": "登出",
+        "fr": "Déconnexion",
+        "es": "Cerrar sesión",
+        "ar": "تسجيل الخروج",
+        "ru": "Выйти"
+    },
+    "studio_header_menu_open": {
+        "en": "Open menu",
+        "ja": "メニューを開く",
+        "zh": "打开菜单",
+        "fr": "Ouvrir le menu",
+        "es": "Abrir el menú",
+        "ar": "افتح القائمة",
+        "ru": "Открыть меню"
+    },
+    "studio_header_menu_close": {
+        "en": "Close menu",
+        "ja": "メニューを閉じる",
+        "zh": "关闭菜单",
+        "fr": "Fermer le menu",
+        "es": "Cerrar el menú",
+        "ar": "أغلق القائمة",
+        "ru": "Закрыть меню"
+    },
+    "studio_header_tooltip_logo": {
+        "en": "Go to Quantz Voice Agent Studio Home",
+        "ja": "Quantz Voice Agent Studio ホーム",
+        "zh": "前往 Quantz Voice Agent Studio 首页",
+        "fr": "Aller à la page d’accueil de Quantz Voice Agent Studio",
+        "es": "Ir a la página de inicio de Quantz Voice Agent Studio",
+        "ar": "الانتقال إلى الصفحة الرئيسية لـ Quantz Voice Agent Studio",
+        "ru": "Перейти на домашнюю страницу Quantz Voice Agent Studio"
+      },
+      "studio_header_create_new_label": {
+        "en": "Create New",
+        "ja": "新規作成",
+        "zh": "新建",
+        "fr": "Créer un nouveau",
+        "es": "Crear nuevo",
+        "ar": "إنشاء جديد",
+        "ru": "Создать новый"
+      },
+      "studio_header_tooltip_create_new": {
+        "en": "Create a conversation model",
+        "ja": "対話モデルを作成",
+        "zh": "创建对话模型",
+        "fr": "Créer un modèle de dialogue",
+        "es": "Crear un modelo de diálogo",
+        "ar": "إنشاء نموذج حوار",
+        "ru": "Создать диалоговую модель"
+      },
+      "studio_header_deploy_label": {
+        "en": "Deploy",
+        "ja": "公開",
+        "zh": "部署",
+        "fr": "Déployer",
+        "es": "Desplegar",
+        "ar": "نشر",
+        "ru": "Развернуть"
+      },
+      "studio_header_tooltip_deploy": {
+        "en": "Deploy the dialogue system",
+        "ja": "対話システムをデプロイする",
+        "zh": "部署对话系统",
+        "fr": "Déployer le système de dialogue",
+        "es": "Desplegar el sistema de diálogo",
+        "ar": "نشر نظام الحوار",
+        "ru": "Развернуть диалоговую систему"
+      },
+    "header_create_button_title": {
+        "en": "Start Creating",
+        "ja": "作成を始める",
+        "zh": "开始创建",
+        "fr": "Commencer la création",
+        "es": "Comenzar a crear",
+        "ar": "ابدأ الإنشاء",
+        "ru": "Начать создание"
+    },
+    "header_knowledge_menu_title": {
+        "en": "Knowledge Base",
+        "ja": "知識ベース",
+        "zh": "知识库",
+        "fr": "Base de connaissances",
+        "es": "Base de conocimientos",
+        "ar": "قاعدة المعرفة",
+        "ru": "База знаний"
+    },
+    "header_create_menu_title": {
+        "en": "Create Conversation Model",
+        "ja": "対話モデルの作成",
+        "zh": "创建对话模型",
+        "fr": "Créer un modèle de conversation",
+        "es": "Crear un modelo de conversación",
+        "ar": "إنشاء نموذج محادثة",
+        "ru": "Создать модель диалога"
+    },
+    "header_customize_menu_title": {
+        "en": "Customize Interaction Button",
+        "ja": "設置するボタンをカスタマイズ",
+        "zh": "自定义交互按钮",
+        "fr": "Personnaliser le bouton d'interaction",
+        "es": "Personalizar el botón de interacción",
+        "ar": "تخصيص زر التفاعل",
+        "ru": "Настроить кнопку взаимодействия"
+    },
+    "header_meetings_menu_title": {
+        "en": "Your Meetings",
+        "ja": "ミーティング結果",
+        "zh": "您的会议",
+        "fr": "Vos réunions",
+        "es": "Tus reuniones",
+        "ar": "اجتماعاتك",
+        "ru": "Ваши встречи"
+    },
+    "header_interviews_menu_title": {
+        "en": "Interview",
+        "ja": "インタビュー",
+        "zh": "访谈",
+        "fr": "Entrevue",
+        "es": "Entrevista",
+        "ar": "مقابلة",
+        "ru": "Интервью"
+    }
+}
