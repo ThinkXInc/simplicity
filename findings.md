@@ -131,6 +131,17 @@
   (/v1/<lang>/home)内の SettingsModalView として描画される(fetch /v1/<lang>/user と
   /v1/<lang>/payments/method/status に fixture 応答を用意)。対象画面表はこのページ内での
   確認として読む / ST-2
+- ST-3 オラクル凍結の記録(2026-07-19) / (a) CSS宣言ゴールデン
+  test/golden/css_declarations.json(273セレクタ。scripts/css_golden.js — 写像適用 --map・
+  var()解決 --resolve-vars 対応)。凍結時の dist/simplicity_default.css sha256 =
+  bc0a399c333a984bd3dd4a4633dc87872949da6196f1ecae11f3aae3568e1783、dist/simplicity.js =
+  ae735c01916fe3697d03833432e93b70258426425ada3bec4fbd21d319e0a06f。
+  (b) スクショゴールデン test/screens/golden/(ギャラリー全景+site 4ページ・
+  viewport 1280x800・fullPage・@playwright/test 1.61.1 exact / chromium-1228 は
+  PLAYWRIGHT_BROWSERS_PATH=0 でプロジェクト内・darwin/arm64 レンダリング基準)。
+  JSタイマー由来アニメは page.clock 固定で決定化し、maxDiffPixels 0 で2回連続一致を実測。
+  (c) 既存ゲート green: t01-t07 10/10・lint OK(5 known/0 new)・typecheck 0・manifest OK・
+  gallery 30/30+CSSマッチ 30/30・site fixture smoke 4/4。以後この3系がST全項目の合格判定器 / ST-3
 - /Users/K00TSUKA/Sources/quantz-web:master / ローカル master は eab6fd049b2c69c7578b8be288245be5c961902d、ローカル保存 ref origin/master は計画対象 99a9488714b94e227ecec54340df031419c5d1e2。計画書 §5.1 の「clone は ff 追随済み」と不一致。quantz-web 書き込み禁止のため checkout/pull は行わず、git grep/show origin/master で対象ツリーを読み取る / ST-0
 - refactor_plan.md:3 / ルート CLAUDE.md・docs/ROADMAP.md は計画書を `REFACTORING_PLAN.md` と呼ぶが実ファイル名は `refactor_plan.md`(内容は v1.2 で一致) / 項目0-1
 - refactor_plan.md:146 / 計画書指定の `"test": "node --test test/"` は本環境 node v23.7.0 で exit 1(`test/` をモジュールとして解決し MODULE_NOT_FOUND。計画書検証環境 node 22.22.2 では動作)。node 23 互換のため `"test": "node --test 'test/**/*.test.js'"` を採用(人間承認済み。src/dist 不変・挙動不変) / 項目0-2

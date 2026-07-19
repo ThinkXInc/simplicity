@@ -9,11 +9,14 @@
     "check:gallery": "node scripts/check_gallery_coverage.js",
     "preview:gallery": "python3 -m http.server 8000",
     "lint": "node scripts/gen_globals.js && node scripts/lint_gate.js",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "check:css": "node scripts/css_golden.js",
+    "check:screens": "PLAYWRIGHT_BROWSERS_PATH=0 playwright test --config playwright.config.js"
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",
     "@babel/preset-env": "^7.15.6",
+    "@playwright/test": "1.61.1",
     "babel-loader": "^8.2.2",
     "eslint": "9.39.4",
     "glob": "^10.3.3",

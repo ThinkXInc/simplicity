@@ -7,3 +7,4 @@ package-lock.json
 preview/site/venv/
 preview/site/static/css/main.css
 __pycache__/
+test/screens/.results/
