@@ -1,11 +1,17 @@
-# simplicity スタイル基盤刷新計画書 v1.2
+# simplicity スタイル基盤刷新計画書 v1.3
 
-作成日: 2026-07-19(v1.2 同日改訂)/ 対象: **simplicity(原本リポジトリ・`2026refactor` = 53f0639 起点)のみ**。
+作成日: 2026-07-19(v1.3 同日改訂)/ 対象: **simplicity(原本リポジトリ・`2026refactor` = 53f0639 起点)のみ**。
 quantz-web リポジトリには書き込まない(v1.2 の構図変更・§0)。正本はこのファイル1箇所(`simplicity/style_plan.md`)。
 実行環境の前提: Node v18+、Python 3.10+(プレビューランチャ venv は python3.11/arm64)、git、
 Playwright(ST-3 で exact ピン導入)。本物のインフラ不要。
 関連文書: refactor_plan.md(Phase 1 完遂・参照のみ)/ CLAUDE.md + CLAUDE_REFACTORING.md /
 docs/coding_guides/(原文+status)。
+
+v1.3 の変更点(オーナー裁定 2026-07-19 の反映):
+(1) **§7-1 接頭辞を `sim-` から `spl-` へ変更。** `spl` は SimPLicity の固有略称として
+`sim` より他概念との衝突が少ない。クラス・CSS custom properties・テーマ属性・保存キーへ一貫適用する。
+(2) ST-0 の quantz-web 台帳は「確定依存」ではなく**保守的な依存候補**であることを規範化。
+一般名の同名非依存を含めて保持する理由と後続項目での扱いは `test/inventory/README.md` が正。
 
 v1.2 の変更点(オーナー裁定 2026-07-19 の反映):
 (1) **quantz-web の扱いを「並走改修」から「fixture 検証+追随キット」へ変更。** 実測により
@@ -14,7 +20,7 @@ SHA 固定=HEAD 追随ではないと確定。よって本計画は quantz-web �
 **代表ページの必要ファイルのみを simplicity 内へ vendoring した site fixture** で画面同一性を
 検証し、実リポジトリへの適用は**追随キットによる予約項目(ST-R)**とする(Q-4 / Phase 4b / C-9 と
 同型の機械的追随)。これによりセッションは simplicity 1リポジトリで完結する。
-(2) 裁定の確定: **§7-1 接頭辞 = `sim-`**(SIMplicity 頭3文字)。**§7-2 = 上記(1)の方式**
+(2) 裁定の確定: **§7-1 接頭辞 = `sim-`**(v1.3 で `spl-` へ変更)。**§7-2 = 上記(1)の方式**
 ((a) ローカル未 push 成果は無しと実測済み)。
 (3) CLAUDE.md は長期版と CLAUDE_REFACTORING.md(作戦期間規律)に分離(本計画の管轄外・配置のみ)。
 (4) v1.1 の ST 番号は維持。ST-2 / ST-7 の内容を書き換え、ST-R(予約)を追加。
@@ -52,9 +58,9 @@ v1.1 の変更点: プレビュー基盤の一級市民化(ギャラリー+ラ�
 3. **人間の目視はプレビュー基盤の上で1回(ST-13・チェックリスト固定)。**
 4. **改名の唯一の真実は写像表(`rename_map.json`)。** 全置換は写像表からの機械適用+
    grep ゲート(旧名残存 0)で機械判定。
-5. **改名規則: 全 simplicity 所有クラスへ接頭辞 `sim-` を一律付与・セレクタ構造は不変。**
-   例: `.TextField` → `.sim-TextField`、`.inputOuter` → `.sim-inputOuter`、`.selected` →
-   `.sim-selected`。トークンは `--sim-*`、テーマ属性は `data-sim-theme`。
+5. **改名規則: 全 simplicity 所有クラスへ接頭辞 `spl-` を一律付与・セレクタ構造は不変。**
+   例: `.TextField` → `.spl-TextField`、`.inputOuter` → `.spl-inputOuter`、`.selected` →
+   `.spl-selected`。トークンは `--spl-*`、テーマ属性は `data-spl-theme`。
    ネスト構造・詳細度を変えないことで[知覚不変]の証明を機械判定に保つ。BEM 化はしない(§4)。
 6. **ランタイムテーマは CSS custom properties 前提。** LESS 変数はコンパイル時に消えるため
    切替可能なテーマを作れない — LESS→ネイティブ CSS 移行を本計画に含める技術的理由。
@@ -100,7 +106,7 @@ v1.1 の変更点: プレビュー基盤の一級市民化(ギャラリー+ラ�
 ```
 simplicity/
 ├── styles/                       # less/ を置換(ネイティブ CSS)
-│   ├── tokens.css                # :root { --sim-*: ... } 既定値=現行実測値
+│   ├── tokens.css                # :root { --spl-*: ... } 既定値=現行実測値
 │   ├── themes/light.css / dark.css / _variation_*.css
 │   ├── reset.css / utilities.css / view_components.css / view_controllers.css / notification.css
 ├── preview/
@@ -111,7 +117,7 @@ simplicity/
 │       ├── requirements-preview.txt # Flask のみ(exact ピン・venv は python3.11)
 │       ├── templates/ less/ js/     # 代表ページの必要ファイルのみの固定コピー
 │       └── fixtures/                # ページ変数 fixture(固定値)
-├── rename_map.json               # 旧名→sim- 名の全量写像(恒久保存)
+├── rename_map.json               # 旧名→spl- 名の全量写像(恒久保存)
 ├── migration/                    # ST-7: 追随キット(quantz-web 実適用用・本計画では適用しない)
 │   ├── apply_rename.js           # 任意のツリーに写像表を機械適用(templates/js/less 対応)
 │   └── ADOPTION.md               # 実適用手順(ST-R): 取り込み → キット適用 → 検証
@@ -122,7 +128,7 @@ simplicity/
 - **site fixture の役割**: 「実サイトの実テンプレート」でのスクショ回帰と目視の基盤。
   fixture で描画できない画面はギャラリーでカバーし、仕分けを台帳に明記(全62枚を狙わない)。
   fixture は simplicity 所有物なので写像適用してよい(quantz-web 本体は不変のまま)。
-- **テーマ機構**: `<html data-sim-theme="...">` でトークン上書き。`Simplicity.setTheme(name)` が
+- **テーマ機構**: `<html data-spl-theme="...">` でトークン上書き。`Simplicity.setTheme(name)` が
   属性切替+localStorage 保存(キーは §7-3)。テーマ追加 = themes/ に1枚。
 - **ビルド**: less-watch-compiler 廃止。concat+cssnano のみ。出力名不変。
 
@@ -140,7 +146,10 @@ simplicity/
   (less/js/templates 別・ファイル:行)+**代表ページの仕分け表**(fixture 化して描画可能な
   5〜8ページ/ギャラリー送り)+**fixture 抽出ファイル一覧の草案**(各ページの template と
   それが引く less/js/画像の依存閉包)。
-- §7 の裁定転記(確定済み: 接頭辞 sim- / 方式 = fixture+追随キット)。
+- §7 の裁定転記(確定済み: 接頭辞 spl- / 方式 = fixture+追随キット)。
+- quantz-web 依存台帳は一般名の同名利用を含む保守的候補であり、全行を確定依存または
+  無条件置換対象として扱わない。理由・抽出境界・後続項目での扱いは
+  `test/inventory/README.md` を必ず参照する。
 - 完了条件: 台帳・仕分け表・抽出一覧草案がコミットされている。
 
 ### ST-1 コンポーネントギャラリー [オラクル前提・恒久資産]
@@ -169,7 +178,7 @@ simplicity/
 
 ### ST-4 写像表の作成 [知覚不変の設計]
 
-- `rename_map.json`: 台帳の全クラス → `sim-`+旧名。
+- `rename_map.json`: 台帳の全クラス → `spl-`+旧名。
 - 機械検査: 新名一意・新旧非衝突・台帳全量カバー・quantz-web 依存台帳の全名が写像ドメインに含有。
 - 完了条件: 検査スクリプト green。**以後この表が全置換の唯一の入力。**
 
@@ -202,13 +211,13 @@ simplicity/
 
 ### ST-9 トークン抽出 [知覚不変]
 
-- 旧 colorscheme 由来の全値+直書き色を `--sim-*` へ抽出し tokens.css に集約。既定値=現行実測値。
+- 旧 colorscheme 由来の全値+直書き色を `--spl-*` へ抽出し tokens.css に集約。既定値=現行実測値。
 - 完了条件: 宣言ゴールデンが var() 解決後の値で完全一致+スクショ一致+色リテラル残存の仕分けが
   findings に記録される。
 
 ### ST-10 テーマ機構 [拡張]
 
-- `data-sim-theme` によるトークン上書き+`Simplicity.setTheme(name)`(起動時復元含む)。
+- `data-spl-theme` によるトークン上書き+`Simplicity.setTheme(name)`(起動時復元含む)。
   ギャラリーの切替 UI を実配線。prefers-color-scheme 連動は §7-3。
 - 完了条件: 既定テーマ=スクショゴールデン一致(不変の証明)+setTheme の jsdom 特性テスト green。
 
@@ -247,7 +256,7 @@ simplicity/
 ## §4 やらないことリスト
 
 - **quantz-web リポジトリへの書き込み**(ブランチ作成・コミット・push を含む一切。ST-R まで不触)。
-- BEM 化・セレクタ構造の再編・詳細度の変更(sim- 接頭辞付与のみ)。
+- BEM 化・セレクタ構造の再編・詳細度の変更(spl- 接頭辞付与のみ)。
 - 見た目のリデザイン・寸法/余白の「ついで調整」([拡張]のテーマ値を除き 1px も変えない)。
 - 全62テンプレートの fixture 化(代表ページ+ギャラリーでカバー。仕分けは台帳が正)。
 - quantz-web の実バックエンド(Mongo/Redis/celery/vectordb/llm)のモック化・起動・改修。
@@ -281,12 +290,13 @@ simplicity/
 
 ## §7 裁定記録と未決事項
 
-1. **接頭辞 = `sim-`(裁定済み 2026-07-19)。** SIMplicity 頭3文字・識別容易。
-   クラス `.sim-*` / トークン `--sim-*` / テーマ属性 `data-sim-theme` に一貫適用。
+1. **接頭辞 = `spl-`(裁定済み 2026-07-19・v1.3 で `sim-` 案を置換)。**
+   SimPLicity の固有略称として識別容易。クラス `.spl-*` / トークン `--spl-*` /
+   テーマ属性 `data-spl-theme` に一貫適用。
 2. **quantz-web の方式 = site fixture 検証+追随キット(裁定済み 2026-07-19)。**
    (a) ローカル未 push 成果は無し(実測)。(b) 専用ブランチは切らない。実適用は ST-R。
    実適用時の取り込み形(submodule SHA 前進 or vendoring 化)は ST-R 時点の裁定
    (ADOPTION.md は両方式を記載)。
 3. **未決: テーマの既定動作。** prefers-color-scheme 自動追従の有無。localStorage キー名
-   (既定案: `sim-theme`)。ST-10 のゲート。
+   (既定案: `spl-theme`)。ST-10 のゲート。
 4. **未決: notification.css の扱い。** 現行どおり default バンドル同梱のままでよいか(ST-8 まで)。

@@ -5,7 +5,7 @@ Source: `quantz-web origin/master` at
 
 Frozen owner decisions from `style_plan.md` §7:
 
-- Class prefix: `sim-`.
+- Class prefix: `spl-`.
 - Consumer verification: vendored site fixture plus migration kit; do not create or modify a
   quantz-web branch. Real adoption remains ST-R.
 

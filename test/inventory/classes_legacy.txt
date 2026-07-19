@@ -3,6 +3,7 @@
 # Format: class_name<TAB>source-kind:path:line[,source...]
 # Includes LESS selector classes and static class strings created/queried by src.
 # Excludes consumer/id/data-derived dynamic classes and non-class literals.
+# Rationale and handoff rules: test/inventory/README.md (required reading).
 
 active	src-class-string:src/view_components/loading_message.js:184,src-class-string:src/view_components/loading_message.js:262,src-class-string:src/view_components/loading_message.js:327,src-class-string:src/view_components/loading_message.js:355,src-class-string:src/view_components/loading_message.js:363
 agreement-notice	less-selector:less/view_components.less:327

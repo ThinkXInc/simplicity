@@ -4,6 +4,7 @@
 # Scope: LESS .class selectors; HTML class attributes; JS class APIs/selectors/constants and
 # PascalCase simplicity component references. Generic names remain conservative candidates.
 # Third-party JS libraries are excluded.
+# Rationale and handoff rules: test/inventory/README.md (required reading).
 
 web-server/views/src/js/models/session_model.js:21:        document.querySelectorAll(`input[model=${modelName}`).forEach((elem) => {
 web-server/views/src/js/pages/material_create_page.js:44:        let textField = new MaterialTextField({
