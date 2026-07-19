@@ -1,0 +1,77 @@
+div.spl-Notification {
+  cursor: pointer;
+  position: absolute;
+  z-index: 1000;
+  padding: 6px;
+  border: 1px solid #fafafa;
+  background-color: white;
+  border-radius: 3px;
+  box-sizing: border-box;
+  display: none;
+}
+div.spl-Notification.spl-top-center {
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+div.spl-Notification.spl-bottom-right {
+  bottom: 10px;
+  right: 10px;
+}
+div.spl-Notification.spl-show {
+  display: block;
+}
+div.spl-Notification.spl-info {
+  border-color: #939393;
+}
+div.spl-Notification.spl-success {
+  border-color: #50636a;
+}
+div.spl-Notification.spl-warning {
+  border-color: orange;
+}
+div.spl-Notification.spl-error {
+  border-color: red;
+}
+div.spl-Notification p.spl-NotificationMessage {
+  margin: 0;
+  padding: 0;
+  color: #525252;
+  font-size: 12px;
+  line-height: 1.5;
+}
+div.spl-Notification.spl-fade-in-from-top {
+  animation: fadeInFromTop 1s cubic-bezier(0.65, 0, 0.34, 1);
+}
+div.spl-Notification.spl-fade-in {
+  animation: fadeIn 0.5s cubic-bezier(0.65, 0, 0.34, 1);
+}
+@keyframes fadeInFromTop {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+div.spl-Notification.spl-fade-out {
+  animation: fadeOut 1s cubic-bezier(0.65, 0, 0.34, 1) forwards;
+}
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
