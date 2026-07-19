@@ -27,6 +27,9 @@
   <main id="gallery">
     <section class="gallerySection">
       <h2>基本表示・操作</h2>
+      <!-- view_controllers.less の ul./li. 修飾ブロックは実スタックの生成DOM(div/div)に
+           マッチしない死んだ規則のため、疑似の親構造は置かない(findings 記録)。
+           実際の親構造は下の InputPageViewController(実構築)が示す。 -->
       <div class="galleryGrid" id="basic-components"></div>
     </section>
 
@@ -39,6 +42,11 @@
       <h2>Page / PageView / input controllers</h2>
       <p>3ページを実際に切り替え、ページコンテナと入力フローを確認する。</p>
       <div class="galleryStage" id="page-components"></div>
+      <p>InputPageViewController(実構築): Page を直接組み立て、Next/Back で実遷移する。</p>
+      <!-- 実消費(inquiry.html の <section id=content>)と同じく id のみの host。
+           inputPageView クラスはコントローラ自身が付与する。 -->
+      <section id="galleryInputPageController"></section>
+      <div class="galleryGrid" id="ipvc-placeholders"></div>
     </section>
 
     <section class="gallerySection">

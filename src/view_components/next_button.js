@@ -1,7 +1,7 @@
 class NextButtonConfig extends ViewComponentConfig {
     constructor({
-        htmlTag = 'div',
-        text = 'Back',
+        htmlTag = 'button',
+        text = 'Next',
         ...otherOptions
     } = {}) {
         super(otherOptions);
@@ -19,8 +19,12 @@ class NextButtonConfig extends ViewComponentConfig {
 class NextButton extends ViewComponentBase {
 
     constructor(id, config = new NextButtonConfig()) {
+        if (typeof config === 'string') {
+            config = new NextButtonConfig({ text: config });
+        }
         super(id, config);
         this.config = config;
+        this.text = config.text;
     }
 
     /**
@@ -28,8 +32,10 @@ class NextButton extends ViewComponentBase {
      * Note: This method overrides the _setElements method in the base class.
      * @param {string} htmlTag - The type of HTML element to create ('button').
      */
-    _setElements(htmlTag) {
-        super._setElements(htmlTag);
+    _setElements() {
+        super._setElements();
+        this.$view.classList.add('nextButton');
+        this.$view.innerText = this.config.text;
     }
 
     /**

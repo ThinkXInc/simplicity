@@ -10,13 +10,21 @@ const golden = JSON.parse(fs.readFileSync(
 
 const buildExpr = (c) =>
     "(() => { const o = new " + c + "('t-" + c.toLowerCase() + "', new " + c + "Config()); " +
-    "return { name: o.constructor.name, hasView: typeof o.$view !== 'undefined', tag: (o.$view && o.$view.tagName) || null }; })()";
+    "return { name: o.constructor.name, hasView: typeof o.$view !== 'undefined', tag: (o.$view && o.$view.tagName) || null, classes: [...o.$view.classList], text: o.$view.innerText }; })()";
 
 // 構築可能なリーフ4種は {constructor.name, $view有無, $view.tagName} を固定。
 test('T-07 leaf components construct with expected view tags', () => {
     const probe = makeProbe();
     for (const c of ['Button', 'Title', 'NextButton', 'BackButton']) {
         assert.deepStrictEqual(probe(buildExpr(c)), golden[c], c);
+    }
+});
+
+test('T-07 quantz-web button string API remains supported', () => {
+    const probe = makeProbe();
+    for (const c of ['NextButton', 'BackButton']) {
+        const result = probe(`(() => { const o = new ${c}('legacy-${c}', '${c} label'); return { tag: o.$view.tagName, classes: [...o.$view.classList], text: o.$view.innerText }; })()`);
+        assert.deepStrictEqual(result, golden[`${c}StringApi`], c);
     }
 });
 

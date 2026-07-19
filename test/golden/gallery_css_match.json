@@ -1,0 +1,303 @@
+{
+  "LoadingMessage": [
+    "*",
+    "article",
+    "body div",
+    "h3"
+  ],
+  "Notification": [
+    "*",
+    "article",
+    "body div",
+    "div.Notification",
+    "div.Notification p.NotificationMessage",
+    "div.Notification.fade-in",
+    "div.Notification.info",
+    "div.Notification.show",
+    "div.Notification.top-center",
+    "h3",
+    "p"
+  ],
+  "Mesh": [
+    "*",
+    "article",
+    "body div",
+    "h3"
+  ],
+  "LoadButton": [
+    "*",
+    "article",
+    "button",
+    "button.LoadButton",
+    "button.LoadButton img.LoadButtonLoader",
+    "button.LoadButton span.LoadButtonLabel",
+    "h3",
+    "img",
+    "span"
+  ],
+  "ColorPicker": [
+    "*",
+    "article",
+    "body div",
+    "h3",
+    "input",
+    "input[type=color]"
+  ],
+  "TermsScrollView": [
+    "*",
+    "article",
+    "body div",
+    "div.TermsScrollView",
+    "div.TermsScrollView div.termsViewContainer",
+    "h3"
+  ],
+  "VerifyCodeForm": [
+    "*",
+    "article",
+    "body div",
+    "div.VerifyCodeForm",
+    "div.VerifyCodeForm div.verifyCodeFormContainer",
+    "div.VerifyCodeForm div.verifyCodeFormContainer input.verifyInput",
+    "div.VerifyCodeForm p.alert",
+    "h3",
+    "input",
+    "p"
+  ],
+  "RadioButton": [
+    "*",
+    "article",
+    "body div",
+    "h3",
+    "h6",
+    "input",
+    "input[type=radio]",
+    "label",
+    "span"
+  ],
+  "PageView": [
+    "*",
+    "body div",
+    "h3",
+    "p"
+  ],
+  "Page": [
+    "*",
+    "body div",
+    "button",
+    "div.TextField:not(.Incrementer) div.inputOuter",
+    "div.TextField:not(.Incrementer) div.inputOuter div.inputWrapper",
+    "div.TextField:not(.Incrementer) div.inputOuter div.inputWrapper input",
+    "div.TextField:not(.Incrementer) div.inputOuter h6.title",
+    "div.TextField:not(.Incrementer) div.inputOuter span.counter",
+    "h2",
+    "h6",
+    "input",
+    "span"
+  ],
+  "LastNameFirstNamePage": [
+    "*",
+    "article",
+    "h3",
+    "p"
+  ],
+  "SingleTextInputPage": [
+    "*",
+    "article",
+    "h3",
+    "p"
+  ],
+  "Title": [
+    "*",
+    "article",
+    "h2",
+    "h3"
+  ],
+  "Button": [
+    "*",
+    "article",
+    "body div",
+    "h3"
+  ],
+  "NextButton": [
+    "*",
+    "article",
+    "button",
+    "h3"
+  ],
+  "BackButton": [
+    "*",
+    "article",
+    "button",
+    "h3"
+  ],
+  "TextField": [
+    "*",
+    "article",
+    "body div",
+    "div.TextField:not(.Incrementer) div.inputOuter",
+    "div.TextField:not(.Incrementer) div.inputOuter div.inputWrapper",
+    "div.TextField:not(.Incrementer) div.inputOuter div.inputWrapper input",
+    "div.TextField:not(.Incrementer) div.inputOuter h6.title",
+    "div.TextField:not(.Incrementer) div.inputOuter span.counter",
+    "h3",
+    "h6",
+    "input",
+    "span"
+  ],
+  "TableView": [
+    "*",
+    "article",
+    "body div",
+    "button",
+    "div.TableView",
+    "div.TableView div.tableViewContainer",
+    "div.TableView div.tableViewContainer div.tableView",
+    "div.TableView div.tableViewContainer div.tableView div.gradientViewIndicator",
+    "div.TableView div.tableViewContainer div.tableView ul.tableListView",
+    "div.TableView div.tableViewContainer div.tableView ul.tableListView li.tableViewCell",
+    "div.TableView div.tableViewContainer div.tableView ul.tableListView li.tableViewCell div.buttonContainer",
+    "div.TableView div.tableViewContainer div.tableView ul.tableListView li.tableViewCell div.buttonContainer button svg",
+    "div.TableView div.tableViewContainer div.tableView ul.tableListView li.tableViewCell div.buttonContainer button svg .path",
+    "div.TableView div.tableViewContainer div.tableView ul.tableListView li.tableViewCell div.contentWrapper",
+    "div.TableView div.tableViewContainer div.tableView ul.tableListView li.tableViewCell div.contentWrapper div.body p.text",
+    "div.TableView div.tableViewContainer div.tableView ul.tableListView li.tableViewCell div.contentWrapper div.footer",
+    "div.TableView div.tableViewContainer div.tableView ul.tableListView li.tableViewCell div.contentWrapper div.header span.label",
+    "div.gradientViewIndicator",
+    "div.gradientViewIndicator div.indicator-container div.indicator-wrapper",
+    "h3",
+    "h6",
+    "li",
+    "p",
+    "span",
+    "ul"
+  ],
+  "ModalView": [
+    "*",
+    "article",
+    "body div",
+    "button",
+    "div.ModalView div.bg",
+    "div.ModalView div.window",
+    "div.ModalView div.window div.contentWrapper",
+    "div.ModalView div.window div.contentWrapper div.ModalViewAlert",
+    "div.ModalView div.window div.contentWrapper div.mainContent",
+    "div.ModalView div.window div.contentWrapper h3.ModalViewTitle",
+    "div.ModalView div.window div.modalViewFooter",
+    "div.ModalView div.window div.modalViewFooter button",
+    "div.ModalView div.window div.modalViewFooter button.cancelButton",
+    "div.ModalView div.window div.modalViewFooter button.doneButton",
+    "h3"
+  ],
+  "KeywordsField": [
+    "*",
+    "article",
+    "body div",
+    "div.KeywordsField div.inputOuter",
+    "div.KeywordsField div.inputOuter input.keywordsform",
+    "div.KeywordsField div.inputOuter p.press",
+    "div.KeywordsField div.inputOuter p.press strong",
+    "div.KeywordsField div.inputOuter ul.keywords",
+    "div.TextField:not(.Incrementer) div.inputOuter",
+    "div.TextField:not(.Incrementer) div.inputOuter div.inputWrapper",
+    "div.TextField:not(.Incrementer) div.inputOuter div.inputWrapper input",
+    "div.TextField:not(.Incrementer) div.inputOuter h6.title",
+    "h3",
+    "h6",
+    "input",
+    "p",
+    "span",
+    "strong",
+    "ul"
+  ],
+  "DropdownButton": [
+    "*",
+    "article",
+    "body div",
+    "div.DropdownButton div.DropdownButtonClickable",
+    "div.DropdownButton div.DropdownButtonClickable h6.description",
+    "div.DropdownButton div.DropdownButtonClickable img.downarrow",
+    "div.DropdownButton div.DropdownButtonClickable span.title",
+    "div.DropdownButton ul.listmenu",
+    "div.DropdownButton ul.listmenu li.listitem",
+    "div.DropdownButton ul.listmenu li.listitem div.listitem-title",
+    "div.DropdownButton ul.listmenu li.listitem div.listitem-title-wrap",
+    "h3",
+    "h6",
+    "img",
+    "li",
+    "span",
+    "ul"
+  ],
+  "FileUploadView": [
+    "*",
+    "article",
+    "h3",
+    "p"
+  ],
+  "FileUploadTableViewCell": [
+    "*",
+    "article",
+    "body div",
+    "h3",
+    "img",
+    "ul"
+  ],
+  "GradientLoadingBar": [
+    "*",
+    "article",
+    "body div",
+    "h3",
+    "span"
+  ],
+  "GradientViewLoader": [
+    "*",
+    "article",
+    "body div",
+    "div.gradientViewIndicator",
+    "div.gradientViewIndicator div.indicator-container div.indicator-wrapper",
+    "h3"
+  ],
+  "PositionMap": [
+    "*",
+    "article",
+    "h3",
+    "p"
+  ],
+  "MapPointer": [
+    "*",
+    "article",
+    "h3",
+    "p"
+  ],
+  "AlertMessage": [
+    "*",
+    "article",
+    "body div",
+    "h3",
+    "p"
+  ],
+  "Draggable": [
+    "*",
+    "article",
+    "body div",
+    "h3"
+  ],
+  "InputPageViewController": [
+    "*",
+    "body div",
+    "button",
+    "div.TextField:not(.Incrementer) div.inputOuter",
+    "div.TextField:not(.Incrementer) div.inputOuter div.inputWrapper",
+    "div.TextField:not(.Incrementer) div.inputOuter div.inputWrapper input",
+    "div.TextField:not(.Incrementer) div.inputOuter h6.title",
+    "div.TextField:not(.Incrementer) div.inputOuter span.counter",
+    "h2",
+    "h6",
+    "input",
+    "p",
+    "section",
+    "section.inputPageView",
+    "section.inputPageView div.inputPageViewContainer",
+    "span"
+  ]
+}

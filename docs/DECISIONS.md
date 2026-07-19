@@ -45,3 +45,4 @@
 | D-38 | **quantz-webの依存候補台帳は一括置換に使わない。各候補がSimplicityの生成DOMまたはAPI契約に属することを確認してから置換対象にする** | `title`、`left`、`active`等の一般名はquantz-web独自UIにも存在しうるため | `docs/STYLE_CLASS_INVENTORY.md` |
 | D-39 | **CSSクラス移行台帳はトップレベルの `style_class_inventory/` に置く** | テスト資産ではなく、スタイル移行の機械入力であることをパスから判別できるようにするため | `style_plan.md` v1.3 ST-0 |
 | D-40 | **クラス台帳の説明は `docs/STYLE_CLASS_INVENTORY.md`、site fixtureの設計は `docs/SITE_FIXTURE.md` を正本とする** | 引き継ぎに必要な人間向け文書を発見しやすい場所に置くため | `style_plan.md` v1.3 ST-0/ST-2 |
+| D-41 | **SimplicityのDOM、CSSクラスの大小文字、呼び出し形式を判断するときは、quantz-webのアプリケーションコードに書かれた実際の使い方を正とする** | quantz-webが指すSimplicityのGit版ではなく、消費側のJS・LESS・テンプレートが実運用上の契約を表すため | `style_plan.md` v1.3 大原則2 / ST-1〜ST-7 |

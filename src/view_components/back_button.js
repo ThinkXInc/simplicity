@@ -1,6 +1,6 @@
 class BackButtonConfig extends ViewComponentConfig {
     constructor({
-        htmlTag = 'div',
+        htmlTag = 'button',
         text = 'Back',
         ...otherOptions
     } = {}) {
@@ -19,6 +19,9 @@ class BackButtonConfig extends ViewComponentConfig {
 class BackButton extends ViewComponentBase {
 
     constructor(id, config = new BackButtonConfig()) {
+        if (typeof config === 'string') {
+            config = new BackButtonConfig({ text: config });
+        }
         super(id, config);
         this.config = config;
         this.text = config.text;
@@ -29,7 +32,8 @@ class BackButton extends ViewComponentBase {
      * Note: This method overrides the _setElements method in the base class.
      */
     _setElements() {
-        super._setElements(this.config.htmlTag);
+        super._setElements();
+        this.$view.classList.add('backButton');
         this.$view.innerText = this.config.text;
     }
 

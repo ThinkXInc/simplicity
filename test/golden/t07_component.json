@@ -4,7 +4,9 @@
     "value": {
       "name": "Button",
       "hasView": true,
-      "tag": "DIV"
+      "tag": "DIV",
+      "classes": ["t-button", "Button"],
+      "text": "Back"
     }
   },
   "Title": {
@@ -12,7 +14,9 @@
     "value": {
       "name": "Title",
       "hasView": true,
-      "tag": "H2"
+      "tag": "H2",
+      "classes": ["t-title", "Title"],
+      "text": ""
     }
   },
   "NextButton": {
@@ -20,7 +24,9 @@
     "value": {
       "name": "NextButton",
       "hasView": true,
-      "tag": "DIV"
+      "tag": "BUTTON",
+      "classes": ["t-nextbutton", "NextButton", "nextButton"],
+      "text": "Next"
     }
   },
   "BackButton": {
@@ -28,7 +34,25 @@
     "value": {
       "name": "BackButton",
       "hasView": true,
-      "tag": "DIV"
+      "tag": "BUTTON",
+      "classes": ["t-backbutton", "BackButton", "backButton"],
+      "text": "Back"
+    }
+  },
+  "NextButtonStringApi": {
+    "ok": true,
+    "value": {
+      "tag": "BUTTON",
+      "classes": ["legacy-NextButton", "NextButton", "nextButton"],
+      "text": "NextButton label"
+    }
+  },
+  "BackButtonStringApi": {
+    "ok": true,
+    "value": {
+      "tag": "BUTTON",
+      "classes": ["legacy-BackButton", "BackButton", "backButton"],
+      "text": "BackButton label"
     }
   },
   "TextField": {

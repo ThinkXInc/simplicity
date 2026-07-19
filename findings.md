@@ -26,6 +26,71 @@
 
 ## 作業中の発見事項(§5 形式で追記)
 
+- ST-1 component gallery / `NextButton`・`BackButton` の現行生成DOMはそれぞれ
+  `div.NextButton`・`div.BackButton` だが、`less/view_controllers.less` は
+  `section.inputPageView ... button.nextButton`・`button.backButton` を対象としている。
+  tag、class名の大小文字、必要な親DOMが一致しないため、現行CSSは両コンポーネントへ
+  適用されない。さらに `NextButton._setElements()` はconfigのtextをDOMへ設定しないため
+  空要素になる。ST-1初版の30/30検査はDOM上の対象名だけを確認しており、CSS selectorの
+  一致を検証していなかった / ST-1目視確認
+- src/view_controllers/input_page_view_controller.js:174-175・src/view_component_bases/page.js:27-29 /
+  コントローラと Page の生成DOMは `div.inputPageViewPages`・`div.inputPageViewPage`(現HEADと
+  quantz-web ピン版 8829234 で同一)。一方 less/view_controllers.less:12-13 は
+  `ul.inputPageViewPages li.inputPageViewPage` を要求するため、同ブロック(L12-92:
+  inputPageViewPageTitle・textField/dropdownButton マージン・button.nextButton/backButton・
+  #signupViewPage1 を含む)は実スタックのどのDOMにもマッチしない。quantz-web 側は
+  views/src/less/views/materials.less:258-266 で `div.inputPageViewPages`・`div.inputPageViewPage`
+  を自前定義しており、消費側スタイルは div 構造に一致している(D-41 の傍証)。
+  ST-1初版ギャラリーの手組み ul/li ラッパはこの死んだCSSを適用させる構造だったため、
+  実生成と同じ div/div 構造へ修正した / ST-1監査
+- quantz-web views/src/js/view_controllers/signin.js:200-205 等 / quantz-web の signin/signup は
+  `new LoadButton({...})` に `classList.add('nextButton')` で同名クラスを手動付与し、
+  views/src/less/views/accounts.less の `button.nextButton` で独自スタイルを当てる
+  (simplicity の NextButton コンポーネントは不使用)。`nextButton` は D-38 の
+  「同名だが simplicity 生成DOMでない利用」の実例 / ST-1監査
+- quantz-web ピン版 8829234 の next_button.js/back_button.js / 文字列 config
+  (`new NextButton(id, localeText)`)は ViewComponentBase._setElements の htmlTag 検査で
+  throw する(htmlTag undefined)。この呼び形は simplicity の
+  pages/last_name_first_name_page.js:96・pages/single_text_input_page.js:62 が使用し、
+  quantz-web では templates/general/inquiry.html が inquiry_view_controller.js
+  (SingleTextInputPage/LastNameFirstNamePage を構築)を読み込むため、inquiry ページは
+  ピン版で構築時エラーになる経路 / ST-1監査
+- src/view_components/button.js:20 / `class Button` の constructor 既定引数が
+  `new BackButtonConfig()`(ButtonConfig でなく)。BackButtonConfig の既定 htmlTag 変更
+  (div→button)は `new Button(id)` 素呼びに波及しうるが、素呼びは simplicity src・
+  quantz-web アプリJSとも 0 件(grep 実測) / ST-1監査
+- quantz-web view_controllers/inquiry_view_controller.js:50-122 / 現HEADと非互換の旧位置引数APIで
+  呼んでいる: `new Validator(type, locale, lang, ...)`(HEADはオブジェクト形)・
+  `new LastNameFirstNamePage(viewControllerId, pageId, locale, ...)`(HEADは pageId 起点の別引数列)・
+  `new GradientLoadingBar(id, 'LoadingBar')`(HEADは `{id,...}`)・
+  `super(viewControllerId, pages, locale, lang, dataModelClass, url, loading)`(HEADは `{id, pages,...}`)。
+  同ファイルは quantz-web の他所(customize_view.js 等)が使う現行オブジェクト形と混在しており、
+  追随キット(ST-R)の適用対象として要注意 / ST-1監査
+- src/pages/single_text_input_page.js:46-63・src/pages/last_name_first_name_page.js:60-102 /
+  両 Page は現HEADで構築不能。3独立要因: (1) `new Title(id, 文字列)` — Title は文字列 config を
+  受けず ViewComponentBase._setElements の htmlTag 検査で throw(NextButton 修正前と同型)、
+  (2) `new TextField(id, fieldName, type, ...)` の位置引数12個 — HEAD の TextField は
+  オブジェクト形 constructor で文字列が分割代入され id=undefined になる、
+  (3) `super(pageId, components)` の位置引数 — HEAD の Page は `{id, components}` 形で
+  components が既定 [] に落ちる。ギャラリーでは両対象をプレースホルダとし、
+  InputPageViewController+Page 直接組み立てで実遷移を確認する / ST-1監査
+- src/view_components/file_upload_view.js:250 / FileUploadView は constructor が
+  `super(id, 'div')`(旧基底シグネチャ)を渡すため、ViewComponentBase の
+  `this.config.validators.forEach` で TypeError となり現HEADで構築不能。
+  quantz-web アプリJSに `new FileUploadView` は 0 件(interview.js は独自 FileUploader を使用)。
+  ギャラリーではプレースホルダとした / ST-1監査
+- src/view_components/file_upload_view.js:15-19 / `FileUploadViewUploadState` の
+  onuploadcompleted と onuploadfailed が同値 2(enum 衝突)。また FileUploadTableViewCell の
+  公開 API(content / state setter)に「失敗」状態の表現が存在しないため、ギャラリーの
+  セル状態は 待機(0%)・アップロード中(58%)・完了(100%)の3状態とした / ST-1監査
+- src/view_components/loading_message.js:92-123 / LoadingMessage はスタイルを JS 内の
+  テンプレートリテラルとして自己注入し、`var(--lm-grad-start, #aaaaaa)` 等の
+  CSS custom properties を既に使用している。less/ 由来の CSS だけがスタイルの全量ではない
+  (ST-8 LESS移行・ST-9 トークン抽出の対象範囲に関わる) / ST-1監査
+- scripts/check_gallery_coverage.js / ST-1 検査を「対象ごとの CSS セレクタ一致集合 =
+  凍結ゴールデン(test/golden/gallery_css_match.json)と完全一致」へ拡張
+  (2026-07-19 オーナー承認の読み替え。空集合も正解になりうる — 死んだCSSの存在が根拠)。
+  ゴールデン更新は `--update` 明示時のみ / ST-1
 - /Users/K00TSUKA/Sources/quantz-web:master / ローカル master は eab6fd049b2c69c7578b8be288245be5c961902d、ローカル保存 ref origin/master は計画対象 99a9488714b94e227ecec54340df031419c5d1e2。計画書 §5.1 の「clone は ff 追随済み」と不一致。quantz-web 書き込み禁止のため checkout/pull は行わず、git grep/show origin/master で対象ツリーを読み取る / ST-0
 - refactor_plan.md:3 / ルート CLAUDE.md・docs/ROADMAP.md は計画書を `REFACTORING_PLAN.md` と呼ぶが実ファイル名は `refactor_plan.md`(内容は v1.2 で一致) / 項目0-1
 - refactor_plan.md:146 / 計画書指定の `"test": "node --test test/"` は本環境 node v23.7.0 で exit 1(`test/` をモジュールとして解決し MODULE_NOT_FOUND。計画書検証環境 node 22.22.2 では動作)。node 23 互換のため `"test": "node --test 'test/**/*.test.js'"` を採用(人間承認済み。src/dist 不変・挙動不変) / 項目0-2
