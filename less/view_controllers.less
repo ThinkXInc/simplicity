@@ -1,39 +1,39 @@
 @charset "UTF-8";
 // view_controllers.less
 
-section.inputPageView {
+section.spl-inputPageView {
     display: flex;
     flex-direction: column;
     align-items: center;
     overflow-y: scroll;
-    div.inputPageViewContainer {
+    div.spl-inputPageViewContainer {
         margin: 30px 0 0 0;
         width: 29%;
-        ul.inputPageViewPages {
-            li.inputPageViewPage {
+        ul.spl-inputPageViewPages {
+            li.spl-inputPageViewPage {
                 display: flex;
                 flex-direction: column;
-                h2.inputPageViewPageTitle {
+                h2.spl-inputPageViewPageTitle {
                     font-size: 2.2rem;
                     font-weight: 100;
                     color: @text-black;
                     margin: 30px 0 20px;
                 
                 }
-                p.inputPageViewPageDescription {
+                p.spl-inputPageViewPageDescription {
                     font-weight: 100;
                     margin: 10px 0 30px;
                 
                 }
-                div.textField {
+                div.spl-textField {
                     margin: 10px 0 10px;
                     input {
                         color: @text-black;
                     }
                 }
-                div.dropdownButton {
+                div.spl-dropdownButton {
                     margin: 10px 0 10px;
-                    ul.listmenu {
+                    ul.spl-listmenu {
                         top: 10%;
                         height: 46%;
                         width: 17%;
@@ -41,32 +41,32 @@ section.inputPageView {
                     }
                 
                 }
-                div.textField:hover,
-                div.dropdownButton:hover {
+                div.spl-textField:hover,
+                div.spl-dropdownButton:hover {
                     animation: focus 200ms @cubic-bezier1 1 forwards;
                 }
-                button.nextButton {
+                button.spl-nextButton {
                     margin: 50px auto 10px auto;
                     width: 109px;
                     padding: 5px 0 5px 0;
                 }
-                button.backButton {
+                button.spl-backButton {
                     margin: 10px 0 10px;
                 
                 }
-                div.alertMessage {
+                div.spl-alertMessage {
                     p {
                         text-align: center;
                         color: @alert-red;
                     }
                 }
-                div.wrapper {
+                div.spl-wrapper {
                     display: flex;
                     flex-direction: row;
                 }
             }
             #signupViewPage1 {
-                div.inputOuter input{
+                div.spl-inputOuter input{
                     margin: 4px 0 0 0;
                 }
                 #cityProvinceWrapper {

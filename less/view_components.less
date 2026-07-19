@@ -3,8 +3,8 @@
 
 // TODO: using additional "theme" class, define variation of styles.
 // e.g. 
-//   div.TextField.themeA { .. }
-//   div.TextField.themeB { .. }
+//   div.spl-TextField.themeA { .. }
+//   div.spl-TextField.themeB { .. }
 
 @input-border: #7a7a7a;
 @input-border-hover: #202020;
@@ -19,8 +19,8 @@
 @ease2: cubic-bezier(.4, 0, .2, 1);
 
 // TextField
-div.TextField:not(.Incrementer) {
-    div.inputOuter {
+div.spl-TextField:not(.spl-Incrementer) {
+    div.spl-inputOuter {
         padding: 4px 12px;
         border: solid 1px @input-border;
         border-radius: 3px;
@@ -32,7 +32,7 @@ div.TextField:not(.Incrementer) {
         overflow-y: auto;
         position: relative;
 
-        h6.title {
+        h6.spl-title {
             font-size: 0.7rem;
             font-weight: 400;
             color: @text-gray;
@@ -42,12 +42,12 @@ div.TextField:not(.Incrementer) {
             line-height: 16px;
             position: relative;
         }
-        div.inputWrapper {
+        div.spl-inputWrapper {
             width: 100%;
             display: flex;
             flex-direction: row;
             align-items: center;
-            h6.title{
+            h6.spl-title{
                 width: 120px;
             }
             input, textarea {
@@ -73,37 +73,37 @@ div.TextField:not(.Incrementer) {
                 font-weight: 100;
                 color: @text-placeholder;
             }
-            div.inputAfter {
+            div.spl-inputAfter {
             }
         }
 
-        div.footer {
-            div.left {
+        div.spl-footer {
+            div.spl-left {
             }
-            div.middle {
+            div.spl-middle {
             }
-            div.right {
+            div.spl-right {
             }
         }
-        span.indicator {
+        span.spl-indicator {
 
         }
-        span.message {
+        span.spl-message {
 
         }
-        span.counter {
+        span.spl-counter {
             float: right;
             font-size: 0.7rem;
             color: @text-gray-light;
         }
-        p.alertMessage {
+        p.spl-alertMessage {
             color: @alert-red;
             font-size: 0.9rem;
             padding-left: 0px;
         }
         button {
             svg {
-                .cls-1, .cls-2 {
+                .spl-cls-1, .spl-cls-2 {
                     .transitionAll();
                     stroke: @icon;
                 }
@@ -111,33 +111,33 @@ div.TextField:not(.Incrementer) {
                 height: 30px;
             }
             svg:hover {
-                .cls-1, .cls-2 {
+                .spl-cls-1, .spl-cls-2 {
                     stroke: @icon-hover;
                 }
             }
         }
     }
 }
-div.TextField:not(.Incrementer).alert {
-    div.inputOuter {
+div.spl-TextField:not(.spl-Incrementer).spl-alert {
+    div.spl-inputOuter {
         border: 1px solid @alert-red;
-        h6.title {
+        h6.spl-title {
             color: @alert-red;
         }
     }
 }
-div.TextField.overMaximumTextCount {
-    div.inputOuter {
-        div.footer {
-           span.counter {
+div.spl-TextField.spl-overMaximumTextCount {
+    div.spl-inputOuter {
+        div.spl-footer {
+           span.spl-counter {
                 color: @alert-red;
             }
         }
     }
 }
-div.TextField.Incrementer {
-    div.inputOuter {
-        div.inputWrapper {
+div.spl-TextField.spl-Incrementer {
+    div.spl-inputOuter {
+        div.spl-inputWrapper {
             display: flex;
             width: max-content;
             border: 1px solid #dfdfdf;
@@ -151,8 +151,8 @@ div.TextField.Incrementer {
                 margin: 0;
             }
         }
-        div.inputAfter {
-            div.incrementButton {
+        div.spl-inputAfter {
+            div.spl-incrementButton {
                 width: 28px;
                 button {
                     img {
@@ -163,9 +163,9 @@ div.TextField.Incrementer {
         }
     }
 }
-div.TextField.Incrementer.alert {
-    div.inputOuter {
-        div.inputWrapper {
+div.spl-TextField.spl-Incrementer.spl-alert {
+    div.spl-inputOuter {
+        div.spl-inputWrapper {
             display: flex;
             width: max-content;
             border: 1px solid @alert-red;
@@ -179,8 +179,8 @@ div.TextField.Incrementer.alert {
                 margin: 0;
             }
         }
-        div.inputAfter {
-            div.incrementButton {
+        div.spl-inputAfter {
+            div.spl-incrementButton {
                 width: 28px;
                 button {
                     img {
@@ -193,7 +193,7 @@ div.TextField.Incrementer.alert {
 }
 
 // LoadButton
-button.LoadButton {
+button.spl-LoadButton {
     position: relative;
     width: 150px; // Adjust as necessary
     height: 50px; // Adjust as necessary
@@ -208,8 +208,8 @@ button.LoadButton {
         background-color 0.2s @ease,
         box-shadow 0.2s @ease;
 
-    span.LoadButtonLabel,
-    img.LoadButtonLoader {
+    span.spl-LoadButtonLabel,
+    img.spl-LoadButtonLoader {
       transition:
         opacity 0.2s @ease,
         visibility 0.2s @ease,
@@ -219,13 +219,13 @@ button.LoadButton {
       transform: translateY(-50%);
     }
 
-    span.LoadButtonLabel {
+    span.spl-LoadButtonLabel {
         left: 50%;
         transform: translate(-50%, -50%);
         opacity: 1;
     }
     
-    img.LoadButtonLoader {
+    img.spl-LoadButtonLoader {
         width: 31px;
         left: 50%;
         transform: translate(-50%, -50%);
@@ -235,40 +235,40 @@ button.LoadButton {
     &:hover {
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2)
     }
-    &.load {
+    &.spl-load {
         //width: 200px !important;
         //border-radius: 20px !important;
         background-color: #3e3e3e !important;
 
-        span.LoadButtonLabel {
+        span.spl-LoadButtonLabel {
           opacity: 0;
           visibility: hidden;
           left: 20px;
         }
     
-        img.LoadButtonLoader {
+        img.spl-LoadButtonLoader {
           opacity: 1;
           visibility: visible;
           left: 30px;
         }
     }
-    &.disable {
+    &.spl-disable {
         background-color: #656565 !important;
     }
 }
 
 // VerifyCodeForm
-div.VerifyCodeForm {
+div.spl-VerifyCodeForm {
     display: flex;
     flex-direction: column;
     align-items: center;
-    div.verifyCodeFormContainer {
+    div.spl-verifyCodeFormContainer {
         width: 24vw;
         min-width: 220px;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        input.verifyInput {
+        input.spl-verifyInput {
             width: 50px;
             height: 50px;
             border: 1px solid #aaa;
@@ -276,20 +276,20 @@ div.VerifyCodeForm {
             font-size: 2em;
             text-align: center;
         }
-        input.verifyInput:focus {
+        input.spl-verifyInput:focus {
             border-color: var(#007fb9); // FIXME: not affected
             box-shadow: var(#3e3e3e); // FIXME: not affected
         }
     }
-    p.alert {
+    p.spl-alert {
         color: @alert-red;
         font-size: 0.8em;
         margin-top: 9px;            
     }
 
-    &.alert {
-        div.verifyCodeFormContainer {
-            input.verifyInput {
+    &.spl-alert {
+        div.spl-verifyCodeFormContainer {
+            input.spl-verifyInput {
                 border: 1px solid @alert-red;
             }
         }
@@ -297,26 +297,26 @@ div.VerifyCodeForm {
 }
 
 // TermsScrollView
-div.TermsScrollView {
+div.spl-TermsScrollView {
     border-radius: 4px;
-    div.termsViewContainer {
+    div.spl-termsViewContainer {
         height: 400px;
         width: 470px;
         overflow-y: scroll;
         background-color: #f9f9f9;
         border-radius: 0px;
-        div.termsView {
+        div.spl-termsView {
             h1, h2, h3, h4 {
                 font-weight: 600;
                 padding: 7px 10px;
             }
-            h1.title {
+            h1.spl-title {
                 text-align: center;
             }
-            p.introduction {
+            p.spl-introduction {
 
             }
-            ul.section-list {
+            ul.spl-section-list {
                 padding: 10px 14px 14px 42px;
                 font-size: 0.9em;
                 list-style-type: decimal;
@@ -324,19 +324,19 @@ div.TermsScrollView {
                     padding: 5px 5px 5px 5px;
                 }
             }
-            p.agreement-notice {
+            p.spl-agreement-notice {
                 text-decoration: underline;
             }
             address {
                 padding: 5px 20px 5px 20px;
             }
-            h2.subtitle {
+            h2.spl-subtitle {
                 text-align: center;
             }
-            h3.section-title {
+            h3.spl-section-title {
 
             }
-            h4.clause-title {
+            h4.spl-clause-title {
 
             }
             p {
@@ -354,38 +354,38 @@ div.TermsScrollView {
 }
 
 // DropdownButton
-div.DropdownButton {
-    div.DropdownButtonClickable {
+div.spl-DropdownButton {
+    div.spl-DropdownButtonClickable {
         border: 1px solid @input-border;
         border-radius: 4px;
         padding: 8px 14px;
         cursor: pointer;
-        h6.description {
+        h6.spl-description {
             font-size: 11px;
             color: @text-gray;
             font-weight: 300;
         }
-        span.title {
+        span.spl-title {
             font-size: 13px;
             font-weight: 100;
             color: @text-black-light;
         }
-        img.downarrow {
+        img.spl-downarrow {
             position: relative;
             top: 0px;
             width: 12px;
             height: 12px;
             float: right;
         }
-        div.footer {
-           p.alertMessage {
+        div.spl-footer {
+           p.spl-alertMessage {
                 color: @alert-red;
                 font-size: 0.9rem;
                 padding-left: 0px;
             }
         }
     }
-    ul.listmenu {
+    ul.spl-listmenu {
         background: @bgcolor-light;
         position: absolute;
         width: 100%;
@@ -393,7 +393,7 @@ div.DropdownButton {
         border-radius: 6px;
         z-index: 2;
 
-        li.listitem {
+        li.spl-listitem {
             background-color: @bgcolor-light;
             cursor: pointer;
             padding: 10px 16px;
@@ -401,31 +401,31 @@ div.DropdownButton {
             border-bottom: 1px solid #eee;
             display: flex;
             justify-content: space-between;
-            div.listitem-title-wrap {
+            div.spl-listitem-title-wrap {
                 display: flex;
                 flex-direction: column; /* so that description is below the title */
             }
-            div.listitem-title {
+            div.spl-listitem-title {
                 font-weight: bold;
                 font-size: 13px;
             }
-            div.listitem-description {
+            div.spl-listitem-description {
                 color: #666;
                 font-size: 10px;
             }
         }
-        li.listitem:hover {
+        li.spl-listitem:hover {
             background-color: rgb(241, 241, 241);
         }
-        li.listitem.selected {
+        li.spl-listitem.spl-selected {
             background-color: #dddddd;
         }
     }
 }
-div.DropdownButton.alert {
-    div.DropdownButtonClickable {
+div.spl-DropdownButton.spl-alert {
+    div.spl-DropdownButtonClickable {
         border: 1px solid @alert-red;
-        h6.description {
+        h6.spl-description {
             color: @alert-red;
         }
     }
@@ -433,18 +433,18 @@ div.DropdownButton.alert {
 
 // KeywordsField
 
-div.KeywordsField.focus {
-    div.inputOuter {
-        div.footer {
+div.spl-KeywordsField.spl-focus {
+    div.spl-inputOuter {
+        div.spl-footer {
         }
-        p.press.show {
+        p.spl-press.spl-show {
             opacity: 1;
         }
     }
 }
-div.KeywordsField {
+div.spl-KeywordsField {
 
-    div.inputOuter {
+    div.spl-inputOuter {
         display: flex;
         align-items: center;
         flex-direction: row;
@@ -452,24 +452,24 @@ div.KeywordsField {
         border: none;
         overflow: visible;
 
-        ul.keywords {
+        ul.spl-keywords {
             display: flex;
             flex-direction: row;
             justify-content: left;
             align-items: center;
             flex-wrap: wrap;
-            li.keyword {
+            li.spl-keyword {
                 display: flex;
                 flex-direction: row;
                 justify-content: left;
                 align-items: center;
                 border-radius: 1px;
                 margin: 4px 9px 4px 0;
-                p.label {
+                p.spl-label {
                     padding: 0 8px 0 0;
                 }
-                button.delete {
-                    svg.cancelIconSVG {
+                button.spl-delete {
+                    svg.spl-cancelIconSVG {
                         cursor: pointer;
                         width: 11px;
                         height: 11px;
@@ -478,13 +478,13 @@ div.KeywordsField {
 
                 }
             }
-            li.keyword.scope {
+            li.spl-keyword.spl-scope {
                 border: 1px solid @keyword-scope-border;
                 background: @keyword-scope-bg;
             }
         }
 
-        input.keywordsform {
+        input.spl-keywordsform {
             flex: 1 0 70%;
             margin: 0;
             font-size: 1rem;
@@ -492,14 +492,14 @@ div.KeywordsField {
             min-width: 100px;
         }
 
-        input.keywordsform:focus {
+        input.spl-keywordsform:focus {
             outline: 2px solid transparent;
             outline-offset: 2px;
             margin-right: 8px;
         }
 
-        div.footer {
-            p.alertMessage {
+        div.spl-footer {
+            p.spl-alertMessage {
                 position: absolute;
                 top: 38px;
                 left: 14px;
@@ -507,19 +507,19 @@ div.KeywordsField {
                 font-size: 0.8rem;
             }
         }
-        p.press {
+        p.spl-press {
             .transitionAll(0.3s);
             opacity: 0;
             font-size: 0.8em;
         }
-        p.press strong {
+        p.spl-press strong {
             margin-left: 5px;
         }
     }
 }
-div.KeywordsField.focus {
-    div.inputOuter {
-        input.keywordsform {
+div.spl-KeywordsField.spl-focus {
+    div.spl-inputOuter {
+        input.spl-keywordsform {
             max-width: 140px;
             min-width: 100px;
         }
@@ -527,10 +527,10 @@ div.KeywordsField.focus {
 }
 
 // GradientViewLoader
-div.gradientViewIndicator {
+div.spl-gradientViewIndicator {
     width: 100%;
-    div.indicator-container {
-        div.indicator-wrapper {
+    div.spl-indicator-container {
+        div.spl-indicator-wrapper {
             padding: 6px 0 6px 0;  // this value should be correspond with the inputOuter display height
         }
         svg {
@@ -539,7 +539,7 @@ div.gradientViewIndicator {
 }
 
 // TableView
-div.TableView {
+div.spl-TableView {
     @cell-bg: #282828;
     @cell-bg-selected: #2c2c2c;
     @cell-border-bottom: #ddd;
@@ -560,13 +560,13 @@ div.TableView {
     display: flex;
     flex-direction: column;
  
-    div.tableViewContainer {
+    div.spl-tableViewContainer {
         // Styles for the overall container
         display: flex;
         flex-direction: column;
         height: 100%;
 
-        div.tableViewHeader {
+        div.spl-tableViewHeader {
             // Styles for the table header
             display: flex;
             justify-content: space-between;
@@ -574,7 +574,7 @@ div.TableView {
             border-bottom: 1px solid @header-border-bottom; // Example styling
         }
 
-        div.tableView {
+        div.spl-tableView {
             // Styles for the main table content
             display: flex;
             flex-direction: column;
@@ -587,23 +587,23 @@ div.TableView {
                 100% { transform: rotate(360deg); }
             }
             
-            img.loader {
+            img.spl-loader {
                 animation: rotate 1s @easeInSine infinite;
                 width: 44px;
                 height: 44px;
             }
 
-            div.gradientViewIndicator {
+            div.spl-gradientViewIndicator {
                 padding: 15px 23px;
             }
 
-            ul.tableListView {
+            ul.spl-tableListView {
                 // Styles for the list containing cells
                 list-style-type: none;
                 margin: 0;
                 padding: 0;
 
-                li.tableViewCell {
+                li.spl-tableViewCell {
                     // Base styles for each cell
                     cursor: pointer;
                     display: flex;
@@ -624,13 +624,13 @@ div.TableView {
                     padding @cell-insert-transition-duration @cubic-bezier1;
                     overflow: hidden;
 
-                    div.contentWrapper {
+                    div.spl-contentWrapper {
                         display: flex;
                         flex-direction: column;
                         flex-grow: 1; /* to ensure that it takes the remaining space after buttonContainer */
 
-                        div.header {
-                            span.label {
+                        div.spl-header {
+                            span.spl-label {
                                 float: right;
                                 background-color: @cell-hader-label-bg; //blue;
                                 color: @cell-header-label;
@@ -639,28 +639,28 @@ div.TableView {
                                 font-size: 0.78rem;
                                 font-weight: 200;
                             }
-                            p.title {
+                            p.spl-title {
                                 float: left;
                                 font-size: 1.2rem;
                                 font-weight: 300;
                                 color: @cell-header-title;
                             }
                         }
-                        div.body {
-                            p.text {
+                        div.spl-body {
+                            p.spl-text {
                                 color: @cell-body-text;
                                 font-weight: 100;
                                 font-size: 0.9rem;
                             }
                         }
-                        div.footer {
+                        div.spl-footer {
                             margin: 6px 0 0 0;
                             font-size: 0.7rem;
                             color: @cell-footer-text;
                         }
                     }
 
-                    div.buttonContainer {
+                    div.spl-buttonContainer {
                         position: absolute;
                         top: 0;
                         bottom: 0;
@@ -677,36 +677,36 @@ div.TableView {
                                 height: 20px;
                                 padding: 1px;
                                 background-color: transparent;
-                                .path {
+                                .spl-path {
                                     .transitionAll();
                                     fill: @button;
                                 }
                             }
                             svg:hover {
-                                .path {
+                                .spl-path {
                                     fill: @button-hover;
                                 }
                             }
-                            svg.deleteIconSVG {
+                            svg.spl-deleteIconSVG {
                             }
                         }
                     }
                 }
 
-                li.tableViewCell.selected {
+                li.spl-tableViewCell.spl-selected {
                     background-color: @cell-bg-selected;
 
-                    div.buttonContainer.right {
+                    div.spl-buttonContainer.spl-right {
                         right: 0;
                         background: linear-gradient(to left, @cell-bg-selected, @cell-bg-selected 77%, transparent);
                     }
-                    div.buttonContainer.left {
+                    div.spl-buttonContainer.spl-left {
                         left: 0;
                         background: linear-gradient(to right, @cell-bg-selected, @cell-bg-selected 77%, transparent);
                     }
                 }
 
-                li.tableViewCell.hiddenForMoveFromLeft {
+                li.spl-tableViewCell.spl-hiddenForMoveFromLeft {
                     // Insert animation
                     max-height: 0;
                     height: 0;
@@ -714,19 +714,19 @@ div.TableView {
                     padding: 0 !important;
                     transform: translateX(-20px);
                 }
-                li.tableViewCell.hiddenForFadeIn {
+                li.spl-tableViewCell.spl-hiddenForFadeIn {
                     // Insert animation
                     max-height: 0;
                     height: 0;
                     opacity: 0;
                     padding: 0;
                 }
-                li.tableViewCell.deleteByFadeOut {
+                li.spl-tableViewCell.spl-deleteByFadeOut {
                     //max-height: 0;
                     //height: 0;
                     opacity: 0;
                 }
-                li.tableViewCell.deleteByMoveToLeft {
+                li.spl-tableViewCell.spl-deleteByMoveToLeft {
                     //max-height: 0;
                     //height: 0;
                     opacity: 0;
@@ -737,7 +737,7 @@ div.TableView {
 
         }
 
-        div.tableViewFooter {
+        div.spl-tableViewFooter {
             // Styles for the table footer
             display: flex;
             justify-content: space-between;
@@ -748,7 +748,7 @@ div.TableView {
 }
 
 // ModalView
-div.ModalView {
+div.spl-ModalView {
     @bg-opacity: 0.5;
     @modal-window-bg: #ffffff;
     @content-wrapper-bg: #fff;
@@ -768,7 +768,7 @@ div.ModalView {
     @alert-red: #8c1111;
 
     // Styles for the modal's background
-    div.bg {
+    div.spl-bg {
         position: fixed;
         top: 0;
         left: 0;
@@ -779,7 +779,7 @@ div.ModalView {
     }
 
     // Styles for the modal's main window
-    div.window {
+    div.spl-window {
         position: fixed;
         top: 50%;
         left: 50%;
@@ -793,24 +793,24 @@ div.ModalView {
         overflow: hidden;
 
         // Styles for the modal's content wrapper
-        div.contentWrapper {
+        div.spl-contentWrapper {
             background-color: @content-wrapper-bg;
             padding: 20px;
             border-bottom: 1px solid #eee;
 
-            h3.ModalViewTitle {
+            h3.spl-ModalViewTitle {
                 color: @title-color;
                 font-size: 24px;
                 margin-bottom: 20px;
             }
 
-            div.mainContent {
+            div.spl-mainContent {
                 color: @text-color;
                 font-size: 16px;
                 margin-bottom: 20px;
             }
 
-            div.ModalViewAlert {
+            div.spl-ModalViewAlert {
                 color: @alert-red;
                 font-size: 0.9rem;
                 font-weight: 400;
@@ -819,7 +819,7 @@ div.ModalView {
         }
 
         // Styles for the modal's footer
-        div.modalViewFooter {
+        div.spl-modalViewFooter {
             background-color: @footer-bg;
             padding: 10px 20px;
             display: flex;
@@ -833,7 +833,7 @@ div.ModalView {
 
             }
 
-            button.cancelButton {
+            button.spl-cancelButton {
                 border: 1px solid @cancel-button-border;
                 background-color: @cancel-button-bg;
                 color: @cancel-button-text;
@@ -842,7 +842,7 @@ div.ModalView {
                     color: @cancel-button-text-hover;
                 }
             }
-            button.doneButton {
+            button.spl-doneButton {
                 border: 1px solid @done-button-border;
                 background-color: @done-button-bg;
                 color: @done-button-text;
@@ -855,16 +855,16 @@ div.ModalView {
     }
 }
 
-div.ModalView.darkStyle {
+div.spl-ModalView.spl-darkStyle {
     display: block;
     
-    div.bg {
+    div.spl-bg {
         background-color: rgba(0, 0, 0, 0.5) !important;
     }
 
-    div.window {
+    div.spl-window {
 
-        div.contentWrapper {
+        div.spl-contentWrapper {
             background-color: #2e2e2e;
             padding: 20px;
             border-bottom: 1px solid #353535;
@@ -874,18 +874,18 @@ div.ModalView.darkStyle {
             border-right: 1px solid #424040;
             //border-bottom: none;
  
-            h3.ModalViewTitle {
+            h3.spl-ModalViewTitle {
                 font-size: 18px;
                 color: #cdcdcd;
             }
-            div.mainContent {
+            div.spl-mainContent {
                 color: #ffffff;
             }
-            div.ModalViewAlert {
+            div.spl-ModalViewAlert {
             }
         }
 
-        div.footer.modalViewFooter {
+        div.spl-footer.spl-modalViewFooter {
             background-color: #2e2e2e;
             padding: 16px 16px 16px 16px;
             border-bottom: 1px solid #424040;
@@ -893,7 +893,7 @@ div.ModalView.darkStyle {
             border-right: 1px solid #424040;
             border-top: none;
             
-            button.cancelButton {
+            button.spl-cancelButton {
                 background-color: #5d5d5d;
                 color: #fff;
                 border: 1px solid #656565;
@@ -910,7 +910,7 @@ div.ModalView.darkStyle {
                 }
             }
 
-            button.doneButton {
+            button.spl-doneButton {
                 background-color: #3a3a3a;
                 color: #fff;
                 border: 1px solid #656565;

@@ -1,7 +1,7 @@
 // Notification
 @ease: cubic-bezier(.65,0,.34,1); 
 
-div.Notification {
+div.spl-Notification {
     cursor: pointer;
     position: absolute;
     z-index: 1000;
@@ -13,40 +13,40 @@ div.Notification {
     display: none;
 
     // position
-    &.top-center {
+    &.spl-top-center {
       top: 10px;
       left: 50%;
       transform: translateX(-50%);
     }
   
-    &.bottom-right {
+    &.spl-bottom-right {
       bottom: 10px;
       right: 10px;
     }
 
     // show
-    &.show {
+    &.spl-show {
       display: block;
     }
  
     // color
-    &.info {
+    &.spl-info {
       border-color: rgb(147, 147, 147);
     }
 
-    &.success {
+    &.spl-success {
       border-color: #50636a;
     }
 
-    &.warning {
+    &.spl-warning {
       border-color: orange;
     }
 
-    &.error {
+    &.spl-error {
       border-color: red;
     }
 
-    p.NotificationMessage {
+    p.spl-NotificationMessage {
       margin: 0;
       padding: 0;
       color: #525252;
@@ -55,11 +55,11 @@ div.Notification {
     }
  
     // animation
-    &.fade-in-from-top {
+    &.spl-fade-in-from-top {
       animation: fadeInFromTop 1s @ease;
     }
   
-    &.fade-in {
+    &.spl-fade-in {
       animation: fadeIn 0.5s @ease;
     }
  
@@ -83,7 +83,7 @@ div.Notification {
       }
     }
  
-    &.fade-out {
+    &.spl-fade-out {
       animation: fadeOut 1s @ease forwards;
     }
   
