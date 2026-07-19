@@ -1,0 +1,87 @@
+@charset "UTF-8";
+section.spl-inputPageView {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: scroll;
+}
+section.spl-inputPageView div.spl-inputPageViewContainer {
+  margin: 30px 0 0 0;
+  width: 29%;
+}
+section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage {
+  display: flex;
+  flex-direction: column;
+}
+section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage h2.spl-inputPageViewPageTitle {
+  font-size: 2.2rem;
+  font-weight: 100;
+  color: #000;
+  margin: 30px 0 20px;
+}
+section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage p.spl-inputPageViewPageDescription {
+  font-weight: 100;
+  margin: 10px 0 30px;
+}
+section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage div.spl-textField {
+  margin: 10px 0 10px;
+}
+section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage div.spl-textField input {
+  color: #000;
+}
+section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage div.spl-dropdownButton {
+  margin: 10px 0 10px;
+}
+section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage div.spl-dropdownButton ul.spl-listmenu {
+  top: 10%;
+  height: 46%;
+  width: 17%;
+  overflow-y: scroll;
+}
+section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage div.spl-textField:hover,
+section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage div.spl-dropdownButton:hover {
+  animation: focus 200ms cubic-bezier(0.65, 0, 0.34, 1) 1 forwards;
+}
+section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage button.spl-nextButton {
+  margin: 50px auto 10px auto;
+  width: 109px;
+  padding: 5px 0 5px 0;
+}
+section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage button.spl-backButton {
+  margin: 10px 0 10px;
+}
+section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage div.spl-alertMessage p {
+  text-align: center;
+  color: #8c1111;
+}
+section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage div.spl-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages #signupViewPage1 div.spl-inputOuter input {
+  margin: 4px 0 0 0;
+}
+section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages #signupViewPage1 #cityProvinceWrapper {
+  flex-direction: row;
+}
+section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages #signupViewPage1 #signupViewCityTextField {
+  width: 48%;
+  display: inline-flex;
+  margin-right: 26px;
+}
+section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages #signupViewPage1 #signupViewProvinceTextField {
+  width: 48%;
+  display: inline-flex;
+}
+section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages #signupViewPage1 #signupViewPositionMap #map {
+  width: 100%;
+  height: 200px;
+}
+@keyframes focus {
+  0% {
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0);
+  }
+  100% {
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.22);
+  }
+}
