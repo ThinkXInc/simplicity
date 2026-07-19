@@ -47,7 +47,7 @@ class ColorPicker {
         const $colorInput = document.createElement('input');
         $colorInput.type = 'color';
         $colorInput.value = this.defaultColor;
-        $colorInput.classList.add('input');
+        $colorInput.classList.add('spl-input');
         $colorInput.classList.add(`${this.id}Input`);
         this.$colorInput = $colorInput;
         this.$colorInput.style.position = 'absolute';

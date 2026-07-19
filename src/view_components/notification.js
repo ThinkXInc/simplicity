@@ -17,15 +17,15 @@ Usage:
 
 */
 const NotificationPosition = Object.freeze({
-    topCenter: 'top-center',
-    bottomRight: 'bottom-right'
+    topCenter: 'spl-top-center',
+    bottomRight: 'spl-bottom-right'
 });
 
 const NotificationType = Object.freeze({
-    info: 'info',
-    success: 'success',
-    warning: 'warning',
-    error: 'error'
+    info: 'spl-info',
+    success: 'spl-success',
+    warning: 'spl-warning',
+    error: 'spl-error'
 });
 
 const NotificationDuration = Object.freeze({
@@ -34,9 +34,9 @@ const NotificationDuration = Object.freeze({
 });
 
 const NotificationAnimationType = Object.freeze({
-    fadeInFromTop: 'fade-in-from-top',  // FIXME: not work properly
-    fadeIn: 'fade-in',
-    fadeOut: 'fade-out'
+    fadeInFromTop: 'spl-fade-in-from-top',  // FIXME: not work properly
+    fadeIn: 'spl-fade-in',
+    fadeOut: 'spl-fade-out'
 });
 
 class Notification {
@@ -52,10 +52,10 @@ class Notification {
         console.log('[Notification] Creating element');
         this.$view = document.createElement('div');
         this.$view.id = this.id;
-        this.$view.classList.add('Notification', this.position);
+        this.$view.classList.add('spl-Notification', this.position);
 
         this.$message = document.createElement('p');
-        this.$message.classList.add('NotificationMessage');
+        this.$message.classList.add('spl-NotificationMessage');
         this.$view.appendChild(this.$message);
     }
 
@@ -83,7 +83,7 @@ class Notification {
     show({ message, type = NotificationType.info, animationType = NotificationAnimationType.fadeIn, duration = NotificationDuration.short }) {
         console.log('[Notification] Showing notification of type ' + type);
         this.$message.textContent = message;
-        this.$view.classList.add(type, animationType, 'show');
+        this.$view.classList.add(type, animationType, 'spl-show');
 
         if (duration !== NotificationDuration.forever) {
             setTimeout(() => {
@@ -97,7 +97,7 @@ class Notification {
         console.log('[Notification] Hiding notification');
         this.$view.classList.add(NotificationAnimationType.fadeOut);
         setTimeout(() => {
-            this.$view.classList.remove('show');
+            this.$view.classList.remove('spl-show');
             console.log('[Notification] Notification removed from DOM');
         }, 500); // Assume fade-out animation takes 500ms
     }

@@ -28,12 +28,12 @@ class AlertMessageComponentBase extends ViewComponentBase {
         super._setElements(this.config.htmlTag);
     
         // Additional setup specific to AlertMessage
-        this.$view.classList.add('AlertMessage');
+        this.$view.classList.add('spl-AlertMessage');
 
         // create message element and hide it by default
         this.$message = document.createElement('p');
         this.$message.id = this.id + '__message';
-        this.$message.classList.add('AlertMessage__message');
+        this.$message.classList.add('spl-AlertMessage__message');
         this.$message.style.display = 'none';  // Initially hidden
         this.$view.appendChild(this.$message);
     }

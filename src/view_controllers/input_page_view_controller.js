@@ -154,13 +154,13 @@ class InputPageViewController {
                 `The id=${this.id} is necessary in HTML.`);
         }
         $inputPageView.id = this.id;
-        $inputPageView.classList.add('inputPageView')
+        $inputPageView.classList.add('spl-inputPageView')
         this.$inputPageView = $inputPageView;
         this.$view = $inputPageView;
 
         // create container
         let $container = document.createElement('div');
-        $container.id = 'inputPageViewContainer';
+        $container.id = 'spl-inputPageViewContainer';
         $container.classList.add($container.id);
         this.$inputPageView.appendChild($container);
 
@@ -172,7 +172,7 @@ class InputPageViewController {
         // create pages
         console.log(`${pages.length} pages detected.`)
         let $pagesContainer = document.createElement('div');
-        $pagesContainer.classList.add('inputPageViewPages');
+        $pagesContainer.classList.add('spl-inputPageViewPages');
 
         pages.forEach((page, i) => {
             console.log(`${this.id} page ${i} has ${page.components.length} components.`);
@@ -203,7 +203,7 @@ class InputPageViewController {
         if (component.constructor.name == "Wrapper") {
             let $wrapper = document.createElement('div');
             $wrapper.id = component.id;
-            $wrapper.classList.add('wrapper');
+            $wrapper.classList.add('spl-wrapper');
             component.components.forEach((componentInWrapper, k) => {
                 this._setPageComponent(componentInWrapper, $wrapper, pageIndex, k);
                 componentInWrapper.addTo($wrapper.id);
@@ -272,7 +272,7 @@ class InputPageViewController {
     }
 
     showPageOnly(pageIndex) {
-        let $pages = this.$inputPageView.querySelectorAll('.inputPageViewPage')
+        let $pages = this.$inputPageView.querySelectorAll('.spl-inputPageViewPage')
         $pages.forEach(($page, i) => {
             if (parseInt($page.dataset.pageIndex) == pageIndex) {
                 this.showPage($page);
@@ -283,27 +283,27 @@ class InputPageViewController {
     }
 
     showAllPages() {
-        let $pages = this.$inputPageView.querySelectorAll('.inputPageViewPage')
+        let $pages = this.$inputPageView.querySelectorAll('.spl-inputPageViewPage')
         $pages.forEach(($page, i) => {
             this.showPage($page);
         })
     }
 
     hideAllPages() {
-        let $pages = this.$inputPageView.querySelectorAll('.inputPageViewPage')
+        let $pages = this.$inputPageView.querySelectorAll('.spl-inputPageViewPage')
         $pages.forEach(($page, i) => {
             this.hidePage($page);
         })
     }
 
     showPage($page) {
-        if (!this.preventDefaultPageControl) {$page.classList.add('show')};
+        if (!this.preventDefaultPageControl) {$page.classList.add('spl-show')};
         $page.style.display = "flex";
         $page.style.flexDirection = "column";
     }
 
     hidePage($page) {
-        $page.classList.remove('show');
+        $page.classList.remove('spl-show');
         $page.style.display = "none";
     }
 

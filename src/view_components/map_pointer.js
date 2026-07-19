@@ -238,9 +238,9 @@ class MapPointer extends google.maps.OverlayView {
         // container element
         this.$mapPointer = document.createElement('div');
         this.$mapPointer.id = this.id;
-        this.$mapPointer.classList.add('mapPointer');
-        if (this._options.length == 1 ) {this.$mapPointer.classList.add('single');}
-        if (this._options.length == 2 ) {this.$mapPointer.classList.add('double');}
+        this.$mapPointer.classList.add('spl-mapPointer');
+        if (this._options.length == 1 ) {this.$mapPointer.classList.add('spl-single');}
+        if (this._options.length == 2 ) {this.$mapPointer.classList.add('spl-double');}
         if (this.$mapPointer == null) {
             console.warn(`<div id=${this.id} class=mapPointer> is necessary.`)
         }
@@ -249,7 +249,7 @@ class MapPointer extends google.maps.OverlayView {
         let $arrow = document.createElement('img');
         $arrow.src = this.__image_arrow_src__;
         $arrow.srcset = this.__image_arrow_src_2x__;
-        $arrow.classList.add('arrow');
+        $arrow.classList.add('spl-arrow');
         this.$mapPointer.appendChild($arrow);
         this.$arrow = $arrow;
         if (this.$arrow == null) {
@@ -258,7 +258,7 @@ class MapPointer extends google.maps.OverlayView {
 
         // select items container
         let $listMenu = document.createElement('ul');
-        $listMenu.classList.add('listMenu');
+        $listMenu.classList.add('spl-listMenu');
         this.$mapPointer.appendChild($listMenu);
         this.$listMenu = $listMenu;
         if (this.$listMenu == null) {
@@ -268,7 +268,7 @@ class MapPointer extends google.maps.OverlayView {
         // set items
         this._options.forEach((option) => {
             let $listItem = document.createElement('li');
-            $listItem.classList.add('listItem');
+            $listItem.classList.add('spl-listItem');
             $listItem.dataset.value = option.value;
             $listItem.dataset.action = option.action;
             $listItem.innerHTML = option.title;
@@ -279,7 +279,7 @@ class MapPointer extends google.maps.OverlayView {
         const panes = this.getPanes();
         //panes.overlayLayer.appendChild(this.$mapPointer);
         panes.overlayMouseTarget.appendChild(this.$mapPointer);
-        this.$mapPointer.classList.add('show');
+        this.$mapPointer.classList.add('spl-show');
 
         // set state
         this.state = MapPointerState.onshow;
@@ -358,7 +358,7 @@ class MapPointer extends google.maps.OverlayView {
         const interval = 1000;
         let timeOutID;
         // start animation
-        this.$mapPointer.classList.add('close');
+        this.$mapPointer.classList.add('spl-close');
         timeOutID = window.setTimeout(()=>{
             // set state
             _this.state = MapPointerState.onclosecomplete;

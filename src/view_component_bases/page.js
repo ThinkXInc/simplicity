@@ -26,7 +26,7 @@ class Page {
         // create page DOM element
         this.$view = document.createElement('div');
         this.$view.id = this.id;
-        this.$view.classList.add('inputPageViewPage');
+        this.$view.classList.add('spl-inputPageViewPage');
         this.$view.classList.add(this.id);
         this.$view.dataset.pageIndex = pageIndex;
         debuglog(`page elementId=${this.id} is created. (page index ${pageIndex})`)

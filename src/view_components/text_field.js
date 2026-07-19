@@ -3,11 +3,11 @@ const TextFieldState = Object.freeze({ empty: 0, filled: 1, overmaximum: 2, });
 const TextFieldType = Object.freeze({ singleline: 0, multiplelines: 1, });
 
 const TextFieldPlaceTo = Object.freeze({ 
-    inputOuter: '.inputOuter', 
-    inputAfter: '.inputOuter .inputAfter', 
-    footerLeft: '.footer .left', 
-    footerMiddle: '.inputOuter .footer .middle', 
-    footerRight: '.inputOuter .footer .right' 
+    inputOuter: '.spl-inputOuter', 
+    inputAfter: '.spl-inputOuter .spl-inputAfter', 
+    footerLeft: '.spl-footer .spl-left', 
+    footerMiddle: '.spl-inputOuter .spl-footer .spl-middle', 
+    footerRight: '.spl-inputOuter .spl-footer .spl-right' 
 });
 
 /**
@@ -44,9 +44,9 @@ class TextField {
         placeholder = "",
         counterFormat = `$count/$maxcount`,
         passwordMode = false,
-        onDisableClassName = 'disable',
-        onFocusClassName = 'focus',
-        onMouseDownClassName = 'clicked',
+        onDisableClassName = 'spl-disable',
+        onFocusClassName = 'spl-focus',
+        onMouseDownClassName = 'spl-clicked',
         shouldTrackLocalChangeInCookie = true,
         cookieExclude = false,
         cookiePrefix = '',
@@ -150,7 +150,7 @@ class TextField {
 
     set value(value) {
         if (typeof value === 'string' || value == null) {
-            debuglog(`Set value "${value}" to the textField.text.`)
+            debuglog(`Set value "${value}" to the textField.spl-text.`)
             this.text = value;
         } else {
             console.error(`TextField value must be a string or null, but got ${typeof value} : ${value}`);
@@ -182,10 +182,10 @@ class TextField {
                 } else {
                     if (this.savedValue != null && text != this.savedValue) {
                         debuglog(`value:${text} != savedValue:${this.savedValue} -> edited`)
-                        this.$textField.classList.add('edited');
+                        this.$textField.classList.add('spl-edited');
                     } else {
                         debuglog(`value:${text} == savedValue:${this.savedValue} -> remove edited`)
-                        this.$textField.classList.remove('edited');
+                        this.$textField.classList.remove('spl-edited');
                     }
                 }
             } else {
@@ -235,15 +235,15 @@ class TextField {
         switch (this.textFieldState) {
             case TextFieldState.empty:
                 debuglog(`TextField ${this.id} state changed -> empty`);
-                this.$textField.classList.remove('overMaximumTextCount');
+                this.$textField.classList.remove('spl-overMaximumTextCount');
                 break
             case TextFieldState.filled:
                 debuglog(`TextField ${this.id} state changed -> filled`);
-                this.$textField.classList.remove('overMaximumTextCount');
+                this.$textField.classList.remove('spl-overMaximumTextCount');
                 break
             case TextFieldState.overmaximum:
                 debuglog(`TextField ${this.id} state changed -> overmaximum`);
-                this.$textField.classList.add('overMaximumTextCount');
+                this.$textField.classList.add('spl-overMaximumTextCount');
                 break
         }
     }
@@ -265,25 +265,25 @@ class TextField {
         this.$view = document.createElement('div');
         this.$view.id = this.id;
         this.$view.classList.add(`${this.id}`);
-        this.$view.classList.add(`${this.constructor.name}`);
+        this.$view.classList.add(`spl-${this.constructor.name}`);
  
         // textField
         this.$textField = this.$view;
         this.$textField ?? console.warn(`<section id=${this.id} class=textField></section> is necessary in HTML.`);
-        this.$textField.className = 'TextField';
+        this.$textField.className = 'spl-TextField';
         this.$textField.classList.add(this.id);
     
         // create new elements
         const $inputOuter = document.createElement('div');
-        $inputOuter.className = 'inputOuter';
+        $inputOuter.className = 'spl-inputOuter';
         this.$inputOuter = $inputOuter;
 
         const $inputWrapper = document.createElement('div');
-        $inputWrapper.className = 'inputWrapper';
+        $inputWrapper.className = 'spl-inputWrapper';
         this.$inputWrapper = $inputWrapper;
     
         const $title = document.createElement('h6');
-        $title.className = 'title';
+        $title.className = 'spl-title';
         $title.textContent = this.title;
         if (this.isTitlePlacedAtInputLeft) {
             $inputWrapper.appendChild($title);
@@ -311,25 +311,25 @@ class TextField {
 
         // tail box
         const $inputAfter = document.createElement('div');
-        $inputAfter.className = 'inputAfter';
+        $inputAfter.className = 'spl-inputAfter';
         $inputWrapper.appendChild($inputAfter);
         this.$inputAfter = $inputAfter;
 
         // footer
         const $footer = document.createElement('div');
-        $footer.className = 'footer';
+        $footer.className = 'spl-footer';
         $inputOuter.appendChild($footer);
         this.$footer = $footer;
 
         // Create the footer columns
         const $leftColumn = document.createElement('div');
-        $leftColumn.className = 'left';
+        $leftColumn.className = 'spl-left';
         this.$leftColumn = $leftColumn;
         const $middleColumn = document.createElement('div');
-        $middleColumn.className = 'middle';
+        $middleColumn.className = 'spl-middle';
         this.$middleColumn = $middleColumn;
         const $rightColumn = document.createElement('div');
-        $rightColumn.className = 'right';
+        $rightColumn.className = 'spl-right';
         this.$rightColumn = $rightColumn;
 
         const places = {
@@ -341,15 +341,15 @@ class TextField {
         };
         
         // Append elements to appropriate columns based on config
-        ['indicator', 'message', 'counter'].forEach(elem => {
+        [['indicator', 'spl-indicator'], ['message', 'spl-message'], ['counter', 'spl-counter']].forEach(([elem, elemClassName]) => {
             const $elem = document.createElement('span');
-            $elem.className = elem;
+            $elem.className = elemClassName;
             this[`$${elem}`] = $elem;
         });
 
-        ['doneButton', 'cancelButton'].forEach(elem => {
+        [['doneButton', 'spl-doneButton'], ['cancelButton', 'spl-cancelButton']].forEach(([elem, elemClassName]) => {
             const $elem = document.createElement('button');
-            $elem.className = elem;
+            $elem.className = elemClassName;
             this[`$${elem}`] = $elem;
         })
 
@@ -370,24 +370,24 @@ class TextField {
         }
         if (this.hasUnit) {
             const $unit = document.createElement('span');
-            $unit.classList.add('unit');
+            $unit.classList.add('spl-unit');
             $unit.textContent = this.unit;
             places[this.unitPlace].appendChild($unit);
         }
 
         if (this.isIncrementer) {
-            this.$view.classList.add('Incrementer');
+            this.$view.classList.add('spl-Incrementer');
             this.$incrementButton = document.createElement('div');
-            this.$incrementButton.className = 'incrementButton';
+            this.$incrementButton.className = 'spl-incrementButton';
             this.$incrementUp = document.createElement('button');
-            this.$incrementUp.classList.add('incrementUp');
+            this.$incrementUp.classList.add('spl-incrementUp');
             this.$incrementDown = document.createElement('button');
-            this.$incrementDown.classList.add('incrementDown');
+            this.$incrementDown.classList.add('spl-incrementDown');
             const $upImg = document.createElement('img');
-            $upImg.classList.add('up')
+            $upImg.classList.add('spl-up')
             $upImg.src = this.incrementUpImgSrc;
             const $downImg = document.createElement('img');
-            $downImg.classList.add('down')
+            $downImg.classList.add('spl-down')
             $downImg.src = this.incrementDownImgSrc;
             this.$incrementUp.appendChild($upImg);
             this.$incrementDown.appendChild($downImg);
@@ -624,7 +624,7 @@ class TextField {
         const $alertMessage = document.getElementById(this.alertMessageId);
         if ($alertMessage) {
             console.log('remove alert message in ', this.id)
-            this.$textField.classList.remove('alert');
+            this.$textField.classList.remove('spl-alert');
             $alertMessage.remove();
         }
 
@@ -636,15 +636,15 @@ class TextField {
                 [TextFieldPlaceTo.footerMiddle]: this.$middleColumn,
                 [TextFieldPlaceTo.footerRight]: this.$rightColumn
             };
-            this.$textField.classList.add('alert');
+            this.$textField.classList.add('spl-alert');
             const $newAlertMessage = document.createElement('p');
             $newAlertMessage.id = this.alertMessageId;
-            $newAlertMessage.classList.add('alertMessage');
+            $newAlertMessage.classList.add('spl-alertMessage');
             $newAlertMessage.innerText = message;
             const alertContainer = places[this.alertPlace];
             console.log(`append alert "${message}"`, alertContainer);
             alertContainer.appendChild($newAlertMessage);
-            this.$footer.classList.add('alert');
+            this.$footer.classList.add('spl-alert');
         }
     }
 

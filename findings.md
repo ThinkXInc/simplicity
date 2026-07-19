@@ -147,6 +147,33 @@
   宣言不変)+ check_no_legacy_classes 旧名残存0。**ST-6 完了までは CSS=新名・JS=旧名の
   計画上の中間状態**であり、スクショ回帰と gallery CSSマッチはこの間一致しない(計画の
   項目順序どおり。ST-6 のゲートで復帰を判定する) / ST-5
+- migration/apply_rename.js の初版 js モード欠陥(ST-6 で実測・修正済み) / 正規表現による
+  引用符スキャンがコメント中のアポストロフィ("doesn't" 等)を引用符と誤認し、コード領域を
+  文字列として dot-form 置換した(実害例: keywords_field.js `this.keywords` →
+  `this.spl-keywords`)。src を全戻しし、@babel/parser のトークン列(文字列リテラル/
+  テンプレート片のみ・コメントと `${}` 内コードは対象外)ベースへ書き直して再適用。
+  check_no_legacy_classes にも同方式の --js モードを追加(`.error` 等のプロパティアクセス
+  誤検知の排除)。追随キットは本修正版を使うこと / ST-6
+- ST-6 適用の記録(2026-07-19) / (1) トークンベース js モードで src 51ファイルに 224置換
+  (再実行 0 = 冪等)。(2) constructor.name 由来のクラス付与4箇所
+  (view_component_base:82・loading_base:42・gradient_loading_bar:42・text_field:268)を
+  `spl-${this.constructor.name}` へ一律前置 — **写像表に無い名前(NextButton/BackButton/
+  Button/Title/Mesh 等)も D-36 の一律規則により spl- が付く**(合成形
+  `${page.id}__${constructor.name}` は動的なので両側とも不変)。(3) 手動確認リストの裁定:
+  クラス実体の定数・enum値を改名(keywords_field クラス名定数5・screen_lock LOCK_CLASS・
+  ModalViewStyle.DARK・Notification の position/type/animation 値・TableView/Cell の
+  *ClassName 既定値・text_field の onDisable/onFocus/onMouseDown 既定値と
+  indicator/message/counter/doneButton/cancelButton 生成クラス・ipvc の
+  container id 兼クラス文字列・svg_icons の class 属性13件)。イベント名('selected'・
+  'load'・'focus')・createElement/type 引数('input'・'text'・'label')・locale/ID部品
+  ('TextField'・'title')・style値('left'/'right')・ログ文字列は改名対象外と判定。
+  (4) t07 golden は規則(map 適用/constructor 名は spl- 前置/t-*・legacy-* の id 由来は不変)で
+  機械再写像。(5) ゲート: t01-t07 10/10・lint OK・typecheck 0・manifest OK・
+  gallery 30/30+CSSマッチ golden 意図的再凍結・旧名 grep 0(src/preview/test —
+  test/helpers/probe.js の `.message`/`.error` 2件はコード文字列の誤検知で対象外)・
+  **ギャラリースクショが ST-3 凍結 golden と画素一致(maxDiffPixels 0)= 知覚不変の機械証明**。
+  dist sha 9c606cd51587fbdcb8cef6e203ac4c7f250c0052849ce0381dcc8f9471101c67。
+  site fixture 4ページのスクショは quantz 側資産が旧名のため過渡的に不一致(ST-7 で復帰) / ST-6
 - /Users/K00TSUKA/Sources/quantz-web:master / ローカル master は eab6fd049b2c69c7578b8be288245be5c961902d、ローカル保存 ref origin/master は計画対象 99a9488714b94e227ecec54340df031419c5d1e2。計画書 §5.1 の「clone は ff 追随済み」と不一致。quantz-web 書き込み禁止のため checkout/pull は行わず、git grep/show origin/master で対象ツリーを読み取る / ST-0
 - refactor_plan.md:3 / ルート CLAUDE.md・docs/ROADMAP.md は計画書を `REFACTORING_PLAN.md` と呼ぶが実ファイル名は `refactor_plan.md`(内容は v1.2 で一致) / 項目0-1
 - refactor_plan.md:146 / 計画書指定の `"test": "node --test test/"` は本環境 node v23.7.0 で exit 1(`test/` をモジュールとして解決し MODULE_NOT_FOUND。計画書検証環境 node 22.22.2 では動作)。node 23 互換のため `"test": "node --test 'test/**/*.test.js'"` を採用(人間承認済み。src/dist 不変・挙動不変) / 項目0-2

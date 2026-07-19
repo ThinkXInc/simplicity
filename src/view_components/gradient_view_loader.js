@@ -62,15 +62,15 @@ class GradientViewLoader {
     createElements() {
         const $view = document.createElement('div');
         $view.id = this.id;
-        $view.classList.add('gradientViewIndicator');
+        $view.classList.add('spl-gradientViewIndicator');
         $view.classList.add(this.id);
         this.$view = $view;
 
         const $container = document.createElement('div');
-        $container.className = 'indicator-container';
+        $container.className = 'spl-indicator-container';
 
         const $indicatorWrapper = document.createElement('div');
-        $indicatorWrapper.className = 'indicator-wrapper';
+        $indicatorWrapper.className = 'spl-indicator-wrapper';
         $indicatorWrapper.style.minWidth = `${this.indicatorWidth}px`;
 
         const $svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');

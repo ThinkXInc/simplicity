@@ -230,41 +230,41 @@ class DropdownButton {
     _createElements() {
         this.$view = document.createElement(this.htmlTag);
         this.$view.id = this.id;
-        this.$view.classList.add('DropdownButton');
+        this.$view.classList.add('spl-DropdownButton');
 
         // Create and configure clickable area
         let $dropdownButtonClickable = document.createElement('div');
-        $dropdownButtonClickable.className = "DropdownButtonClickable cf";
+        $dropdownButtonClickable.className = "spl-DropdownButtonClickable spl-cf";
         this.$view.appendChild($dropdownButtonClickable);
 
         // Create and configure description
         let $description = document.createElement('h6');
-        $description.className = "description";
+        $description.className = "spl-description";
         $description.textContent = this.description;
         $dropdownButtonClickable.appendChild($description);
 
         // Create and configure title
         let $title = document.createElement('span');
-        $title.className = "title";
+        $title.className = "spl-title";
         $title.textContent = this.title;
         $dropdownButtonClickable.appendChild($title);
 
         // Create and configure down arrow image
         let $downArrowImg = document.createElement('img');
-        $downArrowImg.className = "downarrow";
+        $downArrowImg.className = "spl-downarrow";
         $downArrowImg.src = this.arrowIconPath;  // Use the initialized arrowIconPath
         $dropdownButtonClickable.appendChild($downArrowImg);
 
         // Create footer area
         let $footer = document.createElement('div');
-        $footer.className = 'footer cf';
+        $footer.className = 'spl-footer spl-cf';
         $dropdownButtonClickable.appendChild($footer);
         this.$footer = $footer;
 
         // set list menu if type is list or widelist
         if (this.type == DropdownMenuType.list || this.type == DropdownMenuType.widelist) {
             const $listMenu = document.createElement('ul');
-            $listMenu.className = 'listmenu';
+            $listMenu.className = 'spl-listmenu';
             $listMenu.style.display = 'none';
             this.$view.appendChild($listMenu);
             this.$listMenu = $listMenu;
@@ -273,8 +273,8 @@ class DropdownButton {
         }
 
         // Assign class properties to corresponding elements for easy access
-        this.$title = this.$view.querySelector('.title');
-        this.$dropdownButtonClickable = this.$view.querySelector('.DropdownButtonClickable');
+        this.$title = this.$view.querySelector('.spl-title');
+        this.$dropdownButtonClickable = this.$view.querySelector('.spl-DropdownButtonClickable');
 
         if (!this.$title) console.warn(`<span class=title></span> is necessary in HTML.`);
         if (!this.$dropdownButtonClickable) console.warn(`<div class=dropdownButtonClickable></div> is necessary in HTML.`);
@@ -287,25 +287,25 @@ class DropdownButton {
         console.log(`set ${items.length} list menu items into ${this.id}.`)
         items.forEach((item) => {
             let $item = document.createElement('li');
-            $item.className = "listitem";
+            $item.className = "spl-listitem";
             $item.dataset.value = item.value;
             $item.dataset.title = item.title;
             $item.dataset.description = item.description;
 
             // -- create a container for the text lines
             let $titleWrap = document.createElement('div');
-            $titleWrap.className = 'listitem-title-wrap';
+            $titleWrap.className = 'spl-listitem-title-wrap';
         
             // main title
             let $titleText = document.createElement('div');
-            $titleText.className = 'listitem-title';
+            $titleText.className = 'spl-listitem-title';
             $titleText.textContent = item.title;
             $titleWrap.appendChild($titleText);
 
             // optional description (below the title)
             if (item.description) {
                 let $descText = document.createElement('div');
-                $descText.className = 'listitem-description';
+                $descText.className = 'spl-listitem-description';
 
                 // If we want to truncate it
                 if (this.descriptionClipLength > 0 &&
@@ -322,7 +322,7 @@ class DropdownButton {
 
             if (this.hasSelectedIcon){ 
                 let $checkIcon = document.createElement('img');
-                $checkIcon.className = 'selected-icon';
+                $checkIcon.className = 'spl-selected-icon';
                 $checkIcon.src = this.selectedIconPath;
                 $checkIcon.style.width = '16px';  // or whatever
                 $checkIcon.style.visibility = 'hidden';  // hide by default
@@ -415,12 +415,12 @@ class DropdownButton {
 
     _setStyleSelect($item, select) {
         if (select) {
-            $item.classList.add('selected');
-            let $icon = $item.querySelector('.selected-icon');
+            $item.classList.add('spl-selected');
+            let $icon = $item.querySelector('.spl-selected-icon');
             if ($icon) $icon.style.visibility = 'visible';
         } else {
-            $item.classList.remove('selected');
-            let $icon = $item.querySelector('.selected-icon');
+            $item.classList.remove('spl-selected');
+            let $icon = $item.querySelector('.spl-selected-icon');
             if ($icon) $icon.style.visibility = 'hidden';
         }
     }
@@ -430,7 +430,7 @@ class DropdownButton {
         if (!this.$listMenu) return;
     
         // 1. Un-select everything first.
-        const $listItems = this.$listMenu.querySelectorAll('.listitem');
+        const $listItems = this.$listMenu.querySelectorAll('.spl-listitem');
         $listItems.forEach($item => {
             this._setStyleSelect($item, false);
         });
@@ -438,7 +438,7 @@ class DropdownButton {
         // 2. Now select the relevant items.
         if (!this.isMultiSelect) {
             // Single selection
-            const $match = this.$listMenu.querySelector(`.listitem[data-value="${this._selectedValue}"]`);
+            const $match = this.$listMenu.querySelector(`.spl-listitem[data-value="${this._selectedValue}"]`);
             if ($match) {
                 this._setStyleSelect($match, true);
             }
@@ -446,7 +446,7 @@ class DropdownButton {
             // Multi-selection
             if (Array.isArray(this._selectedValue)) {
                 this._selectedValue.forEach(val => {
-                    const $match = this.$listMenu.querySelector(`.listitem[data-value="${val}"]`);
+                    const $match = this.$listMenu.querySelector(`.spl-listitem[data-value="${val}"]`);
                     if ($match) {
                         this._setStyleSelect($match, true);
                     }
@@ -493,7 +493,7 @@ class DropdownButton {
     alert(onAlert, message) {
         const alertId = this.id + '_alert';
         let $parent = this.$view;
-        let $footer = $parent.querySelector('.footer');
+        let $footer = $parent.querySelector('.spl-footer');
         if (onAlert && typeof onAlert === 'string') {
             message = onAlert;
             onAlert = true;
@@ -501,13 +501,13 @@ class DropdownButton {
 
         if (onAlert) {
             // add alert to css
-            $parent.classList.add('alert');
+            $parent.classList.add('spl-alert');
             let $alertMessage = document.getElementById(alertId);
 
             if (!$alertMessage) {
                 // if no alertMessage exists, add new alert message
                 $alertMessage = document.createElement('p');
-                $alertMessage.classList.add('alertMessage');
+                $alertMessage.classList.add('spl-alertMessage');
                 $alertMessage.id = alertId;
                 $footer.appendChild($alertMessage);
             }
@@ -520,7 +520,7 @@ class DropdownButton {
                 return;
             } else {
                 // remove alert
-                $parent.classList.remove('alert');
+                $parent.classList.remove('spl-alert');
                 if ($alertMessage) {
                     $footer.removeChild($alertMessage);
                 }

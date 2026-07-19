@@ -5,7 +5,10 @@
       "name": "Button",
       "hasView": true,
       "tag": "DIV",
-      "classes": ["t-button", "Button"],
+      "classes": [
+        "t-button",
+        "spl-Button"
+      ],
       "text": "Back"
     }
   },
@@ -15,7 +18,10 @@
       "name": "Title",
       "hasView": true,
       "tag": "H2",
-      "classes": ["t-title", "Title"],
+      "classes": [
+        "t-title",
+        "spl-Title"
+      ],
       "text": ""
     }
   },
@@ -25,7 +31,11 @@
       "name": "NextButton",
       "hasView": true,
       "tag": "BUTTON",
-      "classes": ["t-nextbutton", "NextButton", "nextButton"],
+      "classes": [
+        "t-nextbutton",
+        "spl-NextButton",
+        "spl-nextButton"
+      ],
       "text": "Next"
     }
   },
@@ -35,7 +45,11 @@
       "name": "BackButton",
       "hasView": true,
       "tag": "BUTTON",
-      "classes": ["t-backbutton", "BackButton", "backButton"],
+      "classes": [
+        "t-backbutton",
+        "spl-BackButton",
+        "spl-backButton"
+      ],
       "text": "Back"
     }
   },
@@ -43,7 +57,11 @@
     "ok": true,
     "value": {
       "tag": "BUTTON",
-      "classes": ["legacy-NextButton", "NextButton", "nextButton"],
+      "classes": [
+        "legacy-NextButton",
+        "spl-NextButton",
+        "spl-nextButton"
+      ],
       "text": "NextButton label"
     }
   },
@@ -51,7 +69,11 @@
     "ok": true,
     "value": {
       "tag": "BUTTON",
-      "classes": ["legacy-BackButton", "BackButton", "backButton"],
+      "classes": [
+        "legacy-BackButton",
+        "spl-BackButton",
+        "spl-backButton"
+      ],
       "text": "BackButton label"
     }
   },

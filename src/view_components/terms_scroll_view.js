@@ -10,13 +10,13 @@ class TermsScrollView {
     createElements() {
         this.$view = document.createElement('div');
         this.$view.id = this.id;
-        this.$view.classList.add("TermsScrollView");
+        this.$view.classList.add("spl-TermsScrollView");
         this.$view.classList.add(this.id);
 
         const $container = document.createElement('div');
-        $container.classList.add('termsViewContainer')
+        $container.classList.add('spl-termsViewContainer')
         const $termsView = document.createElement('div');
-        $termsView.classList.add('termsView');
+        $termsView.classList.add('spl-termsView');
         $container.appendChild($termsView);
         this.$view.appendChild($container);  // Make sure to append the container to the main element
         this.$container = $container;

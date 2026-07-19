@@ -79,7 +79,7 @@ class ViewComponentBase {
         this.$view = document.createElement(this.config.htmlTag);
         this.$view.id = this.id;
         this.$view.classList.add(`${this.id}`);
-        this.$view.classList.add(`${this.constructor.name}`);
+        this.$view.classList.add(`spl-${this.constructor.name}`);
     }
 
     /**

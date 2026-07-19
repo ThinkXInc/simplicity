@@ -1,11 +1,11 @@
 // Define custom event name
 const keywordsFieldCustomEventSubmit = 'keywordsSubmit'
 // Define class names as constants
-const keywordsFieldKeywordsClassName = 'keywords';
-const keywordsFieldKeywordClassName = 'keyword';
-const keywordsFieldLabelClassName = 'label';
-const keywordsFieldDeleteClassName = 'delete';
-const keywordsFieldPressClassName = 'press';
+const keywordsFieldKeywordsClassName = 'spl-keywords';
+const keywordsFieldKeywordClassName = 'spl-keyword';
+const keywordsFieldLabelClassName = 'spl-label';
+const keywordsFieldDeleteClassName = 'spl-delete';
+const keywordsFieldPressClassName = 'spl-press';
 
 /**
  * `KeywordsField` is an extension of the `TextField` class to handle keywords.
@@ -146,7 +146,7 @@ class KeywordsField extends TextField {
      */
     createElements() {
         // Add class name
-        this.$textField.classList.add('KeywordsField');
+        this.$textField.classList.add('spl-KeywordsField');
 
         // Create the $keywords element
         const $keywords = document.createElement('ul');
@@ -165,10 +165,10 @@ class KeywordsField extends TextField {
     _updatePressVisibility() {
         if (this.$textArea.value.length > 0 && document.activeElement === this.$textArea) {
             debuglog('show press');
-            this.$press.classList.add('show');
+            this.$press.classList.add('spl-show');
         } else {
             debuglog('remove press');
-            this.$press.classList.remove('show');
+            this.$press.classList.remove('spl-show');
         }
     }
 
@@ -180,17 +180,17 @@ class KeywordsField extends TextField {
         // Text area focus
         this.$textArea.addEventListener('focus', () => {
             this._updatePressVisibility();
-            this.$textField.classList.add('focus');
+            this.$textField.classList.add('spl-focus');
         });
 
         // Text area blur
         this.$textArea.addEventListener('blur', () => {
             this._updatePressVisibility();
-            this.$textField.classList.remove('focus');
+            this.$textField.classList.remove('spl-focus');
             
             // Remove scope class when focus is out
             if (this.scopeIndex !== null) {
-                this.$keywords.childNodes[this.scopeIndex].classList.remove('scope');
+                this.$keywords.childNodes[this.scopeIndex].classList.remove('spl-scope');
                 this.scopeIndex = null;
             }
         });
@@ -215,7 +215,7 @@ class KeywordsField extends TextField {
                     if (this.scopeIndex === null) {
                         this.scopeIndex = this.keywords.length - 1;
                         if (this.scopeIndex >= 0) {
-                            this.$keywords.childNodes[this.scopeIndex].classList.add('scope');
+                            this.$keywords.childNodes[this.scopeIndex].classList.add('spl-scope');
                         }
                     } 
                     // Remove the scoped keyword
@@ -226,14 +226,14 @@ class KeywordsField extends TextField {
                 } else {
                     // Remove scope class when other keys are pushed
                     if (this.scopeIndex !== null) {
-                        this.$keywords.childNodes[this.scopeIndex].classList.remove('scope');
+                        this.$keywords.childNodes[this.scopeIndex].classList.remove('spl-scope');
                         this.scopeIndex = null;
                     }
                 }
             } else {
                 // Remove scope class when other keys are pushed
                 if (this.scopeIndex !== null) {
-                    this.$keywords.childNodes[this.scopeIndex].classList.remove('scope');
+                    this.$keywords.childNodes[this.scopeIndex].classList.remove('spl-scope');
                     this.scopeIndex = null;
                 }
             }
@@ -374,7 +374,7 @@ class KeywordsField extends TextField {
         this.$textArea.disabled = disable;
     
         // 2. Prevent click on the deleteButtons
-        const deleteButtons = this.$view.querySelectorAll('.delete');
+        const deleteButtons = this.$view.querySelectorAll('.spl-delete');
         deleteButtons.forEach(button => {
             if (disable) {
                 button.setAttribute('disabled', 'disabled'); // If the button is a real <button> or <input> element

@@ -33,7 +33,7 @@ class BackButton extends ViewComponentBase {
      */
     _setElements() {
         super._setElements();
-        this.$view.classList.add('backButton');
+        this.$view.classList.add('spl-backButton');
         this.$view.innerText = this.config.text;
     }
 

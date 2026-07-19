@@ -34,7 +34,7 @@ class NextButton extends ViewComponentBase {
      */
     _setElements() {
         super._setElements();
-        this.$view.classList.add('nextButton');
+        this.$view.classList.add('spl-nextButton');
         this.$view.innerText = this.config.text;
     }
 

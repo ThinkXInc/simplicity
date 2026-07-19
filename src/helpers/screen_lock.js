@@ -1,5 +1,5 @@
 class ScreenLock {
-    static LOCK_CLASS = 'screen-locked';
+    static LOCK_CLASS = 'spl-screen-locked';
     static STYLE_ID = 'screen-lock-style';
 
     /**
@@ -33,7 +33,7 @@ class ScreenLock {
             return;
         }
 
-        console.log('ScreenLock: Injecting style block for .screen-locked overlay...');
+        console.log('ScreenLock: Injecting style block for .spl-screen-locked overlay...');
         const styleEl = document.createElement('style');
         styleEl.id = this.STYLE_ID;
         styleEl.type = 'text/css';

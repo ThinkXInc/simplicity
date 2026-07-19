@@ -248,13 +248,13 @@ class PositionMap extends ViewComponentBase{
 
         // display coordinate
         let $coordinate = document.createElement('p');
-        $coordinate.classList.add('positionMapCoordinate');
+        $coordinate.classList.add('spl-positionMapCoordinate');
         this.$positionMap.appendChild($coordinate);
         this.$coordinate = $coordinate;
 
         // display address
         let $address = document.createElement('p');
-        $address.classList.add('positionMapAddress');
+        $address.classList.add('spl-positionMapAddress');
         this.$positionMap.appendChild($address);
         this.$address = $address;
 

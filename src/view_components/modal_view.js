@@ -6,7 +6,7 @@ const AnimationType = {
 
 const ModalViewStyle = {
     DEFAULT: 'defaultStyle',
-    DARK: 'darkStyle',
+    DARK: 'spl-darkStyle',
 };
 
 
@@ -53,38 +53,38 @@ class ModalView {
     createElements() {
         this.$view = document.createElement(this.htmlTag);
         this.$view.id = this.id;
-        this.$view.classList.add('ModalView');
+        this.$view.classList.add('spl-ModalView');
         this.$view.classList.add(this.baseCSSStyle);
         this.$view.style.display = 'none';
 
         // Background
         this.$bg = document.createElement('div');
-        this.$bg.classList.add('bg');
+        this.$bg.classList.add('spl-bg');
         this.$bg.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
         this.$view.appendChild(this.$bg);
 
         // Window
         this.$window = document.createElement('div');
-        this.$window.classList.add('window');
+        this.$window.classList.add('spl-window');
         this.$window.style.transformOrigin = 'center center';
         this.$window.style.animationFillMode = 'forwards';
         this.$view.appendChild(this.$window);
 
         // ContentWrapper
         this.$contentWrapper = document.createElement('div');
-        this.$contentWrapper.classList.add('contentWrapper');
+        this.$contentWrapper.classList.add('spl-contentWrapper');
         this.$window.appendChild(this.$contentWrapper);
 
         // Title
         this.$title = document.createElement('h3');
-        this.$title.classList.add('ModalViewTitle');
+        this.$title.classList.add('spl-ModalViewTitle');
         this.$title.textContent = this.title;
         this.$contentWrapper.appendChild(this.$title);
 
         // MainContent
         this.$mainContent = document.createElement('div');
         this.$mainContent.id = `${this.id}MainContent`;
-        this.$mainContent.classList.add('mainContent');
+        this.$mainContent.classList.add('spl-mainContent');
         if (this.text.length) {
             this.$mainContent.textContent = this.text;
         }
@@ -92,13 +92,13 @@ class ModalView {
 
         // Footer
         this.$footer = document.createElement('div');
-        this.$footer.classList.add('modalViewFooter');
+        this.$footer.classList.add('spl-modalViewFooter');
         this.$window.appendChild(this.$footer);
 
         // CancelButton (create only if cancelButtonText is provided)
         if (this.cancelButtonText) {
             this.$cancelButton = document.createElement('button');
-            this.$cancelButton.classList.add('cancelButton');
+            this.$cancelButton.classList.add('spl-cancelButton');
             this.$cancelButton.textContent = this.cancelButtonText;
             this.$cancelButton.addEventListener('click', () => this.cancel());
             this.$footer.appendChild(this.$cancelButton);
@@ -106,14 +106,14 @@ class ModalView {
 
         // DoneButton
         this.$doneButton = document.createElement('button');
-        this.$doneButton.classList.add('doneButton');
+        this.$doneButton.classList.add('spl-doneButton');
         this.$doneButton.textContent = this.doneButtonText;
         this.$doneButton.addEventListener('click', () => this.done());
         this.$footer.appendChild(this.$doneButton);
 
         // Alert for displaying error messages
         this.$alert = document.createElement('div');
-        this.$alert.classList.add('ModalViewAlert');
+        this.$alert.classList.add('spl-ModalViewAlert');
         this.$alert.style.display = 'none'; // Initially hidden
         this.$contentWrapper.appendChild(this.$alert);
 

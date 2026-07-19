@@ -52,22 +52,22 @@ class RadioButton {
         this.$view = document.createElement('div');
         this.$view.id = this.id;
         this.$view.classList.add(this.id);
-        this.$view.classList.add("RadioButton");
+        this.$view.classList.add("spl-RadioButton");
 
         const $inputOuter = document.createElement('div');
-        $inputOuter.className = 'inputOuter';
+        $inputOuter.className = 'spl-inputOuter';
         this.$inputOuter = $inputOuter;
 
         const $inputWrapper = document.createElement('div');
-        $inputWrapper.className = 'inputWrapper';
+        $inputWrapper.className = 'spl-inputWrapper';
         this.$inputWrapper = $inputWrapper;
  
         const $inputAfter = document.createElement('div');
-        $inputAfter.className = 'inputAfter';
+        $inputAfter.className = 'spl-inputAfter';
         this.$inputAfter = $inputAfter;
 
         const $title = document.createElement('h6');
-        $title.classList.add('title');
+        $title.classList.add('spl-title');
         $title.textContent = this.title;
 
         if (this.isTitlePlacedAtInputLeft) {
@@ -78,7 +78,7 @@ class RadioButton {
  
         this.items.forEach((item) => {
             const $item = document.createElement('div');
-            $item.classList.add('item');
+            $item.classList.add('spl-item');
             $item.classList.add(item.value);
             $item.style.cursor = 'pointer';
 
@@ -94,11 +94,11 @@ class RadioButton {
             $input.style.border = 'none';
             if (this.defaultValue == item.value) {
                 $input.checked = true;
-                $item.classList.add('checked')
+                $item.classList.add('spl-checked')
             }
 
             const $checkBox = document.createElement('span');
-            $checkBox.classList.add('checkbox');
+            $checkBox.classList.add('spl-checkbox');
             $checkBox.classList.add(`checkbox_${item.value}`)
             $checkBox.style.display = 'block';
             $checkBox.style.width = `${this.defaultCheckBoxWidth}px`;
@@ -122,7 +122,7 @@ class RadioButton {
         })
 
         const $footer = document.createElement('div');
-        $footer.className = 'footer';
+        $footer.className = 'spl-footer';
         this.$footer = $footer;
 
         this.$inputWrapper.appendChild($inputAfter);
@@ -144,11 +144,11 @@ class RadioButton {
                     const $otherInput = this.$view.querySelector(`#${otherInputId}`);
 
                     $otherInput.checked = false;
-                    $otherItem.classList.remove('checked');
+                    $otherItem.classList.remove('spl-checked');
                 });
 
                 $input.checked = true;
-                $item.classList.add('checked');
+                $item.classList.add('spl-checked');
 
                 this.value = item.value;
             });
@@ -157,16 +157,16 @@ class RadioButton {
     }
 
     alert(message) {
-        const existingAlert = this.$footer.querySelector('.alertMessage');
+        const existingAlert = this.$footer.querySelector('.spl-alertMessage');
         if (existingAlert) {
             this.$footer.removeChild(existingAlert);
-            this.$view.classList.remove('alert');
+            this.$view.classList.remove('spl-alert');
         }
 
         if (message) {
-            this.$view.classList.add('alert');
+            this.$view.classList.add('spl-alert');
             const newAlertMessage = document.createElement('p');
-            newAlertMessage.classList.add('alertMessage');
+            newAlertMessage.classList.add('spl-alertMessage');
             newAlertMessage.textContent = message;
             this.$footer.appendChild(newAlertMessage);
         }

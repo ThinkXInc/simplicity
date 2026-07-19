@@ -16,11 +16,11 @@ class PageView {
     createElements() {
         this.$view = document.createElement('div');
         this.$view.id = this.id;
-        this.$view.classList.add('PageView')
+        this.$view.classList.add('spl-PageView')
 
         this.pages.forEach((page, i) => {
             const $page = document.createElement('div');
-            $page.classList.add('PageViewContainer')
+            $page.classList.add('spl-PageViewContainer')
             $page.classList.add(`${this.id}_${i}`);
             this.$view.appendChild($page);
             $page.style.display = 'none';

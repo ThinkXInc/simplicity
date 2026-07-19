@@ -15,23 +15,23 @@ class VerifyCodeForm {
     createElements() {
         const $view = document.createElement('div');
         $view.id = this.id;
-        $view.classList.add('VerifyCodeForm');
+        $view.classList.add('spl-VerifyCodeForm');
 
         const $container = document.createElement('div');
-        $container.classList.add('verifyCodeFormContainer');
+        $container.classList.add('spl-verifyCodeFormContainer');
 
         for (let i = 0; i < 4; i++) {
             const $input = document.createElement('input');
             $input.type = 'text';
             $input.maxLength = 1;
-            $input.classList.add('verifyInput');
+            $input.classList.add('spl-verifyInput');
             $input.dataset.index = i;
             this.inputs.push($input);
             $container.appendChild($input);
         }
 
         const $alert = document.createElement('p');
-        $alert.classList.add('alert');
+        $alert.classList.add('spl-alert');
         $alert.style.display = 'none';
 
         $view.appendChild($container);
@@ -115,13 +115,13 @@ class VerifyCodeForm {
     }
 
     alert(message) {
-        this.$view.classList.add('alert');
+        this.$view.classList.add('spl-alert');
         this.$alert.style.display = 'block';
         this.$alert.textContent = message;
     }
 
     disableAlert() {
-        this.$view.classList.remove('alert');
+        this.$view.classList.remove('spl-alert');
         this.$alert.style.display = 'none';
         this.$alert.textContent = '';
     }

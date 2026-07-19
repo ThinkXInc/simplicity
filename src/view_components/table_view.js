@@ -70,10 +70,10 @@ class TableViewCell {
         tableView,
         index,
         cellContentClass = TableViewCellContent,
-        cellSelectedClassName = 'selected',
-        cellHiddenClassName = 'hide',
-        cellFadeOutClassName = 'fadeOut',
-        cellFadeOutLeftClassName = 'fadeOutLeft',
+        cellSelectedClassName = 'spl-selected',
+        cellHiddenClassName = 'spl-hide',
+        cellFadeOutClassName = 'spl-fadeOut',
+        cellFadeOutLeftClassName = 'spl-fadeOutLeft',
         buttonContainerPosition = TableViewCellButtonContainerPosition.Right,
         deleteCellActionType = TableViewDeleteCellActionType.dispatchDeleteCellEvent,
         deleteCellAnimationType = TableViewDeleteCellAnimationType.fadeOut,
@@ -81,13 +81,13 @@ class TableViewCell {
         deleteCellAnimationDuration = 10,
         deleteCellAnimationDelay = 0,
         deleteCellAnimationCurve = 'easeInSine',
-        deleteCellAnimationClassNameMoveToLeft = 'deleteByMoveToLeft',
-        deleteCellAnimationClassNameFadeOut = 'deleteByFadeOut',
+        deleteCellAnimationClassNameMoveToLeft = 'spl-deleteByMoveToLeft',
+        deleteCellAnimationClassNameFadeOut = 'spl-deleteByFadeOut',
         insertCellAnimationType = TableViewInsertCellAnimationType.moveFromLeft,
         insertCellAnimationDuration = 20,
         insertCellAnimationCurve = 'easeInSine',
-        insertCellAnimationHiddenClassNameMoveFromLeft = 'hiddenForMoveFromLeft',
-        insertCellAnimationHiddenClassNameFadeIn = 'hiddenForFadeIn',
+        insertCellAnimationHiddenClassNameMoveFromLeft = 'spl-hiddenForMoveFromLeft',
+        insertCellAnimationHiddenClassNameFadeIn = 'spl-hiddenForFadeIn',
         title = '',
         text = '',
         label = '',
@@ -170,38 +170,38 @@ class TableViewCell {
     _setElements() {
         this.$view = document.createElement('li');
         this.$view.id = this.id;
-        this.$view.classList.add('TableViewCell', 'tableViewCell', this.className);
+        this.$view.classList.add('spl-TableViewCell', 'spl-tableViewCell', this.className);
     
         this.$contentWrapper = document.createElement('div');
-        this.$contentWrapper.classList.add('contentWrapper');
+        this.$contentWrapper.classList.add('spl-contentWrapper');
     
         // Creating the header element for the cell
         this.$header = document.createElement('div');
-        this.$header.classList.add('header');
+        this.$header.classList.add('spl-header');
         this.$label = document.createElement('span');
-        this.$label.classList.add('label');
+        this.$label.classList.add('spl-label');
         this.$title = document.createElement('h6');
-        this.$title.classList.add('title');
+        this.$title.classList.add('spl-title');
         this.$header.appendChild(this.$label);
         this.$header.appendChild(this.$title);
         this.$contentWrapper.appendChild(this.$header);
     
         // Creating the body element for the cell
         this.$body = document.createElement('div');
-        this.$body.classList.add('body');
+        this.$body.classList.add('spl-body');
         this.$text = document.createElement('p');
-        this.$text.classList.add('text');
+        this.$text.classList.add('spl-text');
         this.$body.appendChild(this.$text);
         this.$contentWrapper.appendChild(this.$body);
     
         // Creating the footer element for the cell
         this.$footer = document.createElement('div');
-        this.$footer.classList.add('footer');
+        this.$footer.classList.add('spl-footer');
         this.$contentWrapper.appendChild(this.$footer);
     
         // Adding interaction buttons container
         this.$buttonContainer = document.createElement('div');
-        this.$buttonContainer.classList.add('buttonContainer');
+        this.$buttonContainer.classList.add('spl-buttonContainer');
         // Add the delete button
         this.$deleteButton = document.createElement('button');
         this.$deleteButton.innerHTML = SVGIcons.deleteIconSVG; 
@@ -217,9 +217,9 @@ class TableViewCell {
 
     _setButtonContainerPosition() {
         if (this.buttonContainerPosition === TableViewCellButtonContainerPosition.Left) {
-            this.$buttonContainer.classList.add('left');
+            this.$buttonContainer.classList.add('spl-left');
         } else {
-            this.$buttonContainer.classList.add('right');
+            this.$buttonContainer.classList.add('spl-right');
         }
     }
 
@@ -438,11 +438,11 @@ class TableView {
             addingCellNumber = 20,
             cellClass = TableViewCell,
             cellContentClass = TableViewCellContent,
-            cellSelectedClassName = 'selected',
-            cellHiddenClassName = 'hide',
-            cellFadeOutClassName = 'fadeOut',
-            cellFadeOutLeftClassName = 'fadeOutLeft',
-            hiddenClassName = 'hide',
+            cellSelectedClassName = 'spl-selected',
+            cellHiddenClassName = 'spl-hide',
+            cellFadeOutClassName = 'spl-fadeOut',
+            cellFadeOutLeftClassName = 'spl-fadeOutLeft',
+            hiddenClassName = 'spl-hide',
             closeAnimationDelay = 0,
             closeAnimationType = TableViewCloseAnimationType.fadeOut,
             closeAnimationCurve = 'easeInSine',
@@ -452,8 +452,8 @@ class TableView {
             insertCellAnimationType = TableViewInsertCellAnimationType.moveFromLeft,
             insertCellAnimationDuration = 20,
             insertCellAnimationCurve = 'easeInSine',
-            insertCellAnimationHiddenClassNameMoveFromLeft = 'hiddenForMoveFromLeft',
-            insertCellAnimationHiddenClassNameFadeIn = 'hiddenForFadeIn',
+            insertCellAnimationHiddenClassNameMoveFromLeft = 'spl-hiddenForMoveFromLeft',
+            insertCellAnimationHiddenClassNameFadeIn = 'spl-hiddenForFadeIn',
             buttonContainerPosition = TableViewCellButtonContainerPosition.Right,
             deleteCellActionType = TableViewDeleteCellActionType.dispatchDeleteCellEvent,
             deleteCellAnimationType = TableViewDeleteCellAnimationType.fadeOut,
@@ -461,8 +461,8 @@ class TableView {
             deleteCellAnimationDuration = 10,
             deleteCellAnimationDelay = 0,
             deleteCellAnimationCurve = 'easeInSine',
-            deleteCellAnimationClassNameMoveToLeft = 'deleteByMoveToLeft',
-            deleteCellAnimationClassNameFadeOut = 'deleteByFadeOut',
+            deleteCellAnimationClassNameMoveToLeft = 'spl-deleteByMoveToLeft',
+            deleteCellAnimationClassNameFadeOut = 'spl-deleteByFadeOut',
         }) {
             
             this.id = id;
@@ -539,28 +539,28 @@ class TableView {
         // Main container
         this.$view = document.createElement('div');
         this.$view.id = this.id;
-        this.$view.classList.add('TableView', this.id);
+        this.$view.classList.add('spl-TableView', this.id);
         
         // Wrapper
         this.$tableViewContainer = document.createElement('div');
-        this.$tableViewContainer.classList.add('tableViewContainer');
+        this.$tableViewContainer.classList.add('spl-tableViewContainer');
         
         // Header
         if (this.isHeader) {
             this.$tableViewHeader = document.createElement('div');
-            this.$tableViewHeader.classList.add('tableViewHeader');
+            this.$tableViewHeader.classList.add('spl-tableViewHeader');
             this.$tableViewContainer.appendChild(this.$tableViewHeader);
         }
        
         // ListView Wrapper
         this.$tableView = document.createElement('div');
-        this.$tableView.classList.add('tableView');
+        this.$tableView.classList.add('spl-tableView');
         this.$tableView.id = `${this.id}TableView`;
         this.$tableView.classList.add(`${this.id}TableView`);
         
         // List
         this.$tableListView = document.createElement('ul');
-        this.$tableListView.classList.add('tableListView');
+        this.$tableListView.classList.add('spl-tableListView');
         this.$tableListView.id = `${this.id}ListView`;
         this.$tableListView.classList.add(`${this.id}ListView`);
         this.$tableView.appendChild(this.$tableListView);
@@ -570,7 +570,7 @@ class TableView {
         // Footer
         if (this.isFooter) {
             this.$tableViewFooter = document.createElement('div');
-            this.$tableViewFooter.classList.add('tableViewFooter');
+            this.$tableViewFooter.classList.add('spl-tableViewFooter');
             this.$tableViewContainer.appendChild(this.$tableViewFooter);
         }
         
@@ -581,7 +581,7 @@ class TableView {
             // Circle Loader
             case TableViewLoadingType.circleLoader:
                 this.$loader = document.createElement('img');
-                this.$loader.classList.add('loader');
+                this.$loader.classList.add('spl-loader');
                 this.$loader.src = this.loaderImage;
                 this.$loader.style.position = 'absolute';
                 this.$loader.style.top = '50%';

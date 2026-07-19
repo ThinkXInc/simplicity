@@ -123,7 +123,7 @@ class FileUploadTableViewCell {
         // Create new cell view element
         this.$cellView = document.createElement('div');
         this.$cellView.id = this.id;
-        this.$cellView.classList.add('uploadFileTableViewCell');
+        this.$cellView.classList.add('spl-uploadFileTableViewCell');
 
         // Create child elements of the cell view
         const img = document.createElement('img');
@@ -131,11 +131,11 @@ class FileUploadTableViewCell {
         this.$cellView.appendChild(img);
 
         const uploadProgressDetails = document.createElement('div');
-        uploadProgressDetails.classList.add('uploadProgressDetails');
+        uploadProgressDetails.classList.add('spl-uploadProgressDetails');
         this.$cellView.appendChild(uploadProgressDetails);
 
         const fileNameAndPercentage = document.createElement('div');
-        fileNameAndPercentage.classList.add('fileNameAndPercentage');
+        fileNameAndPercentage.classList.add('spl-fileNameAndPercentage');
         uploadProgressDetails.appendChild(fileNameAndPercentage);
 
         const uploadedFileNameElement = document.createElement('div');
@@ -143,7 +143,7 @@ class FileUploadTableViewCell {
         fileNameAndPercentage.appendChild(uploadedFileNameElement);
 
         this.$uploadStatusIndicator = document.createElement('div');
-        this.$uploadStatusIndicator.classList.add('uploadStatusIndicator');
+        this.$uploadStatusIndicator.classList.add('spl-uploadStatusIndicator');
         fileNameAndPercentage.appendChild(this.$uploadStatusIndicator);
 
         const uploadIndicatorContainer = document.createElement('div');
@@ -152,12 +152,12 @@ class FileUploadTableViewCell {
 
         this.$uploadIndicator = document.createElement('div');
         this.$uploadIndicator.id = "uploadIndicator";
-        this.$uploadIndicator.classList.add('uploadIndicator');
+        this.$uploadIndicator.classList.add('spl-uploadIndicator');
         uploadIndicatorContainer.appendChild(this.$uploadIndicator);
 
         this.$uploadCancelButton = document.createElement('div');
         this.$uploadCancelButton.id = "uploadCancelButton";
-        this.$uploadCancelButton.classList.add('close-icon');
+        this.$uploadCancelButton.classList.add('spl-close-icon');
         this.$cellView.appendChild(this.$uploadCancelButton);
 
         // Add the newly created cell to the table
@@ -167,7 +167,7 @@ class FileUploadTableViewCell {
     /* public functions */
     hide() {
         console.log(`hide function called in ${this.id}`);
-        document.getElementById(this.id).classList.add('fadeOutToLeft');
+        document.getElementById(this.id).classList.add('spl-fadeOutToLeft');
     }
 }
 
@@ -323,36 +323,36 @@ class FileUploadView extends ViewComponentBase {
         const container = document.getElementById(this.id);
 
         const fileUploadView = document.createElement('div');
-        fileUploadView.classList.add('fileUploadView');
+        fileUploadView.classList.add('spl-fileUploadView');
         container.appendChild(fileUploadView);
 
         const title = document.createElement('h3');
-        title.classList.add('title');
+        title.classList.add('spl-title');
         title.style.textAlign = "center";
         title.innerText = this.__title__;
         fileUploadView.appendChild(title);
 
         const subtitle = document.createElement('p');
-        subtitle.classList.add('subtitle');
+        subtitle.classList.add('spl-subtitle');
         subtitle.style.textAlign = "center";
         subtitle.innerText = this.__subtitle__;
         fileUploadView.appendChild(subtitle);
 
         const dropArea = document.createElement('div');
-        dropArea.classList.add('dropArea');
+        dropArea.classList.add('spl-dropArea');
         fileUploadView.appendChild(dropArea);
 
         const dropImage = document.createElement('img');
-        dropImage.classList.add('dropImage');
+        dropImage.classList.add('spl-dropImage');
         dropArea.appendChild(dropImage);
 
         const dropTitle = document.createElement('h5');
-        dropTitle.classList.add('dropTitle');
+        dropTitle.classList.add('spl-dropTitle');
         dropTitle.innerText = this.__dropTitle__;
         dropArea.appendChild(dropTitle);
 
         const or = document.createElement('p');
-        or.classList.add('or');
+        or.classList.add('spl-or');
         or.innerText = this.__or__;
         dropArea.appendChild(or);
 
@@ -363,12 +363,12 @@ class FileUploadView extends ViewComponentBase {
         const fileInput = document.createElement('input');
         fileInput.type = "file";
         fileInput.id = "upload";
-        fileInput.classList.add('browseButton');
+        fileInput.classList.add('spl-browseButton');
         fileInput.style.display = "none";
         label.appendChild(fileInput);
 
         const browseButton = document.createElement('span');
-        browseButton.classList.add('browseButton');
+        browseButton.classList.add('spl-browseButton');
         browseButton.innerText = this.__browseButtonTitle__;
         label.appendChild(browseButton);
 
@@ -388,12 +388,12 @@ class FileUploadView extends ViewComponentBase {
                 `<section id=${this.id} class=fileUploadView></section> is necessary in HTML.`);
         }
         // title
-        this.$title = this.$fileUploadView.querySelector('.title');
+        this.$title = this.$fileUploadView.querySelector('.spl-title');
         if (this.$title == null) {
             console.warn(
                 `<h6 class=title> is necessary in HTML.`);
         }
-        this.$dropArea = this.$fileUploadView.querySelector('.dropArea');
+        this.$dropArea = this.$fileUploadView.querySelector('.spl-dropArea');
         if (this.$dropArea == null) {
             console.warn(
                 `<div class=dropArea>is necessary in HTML.`);
@@ -526,7 +526,7 @@ class FileUploadView extends ViewComponentBase {
 
         console.log(`set event for ${cell.id}`);
             const currentCell = document.getElementById(cell.id);
-            currentCell.querySelector('.close-icon').addEventListener('click', e => {
+            currentCell.querySelector('.spl-close-icon').addEventListener('click', e => {
                 console.log(`cell ${cell.id} clicked`);
                 currentCell.remove()
                 this.controller.fileUploadViewFileRemoved(this, cell); // <-- protocol function call

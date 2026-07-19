@@ -86,7 +86,7 @@ class LoadingMessage {
                 }
             `;
             gradientCss = `
-                #${this.id}.loading .fadeLayer.active {
+                #${this.id}.spl-loading .spl-fadeLayer.spl-active {
                     background-image: linear-gradient(
                         to right,
                         var(--lm-grad-start, #aaaaaa),
@@ -113,7 +113,7 @@ class LoadingMessage {
                 }
             `;
             gradientCss = `
-                #${this.id}.loading .fadeLayer.active {
+                #${this.id}.spl-loading .spl-fadeLayer.spl-active {
                     background-image: linear-gradient(
                         to right,
                         var(--lm-grad-start, #aaaaaa) 0%,
@@ -136,7 +136,7 @@ class LoadingMessage {
 
             ${gradientCss}
 
-            #${this.id} .fadeLayer {
+            #${this.id} .spl-fadeLayer {
                 position: absolute;
                 top: 0; left: 0; right: 0; bottom: 0;
                 transition: opacity 0.3s ease;
@@ -144,7 +144,7 @@ class LoadingMessage {
                 white-space: pre-wrap;
             }
 
-            #${this.id} .fadeLayer.active {
+            #${this.id} .spl-fadeLayer.spl-active {
                 opacity: 1;
             }
 
@@ -163,7 +163,7 @@ class LoadingMessage {
         // Use the user-provided textAlign
         this.$view.style.width = '100%';
         this.$view.style.textAlign = this.textAlign;
-        this.$view.classList.add('LoadingMessage');
+        this.$view.classList.add('spl-LoadingMessage');
 
         if (this.classList) {
             const clsArr = this.classList.split(/\s+/);
@@ -173,15 +173,15 @@ class LoadingMessage {
         // Two layers for crossfade
         this.$layerA = document.createElement('div');
         this.$layerB = document.createElement('div');
-        this.$layerA.classList.add('fadeLayer');
-        this.$layerB.classList.add('fadeLayer');
+        this.$layerA.classList.add('spl-fadeLayer');
+        this.$layerB.classList.add('spl-fadeLayer');
         this.$layerA.style.position = 'absolute';
         this.$layerA.style.width = '100%';
         this.$layerB.style.position = 'absolute';
         this.$layerB.style.width = '100%';
 
         // layerA is active initially
-        this.$layerA.classList.add('active');
+        this.$layerA.classList.add('spl-active');
 
         this.$view.appendChild(this.$layerA);
         this.$view.appendChild(this.$layerB);
@@ -259,7 +259,7 @@ class LoadingMessage {
     
         // 3) Fade out the currently active layer
         const activeLayer = (this._activeIndex === 0) ? this.$layerA : this.$layerB;
-        activeLayer.classList.remove('active');
+        activeLayer.classList.remove('spl-active');
     
         // Ensure container is not in loading state
         this.load(false);
@@ -268,13 +268,13 @@ class LoadingMessage {
         setTimeout(() => {
             activeLayer.textContent = '';
             activeLayer.style.color = '';
-            activeLayer.classList.remove('error');
+            activeLayer.classList.remove('spl-error');
     
             // Also clear out the inactive layer, just in case
             const inactiveLayer = (this._activeIndex === 0) ? this.$layerB : this.$layerA;
             inactiveLayer.textContent = '';
             inactiveLayer.style.color = '';
-            inactiveLayer.classList.remove('error');
+            inactiveLayer.classList.remove('spl-error');
         }, 300);
     }
 
@@ -324,7 +324,7 @@ class LoadingMessage {
 
     _fadeOutOld(onDone) {
         const oldLayer = (this._activeIndex === 0) ? this.$layerA : this.$layerB;
-        oldLayer.classList.remove('active');
+        oldLayer.classList.remove('spl-active');
         setTimeout(() => {
             if (onDone) onDone();
         }, 0);
@@ -336,8 +336,8 @@ class LoadingMessage {
         // Clear error from both layers
         this.$layerA.style.color = '';
         this.$layerB.style.color = '';
-        this.$layerA.classList.remove('error');
-        this.$layerB.classList.remove('error');
+        this.$layerA.classList.remove('spl-error');
+        this.$layerB.classList.remove('spl-error');
 
         // Choose the inactive layer
         const newLayer = (this._activeIndex === 0) ? this.$layerB : this.$layerA;
@@ -346,13 +346,13 @@ class LoadingMessage {
         // Update the gradient for this message
         if (alert) {
             this._updateGradientVars(this.alertColor, this.alertColor);
-            newLayer.classList.add('error');
+            newLayer.classList.add('spl-error');
         } else {
             this._updateGradientVars(gradientStart, gradientEnd);
         }
 
 
-        newLayer.classList.add('active');
+        newLayer.classList.add('spl-active');
         this._activeIndex = (this._activeIndex === 0) ? 1 : 0;
 
         // Fade-out logic — only if fadeOutAfterMs is non-null
@@ -360,14 +360,14 @@ class LoadingMessage {
             setTimeout(() => {
                 // Only fade out if the text is still the same
                 if (newLayer.textContent === newText) {
-                    newLayer.classList.remove('active');
+                    newLayer.classList.remove('spl-active');
                     // Wait for the fade-out transition (~300ms)
                     setTimeout(() => {
                         // Clear the text & remove error styles
                         if (newLayer.textContent === newText) {
                             newLayer.textContent = '';
                             newLayer.style.color = '';
-                            newLayer.classList.remove('error');
+                            newLayer.classList.remove('spl-error');
                         }
                     }, 300);
                 }
@@ -381,9 +381,9 @@ class LoadingMessage {
 
     load(isLoading) {
         if (isLoading) {
-            this.$view.classList.add('loading');
+            this.$view.classList.add('spl-loading');
         } else {
-            this.$view.classList.remove('loading');
+            this.$view.classList.remove('spl-loading');
         }
     }
 
@@ -396,10 +396,10 @@ class LoadingMessage {
         const activeLayer = (this._activeIndex === 0) ? this.$layerA : this.$layerB;
         if (isError) {
             activeLayer.style.color = this.alertColor;
-            activeLayer.classList.add('error');
+            activeLayer.classList.add('spl-error');
         } else {
             activeLayer.style.color = '';
-            activeLayer.classList.remove('error');
+            activeLayer.classList.remove('spl-error');
         }
     }
 }

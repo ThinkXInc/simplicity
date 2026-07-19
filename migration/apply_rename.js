@@ -57,44 +57,79 @@ const renameClassList = (value) =>
     value.split(/(\s+)/).map(token =>
         renameMap[token] ? (totalReplacements++, renameMap[token]) : token).join('');
 
-// 文字列リテラルを走査して中身だけ変換する(引用符は保持)
-const mapStringLiterals = (code, transform) =>
-    code.replace(/(['"`])((?:\\.|(?!\1)[^\\])*)\1/g,
-        (whole, quote, body) => `${quote}${transform(body, whole)}${quote}`);
+// JS は @babel/parser のトークン列で文字列リテラル/テンプレート片だけを対象にする。
+// 正規表現による引用符スキャンはコメント中のアポストロフィ("doesn't" 等)を引用符と
+// 誤認しコード領域を書き換える事故を起こすため使わない(ST-6 で実測した失敗モード)。
+const parser = require('@babel/parser');
+
+const CLASSLIST_CALL_BEFORE = /classList\s*\.\s*(?:add|remove|toggle|contains)\s*\(\s*$/;
+const CLASSLIST_ARG_BEFORE = /classList\s*\.\s*(?:add|remove|toggle|contains)\s*\([^()]*,\s*$/;
+const CLASSNAME_ASSIGN_BEFORE = /\.className\s*\+?=\s*$/;
 
 const renameJs = (code, file) => {
-    // R2: classList.add('a', 'b') 等の引数スパン内の裸名リテラル
-    code = code.replace(/(classList\s*\.\s*(?:add|remove|toggle|contains)\s*\()([^)]*)(\))/g,
-        (whole, head, argsSpan, tail) =>
-            head + mapStringLiterals(argsSpan, body =>
-                renameMap[body] ? (totalReplacements++, renameMap[body]) : body) + tail);
-    // R3: className = / += の右辺(同一文内のリテラル)
-    code = code.replace(/(\.className\s*\+?=\s*)((?:[^;\n]*))/g,
-        (whole, head, rhs) => head + mapStringLiterals(rhs, body => renameClassList(body)));
-    // R1: 残る全文字列リテラル内のセレクタ形 `.name`
-    code = mapStringLiterals(code, body => renameDotForm(body));
-    // manual review: 純クラスリスト形(全トークンが旧名)なのに上記文脈で置換されず残ったリテラル
-    const lines = code.split('\n');
-    lines.forEach((line, i) => {
-        for (const m of line.matchAll(/(['"`])((?:\\.|(?!\1)[^\\])*)\1/g)) {
-            const body = m[2];
-            if (!body || /[.{}$]/.test(body)) continue;
-            const tokens = body.split(/\s+/).filter(Boolean);
-            if (tokens.length && tokens.every(t => renameMap[t])) {
-                manualReview.push(`${file}:${i + 1}: ${m[0]}`);
+    let tokens;
+    try {
+        tokens = parser.parse(code, { tokens: true, sourceType: 'script' }).tokens;
+    } catch (error) {
+        console.error(`${file}: parse failed: ${error.message}`);
+        process.exitCode = 1;
+        return code;
+    }
+    const edits = [];
+    const lineOf = (pos) => code.slice(0, pos).split('\n').length;
+    for (const token of tokens) {
+        const label = token.type.label;
+        if (label !== 'string' && label !== 'template') continue;
+        const raw = code.slice(token.start, token.end);
+        const isString = label === 'string';
+        const body = isString ? raw.slice(1, -1) : raw;
+        if (!body) continue;
+        const before = code.slice(Math.max(0, token.start - 120), token.start);
+
+        let newBody = body;
+        if (isString && (CLASSLIST_CALL_BEFORE.test(before) || CLASSLIST_ARG_BEFORE.test(before))) {
+            if (renameMap[body]) { newBody = renameMap[body]; totalReplacements++; }
+        } else if (isString && CLASSNAME_ASSIGN_BEFORE.test(before)) {
+            newBody = renameClassList(body);
+        }
+        newBody = renameDotForm(newBody);
+
+        if (newBody !== body) {
+            edits.push({
+                start: isString ? token.start + 1 : token.start,
+                end: isString ? token.end - 1 : token.end,
+                text: newBody
+            });
+        } else if (isString && !/[.{}$]/.test(body)) {
+            // manual review: 純クラスリスト形(全トークンが旧名)なのに文脈が確定せず残ったリテラル
+            const parts = body.split(/\s+/).filter(Boolean);
+            if (parts.length && parts.every(part => renameMap[part])) {
+                manualReview.push(`${file}:${lineOf(token.start)}: ${raw}`);
             }
         }
-    });
-    return code;
+    }
+    let out = code;
+    for (const edit of edits.sort((a, b) => b.start - a.start)) {
+        out = out.slice(0, edit.start) + edit.text + out.slice(edit.end);
+    }
+    return out;
 };
 
 const renameHtml = (code, file) => {
     // class 属性(Jinja 変数は温存し、リテラルトークンのみ)
     code = code.replace(/(class\s*=\s*)(["'])([^"']*)\2/gi,
         (whole, head, quote, value) => `${head}${quote}${renameClassList(value)}${quote}`);
-    // <script> ブロック内は js モード
-    code = code.replace(/(<script[^>]*>)([\s\S]*?)(<\/script>)/gi,
-        (whole, open, body, close) => open + renameJs(body, file) + close);
+    // <script> ブロック内は js モード。Jinja 式はプレースホルダにマスクしてから parse する。
+    code = code.replace(/(<script[^>]*>)([\s\S]*?)(<\/script>)/gi, (whole, open, body, close) => {
+        const jinja = [];
+        const masked = body.replace(/\{\{[\s\S]*?\}\}|\{%[\s\S]*?%\}|\{#[\s\S]*?#\}/g, (expr) => {
+            jinja.push(expr);
+            return `__JINJA_${jinja.length - 1}__`;
+        });
+        const renamed = renameJs(masked, file);
+        const restored = renamed.replace(/__JINJA_(\d+)__/g, (m, i) => jinja[Number(i)]);
+        return open + restored + close;
+    });
     return code;
 };
 

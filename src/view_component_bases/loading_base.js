@@ -39,7 +39,7 @@ class LoadingBase {
         this.$view = document.createElement('div');
         this.$view.id = this.id;
         this.$view.classList.add(`${this.id}`);
-        this.$view.classList.add(`${this.constructor.name}`);
+        this.$view.classList.add(`spl-${this.constructor.name}`);
     }
 
 	startLoading() {
