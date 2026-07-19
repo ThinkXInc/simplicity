@@ -183,6 +183,19 @@
   **スクショ回帰 5/5 全て ST-3 凍結 golden と画素一致(gallery+site 4ページ・
   maxDiffPixels 0)= 改名の知覚不変が全面で機械証明**。追随キットは
   migration/apply_rename.js + ADOPTION.md として完成(quantz-web への適用は ST-R まで実施しない)/ ST-7
+- ST-8 適用の記録(2026-07-19) / less/ 7ファイル → styles/ 5ファイル
+  (utilities[旧mixin実体]・reset・view_components・view_controllers・notification)へ
+  1ファイル=1サブコミットで変換。各段の判定は宣言ゴールデン --map 一致(過渡期は
+  `@import (inline)` で束ね、mixin は消費側コンパイル時に展開)。colorscheme.less の
+  LESS 変数は値として焼き込まれて消滅(ST-9 で custom properties として抽出する)。
+  ビルドは concat+cssnano のみへ切替(less-watch-compiler と compile:css を除去。
+  `less` 自体は site fixture の lessc 用に残置)。**注意: cssnano はファイル単位で
+  @keyframes 縮小名と z-index を最適化するため、cssnano を concat の後に置かないと
+  複数入力で名前衝突する**(実測29差分 → concat→cssnano の単一ストリームで解消)。
+  最終ゲート: 宣言ゴールデン --map 273一致・スクショ5/5画素一致・t01-t07 10/10・lint・
+  manifest・gallery 30/30。dist/simplicity_default.css sha256 =
+  8b99c2f99158248a481e610b6fee453624e4b9d824a1ac60a4f1ec5377f1e00d(バイト列は
+  keyframe 名の割当順で旧ビルドと異なるが、宣言モデルと画素は同一) / ST-8
 - /Users/K00TSUKA/Sources/quantz-web:master / ローカル master は eab6fd049b2c69c7578b8be288245be5c961902d、ローカル保存 ref origin/master は計画対象 99a9488714b94e227ecec54340df031419c5d1e2。計画書 §5.1 の「clone は ff 追随済み」と不一致。quantz-web 書き込み禁止のため checkout/pull は行わず、git grep/show origin/master で対象ツリーを読み取る / ST-0
 - refactor_plan.md:3 / ルート CLAUDE.md・docs/ROADMAP.md は計画書を `REFACTORING_PLAN.md` と呼ぶが実ファイル名は `refactor_plan.md`(内容は v1.2 で一致) / 項目0-1
 - refactor_plan.md:146 / 計画書指定の `"test": "node --test test/"` は本環境 node v23.7.0 で exit 1(`test/` をモジュールとして解決し MODULE_NOT_FOUND。計画書検証環境 node 22.22.2 では動作)。node 23 互換のため `"test": "node --test 'test/**/*.test.js'"` を採用(人間承認済み。src/dist 不変・挙動不変) / 項目0-2

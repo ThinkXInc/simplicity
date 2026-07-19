@@ -56,7 +56,14 @@ const paths = {
         './src/pages/single_text_input_page.js',
         './src/view_controllers/input_page_view_controller.js'
     ],
-    css: './css/simplicity_default.css',
+    // 連結順は旧 less/simplicity_default.less の @import 順を保存する(カスケード保存)
+    css: [
+        './styles/utilities.css',
+        './styles/reset.css',
+        './styles/view_components.css',
+        './styles/view_controllers.css',
+        './styles/notification.css'
+    ],
     outputDir: './dist',
     jsOutputFile: 'simplicity.js',
     cssOutputFile: 'simplicity_default.css'
@@ -80,10 +87,12 @@ gulp.task('scripts', function() {
 });
 
 gulp.task('styles', function() {
+    // concat を cssnano より先に行う(cssnano の @keyframes 縮小名・z-index 最適化は
+    // ファイル単位で走るため、後段だと複数入力で名前が衝突する — 単一ストリームで旧挙動を保存)
     return gulp.src(paths.css)
         .pipe(sourcemaps.init())
-        .pipe(cssnano())
         .pipe(concat(paths.cssOutputFile))
+        .pipe(cssnano())
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(paths.outputDir));
 });
