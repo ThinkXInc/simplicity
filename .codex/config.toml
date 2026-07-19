@@ -1,0 +1,8 @@
+# simplicity 用 Codex プロジェクト既定値。
+# この設定は、Codex 側で本リポジトリが trusted とされた場合に読み込まれる。
+
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+
+[sandbox_workspace_write]
+network_access = false
