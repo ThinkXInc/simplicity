@@ -11,7 +11,8 @@ v1.3 の変更点(オーナー裁定 2026-07-19 の反映):
 (1) **§7-1 接頭辞を `sim-` から `spl-` へ変更。** `spl` は SimPLicity の固有略称として
 `sim` より他概念との衝突が少ない。クラス・CSS custom properties・テーマ属性・保存キーへ一貫適用する。
 (2) ST-0 の quantz-web 台帳は「確定依存」ではなく**保守的な依存候補**であることを規範化。
-一般名の同名非依存を含めて保持する理由と後続項目での扱いは `test/inventory/README.md` が正。
+一般名の同名非依存を含めて保持する理由と後続項目での扱いは
+`docs/STYLE_CLASS_INVENTORY.md` が正。
 
 v1.2 の変更点(オーナー裁定 2026-07-19 の反映):
 (1) **quantz-web の扱いを「並走改修」から「fixture 検証+追随キット」へ変更。** 実測により
@@ -140,16 +141,20 @@ simplicity/
 
 ### ST-0 実測の凍結と前提確認 [オラクル前提]
 
-- simplicity: 全クラス名の全量台帳(`test/inventory/classes_legacy.txt` — less セレクタ由来+
+- simplicity: 全クラス名の全量台帳
+  (`style_class_inventory/simplicity_legacy_css_classes.txt` — less セレクタ由来+
   src の class 文字列由来を出所付きで)。
-- quantz-web(読み取りのみ・origin/master 99a9488): simplicity クラス名への依存箇所の全量台帳
-  (less/js/templates 別・ファイル:行)+**代表ページの仕分け表**(fixture 化して描画可能な
+- quantz-web(読み取りのみ・origin/master 99a9488): simplicity クラス名への依存候補台帳
+  (`style_class_inventory/quantz_web_css_class_dependency_candidates.txt` —
+  less/js/templates 別・ファイル:行)+**代表ページの仕分け表**(fixture 化して描画可能な
   5〜8ページ/ギャラリー送り)+**fixture 抽出ファイル一覧の草案**(各ページの template と
   それが引く less/js/画像の依存閉包)。
 - §7 の裁定転記(確定済み: 接頭辞 spl- / 方式 = fixture+追随キット)。
 - quantz-web 依存台帳は一般名の同名利用を含む保守的候補であり、全行を確定依存または
   無条件置換対象として扱わない。理由・抽出境界・後続項目での扱いは
-  `test/inventory/README.md` を必ず参照する。
+  `docs/STYLE_CLASS_INVENTORY.md` を必ず参照する。
+- fixture の対象画面・固定データ・外部サービスのスタブ方針は
+  `docs/SITE_FIXTURE.md` を必ず参照する。
 - 完了条件: 台帳・仕分け表・抽出一覧草案がコミットされている。
 
 ### ST-1 コンポーネントギャラリー [オラクル前提・恒久資産]

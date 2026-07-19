@@ -26,7 +26,6 @@
 
 ## 作業中の発見事項(§5 形式で追記)
 
-- instruction: 「SPLの方がいいだろう。SPLにしよう」「依存候補を広めに残した背景が、Claude Codeへの引き継ぎ時にも自然にまたは必ず分かるよう記録する」 / interpretation: style_plan v1.3 で接頭辞を spl- に変更し、test/inventory/README.md をST-0候補台帳の理由・後続利用規則の正本として計画書から必須参照する / context: ST-0完了後・ST-1着手前のオーナー裁定
 - /Users/K00TSUKA/Sources/quantz-web:master / ローカル master は eab6fd049b2c69c7578b8be288245be5c961902d、ローカル保存 ref origin/master は計画対象 99a9488714b94e227ecec54340df031419c5d1e2。計画書 §5.1 の「clone は ff 追随済み」と不一致。quantz-web 書き込み禁止のため checkout/pull は行わず、git grep/show origin/master で対象ツリーを読み取る / ST-0
 - refactor_plan.md:3 / ルート CLAUDE.md・docs/ROADMAP.md は計画書を `REFACTORING_PLAN.md` と呼ぶが実ファイル名は `refactor_plan.md`(内容は v1.2 で一致) / 項目0-1
 - refactor_plan.md:146 / 計画書指定の `"test": "node --test test/"` は本環境 node v23.7.0 で exit 1(`test/` をモジュールとして解決し MODULE_NOT_FOUND。計画書検証環境 node 22.22.2 では動作)。node 23 互換のため `"test": "node --test 'test/**/*.test.js'"` を採用(人間承認済み。src/dist 不変・挙動不変) / 項目0-2

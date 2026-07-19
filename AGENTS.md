@@ -4,9 +4,10 @@
 作業開始時に次の順で全文を読み、すべて適用すること。
 
 1. `CLAUDE.md` — 長期の開発規約
-2. `CLAUDE_REFACTORING.md` — リファクタリング作戦期間の規律
-3. 対象計画書 — 現在のスタイル基盤刷新は `style_plan.md`
-4. `CHECKSUMS.md` と `findings.md` — 現在地と既知事項
+2. `CODEX_GUIDELINES.md` — Codexに対するオーナー指示と実例
+3. `CLAUDE_REFACTORING.md` — リファクタリング作戦期間の規律
+4. 対象計画書 — 現在のスタイル基盤刷新は `style_plan.md`
+5. `CHECKSUMS.md` と `findings.md` — 現在地と既知事項
 
 ファイル名に `CLAUDE` とあるが、内容は Codex にも同じ強さで適用する。矛盾時の優先順位は
 `CLAUDE_REFACTORING.md` の「文書の優先順位」に従う。

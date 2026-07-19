@@ -1,10 +1,12 @@
-# quantz-web simplicity class dependency candidates (ST-0)
-# Source: quantz-web origin/master @ 99a9488714b94e227ecec54340df031419c5d1e2
-# Format: path:line:text
-# Scope: LESS .class selectors; HTML class attributes; JS class APIs/selectors/constants and
-# PascalCase simplicity component references. Generic names remain conservative candidates.
-# Third-party JS libraries are excluded.
-# Rationale and handoff rules: test/inventory/README.md (required reading).
+# style_class_inventory/quantz_web_css_class_dependency_candidates.txt
+#
+# quantz-web内にあるSimplicity旧CSSクラス名への依存候補台帳(ST-0)。
+# 入力: quantz-web origin/master @ 99a9488714b94e227ecec54340df031419c5d1e2
+# 形式: path:line:text
+# 対象: LESSの.class、HTMLのclass属性、JSのclass API・selector・定数、
+# PascalCaseのSimplicityコンポーネント参照。一般名は同名非依存を含みうる候補として保持する。
+# 第三者JSライブラリは除外する。
+# 理由と後続作業での扱いはdocs/STYLE_CLASS_INVENTORY.mdを参照する。
 
 web-server/views/src/js/models/session_model.js:21:        document.querySelectorAll(`input[model=${modelName}`).forEach((elem) => {
 web-server/views/src/js/pages/material_create_page.js:44:        let textField = new MaterialTextField({

@@ -47,8 +47,6 @@ docs/archive/ へ格納され、本ファイルだけが残る。
 - JSDoc 型付け・checkJs:true 化・.ts 化(任意の「天井」。導入は別計画で)。
 
 ## 指示・決定の記録
-- セッション中に受けたオーナー指示・裁定は findings.md に
-  「instruction: 原文 / interpretation: 解釈 / context: 状況」の形で残す。
-  ワークスペース全体の GUIDELINES.md / DECISIONS.md(monorepo 側)への転記は人間が行う —
-  本リポジトリのセッションから monorepo 側の文書を書き換えない。
-- simplicity 固有の恒久決定は docs/DECISIONS.md に人間が記録する。
+- セッション中に受けたオーナー指示・裁定は docs/GUIDELINES.md に所定の書式で書き込む．書式は中身を見ればわかる．
+- オーナーとの議論からの決定事項は docs/DECISIONS.md に記録する。
+- 発見された書き留めておくに値することはfindings.mdに書き込む．
