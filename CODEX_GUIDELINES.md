@@ -99,3 +99,22 @@ Rules
 ### 悪い例
 
 `test/inventory/README.md`、`test/inventory/site_fixture_plan.md`
+
+## 4. オーナーへ渡すコマンドはプロジェクトディレクトリへの移動から書く
+
+### オーナー指示原文
+
+> 「これはCodexエージェント全般への指示だが、Claude Codeにも言っている通り、オーナーに『これを実行してください』という時には、必ずその最初の起点となるプロジェクトディレクトリに移動するところまで含めて、そのコードをそのままコピペして動くように貼れ。規則として書き込んどけ。」
+
+### 良い例
+
+```zsh
+cd /Users/K00TSUKA/Sources/simplicity
+npm run preview:gallery
+```
+
+### 悪い例
+
+```zsh
+npm run preview:gallery
+```
