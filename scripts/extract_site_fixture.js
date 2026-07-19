@@ -151,10 +151,17 @@ for (const f of ['api_response.json', 'errors.json', 'validation_errors.json']) 
         `libcommon submodule (gitlink ${libcommonGitlink.slice(0, 7)}) のローカル実体から`);
 }
 
-// ---- 5. 画像(コピー済み less / templates が参照するものだけ) ----
+// ---- 5. 画像(コピー済み less / templates / js と、simplicity 自身の src が参照するものだけ) ----
+// JS からの参照(アイコン類)を含める。simplicity src の /img 参照(button-loader・
+// file_types 等)も本番では quantz の /img から配信されるため対象に含める。
 
 const imgRefs = new Set();
-const scanDirs = [path.join(SITE, 'src', 'less'), path.join(SITE, 'templates')];
+const scanDirs = [
+    path.join(SITE, 'src', 'less'),
+    path.join(SITE, 'templates'),
+    path.join(SITE, 'static', 'js'),
+    path.join(ROOT, 'src')
+];
 const scan = (dir) => {
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
         const p = path.join(dir, entry.name);

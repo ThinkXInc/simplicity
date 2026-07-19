@@ -100,8 +100,37 @@
 - locales/interviews.json
 - locales/interviews_responses.json
 - static/img/back-arrow.svg
+- static/img/bulb-icon.svg
+- static/img/button-loader.svg
+- static/img/cardbrand/amex.svg
+- static/img/cardbrand/diners.svg
+- static/img/cardbrand/generic.svg
+- static/img/cardbrand/jcb.svg
+- static/img/cardbrand/maestro.svg
+- static/img/cardbrand/mastercard.svg
+- static/img/cardbrand/unionpay.svg
+- static/img/cardbrand/visa.svg
+- static/img/copy-icon.svg
+- static/img/down.svg
+- static/img/interviews/down-arrow.svg
+- static/img/interviews/minus-icon.svg
+- static/img/interviews/plus-icon.svg
+- static/img/load-of-the-ring@2x.png
+- static/img/loading-white.svg
+- static/img/loading.svg
+- static/img/logo/horizontal@2x.png
+- static/img/logo/horizontal_bluebg_224@2x.png
 - static/img/logo/white@2x.png
+- static/img/materials/edit-icon.svg
+- static/img/ok-icon.svg
+- static/img/plus-icon.png
+- static/img/plus-icon@2x.png
+- static/img/powerd_by_stripe_black.svg
+- static/img/search-icon.png
+- static/img/search-icon@2x.png
 - static/img/top/bg.png
+- static/img/up.svg
+- static/img/verified-icon.svg
 - static/img/vertical_header/logout-icon.svg
 - static/img/vertical_header/settings-icon.svg
 - static/img/vertical_menu/conversation-flow-icon.svg
@@ -116,7 +145,15 @@
 
 ## 参照はあるが出所リポジトリに存在しないファイル(fixture では 404 または stubs/ で代替)
 
+- img/icons/file_types/aiff_file.png
+- img/icons/file_types/jpg_file.png
+- img/icons/file_types/pdf_file.png
+- img/icons/file_types/png_file.png
+- img/icons/file_types/txt_file.png
+- img/icons/file_types/wav_file.png
 - img/logo.png
+- img/parts/map_pointer_arrow.png
+- img/parts/map_pointer_arrow@2x.png
 - fonts/GeosansLight.ttf(views/fonts は .gitkeep のみ)
 - js/libs/anime.min.js(git 非追跡。/js/libs/anime.min.js にスタブを配置)
 - css/darkmoss.min.css(git 非追跡。空スタブを配置)
