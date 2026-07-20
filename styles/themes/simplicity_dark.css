@@ -1,0 +1,96 @@
+/* styles/themes/simplicity_dark.css — dark テーマ第1版(ST-11)。
+   テーマ=スタイルシート1枚(D-44)。本ファイルが先頭で構造CSSと連結され
+   dist/simplicity_dark.css として同名出力される。
+   設計方針: 意味名トークンは手設計(元から暗い header/footer 系は維持、
+   テキストと面は明暗反転、アクセント色は暗背景向けに明度調整)。
+   値名トークン(--spl-c-*)はコントラスト保存の明度反転(グレー階調は反転、
+   box-shadow 用の rgba 黒は維持、リンク青系は明色化)。 */
+:root {
+  --spl-black: #000;
+  --spl-white: #FFF;
+  --spl-blue: rgb(107, 156, 245);
+  --spl-bgcolor-light: #1e1e1e;
+  --spl-bgcolor-semilight: #262626;
+  --spl-bgcolor-highlight: #333333;
+  --spl-linecolor-on-semilight: #4d4d4d;
+  --spl-textcolor-on-semilight: #b3b3b3;
+  --spl-header-bg: #1d1d1d;
+  --spl-top-bg: #101010;
+  --spl-header-menu-on: #FFF;
+  --spl-header-menu-off: #AAA;
+  --spl-header-menu-border: #4a86b4;
+  --spl-subheader-bottomline: #494949;
+  --spl-footer-background: #101010;
+  --spl-footer-anchor-default: #e0e0e0;
+  --spl-footer-border: #3d3d3d;
+  --spl-gradient-gray-A: linear-gradient(to bottom right, #2b2e33, #17181b);
+  --spl-scrollbar-width: 5px;
+  --spl-scrollbar-track: #1a1a1a;
+  --spl-scrollbar-thumb: #4a4a4a;
+  --spl-text-black: #f2f2f2;
+  --spl-text-black-light: #d9d9d9;
+  --spl-text-darkgray: #c0c0c0;
+  --spl-text-gray: #9a9a9a;
+  --spl-text-gray-light: #6e6e6e;
+  --spl-text-placeholder: #8a8a8a;
+  --spl-border-gray: #3a3a3a;
+  --spl-hover-gray: rgb(45, 45, 45);
+  --spl-pagebacktitle-gray: #8a8a8a;
+  --spl-keycolor: #8a5cf6;
+  --spl-cyan: #9ebcc8;
+  --spl-cyan2: #62a9cf;
+  --spl-magenta: #c65bd0;
+  --spl-yellow: #d5cc4a;
+  --spl-alert-red: #e05252;
+
+  --spl-c-000: #fff;
+  --spl-c-ccc: #333;
+  --spl-c-7a7a7a: #858585;
+  --spl-c-8c1111: #e05252;
+  --spl-c-d9d9d9: #262626;
+  --spl-c-fff: #000;
+  --spl-c-dfdfdf: #202020;
+  --spl-c-f1f1f1: #0e0e0e;
+  --spl-c-f9f9f9: #060606;
+  --spl-c-rgba-0-0-0-0: rgba(0, 0, 0, 0);
+  --spl-c-rgba-0-0-0-0p2: rgba(0, 0, 0, 0.2);
+  --spl-c-3e3e3e: #c1c1c1;
+  --spl-c-656565: #9a9a9a;
+  --spl-c-aaa: #555;
+  --spl-c-007fb9: #4db8e8;
+  --spl-c-rgba-0-0-0-0p13: rgba(0, 0, 0, 0.13);
+  --spl-c-eee: #111;
+  --spl-c-666: #999;
+  --spl-c-dddddd: #222222;
+  --spl-c-909090: #6f6f6f;
+  --spl-c-878787: #787878;
+  --spl-c-e5e5e5: #1a1a1a;
+  --spl-c-ddd: #222;
+  --spl-c-007bff: #4da3ff;
+  --spl-c-ffffff: #000000;
+  --spl-c-333333: #cccccc;
+  --spl-c-555555: #aaaaaa;
+  --spl-c-777777: #888888;
+  --spl-c-d5d5d5: #2a2a2a;
+  --spl-c-2c2c2c: #d3d3d3;
+  --spl-c-rgba-255-255-255-0p5: rgba(20, 20, 20, 0.55);
+  --spl-c-rgba-0-0-0-0p3: rgba(0, 0, 0, 0.3);
+  --spl-c-cfcfcf: #303030;
+  --spl-c-595959: #a6a6a6;
+  --spl-c-676767: #989898;
+  --spl-c-0056b3: #7ab8ff;
+  --spl-c-rgba-0-0-0-0p5: rgba(0, 0, 0, 0.5);
+  --spl-c-2e2e2e: #d1d1d1;
+  --spl-c-353535: #cacaca;
+  --spl-c-424040: #bfbdbd;
+  --spl-c-cdcdcd: #323232;
+  --spl-c-5d5d5d: #a2a2a2;
+  --spl-c-404040: #bfbfbf;
+  --spl-c-454545: #bababa;
+  --spl-c-3a3a3a: #c5c5c5;
+  --spl-c-rgba-0-0-0-0p22: rgba(0, 0, 0, 0.22);
+  --spl-c-fafafa: #050505;
+  --spl-c-939393: #6c6c6c;
+  --spl-c-50636a: #9fb4bc;
+  --spl-c-525252: #adadad;
+}

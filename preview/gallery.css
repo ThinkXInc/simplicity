@@ -1,6 +1,6 @@
 :root {
-  color: #222;
-  background: #f3f5f7;
+  color: var(--spl-text-black-light);
+  background: var(--spl-bgcolor-semilight);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
@@ -11,18 +11,18 @@ body { margin: 0; }
 .themePlaceholder { align-self: center; }
 .themePlaceholder select { display: block; margin-top: .4rem; }
 #gallery { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
-.gallerySection { margin-bottom: 1.5rem; padding: 1.25rem; border: 1px solid #d9dee3; border-radius: 10px; background: white; }
+.gallerySection { margin-bottom: 1.5rem; padding: 1.25rem; border: 1px solid var(--spl-border-gray); border-radius: 10px; background: var(--spl-bgcolor-light); }
 .gallerySection > h2 { margin-top: 0; }
 .galleryGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
-.galleryPlaceholder { background: repeating-linear-gradient(45deg, #fafbfc, #fafbfc 12px, #f1f3f5 12px, #f1f3f5 24px); }
+.galleryPlaceholder { background: repeating-linear-gradient(45deg, var(--spl-c-fafafa), var(--spl-c-fafafa) 12px, var(--spl-c-f1f1f1) 12px, var(--spl-c-f1f1f1) 24px); }
 .galleryPlaceholderNote { font-size: .78rem; color: #8a6d3b; }
 .galleryMeshStage { position: relative; height: 90px; }
-.galleryCard { min-width: 0; padding: 1rem; border: 1px solid #d9dee3; border-radius: 8px; background: #fafbfc; }
-.galleryCard h3 { margin-top: 0; font: 600 .82rem ui-monospace, monospace; color: #46596b; }
-.galleryStage { position: relative; min-height: 230px; overflow: hidden; padding: 1rem; border: 1px dashed #8a9baa; }
+.galleryCard { min-width: 0; padding: 1rem; border: 1px solid var(--spl-border-gray); border-radius: 8px; background: var(--spl-c-fafafa); }
+.galleryCard h3 { margin-top: 0; font: 600 .82rem ui-monospace, monospace; color: var(--spl-text-darkgray); }
+.galleryStage { position: relative; min-height: 230px; overflow: hidden; padding: 1rem; border: 1px dashed var(--spl-c-909090); }
 .galleryActions { display: flex; gap: .5rem; margin-top: 1rem; }
 .galleryActions button { padding: .55rem .9rem; }
-.fixturePage { min-height: 120px; padding: 1rem; background: #f7f9fb; }
+.fixturePage { min-height: 120px; padding: 1rem; background: var(--spl-c-f9f9f9); }
 .dragArea { position: relative; height: 180px; overflow: hidden; border: 1px dashed #9aa8b5; }
 .dragHandle { width: 110px; padding: 1rem; color: white; background: #3979aa; border-radius: 6px; text-align: center; }
 @media (max-width: 700px) { .galleryHeader { display: block; } .themePlaceholder { display: block; margin-top: 1rem; } }

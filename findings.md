@@ -235,6 +235,20 @@
   ゲート: **site 4ページのスクショが凍結 golden と不変一致(既定テーマ不変の証明)**・
   gallery は select UI 差分のみ意図的再凍結・t 15/15・lint・typecheck・manifest・
   gallery 30/30・宣言ゴールデン --map --resolve-vars 一致 / ST-10
+- ST-11 適用の記録(2026-07-20) / styles/themes/simplicity_dark.css(dark 第1版・全86トークン)を
+  1枚置くだけで dist/simplicity_dark.css が同名出力されることを実測(D-44 の機構成立)。
+  設計: 意味名トークンは手設計(元から暗い header/footer 系は維持・テキストと面は明暗反転・
+  アクセントは暗背景向けに明度調整)、値名トークンはコントラスト保存の明度反転
+  (グレー階調反転・box-shadow の rgba 黒は維持・リンク青系は明色化)。
+  scripts/check_theme_contrast.js 新設(意味名の前景/背景対 14 組・WCAG AA 4.5 / 補助 3.0)—
+  dark 14/14 合格。preview/gallery.css の chrome 色をトークン参照へ置換し、ギャラリーの
+  ページ全体がテーマに追従するようにした(default はほぼ同値のため gallery 2枚のみ意図的再凍結。
+  site 4ページの default は不変一致を維持)。dark スクショ5枚を独立ゴールデンとして凍結
+  (切替は消費側と同じ機構: gallery=select UI 経由 / site=Simplicity.setTheme を evaluate)。
+  **第1版の既知課題(ST-13 目視の入力)**: dark で NextButton/BackButton・LoadButton の
+  ラベルが視認しづらい(該当ボタンには生きた simplicity CSS が無く UA/reset 由来の配色のため)。
+  site ページの dark は simplicity 所有部分のみ変化し、quantz 独自 CSS(main.css の
+  ハードコード色)の面は変わらない — テーマの適用範囲として正しい挙動 / ST-11
 - /Users/K00TSUKA/Sources/quantz-web:master / ローカル master は eab6fd049b2c69c7578b8be288245be5c961902d、ローカル保存 ref origin/master は計画対象 99a9488714b94e227ecec54340df031419c5d1e2。計画書 §5.1 の「clone は ff 追随済み」と不一致。quantz-web 書き込み禁止のため checkout/pull は行わず、git grep/show origin/master で対象ツリーを読み取る / ST-0
 - refactor_plan.md:3 / ルート CLAUDE.md・docs/ROADMAP.md は計画書を `REFACTORING_PLAN.md` と呼ぶが実ファイル名は `refactor_plan.md`(内容は v1.2 で一致) / 項目0-1
 - refactor_plan.md:146 / 計画書指定の `"test": "node --test test/"` は本環境 node v23.7.0 で exit 1(`test/` をモジュールとして解決し MODULE_NOT_FOUND。計画書検証環境 node 22.22.2 では動作)。node 23 互換のため `"test": "node --test 'test/**/*.test.js'"` を採用(人間承認済み。src/dist 不変・挙動不変) / 項目0-2
