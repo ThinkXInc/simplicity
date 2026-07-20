@@ -143,6 +143,14 @@ if (resolveVars) {
     current = sortModel(resolveVarsInModel(current));
 }
 
+// トークン定義だけのセレクタ(宣言が全て --custom property)は描画に直接寄与しないため
+// 比較対象から外す(var() 解決の入力としては resolveVarsInModel が先に読んでいる)
+const stripTokenOnly = (model) => Object.fromEntries(
+    Object.entries(model).filter(([key, decls]) =>
+        !Object.keys(decls).every(prop => prop.startsWith('--'))));
+golden = stripTokenOnly(golden);
+current = stripTokenOnly(current);
+
 const problems = [];
 const keys = new Set([...Object.keys(golden), ...Object.keys(current)]);
 for (const key of [...keys].sort()) {

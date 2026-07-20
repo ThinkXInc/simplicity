@@ -1,7 +1,7 @@
 @charset "UTF-8";
 div.spl-TextField:not(.spl-Incrementer) div.spl-inputOuter {
   padding: 4px 12px;
-  border: solid 1px #7a7a7a;
+  border: 1px solid var(--spl-c-7a7a7a);
   border-radius: 3px;
   box-sizing: border-box;
   display: flex;
@@ -14,7 +14,7 @@ div.spl-TextField:not(.spl-Incrementer) div.spl-inputOuter {
 div.spl-TextField:not(.spl-Incrementer) div.spl-inputOuter h6.spl-title {
   font-size: 0.7rem;
   font-weight: 400;
-  color: #878787;
+  color: var(--spl-text-gray);
   -webkit-font-smoothing: antialiased;
   letter-spacing: 0.011em;
   font-size: 12px;
@@ -39,7 +39,7 @@ div.spl-TextField:not(.spl-Incrementer) div.spl-inputOuter div.spl-inputWrapper 
   outline: none;
   font-weight: 400;
   font-size: 1.1rem;
-  color: #525252;
+  color: var(--spl-text-darkgray);
   line-height: 24px;
   display: inline-block;
   white-space: pre-wrap;
@@ -51,15 +51,15 @@ div.spl-TextField:not(.spl-Incrementer) div.spl-inputOuter div.spl-inputWrapper 
 }
 div.spl-TextField:not(.spl-Incrementer) div.spl-inputOuter div.spl-inputWrapper ::placeholder {
   font-weight: 100;
-  color: #adadad;
+  color: var(--spl-text-placeholder);
 }
 div.spl-TextField:not(.spl-Incrementer) div.spl-inputOuter span.spl-counter {
   float: right;
   font-size: 0.7rem;
-  color: #c7c7c7;
+  color: var(--spl-text-gray-light);
 }
 div.spl-TextField:not(.spl-Incrementer) div.spl-inputOuter p.spl-alertMessage {
-  color: #8c1111;
+  color: var(--spl-c-8c1111);
   font-size: 0.9rem;
   padding-left: 0px;
 }
@@ -73,27 +73,27 @@ div.spl-TextField:not(.spl-Incrementer) div.spl-inputOuter button svg .spl-cls-2
   -moz-transition: all 0.2s cubic-bezier(0.24, 0.8, 0.55, 0.94) 0s;
   -o-transitino: all 0.2s cubic-bezier(0.24, 0.8, 0.55, 0.94) 0s;
   transition: all 0.2s cubic-bezier(0.24, 0.8, 0.55, 0.94) 0s;
-  stroke: #d9d9d9;
+  stroke: var(--spl-c-d9d9d9);
 }
 div.spl-TextField:not(.spl-Incrementer) div.spl-inputOuter button svg:hover .spl-cls-1,
 div.spl-TextField:not(.spl-Incrementer) div.spl-inputOuter button svg:hover .spl-cls-2 {
-  stroke: #fff;
+  stroke: var(--spl-c-fff);
 }
 div.spl-TextField:not(.spl-Incrementer).spl-alert div.spl-inputOuter {
-  border: 1px solid #8c1111;
+  border: 1px solid var(--spl-c-8c1111);
 }
 div.spl-TextField:not(.spl-Incrementer).spl-alert div.spl-inputOuter h6.spl-title {
-  color: #8c1111;
+  color: var(--spl-c-8c1111);
 }
 div.spl-TextField.spl-overMaximumTextCount div.spl-inputOuter div.spl-footer span.spl-counter {
-  color: #8c1111;
+  color: var(--spl-c-8c1111);
 }
 div.spl-TextField.spl-Incrementer div.spl-inputOuter div.spl-inputWrapper {
   display: flex;
   width: max-content;
-  border: 1px solid #dfdfdf;
+  border: 1px solid var(--spl-c-dfdfdf);
   border-radius: 4px;
-  box-shadow: 0 1px 3px #f1f1f1;
+  box-shadow: 0 1px 3px var(--spl-c-f1f1f1);
 }
 div.spl-TextField.spl-Incrementer div.spl-inputOuter div.spl-inputWrapper input {
   border: none;
@@ -111,9 +111,9 @@ div.spl-TextField.spl-Incrementer div.spl-inputOuter div.spl-inputAfter div.spl-
 div.spl-TextField.spl-Incrementer.spl-alert div.spl-inputOuter div.spl-inputWrapper {
   display: flex;
   width: max-content;
-  border: 1px solid #8c1111;
+  border: 1px solid var(--spl-c-8c1111);
   border-radius: 4px;
-  box-shadow: 0 1px 3px #f1f1f1;
+  box-shadow: 0 1px 3px var(--spl-c-f1f1f1);
 }
 div.spl-TextField.spl-Incrementer.spl-alert div.spl-inputOuter div.spl-inputWrapper input {
   border: none;
@@ -132,11 +132,11 @@ button.spl-LoadButton {
   position: relative;
   width: 150px;
   height: 50px;
-  border: 1px solid #ccc;
-  background-color: #f9f9f9;
+  border: 1px solid var(--spl-c-ccc);
+  background-color: var(--spl-c-f9f9f9);
   text-align: center;
   overflow: hidden;
-  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  box-shadow: 0 0 0 0 var(--spl-c-rgba-0-0-0-0);
   transition: width 0.2s cubic-bezier(0.65, 0, 0.34, 1), border-radius 0.2s cubic-bezier(0.65, 0, 0.34, 1), background-color 0.2s cubic-bezier(0.65, 0, 0.34, 1), box-shadow 0.2s cubic-bezier(0.65, 0, 0.34, 1);
 }
 button.spl-LoadButton span.spl-LoadButtonLabel,
@@ -159,10 +159,10 @@ button.spl-LoadButton img.spl-LoadButtonLoader {
   visibility: hidden;
 }
 button.spl-LoadButton:hover {
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 6px var(--spl-c-rgba-0-0-0-0p2);
 }
 button.spl-LoadButton.spl-load {
-  background-color: #3e3e3e !important;
+  background-color: var(--spl-c-3e3e3e) !important;
 }
 button.spl-LoadButton.spl-load span.spl-LoadButtonLabel {
   opacity: 0;
@@ -175,7 +175,7 @@ button.spl-LoadButton.spl-load img.spl-LoadButtonLoader {
   left: 30px;
 }
 button.spl-LoadButton.spl-disable {
-  background-color: #656565 !important;
+  background-color: var(--spl-c-656565) !important;
 }
 div.spl-VerifyCodeForm {
   display: flex;
@@ -192,22 +192,22 @@ div.spl-VerifyCodeForm div.spl-verifyCodeFormContainer {
 div.spl-VerifyCodeForm div.spl-verifyCodeFormContainer input.spl-verifyInput {
   width: 50px;
   height: 50px;
-  border: 1px solid #aaa;
+  border: 1px solid var(--spl-c-aaa);
   border-radius: 4px;
   font-size: 2em;
   text-align: center;
 }
 div.spl-VerifyCodeForm div.spl-verifyCodeFormContainer input.spl-verifyInput:focus {
-  border-color: var(#007fb9);
-  box-shadow: var(#3e3e3e);
+  border-color: var(var(--spl-c-007fb9));
+  box-shadow: var(var(--spl-c-3e3e3e));
 }
 div.spl-VerifyCodeForm p.spl-alert {
-  color: #8c1111;
+  color: var(--spl-c-8c1111);
   font-size: 0.8em;
   margin-top: 9px;
 }
 div.spl-VerifyCodeForm.spl-alert div.spl-verifyCodeFormContainer input.spl-verifyInput {
-  border: 1px solid #8c1111;
+  border: 1px solid var(--spl-c-8c1111);
 }
 div.spl-TermsScrollView {
   border-radius: 4px;
@@ -216,7 +216,7 @@ div.spl-TermsScrollView div.spl-termsViewContainer {
   height: 400px;
   width: 470px;
   overflow-y: scroll;
-  background-color: #f9f9f9;
+  background-color: var(--spl-c-f9f9f9);
   border-radius: 0px;
 }
 div.spl-TermsScrollView div.spl-termsViewContainer div.spl-termsView h1,
@@ -256,20 +256,20 @@ div.spl-TermsScrollView div.spl-termsViewContainer div.spl-termsView ul {
   list-style: disc;
 }
 div.spl-DropdownButton div.spl-DropdownButtonClickable {
-  border: 1px solid #7a7a7a;
+  border: 1px solid var(--spl-c-7a7a7a);
   border-radius: 4px;
   padding: 8px 14px;
   cursor: pointer;
 }
 div.spl-DropdownButton div.spl-DropdownButtonClickable h6.spl-description {
   font-size: 11px;
-  color: #878787;
+  color: var(--spl-text-gray);
   font-weight: 300;
 }
 div.spl-DropdownButton div.spl-DropdownButtonClickable span.spl-title {
   font-size: 13px;
   font-weight: 100;
-  color: #333333;
+  color: var(--spl-text-black-light);
 }
 div.spl-DropdownButton div.spl-DropdownButtonClickable img.spl-downarrow {
   position: relative;
@@ -279,26 +279,26 @@ div.spl-DropdownButton div.spl-DropdownButtonClickable img.spl-downarrow {
   float: right;
 }
 div.spl-DropdownButton div.spl-DropdownButtonClickable div.spl-footer p.spl-alertMessage {
-  color: #8c1111;
+  color: var(--spl-c-8c1111);
   font-size: 0.9rem;
   padding-left: 0px;
 }
 div.spl-DropdownButton ul.spl-listmenu {
-  background: #fff;
+  background: var(--spl-bgcolor-light);
   position: absolute;
   width: 100%;
-  -webkit-box-shadow: 1px 1px 6px 1px rgba(0, 0, 0, 0.13);
-  -moz-box-shadow: 1px 1px 6px 1px rgba(0, 0, 0, 0.13);
-  box-shadow: 1px 1px 6px 1px rgba(0, 0, 0, 0.13);
+  -webkit-box-shadow: 1px 1px 6px 1px var(--spl-c-rgba-0-0-0-0p13);
+  -moz-box-shadow: 1px 1px 6px 1px var(--spl-c-rgba-0-0-0-0p13);
+  box-shadow: 1px 1px 6px 1px var(--spl-c-rgba-0-0-0-0p13);
   border-radius: 6px;
   z-index: 2;
 }
 div.spl-DropdownButton ul.spl-listmenu li.spl-listitem {
-  background-color: #fff;
+  background-color: var(--spl-bgcolor-light);
   cursor: pointer;
   padding: 10px 16px;
-  color: #333333;
-  border-bottom: 1px solid #eee;
+  color: var(--spl-text-black-light);
+  border-bottom: 1px solid var(--spl-c-eee);
   display: flex;
   justify-content: space-between;
 }
@@ -312,20 +312,20 @@ div.spl-DropdownButton ul.spl-listmenu li.spl-listitem div.spl-listitem-title {
   font-size: 13px;
 }
 div.spl-DropdownButton ul.spl-listmenu li.spl-listitem div.spl-listitem-description {
-  color: #666;
+  color: var(--spl-c-666);
   font-size: 10px;
 }
 div.spl-DropdownButton ul.spl-listmenu li.spl-listitem:hover {
-  background-color: #f1f1f1;
+  background-color: var(--spl-c-f1f1f1);
 }
 div.spl-DropdownButton ul.spl-listmenu li.spl-listitem.spl-selected {
-  background-color: #dddddd;
+  background-color: var(--spl-c-dddddd);
 }
 div.spl-DropdownButton.spl-alert div.spl-DropdownButtonClickable {
-  border: 1px solid #8c1111;
+  border: 1px solid var(--spl-c-8c1111);
 }
 div.spl-DropdownButton.spl-alert div.spl-DropdownButtonClickable h6.spl-description {
-  color: #8c1111;
+  color: var(--spl-c-8c1111);
 }
 div.spl-KeywordsField.spl-focus div.spl-inputOuter p.spl-press.spl-show {
   opacity: 1;
@@ -363,8 +363,8 @@ div.spl-KeywordsField div.spl-inputOuter ul.spl-keywords li.spl-keyword button.s
   padding: 1px;
 }
 div.spl-KeywordsField div.spl-inputOuter ul.spl-keywords li.spl-keyword.spl-scope {
-  border: 1px solid #909090;
-  background: #878787;
+  border: 1px solid var(--spl-c-909090);
+  background: var(--spl-c-878787);
 }
 div.spl-KeywordsField div.spl-inputOuter input.spl-keywordsform {
   flex: 1 0 70%;
@@ -382,7 +382,7 @@ div.spl-KeywordsField div.spl-inputOuter div.spl-footer p.spl-alertMessage {
   position: absolute;
   top: 38px;
   left: 14px;
-  color: #8c1111;
+  color: var(--spl-c-8c1111);
   font-size: 0.8rem;
 }
 div.spl-KeywordsField div.spl-inputOuter p.spl-press {
@@ -419,7 +419,7 @@ div.spl-TableView div.spl-tableViewContainer div.spl-tableViewHeader {
   display: flex;
   justify-content: space-between;
   padding: 10px 15px;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid var(--spl-c-e5e5e5);
 }
 div.spl-TableView div.spl-tableViewContainer div.spl-tableView {
   display: flex;
@@ -454,7 +454,7 @@ div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListV
   display: flex;
   align-items: center;
   padding: 10px 15px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--spl-c-ddd);
   flex-direction: row;
   align-items: start;
   height: auto;
@@ -471,8 +471,8 @@ div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListV
 }
 div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListView li.spl-tableViewCell div.spl-contentWrapper div.spl-header span.spl-label {
   float: right;
-  background-color: #007BFF;
-  color: #ffffff;
+  background-color: var(--spl-c-007bff);
+  color: var(--spl-c-ffffff);
   padding: 2px 7px;
   border-radius: 2px;
   font-size: 0.78rem;
@@ -482,17 +482,17 @@ div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListV
   float: left;
   font-size: 1.2rem;
   font-weight: 300;
-  color: #333333;
+  color: var(--spl-c-333333);
 }
 div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListView li.spl-tableViewCell div.spl-contentWrapper div.spl-body p.spl-text {
-  color: #555555;
+  color: var(--spl-c-555555);
   font-weight: 100;
   font-size: 0.9rem;
 }
 div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListView li.spl-tableViewCell div.spl-contentWrapper div.spl-footer {
   margin: 6px 0 0 0;
   font-size: 0.7rem;
-  color: #777777;
+  color: var(--spl-c-777777);
 }
 div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListView li.spl-tableViewCell div.spl-buttonContainer {
   position: absolute;
@@ -516,21 +516,21 @@ div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListV
   -moz-transition: all 0.2s cubic-bezier(0.24, 0.8, 0.55, 0.94) 0s;
   -o-transitino: all 0.2s cubic-bezier(0.24, 0.8, 0.55, 0.94) 0s;
   transition: all 0.2s cubic-bezier(0.24, 0.8, 0.55, 0.94) 0s;
-  fill: #d5d5d5;
+  fill: var(--spl-c-d5d5d5);
 }
 div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListView li.spl-tableViewCell div.spl-buttonContainer button svg:hover .spl-path {
-  fill: #fff;
+  fill: var(--spl-c-fff);
 }
 div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListView li.spl-tableViewCell.spl-selected {
-  background-color: #2c2c2c;
+  background-color: var(--spl-c-2c2c2c);
 }
 div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListView li.spl-tableViewCell.spl-selected div.spl-buttonContainer.spl-right {
   right: 0;
-  background: linear-gradient(to left, #2c2c2c, #2c2c2c 77%, transparent);
+  background: linear-gradient(to left, var(--spl-c-2c2c2c), var(--spl-c-2c2c2c) 77%, transparent);
 }
 div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListView li.spl-tableViewCell.spl-selected div.spl-buttonContainer.spl-left {
   left: 0;
-  background: linear-gradient(to right, #2c2c2c, #2c2c2c 77%, transparent);
+  background: linear-gradient(to right, var(--spl-c-2c2c2c), var(--spl-c-2c2c2c) 77%, transparent);
 }
 div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListView li.spl-tableViewCell.spl-hiddenForMoveFromLeft {
   max-height: 0;
@@ -556,7 +556,7 @@ div.spl-TableView div.spl-tableViewContainer div.spl-tableViewFooter {
   display: flex;
   justify-content: space-between;
   padding: 10px 15px;
-  border-top: 1px solid #e5e5e5;
+  border-top: 1px solid var(--spl-c-e5e5e5);
 }
 div.spl-ModalView div.spl-bg {
   position: fixed;
@@ -564,7 +564,7 @@ div.spl-ModalView div.spl-bg {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: var(--spl-c-rgba-255-255-255-0p5);
   z-index: 1000;
 }
 div.spl-ModalView div.spl-window {
@@ -572,37 +572,37 @@ div.spl-ModalView div.spl-window {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #ffffff;
+  background-color: var(--spl-c-ffffff);
   z-index: 1001;
   width: 70%;
   max-width: 500px;
   border-radius: 5px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 5px 15px var(--spl-c-rgba-0-0-0-0p3);
   overflow: hidden;
 }
 div.spl-ModalView div.spl-window div.spl-contentWrapper {
-  background-color: #fff;
+  background-color: var(--spl-c-fff);
   padding: 20px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--spl-c-eee);
 }
 div.spl-ModalView div.spl-window div.spl-contentWrapper h3.spl-ModalViewTitle {
-  color: #333333;
+  color: var(--spl-c-333333);
   font-size: 24px;
   margin-bottom: 20px;
 }
 div.spl-ModalView div.spl-window div.spl-contentWrapper div.spl-mainContent {
-  color: #555555;
+  color: var(--spl-c-555555);
   font-size: 16px;
   margin-bottom: 20px;
 }
 div.spl-ModalView div.spl-window div.spl-contentWrapper div.spl-ModalViewAlert {
-  color: #8c1111;
+  color: var(--spl-c-8c1111);
   font-size: 0.9rem;
   font-weight: 400;
   margin-top: 10px;
 }
 div.spl-ModalView div.spl-window div.spl-modalViewFooter {
-  background-color: #ffffff;
+  background-color: var(--spl-c-ffffff);
   padding: 10px 20px;
   display: flex;
   justify-content: end;
@@ -617,76 +617,76 @@ div.spl-ModalView div.spl-window div.spl-modalViewFooter button {
   transition: all 0.2s cubic-bezier(0.24, 0.8, 0.55, 0.94) 0s;
 }
 div.spl-ModalView div.spl-window div.spl-modalViewFooter button.spl-cancelButton {
-  border: 1px solid #cfcfcf;
-  background-color: #fff;
-  color: #595959;
+  border: 1px solid var(--spl-c-cfcfcf);
+  background-color: var(--spl-c-fff);
+  color: var(--spl-c-595959);
 }
 div.spl-ModalView div.spl-window div.spl-modalViewFooter button.spl-cancelButton:hover {
-  background-color: #676767;
-  color: #fff;
+  background-color: var(--spl-c-676767);
+  color: var(--spl-c-fff);
 }
 div.spl-ModalView div.spl-window div.spl-modalViewFooter button.spl-doneButton {
-  border: 1px solid #cfcfcf;
-  background-color: #ffffff;
-  color: #595959;
+  border: 1px solid var(--spl-c-cfcfcf);
+  background-color: var(--spl-c-ffffff);
+  color: var(--spl-c-595959);
 }
 div.spl-ModalView div.spl-window div.spl-modalViewFooter button.spl-doneButton:hover {
-  background-color: #0056b3;
-  color: #fff;
+  background-color: var(--spl-c-0056b3);
+  color: var(--spl-c-fff);
 }
 div.spl-ModalView.spl-darkStyle {
   display: block;
 }
 div.spl-ModalView.spl-darkStyle div.spl-bg {
-  background-color: rgba(0, 0, 0, 0.5) !important;
+  background-color: var(--spl-c-rgba-0-0-0-0p5) !important;
 }
 div.spl-ModalView.spl-darkStyle div.spl-window div.spl-contentWrapper {
-  background-color: #2e2e2e;
+  background-color: var(--spl-c-2e2e2e);
   padding: 20px;
-  border-bottom: 1px solid #353535;
-  border-top: 1px solid #424040;
-  border-left: 1px solid #424040;
-  border-right: 1px solid #424040;
+  border-bottom: 1px solid var(--spl-c-353535);
+  border-top: 1px solid var(--spl-c-424040);
+  border-left: 1px solid var(--spl-c-424040);
+  border-right: 1px solid var(--spl-c-424040);
 }
 div.spl-ModalView.spl-darkStyle div.spl-window div.spl-contentWrapper h3.spl-ModalViewTitle {
   font-size: 18px;
-  color: #cdcdcd;
+  color: var(--spl-c-cdcdcd);
 }
 div.spl-ModalView.spl-darkStyle div.spl-window div.spl-contentWrapper div.spl-mainContent {
-  color: #ffffff;
+  color: var(--spl-c-ffffff);
 }
 div.spl-ModalView.spl-darkStyle div.spl-window div.spl-footer.spl-modalViewFooter {
-  background-color: #2e2e2e;
+  background-color: var(--spl-c-2e2e2e);
   padding: 16px 16px 16px 16px;
-  border-bottom: 1px solid #424040;
-  border-left: 1px solid #424040;
-  border-right: 1px solid #424040;
+  border-bottom: 1px solid var(--spl-c-424040);
+  border-left: 1px solid var(--spl-c-424040);
+  border-right: 1px solid var(--spl-c-424040);
   border-top: none;
 }
 div.spl-ModalView.spl-darkStyle div.spl-window div.spl-footer.spl-modalViewFooter button.spl-cancelButton {
-  background-color: #5d5d5d;
-  color: #fff;
-  border: 1px solid #656565;
+  background-color: var(--spl-c-5d5d5d);
+  color: var(--spl-c-fff);
+  border: 1px solid var(--spl-c-656565);
   font-size: 0.9em;
   padding: 10px 15px;
   transition: all 0.4s cubic-bezier(0.65, 0, 0.34, 1);
   margin-right: 10px;
 }
 div.spl-ModalView.spl-darkStyle div.spl-window div.spl-footer.spl-modalViewFooter button.spl-cancelButton:hover {
-  border: 1px solid #404040;
-  color: #656565;
-  background-color: #454545;
+  border: 1px solid var(--spl-c-404040);
+  color: var(--spl-c-656565);
+  background-color: var(--spl-c-454545);
 }
 div.spl-ModalView.spl-darkStyle div.spl-window div.spl-footer.spl-modalViewFooter button.spl-doneButton {
-  background-color: #3a3a3a;
-  color: #fff;
-  border: 1px solid #656565;
+  background-color: var(--spl-c-3a3a3a);
+  color: var(--spl-c-fff);
+  border: 1px solid var(--spl-c-656565);
   font-size: 0.9em;
   padding: 10px 15px;
   transition: all 0.4s cubic-bezier(0.65, 0, 0.34, 1);
 }
 div.spl-ModalView.spl-darkStyle div.spl-window div.spl-footer.spl-modalViewFooter button.spl-doneButton:hover {
-  border: 1px solid #404040;
-  color: #656565;
-  background-color: #454545;
+  border: 1px solid var(--spl-c-404040);
+  color: var(--spl-c-656565);
+  background-color: var(--spl-c-454545);
 }

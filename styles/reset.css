@@ -155,7 +155,7 @@ del {
 }
 abbr[title],
 dfn[title] {
-  border-bottom: 1px dotted #000;
+  border-bottom: 1px dotted var(--spl-c-000);
   cursor: help;
 }
 /* tables still need cellspacing="0" in the markup */
@@ -175,7 +175,7 @@ hr {
   display: block;
   height: 1px;
   border: 0;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid var(--spl-c-ccc);
   margin: 1em 0;
   padding: 0;
 }

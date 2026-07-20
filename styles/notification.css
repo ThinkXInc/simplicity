@@ -3,7 +3,7 @@ div.spl-Notification {
   position: absolute;
   z-index: 1000;
   padding: 6px;
-  border: 1px solid #fafafa;
+  border: 1px solid var(--spl-c-fafafa);
   background-color: white;
   border-radius: 3px;
   box-sizing: border-box;
@@ -22,10 +22,10 @@ div.spl-Notification.spl-show {
   display: block;
 }
 div.spl-Notification.spl-info {
-  border-color: #939393;
+  border-color: var(--spl-c-939393);
 }
 div.spl-Notification.spl-success {
-  border-color: #50636a;
+  border-color: var(--spl-c-50636a);
 }
 div.spl-Notification.spl-warning {
   border-color: orange;
@@ -36,7 +36,7 @@ div.spl-Notification.spl-error {
 div.spl-Notification p.spl-NotificationMessage {
   margin: 0;
   padding: 0;
-  color: #525252;
+  color: var(--spl-c-525252);
   font-size: 12px;
   line-height: 1.5;
 }

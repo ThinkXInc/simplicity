@@ -58,6 +58,7 @@ const paths = {
     ],
     // 連結順は旧 less/simplicity_default.less の @import 順を保存する(カスケード保存)
     css: [
+        './styles/tokens.css',
         './styles/utilities.css',
         './styles/reset.css',
         './styles/view_components.css',

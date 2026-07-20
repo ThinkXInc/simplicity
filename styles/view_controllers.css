@@ -16,7 +16,7 @@ section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPag
 section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage h2.spl-inputPageViewPageTitle {
   font-size: 2.2rem;
   font-weight: 100;
-  color: #000;
+  color: var(--spl-text-black);
   margin: 30px 0 20px;
 }
 section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage p.spl-inputPageViewPageDescription {
@@ -27,7 +27,7 @@ section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPag
   margin: 10px 0 10px;
 }
 section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage div.spl-textField input {
-  color: #000;
+  color: var(--spl-text-black);
 }
 section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage div.spl-dropdownButton {
   margin: 10px 0 10px;
@@ -52,7 +52,7 @@ section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPag
 }
 section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage div.spl-alertMessage p {
   text-align: center;
-  color: #8c1111;
+  color: var(--spl-alert-red);
 }
 section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage div.spl-wrapper {
   display: flex;
@@ -79,9 +79,9 @@ section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPag
 }
 @keyframes focus {
   0% {
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0);
+    box-shadow: 0 1px 5px var(--spl-c-rgba-0-0-0-0);
   }
   100% {
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.22);
+    box-shadow: 0 1px 5px var(--spl-c-rgba-0-0-0-0p22);
   }
 }
