@@ -367,7 +367,7 @@ new Draggable({ element: dragCard.querySelector('.dragHandle'), initX: 25, initY
 // テーマ = dist/simplicity_<name>.css の1枚(D-44)。切替は Simplicity.setTheme。
 // テーマを追加したらこの一覧に名前を足す(preview のみの変更で src・ビルドに触れない)。
 
-const galleryThemes = ['default', 'dark'];
+const galleryThemes = ['default', 'dark', 'variation_a', 'variation_b'];
 const themeSelect = document.getElementById('gallery-theme-select');
 galleryThemes.forEach(name => {
   const option = document.createElement('option');

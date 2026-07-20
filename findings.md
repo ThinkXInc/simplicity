@@ -249,6 +249,15 @@
   ラベルが視認しづらい(該当ボタンには生きた simplicity CSS が無く UA/reset 由来の配色のため)。
   site ページの dark は simplicity 所有部分のみ変化し、quantz 独自 CSS(main.css の
   ハードコード色)の面は変わらない — テーマの適用範囲として正しい挙動 / ST-11
+- ST-12 適用の記録(2026-07-20) / 検証用 fixture テーマ2枚
+  (styles/themes/simplicity_variation_a.css=暖色 / _b=寒色。default からの機械変換:
+  無彩色トーンの着色+keycolor 変更。製品テーマではない)を追加。**「テーマ追加=CSS 1枚」の
+  機械確認**: 追加コミットのステージ一覧に src/・gulpfile.js・package.json が 0 件
+  (grep 実測。変更は themes 2枚+preview のテーマ一覧+スクショ資産+README のみ)。
+  4状態(default/dark/variation_a/variation_b)×5ページ=20 スクショを凍結し、
+  2回連続 20/20 一致で決定性を確認。gallery 2枚(default/dark)は select の option 増に
+  よる幅変化のみの意図的再凍結(site の default 4枚は不変維持)。テーマ追加手順を
+  README.md「Themes」節に記載 / ST-12
 - /Users/K00TSUKA/Sources/quantz-web:master / ローカル master は eab6fd049b2c69c7578b8be288245be5c961902d、ローカル保存 ref origin/master は計画対象 99a9488714b94e227ecec54340df031419c5d1e2。計画書 §5.1 の「clone は ff 追随済み」と不一致。quantz-web 書き込み禁止のため checkout/pull は行わず、git grep/show origin/master で対象ツリーを読み取る / ST-0
 - refactor_plan.md:3 / ルート CLAUDE.md・docs/ROADMAP.md は計画書を `REFACTORING_PLAN.md` と呼ぶが実ファイル名は `refactor_plan.md`(内容は v1.2 で一致) / 項目0-1
 - refactor_plan.md:146 / 計画書指定の `"test": "node --test test/"` は本環境 node v23.7.0 で exit 1(`test/` をモジュールとして解決し MODULE_NOT_FOUND。計画書検証環境 node 22.22.2 では動作)。node 23 互換のため `"test": "node --test 'test/**/*.test.js'"` を採用(人間承認済み。src/dist 不変・挙動不変) / 項目0-2

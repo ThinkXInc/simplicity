@@ -108,6 +108,20 @@ The Simplicity project is structured as follows:
 For bundle mechanisms and including files in your project, utilize `gulpfile.js` provided in the repository.
 
 
+## **Themes**
+
+テーマ = スタイルシート1枚(D-44)。`styles/themes/simplicity_<name>.css` に全トークン
+(`:root { --spl-*: ... }`)を定義した css を置くと、ビルド(`npx gulp styles`)が
+**同名**の `dist/simplicity_<name>.css` を出力する。src・ビルド定義には触れない。
+
+- 追加: `styles/themes/simplicity_<name>.css` を1枚置く → `npx gulp styles`
+- 適用: 消費側で link する css を選ぶ(`simplicity_default.css` / `simplicity_dark.css` / …)
+- ランタイム切替: `Simplicity.setTheme('<name>')`(link の差し替えのみ。永続化は消費側の責務)
+- 検証: `node scripts/check_theme_contrast.js <name>`(WCAG コントラスト)、
+  ギャラリーの Theme select(`preview/fixtures.js` の `galleryThemes` に名前を追加)
+
+`simplicity_variation_a` / `simplicity_variation_b` は検証用 fixture テーマであり製品テーマではない。
+
 ## **References**
 
 - [Node.js Installation](https://nodejs.org/ja/download/)
