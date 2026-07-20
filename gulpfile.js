@@ -23,6 +23,7 @@ const paths = {
         './src/helpers/volume_meter.js',
         './src/helpers/screen_lock.js',
         './src/helpers/draggable.js',
+        './src/helpers/theme.js',
         './src/models/user_base.js',
         './src/view_component_bases/view_component_base.js',
         './src/view_component_bases/form_component_base.js',
@@ -56,9 +57,11 @@ const paths = {
         './src/pages/single_text_input_page.js',
         './src/view_controllers/input_page_view_controller.js'
     ],
-    // 連結順は旧 less/simplicity_default.less の @import 順を保存する(カスケード保存)
-    css: [
-        './styles/tokens.css',
+    // テーマ = styles/themes/simplicity_<name>.css(トークン定義)。
+    // 各テーマを先頭に構造CSSを連結し、dist へ**同名**の simplicity_<name>.css を出力する(D-44)。
+    // 構造CSSの連結順は旧 less/simplicity_default.less の @import 順を保存する(カスケード保存)
+    themesDir: './styles/themes',
+    cssStructural: [
         './styles/utilities.css',
         './styles/reset.css',
         './styles/view_components.css',
@@ -66,13 +69,12 @@ const paths = {
         './styles/notification.css'
     ],
     outputDir: './dist',
-    jsOutputFile: 'simplicity.js',
-    cssOutputFile: 'simplicity_default.css'
+    jsOutputFile: 'simplicity.js'
 };
 
 gulp.task('watch', function() {
   gulp.watch(paths.jsFiles, gulp.series('scripts'));
-  gulp.watch(paths.css, gulp.series('styles'));
+  gulp.watch(paths.cssStructural.concat([paths.themesDir + '/*.css']), gulp.series('styles'));
 });
 
 gulp.task('scripts', function() {
@@ -87,15 +89,26 @@ gulp.task('scripts', function() {
         .pipe(gulp.dest(paths.outputDir));
 });
 
-gulp.task('styles', function() {
+gulp.task('styles', async function() {
+    // テーマ1枚 = バンドル1本。テーマ追加はファイルを置くだけでビルド定義に触れない。
     // concat を cssnano より先に行う(cssnano の @keyframes 縮小名・z-index 最適化は
-    // ファイル単位で走るため、後段だと複数入力で名前が衝突する — 単一ストリームで旧挙動を保存)
-    return gulp.src(paths.css)
-        .pipe(sourcemaps.init())
-        .pipe(concat(paths.cssOutputFile))
-        .pipe(cssnano())
-        .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(paths.outputDir));
+    // ファイル単位で走るため、後段だと複数入力で名前が衝突する — 単一連結で旧挙動を保存)。
+    // vinyl-fs 経由の書き込みが node 23 で css を落とす事故を実測したため、
+    // gulp ストリームを使わず cssnano(gulp-cssnano の実体)を直接呼ぶ。
+    const cssnanoCore = require('cssnano');
+    const themeFiles = fs.readdirSync(paths.themesDir)
+        .filter(f => /^simplicity_[A-Za-z0-9_-]+\.css$/.test(f))
+        .sort();
+    if (themeFiles.length === 0) {
+        throw new Error(`No theme files found in ${paths.themesDir}`);
+    }
+    const structural = paths.cssStructural.map(p => fs.readFileSync(p, 'utf8'));
+    for (const themeFile of themeFiles) {
+        const themeSource = fs.readFileSync(`${paths.themesDir}/${themeFile}`, 'utf8');
+        const bundle = [themeSource].concat(structural).join('\n');
+        const result = await cssnanoCore.process(bundle, { from: undefined });
+        fs.writeFileSync(`${paths.outputDir}/${themeFile}`, result.css);
+    }
 });
 
 gulp.task('default', gulp.parallel('scripts', 'styles'));

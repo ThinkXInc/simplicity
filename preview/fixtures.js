@@ -363,4 +363,19 @@ placeholderCard(positions, 'MapPointer',
 const dragCard = card(positions, 'Draggable', '<div class="dragArea"><div class="dragHandle">Drag me</div></div>');
 new Draggable({ element: dragCard.querySelector('.dragHandle'), initX: 25, initY: 55 });
 
+// ---- テーマ切替(ST-10) -----------------------------------------------------
+// テーマ = dist/simplicity_<name>.css の1枚(D-44)。切替は Simplicity.setTheme。
+// テーマを追加したらこの一覧に名前を足す(preview のみの変更で src・ビルドに触れない)。
+
+const galleryThemes = ['default'];
+const themeSelect = document.getElementById('gallery-theme-select');
+galleryThemes.forEach(name => {
+  const option = document.createElement('option');
+  option.value = name;
+  option.textContent = name;
+  themeSelect.appendChild(option);
+});
+themeSelect.value = Simplicity.getTheme() || 'default';
+themeSelect.addEventListener('change', () => Simplicity.setTheme(themeSelect.value));
+
 window.galleryComponentNames = galleryComponentNames;

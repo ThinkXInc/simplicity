@@ -209,6 +209,32 @@
   正規形(width style color)で記述する(view_components.css:4 で実測)。
   css_golden はトークン定義のみのセレクタ(全宣言が --*)を比較対象外にする仕様を追加。
   ゲート: --map --resolve-vars 273一致・スクショ5/5画素一致・t 10/10・lint・gallery 30/30 / ST-9
+- オーナー裁定の記録(2026-07-20・D-44 起草の経緯) /
+  instruction: 「(data-spl-theme 属性の設計は)いつもの他のUI系ライブラリと同じようでかなり
+  微妙だ。我々はそういう設計をしていないだろう。我々の設計にあったようなテーマの設定の仕方を
+  このシンプリシティのコード設計からもう一度考え直せ。シンプリシティというのはシンプルである
+  ことが重要なんだ。Htmlに密結合しているなんてその思想に反するだろう」→(テーマ=スタイル
+  シート案に対し)「その設計はシンプルで良い。しかし気になるのはリアルタイムに切り替える場合だ。
+  …JavaScript上で簡単に(切り替えられるよう)定義されている必要がある。それが満たされていれば
+  それで進めてくれ」「テーマのディレクトリの中に dark があるとして、ビルドされると
+  simplicity_dark.css という名前に変わるということがやや気持ち悪い。…ファイル名を一致させる
+  べきかもしれない。もう一度この辺もよく考えろ」 /
+  interpretation: html 属性方式を廃し「テーマ=css 1枚」+ setTheme は link 差し替えヘルパ+
+  ソース名と出力名の完全一致(themes/simplicity_<name>.css → dist/simplicity_<name>.css)。 /
+  context: ST-10 実装計画の提示に対する差し戻し。D-44 に転記済み / ST-10
+- ST-10 適用の記録(2026-07-20) / (1) styles/tokens.css → styles/themes/simplicity_default.css
+  へ移設(テーマソース=出力名の一致)。gulp styles は themes/simplicity_*.css を列挙し
+  テーマごとに同名バンドルを出力する規則へ。**vinyl-fs(gulp.src/dest)経由の css 書き込みが
+  node 23 で無言に欠落する事故を実測**(.map は書かれ .css だけ書かれない)。gulp ストリームを
+  廃し cssnano を直接呼ぶ実装に変更(css の sourcemap は廃止。dist の旧 .css.map は残置だが
+  css から参照されない)。(2) src/helpers/theme.js 新設 — Simplicity.setTheme/getTheme
+  (link 差し替えのみ・FOUC回避に load 後旧 link 除去・連続切替は「最後にマッチした link」が
+  現在値)。(3) t08 特性テスト5本(差し替え・no-op・副作用なし・link 不在時の無害)。
+  (4) t02 class inventory golden に Simplicity を追加(79→80。正当な波及)。
+  (5) ギャラリー切替 UI 実配線(テーマ一覧は preview 側の galleryThemes 定数)。
+  ゲート: **site 4ページのスクショが凍結 golden と不変一致(既定テーマ不変の証明)**・
+  gallery は select UI 差分のみ意図的再凍結・t 15/15・lint・typecheck・manifest・
+  gallery 30/30・宣言ゴールデン --map --resolve-vars 一致 / ST-10
 - /Users/K00TSUKA/Sources/quantz-web:master / ローカル master は eab6fd049b2c69c7578b8be288245be5c961902d、ローカル保存 ref origin/master は計画対象 99a9488714b94e227ecec54340df031419c5d1e2。計画書 §5.1 の「clone は ff 追随済み」と不一致。quantz-web 書き込み禁止のため checkout/pull は行わず、git grep/show origin/master で対象ツリーを読み取る / ST-0
 - refactor_plan.md:3 / ルート CLAUDE.md・docs/ROADMAP.md は計画書を `REFACTORING_PLAN.md` と呼ぶが実ファイル名は `refactor_plan.md`(内容は v1.2 で一致) / 項目0-1
 - refactor_plan.md:146 / 計画書指定の `"test": "node --test test/"` は本環境 node v23.7.0 で exit 1(`test/` をモジュールとして解決し MODULE_NOT_FOUND。計画書検証環境 node 22.22.2 では動作)。node 23 互換のため `"test": "node --test 'test/**/*.test.js'"` を採用(人間承認済み。src/dist 不変・挙動不変) / 項目0-2
