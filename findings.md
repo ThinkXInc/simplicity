@@ -282,6 +282,24 @@
   タグ style-v1-complete を付与。**quantz-web への実適用は ST-R として予約**
   (migration/ADOPTION.md が手順書)。findings の未処理事項ゼロ
   (残る記録は事実・次期入力・裁定済み事項のみ)/ ST-13
+- 記録の遡及追記(2026-07-20 オーナー指示「未記録の指示・決定をことごとく残せ」による) /
+  (1) ST-2 目視承認の記録: 「多分問題ない。4ページが開かれている。次に進もう」
+  (2026-07-19。site fixture 4ページの現行見た目再現を承認)。
+  (2) ST-7 追補の事実: 画像抽出のスキャン対象が less+templates のみで、quantz JS が
+  `$img.src` で参照するアイコン約30点が閉包から漏れて404だった(オーナー目視で発覚)。
+  scripts/extract_site_fixture.js のスキャン対象に static/js と simplicity src を追加して解消。
+  (3) TextField バリエーション指示原文(2026-07-19): 「テキストフィールドはかなり頻繁に
+  使われるし、表示オプションがかなりあるはずだから、例えばテキストが長くなると下にどんどん
+  伸びていくようにするとか、カウンターを表示したり表示しなかったりとか、エラーを表示したり
+  とか、そういったものがかなり機能が豊富にあるので、それらのバリエーションを一通り表示して
+  やる方がいいだろう」→ ギャラリーに9カード実装(この過程で isCancelButton 構築不能を発見)。
+  (4) Notification ボタン起動指示原文(2026-07-20): 「保存しましたというツールチップが
+  いきなり出てくるが、ツールチップを表示させるためのボタンを置いて、それをクリックしたら
+  出るようにしろ。もしツールチップにいくつか種類、スタイルの種類があるとしたら、それぞれ
+  出るようにボタンをそれぞれ配置しろ」→ type 4種+bottom-right の5ボタンで実装。
+  (5) 恒久決定への昇格: 消費者検証の fixture+追随キット方式を D-45、CLAUDE.md 二層分離を
+  D-46 として DECISIONS に転記。設計原理(ホストへの要求禁止)と実装前説明の作業様式を
+  GUIDELINES 項4・項5 として転記 / 記録整備
 - /Users/K00TSUKA/Sources/quantz-web:master / ローカル master は eab6fd049b2c69c7578b8be288245be5c961902d、ローカル保存 ref origin/master は計画対象 99a9488714b94e227ecec54340df031419c5d1e2。計画書 §5.1 の「clone は ff 追随済み」と不一致。quantz-web 書き込み禁止のため checkout/pull は行わず、git grep/show origin/master で対象ツリーを読み取る / ST-0
 - refactor_plan.md:3 / ルート CLAUDE.md・docs/ROADMAP.md は計画書を `REFACTORING_PLAN.md` と呼ぶが実ファイル名は `refactor_plan.md`(内容は v1.2 で一致) / 項目0-1
 - refactor_plan.md:146 / 計画書指定の `"test": "node --test test/"` は本環境 node v23.7.0 で exit 1(`test/` をモジュールとして解決し MODULE_NOT_FOUND。計画書検証環境 node 22.22.2 では動作)。node 23 互換のため `"test": "node --test 'test/**/*.test.js'"` を採用(人間承認済み。src/dist 不変・挙動不変) / 項目0-2
