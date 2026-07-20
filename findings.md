@@ -270,6 +270,18 @@
   宣言ゴールデンは修正前に差分がこの1宣言のみであることを確認した上で再基準化
   (改名前アンカーとしての旧ゴールデンは git 履歴に保存)。スクショ20/20・t 15/15・
   gallery 30/30 は不変 green。quantz-web 採用時(ST-R)にはこの挙動改善が含まれる / ST-13
+- ST-13 完了ゲートの記録(2026-07-20) / 全機械ゲート green: 宣言ゴールデン273一致・
+  スクショ20/20(4テーマ×5ページ)・t01-t08 15/15・lint(5 known/0 new)・typecheck 0・
+  manifest OK・gallery 30/30+CSSマッチ30/30・写像表検査OK・dark コントラスト14/14・
+  旧名 grep 0(styles/src/preview 全域)・site smoke 4/4。
+  **人間の目視承認(2026-07-20 オーナー)**: アイコン表示の修正確認 → Notification の
+  ボタン起動化とビューポート固定の確認 →「OK、問題ない。テーマ切り替えは特に問題が
+  見られない」で承認。dark のボタンラベル視認性(ST-11 既知課題)は指摘なしのため
+  第1版として受容(改善は次期入力として findings に残置)。
+  version 1.0.0 → 2.0.0(クラス改名は消費側に追随キット適用を要求する破壊的変更)。
+  タグ style-v1-complete を付与。**quantz-web への実適用は ST-R として予約**
+  (migration/ADOPTION.md が手順書)。findings の未処理事項ゼロ
+  (残る記録は事実・次期入力・裁定済み事項のみ)/ ST-13
 - /Users/K00TSUKA/Sources/quantz-web:master / ローカル master は eab6fd049b2c69c7578b8be288245be5c961902d、ローカル保存 ref origin/master は計画対象 99a9488714b94e227ecec54340df031419c5d1e2。計画書 §5.1 の「clone は ff 追随済み」と不一致。quantz-web 書き込み禁止のため checkout/pull は行わず、git grep/show origin/master で対象ツリーを読み取る / ST-0
 - refactor_plan.md:3 / ルート CLAUDE.md・docs/ROADMAP.md は計画書を `REFACTORING_PLAN.md` と呼ぶが実ファイル名は `refactor_plan.md`(内容は v1.2 で一致) / 項目0-1
 - refactor_plan.md:146 / 計画書指定の `"test": "node --test test/"` は本環境 node v23.7.0 で exit 1(`test/` をモジュールとして解決し MODULE_NOT_FOUND。計画書検証環境 node 22.22.2 では動作)。node 23 互換のため `"test": "node --test 'test/**/*.test.js'"` を採用(人間承認済み。src/dist 不変・挙動不変) / 項目0-2
