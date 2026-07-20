@@ -50,7 +50,7 @@ card(basic, 'BackButton', new BackButton('gallery-back', 'Back').$view);
 const loadButton = new LoadButton({
   id: 'gallery-load-button',
   labelText: 'Load more',
-  loaderSrc: '/img/button-loader.svg'
+  loaderSrc: '/preview/site/static/img/button-loader.svg'
 });
 card(basic, 'LoadButton', loadButton.$view);
 
@@ -102,7 +102,7 @@ textFieldCard('Incrementer(上下ボタン)', {
   id: 'gallery-text-incrementer', fieldName: 'font_size', title: 'Font size',
   defaultValue: '14', isCounter: false,
   isIncrementer: true, incrementButtonPlace: TextFieldPlaceTo.inputAfter,
-  incrementUpImgSrc: '/img/up.svg', incrementDownImgSrc: '/img/down.svg'
+  incrementUpImgSrc: '/preview/site/static/img/up.svg', incrementDownImgSrc: '/preview/site/static/img/down.svg'
 });
 textFieldCard('パスワード', {
   id: 'gallery-text-password', fieldName: 'password', title: 'Password',
@@ -311,15 +311,43 @@ const loadingMessage = new LoadingMessage({
 card(feedback, 'LoadingMessage', loadingMessage.$view);
 loadingMessage.load(true);
 
+// Notification はボタン起動式(オーナー指示 2026-07-20)。type 4種+position(bottom-right)の
+// それぞれにボタンを置き、実 API(show: 既定 duration で自動消滅)で表示する。
 const notificationCard = card(feedback, 'Notification', '');
-const notification = new Notification({ id: 'gallery-notification', position: NotificationPosition.topCenter });
-notification.mount(notificationCard);
-notification.show({
-  message: '保存しました',
-  type: NotificationType.info,
-  animationType: NotificationAnimationType.fadeIn,
-  duration: NotificationDuration.forever
+const notificationTop = new Notification({ id: 'gallery-notification', position: NotificationPosition.topCenter });
+notificationTop.mount(notificationCard);
+const notificationBottomRight = new Notification({ id: 'gallery-notification-br', position: NotificationPosition.bottomRight });
+notificationBottomRight.mount(notificationCard);
+const notificationActions = document.createElement('div');
+notificationActions.className = 'galleryActions galleryNotificationActions';
+[
+  ['info', NotificationType.info],
+  ['success', NotificationType.success],
+  ['warning', NotificationType.warning],
+  ['error', NotificationType.error]
+].forEach(([label, type]) => {
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.textContent = label;
+  button.addEventListener('click', () => notificationTop.show({
+    message: `保存しました(${label})`,
+    type,
+    animationType: NotificationAnimationType.fadeIn,
+    duration: NotificationDuration.short
+  }));
+  notificationActions.appendChild(button);
 });
+const bottomRightButton = document.createElement('button');
+bottomRightButton.type = 'button';
+bottomRightButton.textContent = 'bottom-right';
+bottomRightButton.addEventListener('click', () => notificationBottomRight.show({
+  message: '保存しました(bottom-right)',
+  type: NotificationType.success,
+  animationType: NotificationAnimationType.fadeIn,
+  duration: NotificationDuration.short
+}));
+notificationActions.appendChild(bottomRightButton);
+notificationCard.appendChild(notificationActions);
 
 const alertCard = card(feedback, 'AlertMessage', '');
 const alertMessage = new AlertMessage('gallery-alert');

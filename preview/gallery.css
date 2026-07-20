@@ -20,7 +20,7 @@ body { margin: 0; }
 .galleryCard { min-width: 0; padding: 1rem; border: 1px solid var(--spl-border-gray); border-radius: 8px; background: var(--spl-c-fafafa); }
 .galleryCard h3 { margin-top: 0; font: 600 .82rem ui-monospace, monospace; color: var(--spl-text-darkgray); }
 .galleryStage { position: relative; min-height: 230px; overflow: hidden; padding: 1rem; border: 1px dashed var(--spl-c-909090); }
-.galleryActions { display: flex; gap: .5rem; margin-top: 1rem; }
+.galleryActions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
 .galleryActions button { padding: .55rem .9rem; }
 .fixturePage { min-height: 120px; padding: 1rem; background: var(--spl-c-f9f9f9); }
 .dragArea { position: relative; height: 180px; overflow: hidden; border: 1px dashed #9aa8b5; }

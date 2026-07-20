@@ -9,11 +9,10 @@
     "*",
     "article",
     "body div",
+    "button",
     "div.spl-Notification",
     "div.spl-Notification p.spl-NotificationMessage",
-    "div.spl-Notification.spl-fade-in",
-    "div.spl-Notification.spl-info",
-    "div.spl-Notification.spl-show",
+    "div.spl-Notification.spl-bottom-right",
     "div.spl-Notification.spl-top-center",
     "h3",
     "p"
