@@ -258,6 +258,18 @@
   2回連続 20/20 一致で決定性を確認。gallery 2枚(default/dark)は select の option 増に
   よる幅変化のみの意図的再凍結(site の default 4枚は不変維持)。テーマ追加手順を
   README.md「Themes」節に記載 / ST-12
+- Notification の position バグ修正(ST-13 目視で発覚・オーナー指示による挙動変更) /
+  instruction: 「(通知が)画面のヘッダーに貼り付いている。下までスクロールして押したら
+  見えない。…基本的にはどこにスクロールしていようと画面の一番上/一番下に見えている挙動を
+  想定している。ライブラリ側の問題だとしたら簡単に修正してくれ。画面のどこに配置するかを
+  定数として選んで初期化時にセットするだけという仕様が良い」 /
+  対処: ライブラリ側の問題と確定(styles/notification.css の `div.spl-Notification` が
+  `position: absolute` で文書先頭に張り付く)。`position: fixed` へ修正 —
+  NotificationPosition 定数(topCenter/bottomRight)は既に初期化時指定の仕様であり、
+  fixed 化で「スクロール位置に依らず画面基準」の想定挙動になる。
+  宣言ゴールデンは修正前に差分がこの1宣言のみであることを確認した上で再基準化
+  (改名前アンカーとしての旧ゴールデンは git 履歴に保存)。スクショ20/20・t 15/15・
+  gallery 30/30 は不変 green。quantz-web 採用時(ST-R)にはこの挙動改善が含まれる / ST-13
 - /Users/K00TSUKA/Sources/quantz-web:master / ローカル master は eab6fd049b2c69c7578b8be288245be5c961902d、ローカル保存 ref origin/master は計画対象 99a9488714b94e227ecec54340df031419c5d1e2。計画書 §5.1 の「clone は ff 追随済み」と不一致。quantz-web 書き込み禁止のため checkout/pull は行わず、git grep/show origin/master で対象ツリーを読み取る / ST-0
 - refactor_plan.md:3 / ルート CLAUDE.md・docs/ROADMAP.md は計画書を `REFACTORING_PLAN.md` と呼ぶが実ファイル名は `refactor_plan.md`(内容は v1.2 で一致) / 項目0-1
 - refactor_plan.md:146 / 計画書指定の `"test": "node --test test/"` は本環境 node v23.7.0 で exit 1(`test/` をモジュールとして解決し MODULE_NOT_FOUND。計画書検証環境 node 22.22.2 では動作)。node 23 互換のため `"test": "node --test 'test/**/*.test.js'"` を採用(人間承認済み。src/dist 不変・挙動不変) / 項目0-2

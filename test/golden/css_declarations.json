@@ -2,33 +2,33 @@
   "*": {
     "box-sizing": "inherit"
   },
-  ".clearfix:after": {
+  ".spl-clearfix:after": {
     "clear": "both",
     "content": "\" \"",
     "display": "block"
   },
-  ".clickable": {
+  ".spl-clickable": {
     "cursor": "pointer"
   },
-  ".fadeOut": {
+  ".spl-fadeOut": {
     "animation-duration": ".2s",
     "animation-fill-mode": "forwards",
     "animation-iteration-count": "1",
     "animation-name": "f"
   },
-  ".fadeOutToLeft": {
+  ".spl-fadeOutToLeft": {
     "animation-duration": ".4s",
     "animation-fill-mode": "forwards",
     "animation-iteration-count": "1",
     "animation-name": "a"
   },
-  ".ie6 input": {
+  ".spl-ie6 input": {
     "vertical-align": "text-bottom"
   },
-  ".ie7 img": {
+  ".spl-ie7 img": {
     "-ms-interpolation-mode": "bicubic"
   },
-  ".ie7 input[type=checkbox]": {
+  ".spl-ie7 input[type=checkbox]": {
     "vertical-align": "baseline"
   },
   ":after": {
@@ -36,6 +36,94 @@
   },
   ":before": {
     "box-sizing": "inherit"
+  },
+  ":root": {
+    "--spl-alert-red": "#8c1111",
+    "--spl-bgcolor-highlight": "#e9e9e9",
+    "--spl-bgcolor-light": "#fff",
+    "--spl-bgcolor-semilight": "#f5f5f5",
+    "--spl-black": "#000",
+    "--spl-blue": "#4d86f0",
+    "--spl-border-gray": "#eee",
+    "--spl-c-000": "#000",
+    "--spl-c-0056b3": "#0056b3",
+    "--spl-c-007bff": "#007bff",
+    "--spl-c-007fb9": "#007fb9",
+    "--spl-c-2c2c2c": "#2c2c2c",
+    "--spl-c-2e2e2e": "#2e2e2e",
+    "--spl-c-333333": "#333",
+    "--spl-c-353535": "#353535",
+    "--spl-c-3a3a3a": "#3a3a3a",
+    "--spl-c-3e3e3e": "#3e3e3e",
+    "--spl-c-404040": "#404040",
+    "--spl-c-424040": "#424040",
+    "--spl-c-454545": "#454545",
+    "--spl-c-50636a": "#50636a",
+    "--spl-c-525252": "#525252",
+    "--spl-c-555555": "#555",
+    "--spl-c-595959": "#595959",
+    "--spl-c-5d5d5d": "#5d5d5d",
+    "--spl-c-656565": "#656565",
+    "--spl-c-666": "#666",
+    "--spl-c-676767": "#676767",
+    "--spl-c-777777": "#777",
+    "--spl-c-7a7a7a": "#7a7a7a",
+    "--spl-c-878787": "#878787",
+    "--spl-c-8c1111": "#8c1111",
+    "--spl-c-909090": "#909090",
+    "--spl-c-939393": "#939393",
+    "--spl-c-aaa": "#aaa",
+    "--spl-c-ccc": "#ccc",
+    "--spl-c-cdcdcd": "#cdcdcd",
+    "--spl-c-cfcfcf": "#cfcfcf",
+    "--spl-c-d5d5d5": "#d5d5d5",
+    "--spl-c-d9d9d9": "#d9d9d9",
+    "--spl-c-ddd": "#ddd",
+    "--spl-c-dddddd": "#ddd",
+    "--spl-c-dfdfdf": "#dfdfdf",
+    "--spl-c-e5e5e5": "#e5e5e5",
+    "--spl-c-eee": "#eee",
+    "--spl-c-f1f1f1": "#f1f1f1",
+    "--spl-c-f9f9f9": "#f9f9f9",
+    "--spl-c-fafafa": "#fafafa",
+    "--spl-c-fff": "#fff",
+    "--spl-c-ffffff": "#fff",
+    "--spl-c-rgba-0-0-0-0": "transparent",
+    "--spl-c-rgba-0-0-0-0p13": "rgba(0,0,0,.13)",
+    "--spl-c-rgba-0-0-0-0p2": "rgba(0,0,0,.2)",
+    "--spl-c-rgba-0-0-0-0p22": "rgba(0,0,0,.22)",
+    "--spl-c-rgba-0-0-0-0p3": "rgba(0,0,0,.3)",
+    "--spl-c-rgba-0-0-0-0p5": "rgba(0,0,0,.5)",
+    "--spl-c-rgba-255-255-255-0p5": "hsla(0,0%,100%,.5)",
+    "--spl-cyan": "#9ebcc8",
+    "--spl-cyan2": "#3c80a7",
+    "--spl-footer-anchor-default": "#e0e0e0",
+    "--spl-footer-background": "#101010",
+    "--spl-footer-border": "#3d3d3d",
+    "--spl-gradient-gray-A": "linear-gradient(to bottom right,#eff1f4,#cdd0d6)",
+    "--spl-header-bg": "#1d1d1d",
+    "--spl-header-menu-border": "#326894",
+    "--spl-header-menu-off": "#aaa",
+    "--spl-header-menu-on": "#fff",
+    "--spl-hover-gray": "#f8f8f8",
+    "--spl-keycolor": "#5817e5",
+    "--spl-linecolor-on-semilight": "#bababa",
+    "--spl-magenta": "#a72fb2",
+    "--spl-pagebacktitle-gray": "#a3a3a3",
+    "--spl-scrollbar-thumb": "#c4c4c4",
+    "--spl-scrollbar-track": "#f7f7f7",
+    "--spl-scrollbar-width": "5px",
+    "--spl-subheader-bottomline": "#494949",
+    "--spl-text-black": "#000",
+    "--spl-text-black-light": "#333",
+    "--spl-text-darkgray": "#525252",
+    "--spl-text-gray": "#878787",
+    "--spl-text-gray-light": "#c7c7c7",
+    "--spl-text-placeholder": "#adadad",
+    "--spl-textcolor-on-semilight": "#5f5f5f",
+    "--spl-top-bg": "#101010",
+    "--spl-white": "#fff",
+    "--spl-yellow": "#cbc231"
   },
   "@keyframes a :: 0%": {
     "opacity": "1",
@@ -52,10 +140,10 @@
     "transform": "rotate(1turn)"
   },
   "@keyframes c :: 0%": {
-    "box-shadow": "0 1px 5px transparent"
+    "box-shadow": "0 1px 5px var(--spl-c-rgba-0-0-0-0)"
   },
   "@keyframes c :: to": {
-    "box-shadow": "0 1px 5px rgba(0,0,0,.22)"
+    "box-shadow": "0 1px 5px var(--spl-c-rgba-0-0-0-0p22)"
   },
   "@keyframes d :: 0%": {
     "opacity": "0",
@@ -96,7 +184,7 @@
     "vertical-align": "baseline"
   },
   "abbr[title]": {
-    "border-bottom": "1px dotted #000",
+    "border-bottom": "1px dotted var(--spl-c-000)",
     "cursor": "help"
   },
   "address": {
@@ -211,10 +299,10 @@
     "text-decoration": "none",
     "width": "auto"
   },
-  "button.LoadButton": {
-    "background-color": "#f9f9f9",
-    "border": "1px solid #ccc",
-    "box-shadow": "0 0 0 0 transparent",
+  "button.spl-LoadButton": {
+    "background-color": "var(--spl-c-f9f9f9)",
+    "border": "1px solid var(--spl-c-ccc)",
+    "box-shadow": "0 0 0 0 var(--spl-c-rgba-0-0-0-0)",
     "height": "50px",
     "overflow": "hidden",
     "position": "relative",
@@ -222,7 +310,7 @@
     "transition": "width .2s cubic-bezier(.65,0,.34,1),border-radius .2s cubic-bezier(.65,0,.34,1),background-color .2s cubic-bezier(.65,0,.34,1),box-shadow .2s cubic-bezier(.65,0,.34,1)",
     "width": "150px"
   },
-  "button.LoadButton img.LoadButtonLoader": {
+  "button.spl-LoadButton img.spl-LoadButtonLoader": {
     "left": "50%",
     "opacity": "0",
     "position": "absolute",
@@ -232,7 +320,7 @@
     "visibility": "hidden",
     "width": "31px"
   },
-  "button.LoadButton span.LoadButtonLabel": {
+  "button.spl-LoadButton span.spl-LoadButtonLabel": {
     "left": "50%",
     "opacity": "1",
     "position": "absolute",
@@ -240,24 +328,24 @@
     "transform": "translate(-50%,-50%)",
     "transition": "opacity .2s cubic-bezier(.65,0,.34,1),visibility .2s cubic-bezier(.65,0,.34,1),left .1s cubic-bezier(.4,0,.2,1)"
   },
-  "button.LoadButton.disable": {
-    "background-color": "#656565 !important"
+  "button.spl-LoadButton.spl-disable": {
+    "background-color": "var(--spl-c-656565) !important"
   },
-  "button.LoadButton.load": {
-    "background-color": "#3e3e3e !important"
+  "button.spl-LoadButton.spl-load": {
+    "background-color": "var(--spl-c-3e3e3e) !important"
   },
-  "button.LoadButton.load img.LoadButtonLoader": {
+  "button.spl-LoadButton.spl-load img.spl-LoadButtonLoader": {
     "left": "30px",
     "opacity": "1",
     "visibility": "visible"
   },
-  "button.LoadButton.load span.LoadButtonLabel": {
+  "button.spl-LoadButton.spl-load span.spl-LoadButtonLabel": {
     "left": "20px",
     "opacity": "0",
     "visibility": "hidden"
   },
-  "button.LoadButton:hover": {
-    "box-shadow": "0 2px 6px rgba(0,0,0,.2)"
+  "button.spl-LoadButton:hover": {
+    "box-shadow": "0 2px 6px var(--spl-c-rgba-0-0-0-0p2)"
   },
   "button:focus": {
     "outline": "none"
@@ -343,79 +431,79 @@
     "vertical-align": "baseline"
   },
   "dfn[title]": {
-    "border-bottom": "1px dotted #000",
+    "border-bottom": "1px dotted var(--spl-c-000)",
     "cursor": "help"
   },
-  "div.DropdownButton div.DropdownButtonClickable": {
-    "border": "1px solid #7a7a7a",
+  "div.spl-DropdownButton div.spl-DropdownButtonClickable": {
+    "border": "1px solid var(--spl-c-7a7a7a)",
     "border-radius": "4px",
     "cursor": "pointer",
     "padding": "8px 14px"
   },
-  "div.DropdownButton div.DropdownButtonClickable div.footer p.alertMessage": {
-    "color": "#8c1111",
+  "div.spl-DropdownButton div.spl-DropdownButtonClickable div.spl-footer p.spl-alertMessage": {
+    "color": "var(--spl-c-8c1111)",
     "font-size": ".9rem",
     "padding-left": "0"
   },
-  "div.DropdownButton div.DropdownButtonClickable h6.description": {
-    "color": "#878787",
+  "div.spl-DropdownButton div.spl-DropdownButtonClickable h6.spl-description": {
+    "color": "var(--spl-text-gray)",
     "font-size": "11px",
     "font-weight": "300"
   },
-  "div.DropdownButton div.DropdownButtonClickable img.downarrow": {
+  "div.spl-DropdownButton div.spl-DropdownButtonClickable img.spl-downarrow": {
     "float": "right",
     "height": "12px",
     "position": "relative",
     "top": "0",
     "width": "12px"
   },
-  "div.DropdownButton div.DropdownButtonClickable span.title": {
-    "color": "#333",
+  "div.spl-DropdownButton div.spl-DropdownButtonClickable span.spl-title": {
+    "color": "var(--spl-text-black-light)",
     "font-size": "13px",
     "font-weight": "100"
   },
-  "div.DropdownButton ul.listmenu": {
-    "background": "#fff",
+  "div.spl-DropdownButton ul.spl-listmenu": {
+    "background": "var(--spl-bgcolor-light)",
     "border-radius": "6px",
-    "box-shadow": "1px 1px 6px 1px rgba(0,0,0,.13)",
+    "box-shadow": "1px 1px 6px 1px var(--spl-c-rgba-0-0-0-0p13)",
     "position": "absolute",
     "width": "100%",
     "z-index": "1"
   },
-  "div.DropdownButton ul.listmenu li.listitem": {
-    "background-color": "#fff",
-    "border-bottom": "1px solid #eee",
-    "color": "#333",
+  "div.spl-DropdownButton ul.spl-listmenu li.spl-listitem": {
+    "background-color": "var(--spl-bgcolor-light)",
+    "border-bottom": "1px solid var(--spl-c-eee)",
+    "color": "var(--spl-text-black-light)",
     "cursor": "pointer",
     "display": "flex",
     "justify-content": "space-between",
     "padding": "10px 16px"
   },
-  "div.DropdownButton ul.listmenu li.listitem div.listitem-description": {
-    "color": "#666",
+  "div.spl-DropdownButton ul.spl-listmenu li.spl-listitem div.spl-listitem-description": {
+    "color": "var(--spl-c-666)",
     "font-size": "10px"
   },
-  "div.DropdownButton ul.listmenu li.listitem div.listitem-title": {
+  "div.spl-DropdownButton ul.spl-listmenu li.spl-listitem div.spl-listitem-title": {
     "font-size": "13px",
     "font-weight": "700"
   },
-  "div.DropdownButton ul.listmenu li.listitem div.listitem-title-wrap": {
+  "div.spl-DropdownButton ul.spl-listmenu li.spl-listitem div.spl-listitem-title-wrap": {
     "display": "flex",
     "flex-direction": "column"
   },
-  "div.DropdownButton ul.listmenu li.listitem.selected": {
-    "background-color": "#ddd"
+  "div.spl-DropdownButton ul.spl-listmenu li.spl-listitem.spl-selected": {
+    "background-color": "var(--spl-c-dddddd)"
   },
-  "div.DropdownButton ul.listmenu li.listitem:hover": {
-    "background-color": "#f1f1f1"
+  "div.spl-DropdownButton ul.spl-listmenu li.spl-listitem:hover": {
+    "background-color": "var(--spl-c-f1f1f1)"
   },
-  "div.DropdownButton.alert div.DropdownButtonClickable": {
-    "border": "1px solid #8c1111"
+  "div.spl-DropdownButton.spl-alert div.spl-DropdownButtonClickable": {
+    "border": "1px solid var(--spl-c-8c1111)"
   },
-  "div.DropdownButton.alert div.DropdownButtonClickable h6.description": {
-    "color": "#8c1111"
+  "div.spl-DropdownButton.spl-alert div.spl-DropdownButtonClickable h6.spl-description": {
+    "color": "var(--spl-c-8c1111)"
   },
-  "div.KeywordsField div.inputOuter": {
+  "div.spl-KeywordsField div.spl-inputOuter": {
     "align-items": "center",
     "border": "none",
     "display": "flex",
@@ -423,26 +511,26 @@
     "flex-wrap": "wrap",
     "overflow": "visible"
   },
-  "div.KeywordsField div.inputOuter div.footer p.alertMessage": {
-    "color": "#8c1111",
+  "div.spl-KeywordsField div.spl-inputOuter div.spl-footer p.spl-alertMessage": {
+    "color": "var(--spl-c-8c1111)",
     "font-size": ".8rem",
     "left": "14px",
     "position": "absolute",
     "top": "38px"
   },
-  "div.KeywordsField div.inputOuter input.keywordsform": {
+  "div.spl-KeywordsField div.spl-inputOuter input.spl-keywordsform": {
     "flex": "1 0 70%",
     "font-size": "1rem",
     "margin": "0",
     "max-width": "140px",
     "min-width": "100px"
   },
-  "div.KeywordsField div.inputOuter input.keywordsform:focus": {
+  "div.spl-KeywordsField div.spl-inputOuter input.spl-keywordsform:focus": {
     "margin-right": "8px",
     "outline": "2px solid transparent",
     "outline-offset": "2px"
   },
-  "div.KeywordsField div.inputOuter p.press": {
+  "div.spl-KeywordsField div.spl-inputOuter p.spl-press": {
     "-moz-transition": "all .3s cubic-bezier(.24,.8,.55,.94) 0s",
     "-o-transitino": "all .3s cubic-bezier(.24,.8,.55,.94) 0s",
     "-webkit-transition": "all .3s cubic-bezier(.24,.8,.55,.94) 0s",
@@ -450,17 +538,17 @@
     "opacity": "0",
     "transition": "all .3s cubic-bezier(.24,.8,.55,.94) 0s"
   },
-  "div.KeywordsField div.inputOuter p.press strong": {
+  "div.spl-KeywordsField div.spl-inputOuter p.spl-press strong": {
     "margin-left": "5px"
   },
-  "div.KeywordsField div.inputOuter ul.keywords": {
+  "div.spl-KeywordsField div.spl-inputOuter ul.spl-keywords": {
     "align-items": "center",
     "display": "flex",
     "flex-direction": "row",
     "flex-wrap": "wrap",
     "justify-content": "left"
   },
-  "div.KeywordsField div.inputOuter ul.keywords li.keyword": {
+  "div.spl-KeywordsField div.spl-inputOuter ul.spl-keywords li.spl-keyword": {
     "align-items": "center",
     "border-radius": "1px",
     "display": "flex",
@@ -468,28 +556,28 @@
     "justify-content": "left",
     "margin": "4px 9px 4px 0"
   },
-  "div.KeywordsField div.inputOuter ul.keywords li.keyword button.delete svg.cancelIconSVG": {
+  "div.spl-KeywordsField div.spl-inputOuter ul.spl-keywords li.spl-keyword button.spl-delete svg.spl-cancelIconSVG": {
     "cursor": "pointer",
     "height": "11px",
     "padding": "1px",
     "width": "11px"
   },
-  "div.KeywordsField div.inputOuter ul.keywords li.keyword p.label": {
+  "div.spl-KeywordsField div.spl-inputOuter ul.spl-keywords li.spl-keyword p.spl-label": {
     "padding": "0 8px 0 0"
   },
-  "div.KeywordsField div.inputOuter ul.keywords li.keyword.scope": {
-    "background": "#878787",
-    "border": "1px solid #909090"
+  "div.spl-KeywordsField div.spl-inputOuter ul.spl-keywords li.spl-keyword.spl-scope": {
+    "background": "var(--spl-c-878787)",
+    "border": "1px solid var(--spl-c-909090)"
   },
-  "div.KeywordsField.focus div.inputOuter input.keywordsform": {
+  "div.spl-KeywordsField.spl-focus div.spl-inputOuter input.spl-keywordsform": {
     "max-width": "140px",
     "min-width": "100px"
   },
-  "div.KeywordsField.focus div.inputOuter p.press.show": {
+  "div.spl-KeywordsField.spl-focus div.spl-inputOuter p.spl-press.spl-show": {
     "opacity": "1"
   },
-  "div.ModalView div.bg": {
-    "background-color": "hsla(0,0%,100%,.5)",
+  "div.spl-ModalView div.spl-bg": {
+    "background-color": "var(--spl-c-rgba-255-255-255-0p5)",
     "height": "100%",
     "left": "0",
     "position": "fixed",
@@ -497,10 +585,10 @@
     "width": "100%",
     "z-index": "2"
   },
-  "div.ModalView div.window": {
-    "background-color": "#fff",
+  "div.spl-ModalView div.spl-window": {
+    "background-color": "var(--spl-c-ffffff)",
     "border-radius": "5px",
-    "box-shadow": "0 5px 15px rgba(0,0,0,.3)",
+    "box-shadow": "0 5px 15px var(--spl-c-rgba-0-0-0-0p3)",
     "left": "50%",
     "max-width": "500px",
     "overflow": "hidden",
@@ -510,34 +598,34 @@
     "width": "70%",
     "z-index": "3"
   },
-  "div.ModalView div.window div.contentWrapper": {
-    "background-color": "#fff",
-    "border-bottom": "1px solid #eee",
+  "div.spl-ModalView div.spl-window div.spl-contentWrapper": {
+    "background-color": "var(--spl-c-fff)",
+    "border-bottom": "1px solid var(--spl-c-eee)",
     "padding": "20px"
   },
-  "div.ModalView div.window div.contentWrapper div.ModalViewAlert": {
-    "color": "#8c1111",
+  "div.spl-ModalView div.spl-window div.spl-contentWrapper div.spl-ModalViewAlert": {
+    "color": "var(--spl-c-8c1111)",
     "font-size": ".9rem",
     "font-weight": "400",
     "margin-top": "10px"
   },
-  "div.ModalView div.window div.contentWrapper div.mainContent": {
-    "color": "#555",
+  "div.spl-ModalView div.spl-window div.spl-contentWrapper div.spl-mainContent": {
+    "color": "var(--spl-c-555555)",
     "font-size": "16px",
     "margin-bottom": "20px"
   },
-  "div.ModalView div.window div.contentWrapper h3.ModalViewTitle": {
-    "color": "#333",
+  "div.spl-ModalView div.spl-window div.spl-contentWrapper h3.spl-ModalViewTitle": {
+    "color": "var(--spl-c-333333)",
     "font-size": "24px",
     "margin-bottom": "20px"
   },
-  "div.ModalView div.window div.modalViewFooter": {
-    "background-color": "#fff",
+  "div.spl-ModalView div.spl-window div.spl-modalViewFooter": {
+    "background-color": "var(--spl-c-ffffff)",
     "display": "flex",
     "justify-content": "end",
     "padding": "10px 20px"
   },
-  "div.ModalView div.window div.modalViewFooter button": {
+  "div.spl-ModalView div.spl-window div.spl-modalViewFooter button": {
     "-moz-transition": "all .2s cubic-bezier(.24,.8,.55,.94) 0s",
     "-o-transitino": "all .2s cubic-bezier(.24,.8,.55,.94) 0s",
     "-webkit-transition": "all .2s cubic-bezier(.24,.8,.55,.94) 0s",
@@ -546,163 +634,163 @@
     "padding": "10px 15px",
     "transition": "all .2s cubic-bezier(.24,.8,.55,.94) 0s"
   },
-  "div.ModalView div.window div.modalViewFooter button.cancelButton": {
-    "background-color": "#fff",
-    "border": "1px solid #cfcfcf",
-    "color": "#595959"
+  "div.spl-ModalView div.spl-window div.spl-modalViewFooter button.spl-cancelButton": {
+    "background-color": "var(--spl-c-fff)",
+    "border": "1px solid var(--spl-c-cfcfcf)",
+    "color": "var(--spl-c-595959)"
   },
-  "div.ModalView div.window div.modalViewFooter button.cancelButton:hover": {
-    "background-color": "#676767",
-    "color": "#fff"
+  "div.spl-ModalView div.spl-window div.spl-modalViewFooter button.spl-cancelButton:hover": {
+    "background-color": "var(--spl-c-676767)",
+    "color": "var(--spl-c-fff)"
   },
-  "div.ModalView div.window div.modalViewFooter button.doneButton": {
-    "background-color": "#fff",
-    "border": "1px solid #cfcfcf",
-    "color": "#595959"
+  "div.spl-ModalView div.spl-window div.spl-modalViewFooter button.spl-doneButton": {
+    "background-color": "var(--spl-c-ffffff)",
+    "border": "1px solid var(--spl-c-cfcfcf)",
+    "color": "var(--spl-c-595959)"
   },
-  "div.ModalView div.window div.modalViewFooter button.doneButton:hover": {
-    "background-color": "#0056b3",
-    "color": "#fff"
+  "div.spl-ModalView div.spl-window div.spl-modalViewFooter button.spl-doneButton:hover": {
+    "background-color": "var(--spl-c-0056b3)",
+    "color": "var(--spl-c-fff)"
   },
-  "div.ModalView.darkStyle": {
+  "div.spl-ModalView.spl-darkStyle": {
     "display": "block"
   },
-  "div.ModalView.darkStyle div.bg": {
-    "background-color": "rgba(0,0,0,.5) !important"
+  "div.spl-ModalView.spl-darkStyle div.spl-bg": {
+    "background-color": "var(--spl-c-rgba-0-0-0-0p5) !important"
   },
-  "div.ModalView.darkStyle div.window div.contentWrapper": {
-    "background-color": "#2e2e2e",
-    "border-bottom": "1px solid #353535",
-    "border-left": "1px solid #424040",
-    "border-right": "1px solid #424040",
-    "border-top": "1px solid #424040",
+  "div.spl-ModalView.spl-darkStyle div.spl-window div.spl-contentWrapper": {
+    "background-color": "var(--spl-c-2e2e2e)",
+    "border-bottom": "1px solid var(--spl-c-353535)",
+    "border-left": "1px solid var(--spl-c-424040)",
+    "border-right": "1px solid var(--spl-c-424040)",
+    "border-top": "1px solid var(--spl-c-424040)",
     "padding": "20px"
   },
-  "div.ModalView.darkStyle div.window div.contentWrapper div.mainContent": {
-    "color": "#fff"
+  "div.spl-ModalView.spl-darkStyle div.spl-window div.spl-contentWrapper div.spl-mainContent": {
+    "color": "var(--spl-c-ffffff)"
   },
-  "div.ModalView.darkStyle div.window div.contentWrapper h3.ModalViewTitle": {
-    "color": "#cdcdcd",
+  "div.spl-ModalView.spl-darkStyle div.spl-window div.spl-contentWrapper h3.spl-ModalViewTitle": {
+    "color": "var(--spl-c-cdcdcd)",
     "font-size": "18px"
   },
-  "div.ModalView.darkStyle div.window div.footer.modalViewFooter": {
-    "background-color": "#2e2e2e",
-    "border-bottom": "1px solid #424040",
-    "border-left": "1px solid #424040",
-    "border-right": "1px solid #424040",
+  "div.spl-ModalView.spl-darkStyle div.spl-window div.spl-footer.spl-modalViewFooter": {
+    "background-color": "var(--spl-c-2e2e2e)",
+    "border-bottom": "1px solid var(--spl-c-424040)",
+    "border-left": "1px solid var(--spl-c-424040)",
+    "border-right": "1px solid var(--spl-c-424040)",
     "border-top": "none",
     "padding": "16px"
   },
-  "div.ModalView.darkStyle div.window div.footer.modalViewFooter button.cancelButton": {
-    "background-color": "#5d5d5d",
-    "border": "1px solid #656565",
-    "color": "#fff",
+  "div.spl-ModalView.spl-darkStyle div.spl-window div.spl-footer.spl-modalViewFooter button.spl-cancelButton": {
+    "background-color": "var(--spl-c-5d5d5d)",
+    "border": "1px solid var(--spl-c-656565)",
+    "color": "var(--spl-c-fff)",
     "font-size": ".9em",
     "margin-right": "10px",
     "padding": "10px 15px",
     "transition": "all .4s cubic-bezier(.65,0,.34,1)"
   },
-  "div.ModalView.darkStyle div.window div.footer.modalViewFooter button.cancelButton:hover": {
-    "background-color": "#454545",
-    "border": "1px solid #404040",
-    "color": "#656565"
+  "div.spl-ModalView.spl-darkStyle div.spl-window div.spl-footer.spl-modalViewFooter button.spl-cancelButton:hover": {
+    "background-color": "var(--spl-c-454545)",
+    "border": "1px solid var(--spl-c-404040)",
+    "color": "var(--spl-c-656565)"
   },
-  "div.ModalView.darkStyle div.window div.footer.modalViewFooter button.doneButton": {
-    "background-color": "#3a3a3a",
-    "border": "1px solid #656565",
-    "color": "#fff",
+  "div.spl-ModalView.spl-darkStyle div.spl-window div.spl-footer.spl-modalViewFooter button.spl-doneButton": {
+    "background-color": "var(--spl-c-3a3a3a)",
+    "border": "1px solid var(--spl-c-656565)",
+    "color": "var(--spl-c-fff)",
     "font-size": ".9em",
     "padding": "10px 15px",
     "transition": "all .4s cubic-bezier(.65,0,.34,1)"
   },
-  "div.ModalView.darkStyle div.window div.footer.modalViewFooter button.doneButton:hover": {
-    "background-color": "#454545",
-    "border": "1px solid #404040",
-    "color": "#656565"
+  "div.spl-ModalView.spl-darkStyle div.spl-window div.spl-footer.spl-modalViewFooter button.spl-doneButton:hover": {
+    "background-color": "var(--spl-c-454545)",
+    "border": "1px solid var(--spl-c-404040)",
+    "color": "var(--spl-c-656565)"
   },
-  "div.Notification": {
+  "div.spl-Notification": {
     "background-color": "#fff",
-    "border": "1px solid #fafafa",
+    "border": "1px solid var(--spl-c-fafafa)",
     "border-radius": "3px",
     "box-sizing": "border-box",
     "cursor": "pointer",
     "display": "none",
     "padding": "6px",
-    "position": "absolute",
+    "position": "fixed",
     "z-index": "2"
   },
-  "div.Notification p.NotificationMessage": {
-    "color": "#525252",
+  "div.spl-Notification p.spl-NotificationMessage": {
+    "color": "var(--spl-c-525252)",
     "font-size": "12px",
     "line-height": "1.5",
     "margin": "0",
     "padding": "0"
   },
-  "div.Notification.bottom-right": {
+  "div.spl-Notification.spl-bottom-right": {
     "bottom": "10px",
     "right": "10px"
   },
-  "div.Notification.error": {
+  "div.spl-Notification.spl-error": {
     "border-color": "red"
   },
-  "div.Notification.fade-in": {
+  "div.spl-Notification.spl-fade-in": {
     "animation": "e .5s cubic-bezier(.65,0,.34,1)"
   },
-  "div.Notification.fade-in-from-top": {
+  "div.spl-Notification.spl-fade-in-from-top": {
     "animation": "d 1s cubic-bezier(.65,0,.34,1)"
   },
-  "div.Notification.fade-out": {
+  "div.spl-Notification.spl-fade-out": {
     "animation": "f 1s cubic-bezier(.65,0,.34,1) forwards"
   },
-  "div.Notification.info": {
-    "border-color": "#939393"
+  "div.spl-Notification.spl-info": {
+    "border-color": "var(--spl-c-939393)"
   },
-  "div.Notification.show": {
+  "div.spl-Notification.spl-show": {
     "display": "block"
   },
-  "div.Notification.success": {
-    "border-color": "#50636a"
+  "div.spl-Notification.spl-success": {
+    "border-color": "var(--spl-c-50636a)"
   },
-  "div.Notification.top-center": {
+  "div.spl-Notification.spl-top-center": {
     "left": "50%",
     "top": "10px",
     "transform": "translateX(-50%)"
   },
-  "div.Notification.warning": {
+  "div.spl-Notification.spl-warning": {
     "border-color": "orange"
   },
-  "div.TableView": {
+  "div.spl-TableView": {
     "display": "flex",
     "flex-direction": "column"
   },
-  "div.TableView div.tableViewContainer": {
+  "div.spl-TableView div.spl-tableViewContainer": {
     "display": "flex",
     "flex-direction": "column",
     "height": "100%"
   },
-  "div.TableView div.tableViewContainer div.tableView": {
+  "div.spl-TableView div.spl-tableViewContainer div.spl-tableView": {
     "display": "flex",
     "flex": "1",
     "flex-direction": "column",
     "overflow-y": "auto",
     "position": "relative"
   },
-  "div.TableView div.tableViewContainer div.tableView div.gradientViewIndicator": {
+  "div.spl-TableView div.spl-tableViewContainer div.spl-tableView div.spl-gradientViewIndicator": {
     "padding": "15px 23px"
   },
-  "div.TableView div.tableViewContainer div.tableView img.loader": {
+  "div.spl-TableView div.spl-tableViewContainer div.spl-tableView img.spl-loader": {
     "animation": "b 1s cubic-bezier(.47,0,.745,.715) infinite",
     "height": "44px",
     "width": "44px"
   },
-  "div.TableView div.tableViewContainer div.tableView ul.tableListView": {
+  "div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListView": {
     "list-style-type": "none",
     "margin": "0",
     "padding": "0"
   },
-  "div.TableView div.tableViewContainer div.tableView ul.tableListView li.tableViewCell": {
+  "div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListView li.spl-tableViewCell": {
     "align-items": "start",
-    "border-bottom": "1px solid #ddd",
+    "border-bottom": "1px solid var(--spl-c-ddd)",
     "cursor": "pointer",
     "display": "flex",
     "flex-direction": "row",
@@ -713,7 +801,7 @@
     "transform": "translateX(0)",
     "transition": "opacity .4s cubic-bezier(.65,0,.34,1),transform .4s cubic-bezier(.65,0,.34,1),height .4s cubic-bezier(.65,0,.34,1),max-height .4s cubic-bezier(.65,0,.34,1),padding .4s cubic-bezier(.65,0,.34,1)"
   },
-  "div.TableView div.tableViewContainer div.tableView ul.tableListView li.tableViewCell div.buttonContainer": {
+  "div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListView li.spl-tableViewCell div.spl-buttonContainer": {
     "align-items": "end",
     "bottom": "0",
     "display": "flex",
@@ -723,196 +811,196 @@
     "position": "absolute",
     "top": "0"
   },
-  "div.TableView div.tableViewContainer div.tableView ul.tableListView li.tableViewCell div.buttonContainer button svg": {
+  "div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListView li.spl-tableViewCell div.spl-buttonContainer button svg": {
     "background-color": "transparent",
     "cursor": "pointer",
     "height": "20px",
     "padding": "1px",
     "width": "20px"
   },
-  "div.TableView div.tableViewContainer div.tableView ul.tableListView li.tableViewCell div.buttonContainer button svg .path": {
+  "div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListView li.spl-tableViewCell div.spl-buttonContainer button svg .spl-path": {
     "-moz-transition": "all .2s cubic-bezier(.24,.8,.55,.94) 0s",
     "-o-transitino": "all .2s cubic-bezier(.24,.8,.55,.94) 0s",
     "-webkit-transition": "all .2s cubic-bezier(.24,.8,.55,.94) 0s",
-    "fill": "#d5d5d5",
+    "fill": "var(--spl-c-d5d5d5)",
     "transition": "all .2s cubic-bezier(.24,.8,.55,.94) 0s"
   },
-  "div.TableView div.tableViewContainer div.tableView ul.tableListView li.tableViewCell div.buttonContainer button svg:hover .path": {
-    "fill": "#fff"
+  "div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListView li.spl-tableViewCell div.spl-buttonContainer button svg:hover .spl-path": {
+    "fill": "var(--spl-c-fff)"
   },
-  "div.TableView div.tableViewContainer div.tableView ul.tableListView li.tableViewCell div.contentWrapper": {
+  "div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListView li.spl-tableViewCell div.spl-contentWrapper": {
     "display": "flex",
     "flex-direction": "column",
     "flex-grow": "1"
   },
-  "div.TableView div.tableViewContainer div.tableView ul.tableListView li.tableViewCell div.contentWrapper div.body p.text": {
-    "color": "#555",
+  "div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListView li.spl-tableViewCell div.spl-contentWrapper div.spl-body p.spl-text": {
+    "color": "var(--spl-c-555555)",
     "font-size": ".9rem",
     "font-weight": "100"
   },
-  "div.TableView div.tableViewContainer div.tableView ul.tableListView li.tableViewCell div.contentWrapper div.footer": {
-    "color": "#777",
+  "div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListView li.spl-tableViewCell div.spl-contentWrapper div.spl-footer": {
+    "color": "var(--spl-c-777777)",
     "font-size": ".7rem",
     "margin": "6px 0 0"
   },
-  "div.TableView div.tableViewContainer div.tableView ul.tableListView li.tableViewCell div.contentWrapper div.header p.title": {
-    "color": "#333",
+  "div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListView li.spl-tableViewCell div.spl-contentWrapper div.spl-header p.spl-title": {
+    "color": "var(--spl-c-333333)",
     "float": "left",
     "font-size": "1.2rem",
     "font-weight": "300"
   },
-  "div.TableView div.tableViewContainer div.tableView ul.tableListView li.tableViewCell div.contentWrapper div.header span.label": {
-    "background-color": "#007bff",
+  "div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListView li.spl-tableViewCell div.spl-contentWrapper div.spl-header span.spl-label": {
+    "background-color": "var(--spl-c-007bff)",
     "border-radius": "2px",
-    "color": "#fff",
+    "color": "var(--spl-c-ffffff)",
     "float": "right",
     "font-size": ".78rem",
     "font-weight": "200",
     "padding": "2px 7px"
   },
-  "div.TableView div.tableViewContainer div.tableView ul.tableListView li.tableViewCell.deleteByFadeOut": {
+  "div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListView li.spl-tableViewCell.spl-deleteByFadeOut": {
     "opacity": "0"
   },
-  "div.TableView div.tableViewContainer div.tableView ul.tableListView li.tableViewCell.deleteByMoveToLeft": {
+  "div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListView li.spl-tableViewCell.spl-deleteByMoveToLeft": {
     "opacity": "0",
     "transform": "translateX(-20px)"
   },
-  "div.TableView div.tableViewContainer div.tableView ul.tableListView li.tableViewCell.hiddenForFadeIn": {
+  "div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListView li.spl-tableViewCell.spl-hiddenForFadeIn": {
     "height": "0",
     "max-height": "0",
     "opacity": "0",
     "padding": "0"
   },
-  "div.TableView div.tableViewContainer div.tableView ul.tableListView li.tableViewCell.hiddenForMoveFromLeft": {
+  "div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListView li.spl-tableViewCell.spl-hiddenForMoveFromLeft": {
     "height": "0",
     "max-height": "0",
     "opacity": "0",
     "padding": "0 !important",
     "transform": "translateX(-20px)"
   },
-  "div.TableView div.tableViewContainer div.tableView ul.tableListView li.tableViewCell.selected": {
-    "background-color": "#2c2c2c"
+  "div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListView li.spl-tableViewCell.spl-selected": {
+    "background-color": "var(--spl-c-2c2c2c)"
   },
-  "div.TableView div.tableViewContainer div.tableView ul.tableListView li.tableViewCell.selected div.buttonContainer.left": {
-    "background": "linear-gradient(90deg,#2c2c2c,#2c2c2c 77%,transparent)",
+  "div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListView li.spl-tableViewCell.spl-selected div.spl-buttonContainer.spl-left": {
+    "background": "linear-gradient(90deg,var(--spl-c-2c2c2c),var(--spl-c-2c2c2c) 77%,transparent)",
     "left": "0"
   },
-  "div.TableView div.tableViewContainer div.tableView ul.tableListView li.tableViewCell.selected div.buttonContainer.right": {
-    "background": "linear-gradient(270deg,#2c2c2c,#2c2c2c 77%,transparent)",
+  "div.spl-TableView div.spl-tableViewContainer div.spl-tableView ul.spl-tableListView li.spl-tableViewCell.spl-selected div.spl-buttonContainer.spl-right": {
+    "background": "linear-gradient(270deg,var(--spl-c-2c2c2c),var(--spl-c-2c2c2c) 77%,transparent)",
     "right": "0"
   },
-  "div.TableView div.tableViewContainer div.tableViewFooter": {
-    "border-top": "1px solid #e5e5e5",
+  "div.spl-TableView div.spl-tableViewContainer div.spl-tableViewFooter": {
+    "border-top": "1px solid var(--spl-c-e5e5e5)",
     "display": "flex",
     "justify-content": "space-between",
     "padding": "10px 15px"
   },
-  "div.TableView div.tableViewContainer div.tableViewHeader": {
-    "border-bottom": "1px solid #e5e5e5",
+  "div.spl-TableView div.spl-tableViewContainer div.spl-tableViewHeader": {
+    "border-bottom": "1px solid var(--spl-c-e5e5e5)",
     "display": "flex",
     "justify-content": "space-between",
     "padding": "10px 15px"
   },
-  "div.TermsScrollView": {
+  "div.spl-TermsScrollView": {
     "border-radius": "4px"
   },
-  "div.TermsScrollView div.termsViewContainer": {
-    "background-color": "#f9f9f9",
+  "div.spl-TermsScrollView div.spl-termsViewContainer": {
+    "background-color": "var(--spl-c-f9f9f9)",
     "border-radius": "0",
     "height": "400px",
     "overflow-y": "scroll",
     "width": "470px"
   },
-  "div.TermsScrollView div.termsViewContainer div.termsView address": {
+  "div.spl-TermsScrollView div.spl-termsViewContainer div.spl-termsView address": {
     "padding": "5px 20px"
   },
-  "div.TermsScrollView div.termsViewContainer div.termsView h1": {
+  "div.spl-TermsScrollView div.spl-termsViewContainer div.spl-termsView h1": {
     "font-weight": "600",
     "padding": "7px 10px"
   },
-  "div.TermsScrollView div.termsViewContainer div.termsView h1.title": {
+  "div.spl-TermsScrollView div.spl-termsViewContainer div.spl-termsView h1.spl-title": {
     "text-align": "center"
   },
-  "div.TermsScrollView div.termsViewContainer div.termsView h2": {
+  "div.spl-TermsScrollView div.spl-termsViewContainer div.spl-termsView h2": {
     "font-weight": "600",
     "padding": "7px 10px"
   },
-  "div.TermsScrollView div.termsViewContainer div.termsView h2.subtitle": {
+  "div.spl-TermsScrollView div.spl-termsViewContainer div.spl-termsView h2.spl-subtitle": {
     "text-align": "center"
   },
-  "div.TermsScrollView div.termsViewContainer div.termsView h3": {
+  "div.spl-TermsScrollView div.spl-termsViewContainer div.spl-termsView h3": {
     "font-weight": "600",
     "padding": "7px 10px"
   },
-  "div.TermsScrollView div.termsViewContainer div.termsView h4": {
+  "div.spl-TermsScrollView div.spl-termsViewContainer div.spl-termsView h4": {
     "font-weight": "600",
     "padding": "7px 10px"
   },
-  "div.TermsScrollView div.termsViewContainer div.termsView p": {
+  "div.spl-TermsScrollView div.spl-termsViewContainer div.spl-termsView p": {
     "font-size": ".9em",
     "padding": "0 14px 10px"
   },
-  "div.TermsScrollView div.termsViewContainer div.termsView p.agreement-notice": {
+  "div.spl-TermsScrollView div.spl-termsViewContainer div.spl-termsView p.spl-agreement-notice": {
     "text-decoration": "underline"
   },
-  "div.TermsScrollView div.termsViewContainer div.termsView ul": {
+  "div.spl-TermsScrollView div.spl-termsViewContainer div.spl-termsView ul": {
     "font-size": ".9em",
     "list-style": "disc",
     "padding": "5px 20px 5px 31px"
   },
-  "div.TermsScrollView div.termsViewContainer div.termsView ul.section-list": {
+  "div.spl-TermsScrollView div.spl-termsViewContainer div.spl-termsView ul.spl-section-list": {
     "font-size": ".9em",
     "list-style-type": "decimal",
     "padding": "10px 14px 14px 42px"
   },
-  "div.TermsScrollView div.termsViewContainer div.termsView ul.section-list li": {
+  "div.spl-TermsScrollView div.spl-termsViewContainer div.spl-termsView ul.spl-section-list li": {
     "padding": "5px"
   },
-  "div.TextField.Incrementer div.inputOuter div.inputAfter div.incrementButton": {
+  "div.spl-TextField.spl-Incrementer div.spl-inputOuter div.spl-inputAfter div.spl-incrementButton": {
     "width": "28px"
   },
-  "div.TextField.Incrementer div.inputOuter div.inputAfter div.incrementButton button img": {
+  "div.spl-TextField.spl-Incrementer div.spl-inputOuter div.spl-inputAfter div.spl-incrementButton button img": {
     "width": "13px"
   },
-  "div.TextField.Incrementer div.inputOuter div.inputWrapper": {
-    "border": "1px solid #dfdfdf",
+  "div.spl-TextField.spl-Incrementer div.spl-inputOuter div.spl-inputWrapper": {
+    "border": "1px solid var(--spl-c-dfdfdf)",
     "border-radius": "4px",
-    "box-shadow": "0 1px 3px #f1f1f1",
+    "box-shadow": "0 1px 3px var(--spl-c-f1f1f1)",
     "display": "flex",
     "width": "max-content"
   },
-  "div.TextField.Incrementer div.inputOuter div.inputWrapper input": {
+  "div.spl-TextField.spl-Incrementer div.spl-inputOuter div.spl-inputWrapper input": {
     "border": "none",
     "font-size": "1em",
     "height": "45px",
     "margin": "0",
     "width": "130px"
   },
-  "div.TextField.Incrementer.alert div.inputOuter div.inputAfter div.incrementButton": {
+  "div.spl-TextField.spl-Incrementer.spl-alert div.spl-inputOuter div.spl-inputAfter div.spl-incrementButton": {
     "width": "28px"
   },
-  "div.TextField.Incrementer.alert div.inputOuter div.inputAfter div.incrementButton button img": {
+  "div.spl-TextField.spl-Incrementer.spl-alert div.spl-inputOuter div.spl-inputAfter div.spl-incrementButton button img": {
     "width": "13px"
   },
-  "div.TextField.Incrementer.alert div.inputOuter div.inputWrapper": {
-    "border": "1px solid #8c1111",
+  "div.spl-TextField.spl-Incrementer.spl-alert div.spl-inputOuter div.spl-inputWrapper": {
+    "border": "1px solid var(--spl-c-8c1111)",
     "border-radius": "4px",
-    "box-shadow": "0 1px 3px #f1f1f1",
+    "box-shadow": "0 1px 3px var(--spl-c-f1f1f1)",
     "display": "flex",
     "width": "max-content"
   },
-  "div.TextField.Incrementer.alert div.inputOuter div.inputWrapper input": {
+  "div.spl-TextField.spl-Incrementer.spl-alert div.spl-inputOuter div.spl-inputWrapper input": {
     "border": "none",
     "font-size": "1em",
     "height": "45px",
     "margin": "0",
     "width": "130px"
   },
-  "div.TextField.overMaximumTextCount div.inputOuter div.footer span.counter": {
-    "color": "#8c1111"
+  "div.spl-TextField.spl-overMaximumTextCount div.spl-inputOuter div.spl-footer span.spl-counter": {
+    "color": "var(--spl-c-8c1111)"
   },
-  "div.TextField:not(.Incrementer) div.inputOuter": {
-    "border": "1px solid #7a7a7a",
+  "div.spl-TextField:not(.spl-Incrementer) div.spl-inputOuter": {
+    "border": "1px solid var(--spl-c-7a7a7a)",
     "border-radius": "3px",
     "box-sizing": "border-box",
     "display": "flex",
@@ -923,47 +1011,47 @@
     "padding": "4px 12px",
     "position": "relative"
   },
-  "div.TextField:not(.Incrementer) div.inputOuter button svg": {
+  "div.spl-TextField:not(.spl-Incrementer) div.spl-inputOuter button svg": {
     "height": "30px",
     "width": "30px"
   },
-  "div.TextField:not(.Incrementer) div.inputOuter button svg .cls-1": {
+  "div.spl-TextField:not(.spl-Incrementer) div.spl-inputOuter button svg .spl-cls-1": {
     "-moz-transition": "all .2s cubic-bezier(.24,.8,.55,.94) 0s",
     "-o-transitino": "all .2s cubic-bezier(.24,.8,.55,.94) 0s",
     "-webkit-transition": "all .2s cubic-bezier(.24,.8,.55,.94) 0s",
-    "stroke": "#d9d9d9",
+    "stroke": "var(--spl-c-d9d9d9)",
     "transition": "all .2s cubic-bezier(.24,.8,.55,.94) 0s"
   },
-  "div.TextField:not(.Incrementer) div.inputOuter button svg .cls-2": {
+  "div.spl-TextField:not(.spl-Incrementer) div.spl-inputOuter button svg .spl-cls-2": {
     "-moz-transition": "all .2s cubic-bezier(.24,.8,.55,.94) 0s",
     "-o-transitino": "all .2s cubic-bezier(.24,.8,.55,.94) 0s",
     "-webkit-transition": "all .2s cubic-bezier(.24,.8,.55,.94) 0s",
-    "stroke": "#d9d9d9",
+    "stroke": "var(--spl-c-d9d9d9)",
     "transition": "all .2s cubic-bezier(.24,.8,.55,.94) 0s"
   },
-  "div.TextField:not(.Incrementer) div.inputOuter button svg:hover .cls-1": {
-    "stroke": "#fff"
+  "div.spl-TextField:not(.spl-Incrementer) div.spl-inputOuter button svg:hover .spl-cls-1": {
+    "stroke": "var(--spl-c-fff)"
   },
-  "div.TextField:not(.Incrementer) div.inputOuter button svg:hover .cls-2": {
-    "stroke": "#fff"
+  "div.spl-TextField:not(.spl-Incrementer) div.spl-inputOuter button svg:hover .spl-cls-2": {
+    "stroke": "var(--spl-c-fff)"
   },
-  "div.TextField:not(.Incrementer) div.inputOuter div.inputWrapper": {
+  "div.spl-TextField:not(.spl-Incrementer) div.spl-inputOuter div.spl-inputWrapper": {
     "align-items": "center",
     "display": "flex",
     "flex-direction": "row",
     "width": "100%"
   },
-  "div.TextField:not(.Incrementer) div.inputOuter div.inputWrapper ::placeholder": {
-    "color": "#adadad",
+  "div.spl-TextField:not(.spl-Incrementer) div.spl-inputOuter div.spl-inputWrapper ::placeholder": {
+    "color": "var(--spl-text-placeholder)",
     "font-weight": "100"
   },
-  "div.TextField:not(.Incrementer) div.inputOuter div.inputWrapper h6.title": {
+  "div.spl-TextField:not(.spl-Incrementer) div.spl-inputOuter div.spl-inputWrapper h6.spl-title": {
     "width": "120px"
   },
-  "div.TextField:not(.Incrementer) div.inputOuter div.inputWrapper input": {
+  "div.spl-TextField:not(.spl-Incrementer) div.spl-inputOuter div.spl-inputWrapper input": {
     "background": "transparent",
     "border": "none",
-    "color": "#525252",
+    "color": "var(--spl-text-darkgray)",
     "display": "inline-block",
     "font-size": "1.1rem",
     "font-weight": "400",
@@ -978,10 +1066,10 @@
     "white-space": "pre-wrap",
     "width": "100%"
   },
-  "div.TextField:not(.Incrementer) div.inputOuter div.inputWrapper textarea": {
+  "div.spl-TextField:not(.spl-Incrementer) div.spl-inputOuter div.spl-inputWrapper textarea": {
     "background": "transparent",
     "border": "none",
-    "color": "#525252",
+    "color": "var(--spl-text-darkgray)",
     "display": "inline-block",
     "font-size": "1.1rem",
     "font-weight": "400",
@@ -996,67 +1084,67 @@
     "white-space": "pre-wrap",
     "width": "100%"
   },
-  "div.TextField:not(.Incrementer) div.inputOuter h6.title": {
+  "div.spl-TextField:not(.spl-Incrementer) div.spl-inputOuter h6.spl-title": {
     "-webkit-font-smoothing": "antialiased",
-    "color": "#878787",
+    "color": "var(--spl-text-gray)",
     "font-size": "12px",
     "font-weight": "400",
     "letter-spacing": ".011em",
     "line-height": "16px",
     "position": "relative"
   },
-  "div.TextField:not(.Incrementer) div.inputOuter p.alertMessage": {
-    "color": "#8c1111",
+  "div.spl-TextField:not(.spl-Incrementer) div.spl-inputOuter p.spl-alertMessage": {
+    "color": "var(--spl-c-8c1111)",
     "font-size": ".9rem",
     "padding-left": "0"
   },
-  "div.TextField:not(.Incrementer) div.inputOuter span.counter": {
-    "color": "#c7c7c7",
+  "div.spl-TextField:not(.spl-Incrementer) div.spl-inputOuter span.spl-counter": {
+    "color": "var(--spl-text-gray-light)",
     "float": "right",
     "font-size": ".7rem"
   },
-  "div.TextField:not(.Incrementer).alert div.inputOuter": {
-    "border": "1px solid #8c1111"
+  "div.spl-TextField:not(.spl-Incrementer).spl-alert div.spl-inputOuter": {
+    "border": "1px solid var(--spl-c-8c1111)"
   },
-  "div.TextField:not(.Incrementer).alert div.inputOuter h6.title": {
-    "color": "#8c1111"
+  "div.spl-TextField:not(.spl-Incrementer).spl-alert div.spl-inputOuter h6.spl-title": {
+    "color": "var(--spl-c-8c1111)"
   },
-  "div.VerifyCodeForm": {
+  "div.spl-VerifyCodeForm": {
     "align-items": "center",
     "display": "flex",
     "flex-direction": "column"
   },
-  "div.VerifyCodeForm div.verifyCodeFormContainer": {
+  "div.spl-VerifyCodeForm div.spl-verifyCodeFormContainer": {
     "display": "flex",
     "flex-direction": "row",
     "justify-content": "space-between",
     "min-width": "220px",
     "width": "24vw"
   },
-  "div.VerifyCodeForm div.verifyCodeFormContainer input.verifyInput": {
-    "border": "1px solid #aaa",
+  "div.spl-VerifyCodeForm div.spl-verifyCodeFormContainer input.spl-verifyInput": {
+    "border": "1px solid var(--spl-c-aaa)",
     "border-radius": "4px",
     "font-size": "2em",
     "height": "50px",
     "text-align": "center",
     "width": "50px"
   },
-  "div.VerifyCodeForm div.verifyCodeFormContainer input.verifyInput:focus": {
-    "border-color": "var(#007fb9)",
-    "box-shadow": "var(#3e3e3e)"
+  "div.spl-VerifyCodeForm div.spl-verifyCodeFormContainer input.spl-verifyInput:focus": {
+    "border-color": "var(var(--spl-c-007fb9))",
+    "box-shadow": "var(var(--spl-c-3e3e3e))"
   },
-  "div.VerifyCodeForm p.alert": {
-    "color": "#8c1111",
+  "div.spl-VerifyCodeForm p.spl-alert": {
+    "color": "var(--spl-c-8c1111)",
     "font-size": ".8em",
     "margin-top": "9px"
   },
-  "div.VerifyCodeForm.alert div.verifyCodeFormContainer input.verifyInput": {
-    "border": "1px solid #8c1111"
+  "div.spl-VerifyCodeForm.spl-alert div.spl-verifyCodeFormContainer input.spl-verifyInput": {
+    "border": "1px solid var(--spl-c-8c1111)"
   },
-  "div.gradientViewIndicator": {
+  "div.spl-gradientViewIndicator": {
     "width": "100%"
   },
-  "div.gradientViewIndicator div.indicator-container div.indicator-wrapper": {
+  "div.spl-gradientViewIndicator div.spl-indicator-container div.spl-indicator-wrapper": {
     "padding": "6px 0"
   },
   "dl": {
@@ -1221,7 +1309,7 @@
   },
   "hr": {
     "border": "0",
-    "border-top": "1px solid #ccc",
+    "border-top": "1px solid var(--spl-c-ccc)",
     "display": "block",
     "height": "1px",
     "margin": "1em 0",
@@ -1490,83 +1578,83 @@
     "padding": "0",
     "vertical-align": "baseline"
   },
-  "section.inputPageView": {
+  "section.spl-inputPageView": {
     "align-items": "center",
     "display": "flex",
     "flex-direction": "column",
     "overflow-y": "scroll"
   },
-  "section.inputPageView div.inputPageViewContainer": {
+  "section.spl-inputPageView div.spl-inputPageViewContainer": {
     "margin": "30px 0 0",
     "width": "29%"
   },
-  "section.inputPageView div.inputPageViewContainer ul.inputPageViewPages #signupViewPage1 #cityProvinceWrapper": {
+  "section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages #signupViewPage1 #cityProvinceWrapper": {
     "flex-direction": "row"
   },
-  "section.inputPageView div.inputPageViewContainer ul.inputPageViewPages #signupViewPage1 #signupViewCityTextField": {
+  "section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages #signupViewPage1 #signupViewCityTextField": {
     "display": "inline-flex",
     "margin-right": "26px",
     "width": "48%"
   },
-  "section.inputPageView div.inputPageViewContainer ul.inputPageViewPages #signupViewPage1 #signupViewPositionMap #map": {
+  "section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages #signupViewPage1 #signupViewPositionMap #map": {
     "height": "200px",
     "width": "100%"
   },
-  "section.inputPageView div.inputPageViewContainer ul.inputPageViewPages #signupViewPage1 #signupViewProvinceTextField": {
+  "section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages #signupViewPage1 #signupViewProvinceTextField": {
     "display": "inline-flex",
     "width": "48%"
   },
-  "section.inputPageView div.inputPageViewContainer ul.inputPageViewPages #signupViewPage1 div.inputOuter input": {
+  "section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages #signupViewPage1 div.spl-inputOuter input": {
     "margin": "4px 0 0"
   },
-  "section.inputPageView div.inputPageViewContainer ul.inputPageViewPages li.inputPageViewPage": {
+  "section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage": {
     "display": "flex",
     "flex-direction": "column"
   },
-  "section.inputPageView div.inputPageViewContainer ul.inputPageViewPages li.inputPageViewPage button.backButton": {
+  "section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage button.spl-backButton": {
     "margin": "10px 0"
   },
-  "section.inputPageView div.inputPageViewContainer ul.inputPageViewPages li.inputPageViewPage button.nextButton": {
+  "section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage button.spl-nextButton": {
     "margin": "50px auto 10px",
     "padding": "5px 0",
     "width": "109px"
   },
-  "section.inputPageView div.inputPageViewContainer ul.inputPageViewPages li.inputPageViewPage div.alertMessage p": {
-    "color": "#8c1111",
+  "section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage div.spl-alertMessage p": {
+    "color": "var(--spl-alert-red)",
     "text-align": "center"
   },
-  "section.inputPageView div.inputPageViewContainer ul.inputPageViewPages li.inputPageViewPage div.dropdownButton": {
+  "section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage div.spl-dropdownButton": {
     "margin": "10px 0"
   },
-  "section.inputPageView div.inputPageViewContainer ul.inputPageViewPages li.inputPageViewPage div.dropdownButton ul.listmenu": {
+  "section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage div.spl-dropdownButton ul.spl-listmenu": {
     "height": "46%",
     "overflow-y": "scroll",
     "top": "10%",
     "width": "17%"
   },
-  "section.inputPageView div.inputPageViewContainer ul.inputPageViewPages li.inputPageViewPage div.dropdownButton:hover": {
+  "section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage div.spl-dropdownButton:hover": {
     "animation": "c .2s cubic-bezier(.65,0,.34,1) 1 forwards"
   },
-  "section.inputPageView div.inputPageViewContainer ul.inputPageViewPages li.inputPageViewPage div.textField": {
+  "section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage div.spl-textField": {
     "margin": "10px 0"
   },
-  "section.inputPageView div.inputPageViewContainer ul.inputPageViewPages li.inputPageViewPage div.textField input": {
-    "color": "#000"
+  "section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage div.spl-textField input": {
+    "color": "var(--spl-text-black)"
   },
-  "section.inputPageView div.inputPageViewContainer ul.inputPageViewPages li.inputPageViewPage div.textField:hover": {
+  "section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage div.spl-textField:hover": {
     "animation": "c .2s cubic-bezier(.65,0,.34,1) 1 forwards"
   },
-  "section.inputPageView div.inputPageViewContainer ul.inputPageViewPages li.inputPageViewPage div.wrapper": {
+  "section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage div.spl-wrapper": {
     "display": "flex",
     "flex-direction": "row"
   },
-  "section.inputPageView div.inputPageViewContainer ul.inputPageViewPages li.inputPageViewPage h2.inputPageViewPageTitle": {
-    "color": "#000",
+  "section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage h2.spl-inputPageViewPageTitle": {
+    "color": "var(--spl-text-black)",
     "font-size": "2.2rem",
     "font-weight": "100",
     "margin": "30px 0 20px"
   },
-  "section.inputPageView div.inputPageViewContainer ul.inputPageViewPages li.inputPageViewPage p.inputPageViewPageDescription": {
+  "section.spl-inputPageView div.spl-inputPageViewContainer ul.spl-inputPageViewPages li.spl-inputPageViewPage p.spl-inputPageViewPageDescription": {
     "font-weight": "100",
     "margin": "10px 0 30px"
   },

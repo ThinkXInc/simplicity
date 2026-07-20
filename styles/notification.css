@@ -1,6 +1,9 @@
 div.spl-Notification {
   cursor: pointer;
-  position: absolute;
+  /* ビューポート基準(fixed): NotificationPosition はスクロール位置に依らず
+     「画面の」上中央・右下を意味する(オーナー裁定 2026-07-20。absolute は文書先頭に
+     張り付くバグだった) */
+  position: fixed;
   z-index: 1000;
   padding: 6px;
   border: 1px solid var(--spl-c-fafafa);
